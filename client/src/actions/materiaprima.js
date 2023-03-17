@@ -60,7 +60,7 @@ export function deleteMPDetail(id) {
     var prodmp = await axios.delete(`/materiaprima/prod?id=${id}`);
     return dispatch({
       type: DEL_MATERIAPRIMAPROD,
-      payload: []
+      payload: prodmp.data
     })
   }
 }

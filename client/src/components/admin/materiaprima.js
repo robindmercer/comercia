@@ -10,13 +10,13 @@ import Header from '../Header';
 
 const Materiaprima = () => {
     const { materiaprima } = useSelector((state) => state);
-    const [detail, Setdetail] = useState(false);
+    //const [detail, Setdetail] = useState(false);
     const dispatch = useDispatch();
     const [nombre, setName] = useState("");
-    const estilo = { fontSize: "200%", transition: 'font-size 0.5s' };
+    //const estilo = { fontSize: "200%", transition: 'font-size 0.5s' };
 
     useEffect(() => {
-        Setdetail(false);
+        //Setdetail(false);
         dispatch(getMateriaprima());
     }, [dispatch]);
     //   //const navigate = useNavigate();
