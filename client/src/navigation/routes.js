@@ -1,5 +1,6 @@
 import React from 'react'
 
+import Layout from '../components/Layout'
 import Landing from '../components/Landing/Landing'
 
 
@@ -9,6 +10,12 @@ function HandleRoutes() {
         {
             path: "/",
             element: <Landing />,
+            exact: true,
+            private: true,
+        },
+        {
+            path: "/layout",
+            element: <Layout />,
             exact: true,
             private: true,
         }

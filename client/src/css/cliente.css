@@ -1,0 +1,175 @@
+.adminHeader{
+	text-align: -webkit-center;
+}
+.nibbotBtn {
+    color           : rgb(255, 255, 255);
+    font-size       : 16px;
+    line-height     : 16px;
+    padding         : 6px;
+    border-radius   : 10px;
+    font-family     : Georgia, serif;
+    font-weight     : normal;
+    text-decoration : none;
+    font-style      : normal;
+    font-variant    : normal;
+    text-transform  : none;
+    background-image: linear-gradient(to right, rgb(28, 110, 164) 0%, rgb(35, 136, 203) 50%, rgb(20, 78, 117) 100%);
+    box-shadow      : rgb(0, 0, 0) 5px 5px 15px 5px;
+    border          : 2px solid rgb(28, 110, 164);
+    display         : inline-block;
+}
+
+.nibbotBtn:hover {
+    background: #1C6EA4;
+}
+
+.nibbotBtn:active {
+    background: #144E75;
+}
+
+
+.form_style_list{
+	max-width:800px;
+	margin:50px auto;
+	background:#fff;
+	border-radius:5px;
+	padding:20px;
+}
+.form_style_list h1{
+	display: block;
+	text-align: center;
+	padding: 0;
+	margin: 0px 0px 20px 0px;
+	color: #5C5C5C;
+	font-size:x-large;
+}
+.form_style_list ul{
+	list-style:none;
+	padding:0;
+	margin:0;	
+}
+.form_style_list li{
+	display: block;
+	padding: 9px;
+	border:1px solid #bbacac;
+	margin-bottom: 16px;
+	border-radius: 3px;
+}
+.form_style_list li:last-child{
+	border:none;
+	margin-bottom: 0px;
+	text-align: center;
+}
+.form_style_list li > label{
+	display: block;
+	float: left;
+	margin-top: -19px;
+	background: #FFFFFF;
+	height: 16px;
+	padding: 2px 5px 2px 5px;
+	color: #6c6c6c;
+	font-size: 14px;
+	overflow: hidden;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+.form_style_list input[type="number"]{
+	text-align-last: end;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 100%;
+	display: block;
+	outline: none;
+	border: none;
+	height: 25px;
+	line-height: 25px;
+	font-size: 16px;
+	padding: 0;
+	font-family: Arial, Helvetica, sans-serif;
+} 
+
+.form_style_list input[type="text"],
+.form_style_list input[type="date"],
+.form_style_list input[type="datetime"],
+.form_style_list input[type="email"],
+.form_style_list input[type="search"],
+.form_style_list input[type="time"],
+.form_style_list input[type="url"],
+.form_style_list input[type="password"],
+.form_style_list textarea,
+.form_style_list select 
+{
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 100%;
+	display: block;
+	outline: none;
+	border: none;
+	height: 25px;
+	line-height: 25px;
+	font-size: 16px;
+	padding: 0;
+	font-family: Georgia, "Times New Roman", Times, serif;
+}
+.form_style_list input[type="text"]:focus,
+.form_style_list input[type="date"]:focus,
+.form_style_list input[type="datetime"]:focus,
+.form_style_list input[type="email"]:focus,
+.form_style_list input[type="number"]:focus,
+.form_style_list input[type="search"]:focus,
+.form_style_list input[type="time"]:focus,
+.form_style_list input[type="url"]:focus,
+.form_style_list input[type="password"]:focus,
+.form_style_list textarea:focus,
+.form_style_list select:focus 
+{
+    display: block;
+}
+.form_style_list li > span{
+	background: #F3F3F3;
+	display: block;
+	padding: 3px;
+	margin: 0 -9px -9px -9px;
+	text-align: center;
+	color: #C0C022;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+}
+.form_style_list textarea{
+	resize:none;
+	height:auto;
+}
+.form_style_list input[type="submit"],
+.form_style_list input[type="button"]{
+	background: #2471FF;
+	border: none;
+	padding: 10px 20px 10px 20px;
+	border-bottom: 3px solid #5994FF;
+	border-radius: 3px;
+	color: #D2E2FF;
+}
+.form_style_list input[type="submit"]:hover,
+.form_style_list input[type="button"]:hover{
+	background: #6B9FFF;
+	color:#fff;
+}
+
+.text-red-500{
+    margin:10px 0 0 0; 
+    color:red;
+}
+
+.lbl-w-50{
+	width: 45%;
+}
+.lbl-w-25{
+	width: 25%;
+}
+.lblId{
+	width: 25%;
+}
+.divFlex{
+	display:flex;
+}

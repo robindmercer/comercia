@@ -1,0 +1,8 @@
+.logos{
+    background-image: url('../images/logito.png');
+    height: 34px;
+    width: 30px;
+}
+.nav-area{
+    display:flex;    
+}

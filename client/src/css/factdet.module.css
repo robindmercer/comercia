@@ -1,0 +1,138 @@
+.cabecera {
+    height          : auto;
+    background-color: beige;
+    font-family     : Arial, Helvetica, sans-serif;
+    font-size       : 16px;
+    display         : flex;
+    justify-content : space-around;
+}
+
+.detalle {
+    background-color: white;
+}
+
+.dLink {
+    text-decoration: unset;
+}
+
+.styledtable {
+    border-collapse: collapse;
+    margin         : 25px 0;
+    font-size      : 0.9em;
+    font-family    : sans-serif;
+    min-width      : 1000px;
+    box-shadow     : 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.styledtable thead tr {
+    border-radius   : 25px;
+    background-color: #009879;
+    color           : #ffffff;
+    text-align      : left;
+}
+
+.styledtable th,
+.styledtable td {
+    padding: 12px 15px;
+}
+
+.styledtable tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.styledtable tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.styledtable tbody tr:last-of-type {
+    border-bottom: 2px solid #009879;
+}
+
+.styledtable tbody tr.active-row {
+    font-weight: bold;
+    color      : #009879;
+}
+
+.row {
+    height   : 25px;
+    font-size: 16px;
+}
+
+
+.icon {
+    display      : inline-block;
+    position     : relative;
+    width        : 16px;
+    height       : 16px;
+    border       : 0;
+    border-radius: 50%;
+}
+
+.icon-absolute {
+    position: absolute;
+}
+
+.icon-remove {
+    content         : '';
+    position        : absolute;
+    width           : 2px;
+    height          : 10px;
+    left            : 7px;
+    top             : 3px;
+    background-color: white;
+}
+
+
+.icon-add {
+    content         : '';
+    position        : absolute;
+    width           : 2px;
+    height          : 10px;
+    left            : 7px;
+    top             : 3px;
+    background-color: white;
+}
+
+.bg-red {
+    background-color: red;
+}
+
+.row__remove {
+    display   : flex;
+    padding   : 0;
+    position  : absolute;
+    top       : 10px;
+    right     : -20px;
+    opacity   : 0;
+    transition: opacity 0.2s ease-in-out;
+
+}
+
+.row:hover .row:focus-within {
+    opacity: 1;
+}
+
+
+
+.image__remove {
+    background-image: url('../components/ventas/images/remove.svg');
+    right           : -10px;
+}
+
+button.link {
+    display    : flex;
+    align-items: center;
+    background : transparent;
+    border     : 0;
+    color      : blue;
+}
+
+button:hover,
+button:focus {
+    text-decoration: underline;
+}
+
+button:focus {
+    outline: 1px dotted cyan;
+    opacity: 1;
+}

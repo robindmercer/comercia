@@ -1,0 +1,21 @@
+.formDir{
+    background-color: white;
+}
+.trDir{
+    height: 45px;
+}
+.divForm{
+    border: 6px solid #198754;
+    margin: 10px;
+    width: 80%;
+}
+
+.td1{
+    text-align: right;
+}
+.td2{
+    width: 450px;
+}
+.td2Short{
+    width: 100px;
+}
