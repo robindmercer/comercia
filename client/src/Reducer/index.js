@@ -7,7 +7,7 @@ const initialState = {
   actlogin: [],// quien se logeo 
   menu:[],
   usuario:[],
-  usuariomenu:[],
+  usuariomenu:[], 
   perfil:[],
   status:[],
   producto:[],
