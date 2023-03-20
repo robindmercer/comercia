@@ -3,6 +3,8 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const routes = require('./routes/index.js');
+import axios from 'axios';
+axios.defaults.baseURL='http:\\localhost:3001'
 
 require('./db.js');
 
