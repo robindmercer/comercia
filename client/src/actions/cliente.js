@@ -1,10 +1,10 @@
 import axios from "axios";
 import { GET_CLIENTE } from './constant'
-
+const url = "https://comercia-production.up.railway.app/"
 export function getCliente(){
     console.log('Action getCliente: All');
      return async function (dispatch) {
-         var cliente = await axios.get(`/cliente`);
+         var cliente = await axios.get(`${url}/cliente`);
          return dispatch({
              type: GET_CLIENTE,
              payload: cliente.data
@@ -15,7 +15,7 @@ export function getCliente(){
  export function getClienteId(id){
   console.log('Action getClienteId:',id);
    return async function (dispatch) {
-       var cliente = await axios.get(`/cliente/${id}`);
+       var cliente = await axios.get(`${url}/cliente/${id}`);
        return dispatch({
            type: GET_CLIENTE,
            payload: cliente.data
@@ -26,7 +26,7 @@ export function getCliente(){
  export function getClienteByName(nombre){
   console.log('Action getClienteByName: ',nombre);
    return async function (dispatch) {
-       var cliente = await axios.get(`/cliente?nombre=${nombre}`);
+       var cliente = await axios.get(`${url}/cliente?nombre=${nombre}`);
        return dispatch({
            type: GET_CLIENTE,
            payload: cliente.data
@@ -36,7 +36,7 @@ export function getCliente(){
 
  export function AddCliente(cliente) {
     return function (dispatch) {
-      axios.post('/cliente', cliente)
+      axios.post('${url}/cliente', cliente)
         .then(response => {
           return response
         })
@@ -48,7 +48,7 @@ export function getCliente(){
   
   export function UpdateCliente(cliente) {
     return function (dispatch) {
-      axios.put('/cliente', cliente)
+      axios.put('${url}/cliente', cliente)
         .then(response => {
           return response
         })
