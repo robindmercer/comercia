@@ -24,10 +24,8 @@ import reportWebVitals from './reportWebVitals'
 import { Provider } from 'react-redux'
 import { store } from './store/index'
 import axios from 'axios'
-// require('dotenv').config();
-// const { url } = process.env;
-axios.defaults.baseURL = 'http://localhost:3001'
-
+//axios.defaults.baseURL = 'http://localhost:3001'
+axios.defaults.baseURL = 'https://comercia-production.up.railway'
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>

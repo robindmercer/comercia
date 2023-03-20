@@ -24,7 +24,7 @@ export function getUsuariomenu(){
  
  export function AddUsuariomenu(usuariomenu) {
     return function (dispatch) {
-      axios.post('/usuariomenu', usuariomenu)
+      axios.post(`/usuariomenu`, usuariomenu)
         .then(response => {
           return response
         })
@@ -36,7 +36,7 @@ export function getUsuariomenu(){
   
   export function UpdateUsuariomenu(usuariomenu) {
     return function (dispatch) {
-      axios.put('/usuariomenu', usuariomenu)
+      axios.put(`/usuariomenu`, usuariomenu)
         .then(response => {
           return response
         })
