@@ -24,12 +24,9 @@
 
 //export default App;
 
-//robin 
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import HandleRoutes from "./navigation/routes";
-import axios from 'axios'
-axios.defaults.baseURL="http://localhost:3001"
 
 function App() {
   let routes = HandleRoutes();
