@@ -3,8 +3,9 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const routes = require('./routes/index.js');
+const axios = require('axios')
 // import axios from 'axios';
-// axios.defaults.baseURL='http:\\localhost:3001'
+axios.defaults.baseURL='https://comercia-production.up.railway.app/'
 
 require('./db.js');
 
