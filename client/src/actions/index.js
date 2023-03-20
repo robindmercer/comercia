@@ -6,7 +6,7 @@ import { LOG_CONTROL,GET_MENU,GET_MENUID } from './constant'
 export function AccessCtrl(id){
    console.log('Action AccessCtrl: ', id);
     return async function (dispatch) {
-        var usuario = await axios.get(`/usuario/usr/${id}`);
+        var usuario = await axios.get(`usuario/usr/${id}`);
         return dispatch({
             type: LOG_CONTROL,
             payload: usuario.data
