@@ -26,74 +26,78 @@ const Tabla = () => {
   return (
     <>
       <Header />
-      <div className="divHeader">
-        <br />
         <div>
-          <h2>Tabla</h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <div className="divHeader">
+            <div>
+                <h2>Tabla</h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
+            <div>
+                <Link
+                to={"/formTabla"}
+                state={{
+                    id: tabla.id,
+                    cod: 0,
+                    description: "",
+                    control: "N",
+                    valor: 0,
+                    cod_status: 1,
+                }}
+                >
+                🖋️
+                </Link>
+                &nbsp;&nbsp;
+            </div>
+                <div>
+                    <table className="styled-table">
+                        <thead>
+                        <tr className="table-success">
+                            <th>Id</th>
+                            <th>Codigo</th>
+                            <th>Descripcion</th>
+                            {detail && <th>Valor</th>}
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {tabla &&
+                                tabla.map((data) => {
+                            return (
+                                <tr key={data.id + data.cod}>
+                                <td>{data.id}</td>
+                                <td>{data.cod}</td>
+                                <td>{data.description}</td>
+                                {detail && <td>{data.valor}</td>}
+                                <td>{data.status.description}</td>
+                                <td>
+                                    <Link
+                                    to={"/formTabla"}
+                                    state={{
+                                        id: data.id,
+                                        cod: data.cod,
+                                        description: data.description,
+                                        control: data.control,
+                                        valor: data.valor,
+                                        cod_status: data.cod_status,
+                                    }}
+                                    >
+                                    🖋️
+                                    </Link>
+                                    &nbsp;&nbsp;
+                                    {!detail && (
+                                    <button onClick={() => verDetalle(data.id)}>
+                                        Det
+                                    </button>
+                                    )}
+                                </td>
+                                </tr>
+                            );
+                            })}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-
-        <div >
-          <Link
-            to={"/formTabla"}
-            state={{
-              id: tabla.id,
-              cod: 0,
-              description: "",
-              control: "N",
-              valor: 0,
-              cod_status: 1,
-            }}
-          >
-            🖋️
-          </Link>
-          &nbsp;&nbsp;
-        </div>
-        <table className="styled-table">
-          <thead>
-            <tr>
-              <th>Id</th>
-              <th>Codigo</th>
-              <th>Descripcion</th>
-              {detail && <th>Valor</th>}
-              <th>Estado</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {tabla &&
-              tabla.map((data) => {
-                return (
-                  <tr key={data.id + data.cod}>
-                    <td>{data.id}</td>
-                    <td>{data.cod}</td>
-                    <td>{data.description}</td>
-                    {detail && <td>{data.valor}</td>}
-                    <td>{data.status.description}</td>
-                    <td>
-                      <Link
-                        to={"/formTabla"}
-                        state={{
-                          id: data.id,
-                          cod: data.cod,
-                          description: data.description,
-                          control: data.control,
-                          valor: data.valor,
-                          cod_status: data.cod_status,
-                        }}
-                      >
-                        🖋️
-                      </Link>
-                      &nbsp;&nbsp;
-                      {!detail && (
-                        <button onClick={() => verDetalle(data.id)}>Det</button>
-                      )}
-                    </td>
-                  </tr>
-                );
-              })}
-          </tbody>
-        </table>
-      </div>
     </>
   );
 };

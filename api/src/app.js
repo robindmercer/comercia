@@ -5,8 +5,8 @@ const morgan = require('morgan');
 const routes = require('./routes/index.js');
 const axios = require('axios')
 // import axios from 'axios';
-axios.defaults.baseURL='https://comercia-production.up.railway.app/'
-
+//axios.defaults.baseURL='https://comercia-production.up.railway.app/'
+//axios.default.baseURL='https://localhost/3001'
 require('./db.js');
 
 const server = express();

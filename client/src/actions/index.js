@@ -1,8 +1,8 @@
 import axios from "axios";
 import { LOG_CONTROL,GET_MENU,GET_MENUID } from './constant'
 
-const url = "http://localhost:3001" 
-
+//const url = "http://localhost:3001" 
+const url = "https://comercia-production.up.railway.app/"
 // Busco Id del ususario Logeado
 // comunico con el Back 
 export function AccessCtrl(id){
