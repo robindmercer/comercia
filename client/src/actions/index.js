@@ -18,7 +18,7 @@ export function AccessCtrl(id){
 export function GetMenuId(id){
     console.log('Action AccessCtrl: ', id);
      return async function (dispatch) {
-         var menu = await axios.get(`/menu/usr/${id}`);
+         var menu = await axios.get(`menu/usr/${id}`);
          return dispatch({
              type: GET_MENUID,
              payload: menu.data
@@ -29,7 +29,7 @@ export function GetMenuId(id){
  export function GetMenu(){
     console.log('Action GetMenu: All');
      return async function (dispatch) {
-         var menu = await axios.get(`/menu`);
+         var menu = await axios.get(`menu`);
          return dispatch({
              type: GET_MENU,
              payload: menu.data
