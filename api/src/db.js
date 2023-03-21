@@ -29,7 +29,7 @@ sequelize.models = Object.fromEntries(capsEntries);
 //console.log('sequelize: ', sequelize.models);
 // En sequelize.models están todos los modelos importados como propiedades
 // Para relacionarlos hacemos un destructuring
-const { Usuario, Perfil, Status,Producto,Tabla,Cliente } = sequelize.models;
+const { Usuario, Perfil, Status,Producto,Tabla,Cliente ,Factura} = sequelize.models;
 // Aca vendrian las relaciones
 // Relaciones One to One 
 
@@ -50,7 +50,10 @@ Cliente.belongsTo(Status,{foreignKey:"cod_status"});
 
 Tabla.hasOne(Cliente,{ foreignKey:"cod"});
 Cliente.belongsTo(Tabla,{foreignKey:"cod_cliente"});
- 
+
+Status.hasOne(Factura,{ foreignKey:"id_status"});
+Factura.belongsTo(Status,{foreignKey:"cod_status"});
+
 module.exports = {
   ...sequelize.models, // para poder importar los modelos así: const { Product, Usuario } = require('./db.js');
   conn: sequelize,     // para importart la conexión { conn } = require('./db.js');

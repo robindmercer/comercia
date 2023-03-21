@@ -19,7 +19,10 @@ import Producto from '../components/admin/producto';
 import ProductoLang from '../components/admin/productoLang';
 import Tablas from '../components/admin/tablas'
 import Usuarios from '../components/admin/usuario';
-
+import Factura from '../components/ventas/factura'
+import Formfactura from '../components/ventas/formfactura'
+import FormfacturaAlta from '../components/ventas/formfacturaAlta'
+import FacturaCompleta from '../components/ventas/facturaCompleta';
 
 function HandleRoutes() {
 
@@ -129,6 +132,30 @@ function HandleRoutes() {
         {
             path: "/abmmenu",
             element: <AbmMenu />,
+            exact: true,
+            private: true,
+        },
+        {
+            path: "/factura",
+            element: <Factura />,
+            exact: true,
+            private: true,
+        },
+        {
+            path: "/formfactura",
+            element: <Formfactura />,
+            exact: true,
+            private: true,
+        },
+        {
+            path: "/formfacturaAlta",
+            element: <FormfacturaAlta />,
+            exact: true,
+            private: true,
+        },
+        {
+            path: "/facturaCompleta",
+            element: <FacturaCompleta />,
             exact: true,
             private: true,
         }
