@@ -210,8 +210,8 @@ function ABMTabla() {
                         return (
                           <option
                             selected
-                            value={sts.cod_status}
-                            key={sts.cod_status}
+                            value={sts.id_status}
+                            key={sts.id_status}
                           >{`${sts.description}`}</option>
                         );
                   })}                </select>
