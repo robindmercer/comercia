@@ -3,12 +3,10 @@ import axios from "axios";
 import { GET_FACTURA, GET_FACTCAB, RESET_FAC } from './constant'
 import { AddFacturaDet } from "./factdet";
 
-const url = "http://localhost:3001"
-
 export function getFactura() {
   console.log('Action getFactura: All');
   return async function (dispatch) {
-    var factura = await axios.get(`${url}/factura`);
+    var factura = await axios.get(`factura`);
     return dispatch({
       type: GET_FACTURA,
       payload: factura.data
@@ -19,7 +17,7 @@ export function getFactura() {
 export function getFacturaCab(id) {
   console.log('Action getFacturaCab: ', id);
   return async function (dispatch) {
-    var factura = await axios.get(`${url}/factura/Cab?id=${id}`);
+    var factura = await axios.get(`factura/Cab?id=${id}`);
     return dispatch({
       type: GET_FACTCAB,
       payload: factura.data
@@ -30,7 +28,7 @@ export function getFacturaCab(id) {
 export function postFacturaNew(factcab) {
   console.log('Action putFacturaNew: ', factcab);
   return async function (dispatch) {
-    var factura = await axios.post(`${url}/factura`, factcab);
+    var factura = await axios.post(`factura`, factcab);
     console.log('factura: ', factura);
     return dispatch({
       type: GET_FACTCAB,
@@ -41,7 +39,7 @@ export function postFacturaNew(factcab) {
 
 export function AddFactura(factcab, factdet, inputDet) {
   return function (dispatch) {
-    axios.post(`${url}/factura`, factcab)
+    axios.post(`factura`, factcab)
       .then(response => {
         var xOrden = 0;
         // console.log('response: ', response.data);
@@ -68,9 +66,9 @@ export function AddFactura(factcab, factdet, inputDet) {
 export function UpdateFactura(factcab, factdet, inputDet) {
   return function (dispatch) {
     console.log('UpdateFactura ', factcab);
-    axios.put(`${url}/factura`, factcab)
+    axios.put(`factura`, factcab)
       .then(response => {
-        if (response.data != 'OK') {
+        if (response.data !== 'OK') {
           console.log('response: ', response);
           alert(response.data);
           return "Err";
@@ -98,7 +96,7 @@ export function UpdateFactura(factcab, factdet, inputDet) {
 
 export function UpdateFacturaSts(id, sts) {
   return async function (dispatch) {
-    var factura = await axios.put(`${url}/factura/stat?id=${id}&sts=${sts}`);
+    var factura = await axios.put(`factura/stat?id=${id}&sts=${sts}`);
     return dispatch({
       type: GET_FACTCAB,
       payload: factura.data

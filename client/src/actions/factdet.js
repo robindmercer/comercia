@@ -1,6 +1,6 @@
 import axios from "axios";
 import { GET_FACTURADET } from './constant'
-const url = "http://localhost:3001"
+//const url = "http://localhost:3001"
 
  export function getFacturaDet(id){
   console.log('Action getFactura: DET');
