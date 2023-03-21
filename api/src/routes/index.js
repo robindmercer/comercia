@@ -13,6 +13,8 @@ const menu  = require("./usuariomenu");
 //const menu  = require("./menu");
 const tabla =require("./tablas")
 const materiaprima = require("./materiaprima")
+const factura =require("./factura")
+const factdet =require("./factdet")
 
 const email = require('./send_mail')
 
@@ -46,5 +48,9 @@ router.use('/direccion', direccion);
 router.use('/materiaprima', materiaprima);
 // Send Email
 router.use('/email', email);
+// factura
+router.use('/factura', factura);
+// factdet
+router.use('/factdet', factdet);
 
 module.exports = router;
