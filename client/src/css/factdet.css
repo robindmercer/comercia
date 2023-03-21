@@ -202,7 +202,7 @@ button:focus {
     text-align: center;
     font-weight: bold;
 }
-input_fact:hover {
+.input_fact:hover {
     border-color: lightgreen;
 
 }

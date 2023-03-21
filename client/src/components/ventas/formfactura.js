@@ -7,7 +7,7 @@ import { getFacturaDet } from '../../actions/factdet';
 import { getFacturaCab, resetFact, UpdateFactura } from '../../actions/factura';
 import { getDetailIva } from '../../actions/tabla';
 import { getProducto } from '../../actions/producto';
-// import { getCliente } from '../../actions/cliente'
+//import { getCliente } from '../../actions/cliente'
 import {getUsuariomenId} from '../../actions/usuariomenu'
 // Descuentos 
 import { getDetail } from "../../actions/tabla";
@@ -43,7 +43,7 @@ const Formfactura = () => {
 
 
   const [subTotal, setSubTotal] = useState(0)
-  // const [DirCode, setDirCode] = useState(0)
+  const [DirCode, setDirCode] = useState(0)
   const [saleTax, setSaleTax] = useState(0)
   const [saleDesc, setSaleDesc] = useState(0)
   const [saleDescto, setSaleDescto] = useState(0)
@@ -83,7 +83,7 @@ const Formfactura = () => {
     prod_id: 0,
     total: 0
   }
-  // var cantidad = []
+  var cantidad = []
 
 
   useEffect(() => {
