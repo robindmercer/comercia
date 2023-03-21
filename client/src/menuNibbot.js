@@ -42,6 +42,56 @@ export const menuItems = [
     ]
   },
   {
+    title: 'Ventas',
+    nivel: 10,
+    url: '/factura',
+    submenu: [
+      {
+        title: 'Orden de Compra',
+        nivel: 11,
+        url: '/factura',
+      },
+      {
+        title: 'web development',
+        nivel: 12,
+        url: '/web-dev',
+        submenu: [
+          {
+            title: 'Frontend',
+            nivel: 13,
+            url: 'frontend',
+          },
+          {
+            title: 'Backend',
+            submenu: [
+              {
+                title: 'NodeJS',
+                nivel: 14,
+                url: 'node',
+              },
+              {
+                title: 'PHP',
+                nivel: 15,
+                url: 'php',
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    title: 'Compras',
+    nivel: 16,
+    submenu: [
+      {
+        title: 'Pedidos',
+        nivel: 17,
+        url: '/factura',
+      },
+    ]
+  },
+  {
     title: 'About',
     nivel: 0,
     url: '/about',
