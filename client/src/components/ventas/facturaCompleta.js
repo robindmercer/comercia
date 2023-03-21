@@ -9,12 +9,12 @@ function FacturaCompleta() {
 
  // const url = "https://back-pgvinos.herokuapp.com";
 
-  const url = "http://localhost:3001" 
+ 
   
 
   useEffect(() => {
    
-      axios.post(`${url}/email`, {
+      axios.post(`email`, {
         subject: 'Confirmacion de compra',
         to: 'robindmercer@yahoo.com.ar',        
         html: `<table style="margin:0 auto; width: 600px; font-family: 'Poppins', sans-serif;">

@@ -8,15 +8,15 @@ import style from '../../css/factura.module.css'
 import { AccessCtrl } from '../../actions/index'
 import {getUsuariomenId} from '../../actions/usuariomenu'
 import { getDetail } from "../../actions/tabla";
-import crearMail from "../CrearMails";
-import { mailEnviar } from "../../actions/index";
+// import crearMail from "../CrearMails";
+// import { mailEnviar } from "../../actions/index";
 
 const Factura = () => {
     const idProg = 11;
     const id_usuario = localStorage.getItem("usuario");
     const { factura } = useSelector((state) => state);
     const { factcab } = useSelector((state) => state)    
-    const actlogin = useSelector((state) => state.actlogin)
+    // const actlogin = useSelector((state) => state.actlogin)
     const usuariomenu = useSelector((state) => state.usuariomenu)
     const dispatch = useDispatch();
     const dollarUSLocale = Intl.NumberFormat('de-DE');

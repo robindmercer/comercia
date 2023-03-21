@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useLocation } from "react-router-dom";
 
 // Acciones 
-import { getFacturaDet } from '../../actions/factdet';
-import { getFacturaCab, resetFact, AddFactura } from '../../actions/factura';
+// import { getFacturaDet } from '../../actions/factdet';
+// import { getFacturaCab, resetFact, AddFactura } from '../../actions/factura';
 import { getDetailIva } from '../../actions/tabla';
 import { getProducto } from '../../actions/producto';
 import { getClienteId } from '../../actions/cliente'
@@ -16,7 +16,7 @@ import {getUsuariomenId} from '../../actions/usuariomenu'
 import { getDetail } from "../../actions/tabla";
 
 // Iconos 
-import { FcDeleteRow, FcAddRow, FcOk, FcLeft, FcDeleteDatabase } from 'react-icons/fc'
+import { FcDeleteRow, FcAddRow, FcOk, FcLeft } from 'react-icons/fc'
 import Header from '../Header';
 // CSS
 import '../../css/factdet.css'
@@ -38,7 +38,7 @@ const Formfactura = () => {
   const { porciva } = useSelector((state) => state)
   const { producto } = useSelector((state) => state)
   const { tabla } = useSelector((state) => state);
-  const { idfact } = useSelector((state) => state)
+  // const { idfact } = useSelector((state) => state)
 
   const dispatch = useDispatch();
   const location = useLocation();
@@ -47,7 +47,7 @@ const Formfactura = () => {
   const estilo2 = { fontSize: "200%"};
 
   const [onChange, setOnChange] = useState(false)
-  const [onIva, setOnIva] = useState(false)
+  // const [onIva, setOnIva] = useState(false)
 
 
   const [subTotal, setSubTotal] = useState(0)
@@ -106,7 +106,7 @@ const Formfactura = () => {
     fecha: new Date().toLocaleDateString('en-GB')
 
   }
-  var cantidad = []
+  // var cantidad = []
   //console.log('factcab: ', factcab.length);
   if (factcab.length === 0) {
     factcab.push(initialHead)
@@ -123,7 +123,7 @@ const Formfactura = () => {
     dispatch(getUsuariomenId(id_usuario));
     if (usuariomenu){
         for (var i = 0; i < usuariomenu.length; i++) {
-            if (usuariomenu[i].nivel = idProg){
+            if (usuariomenu[i].nivel === idProg){
                 setAcceso(usuariomenu[i].accion)
             } 
         } }
