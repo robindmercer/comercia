@@ -270,7 +270,8 @@ function ABMDireccion() {
                               key={sts.id_status}
                             >{`${sts.description}`}</option>
                           );
-                    })}                </select>
+                    })}
+                    </select>
                 </td>
               </tr>
             </table>
