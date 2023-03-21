@@ -5,7 +5,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 // Acciones 
 // import { getFacturaDet } from '../../actions/factdet';
-// import { getFacturaCab, resetFact, AddFactura } from '../../actions/factura';
+import { resetFact, AddFactura } from '../../actions/factura';
 import { getDetailIva } from '../../actions/tabla';
 import { getProducto } from '../../actions/producto';
 import { getClienteId } from '../../actions/cliente'
