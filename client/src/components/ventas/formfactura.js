@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useLocation } from "react-router-dom";
 // Acciones 
 import { getFacturaDet } from '../../actions/factdet';
-import { getFacturaCab, resetFact, UpdateFactura } from '../../actions/factura';
+import { getFacturaCab, UpdateFactura } from '../../actions/factura';
 import { getDetailIva } from '../../actions/tabla';
 import { getProducto } from '../../actions/producto';
 //import { getCliente } from '../../actions/cliente'
@@ -43,7 +43,6 @@ const Formfactura = () => {
 
 
   const [subTotal, setSubTotal] = useState(0)
-  const [DirCode, setDirCode] = useState(0)
   const [saleTax, setSaleTax] = useState(0)
   const [saleDesc, setSaleDesc] = useState(0)
   const [saleDescto, setSaleDescto] = useState(0)
@@ -53,6 +52,7 @@ const Formfactura = () => {
   // Formato Numeros
   const dollarUSLocale = Intl.NumberFormat('de-DE');
 
+  // eslint-disable-next-line no-unused-vars
   const [inputDet, setInputDet] = useState({
     fac_id: 0,
     orden: 0,

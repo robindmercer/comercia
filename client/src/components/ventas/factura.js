@@ -39,21 +39,21 @@ const Factura = () => {
     
     const handleSubmit = (id) => {
         var control = "x"
-        console.log('handleSubmit',id);
+        // console.log('handleSubmit',id);
         const found = factura.find(element => element.id ===id);
         dispatch(getFacturaCab(found));
-        console.log('factura: ', factura);
-        console.log('factcab: ', factcab);
+        // console.log('factura: ', factura);
+        // console.log('factcab: ', factcab);
         if (factcab[0].desc_id !== 0){
             dispatch(getDetail(2));
-            console.log('factcab[0].desc_id: ', factcab[0].desc_id);
-            console.log('Tabla',tabla);
+            // console.log('factcab[0].desc_id: ', factcab[0].desc_id);
+            // console.log('Tabla',tabla);
             for (var i = 0; i < tabla.length; i++) {
                 if (parseInt(tabla[i].cod) === parseInt(factcab[0].desc_id)){
                     control = tabla[i].control
                 }
             }
-            console.log('control: ', control);
+            // console.log('control: ', control);
         }
         if (control === "S"){
             dispatch(UpdateFacturaSts(id,4))
@@ -66,7 +66,7 @@ const Factura = () => {
         // console.log('usuariomenu: ', usuariomenu);
         // console.log('acceso: ', acceso);
         // console.log('factura: actlogin ', actlogin);
-        //window.location.href = '/factura';
+        window.location.href = '/factura';
     }
     
         
