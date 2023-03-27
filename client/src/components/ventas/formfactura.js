@@ -120,7 +120,6 @@ const Formfactura = () => {
     let iva = 0
     let total = 0
     if (factdet && porciva) {
-
       factdet.forEach((fact) => {
         const quantityNumber = parseFloat(fact.cantidad)
         const rateNumber = parseFloat(fact.precio)
