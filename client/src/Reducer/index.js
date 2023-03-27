@@ -188,6 +188,7 @@ const rootReducer = (state = initialState, action) => {
       factcab: [],
     }
   }    
+
   ///////////////////////////////////////////
   // ****         Direccion                  ***
   ///////////////////////////////////////////

@@ -80,10 +80,10 @@ const Formfactura = () => {
     name: '',
     orden: factcab.length,
     precio: 0,
-    prod_id: 0,
+    prod_id: '',
     total: 0
   }
-  var cantidad = []
+  // var cantidad = []
 
 
   useEffect(() => {
@@ -96,15 +96,17 @@ const Formfactura = () => {
     dispatch(getUsuariomenId(id_usuario));
     if (usuariomenu){
         for (var i = 0; i < usuariomenu.length; i++) {
-            if (usuariomenu[i].nivel = idProg){
+            if (usuariomenu[i].nivel === idProg){
                 setAcceso(usuariomenu[i].accion)
             } 
-        } }    
+        } 
+    }          
     //setInput(input.fac_id=state.idfact)
-    return (
-      dispatch(resetFact())
-    )
-  }, [dispatch,]);
+    // return (
+    //   dispatch(resetFact())
+    // )
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, id_usuario]);
 
   useEffect(() => {
     if (onChange) {
@@ -123,9 +125,11 @@ const Formfactura = () => {
         const quantityNumber = parseFloat(fact.cantidad)
         const rateNumber = parseFloat(fact.precio)
         const amount = quantityNumber && rateNumber ? quantityNumber * rateNumber : 0
+        console.log('amount: ', parseFloat(amount));
 
         subTotal += amount
       })
+      console.log('calculo subTotal: ', subTotal);
       setSubTotal(subTotal)
       if (subTotal > 0) {
         iva = subTotal * (parseFloat(porciva[0].valor) / 100)
@@ -217,11 +221,11 @@ const Formfactura = () => {
       }
     }
     if (e.target.name === 'prod_id') {
-      if (e.target.value == '0') {
+      if (e.target.value === '0') {
         handleRemove(i.i)
       } else {
         for (var z = 0; z < producto.length; z++) {
-          if (producto[z].id == e.target.value) {
+          if (parseInt(producto[z].id) === parseInt(e.target.value)) {
             factdet[i.i].prod_id = e.target.value
             factdet[i.i].name = producto[z].name
             factdet[i.i].precio = producto[z].price
@@ -246,12 +250,13 @@ const Formfactura = () => {
     //     setInput(input.cli_id = factcab[0].cli_id);    
     //console.log('DirCode: ', DirCode);
     console.log('subTotal: ', subTotal.toFixed(0));
+    console.log('saleDescto: ', saleDescto);
     console.log('saleTax: ', saleTax.toFixed(0));
     console.log('Total: ', total.toFixed(0));
     factcab[0].subtotal = subTotal.toFixed(0);
     factcab[0].iva = saleTax.toFixed(0);
     if (saleDescto) {
-      factcab[0].descuento = saleDescto.toFixed(0);
+      factcab[0].descuento = saleDescto;
     }
     factcab[0].total = total.toFixed(0);
     factcab[0].desc_id = desc_id;
@@ -265,21 +270,15 @@ const Formfactura = () => {
     setInput(input.observ = factcab[0].observ)
     setInput(input.desc_id = factcab[0].desc_id)
 
-    console.log('input: ', input);
-    console.log('factdet: ', factdet);
+    // console.log('input: ', input);
+    // console.log('factdet: ', factdet);
 
     if (factcab[0].subtotal === 0) {
       alert("La Orden de Compra no puede quedar en 0")
       return;
     }
     dispatch(UpdateFactura(input, factdet, inputDet))
-    // if (onChange) {
-    //   setOnChange(false)
-    // } else {
-    //   setOnChange(true)
-    // }
-    // var msg = dispatch(AddFactura(input));
-    // console.log('msg: ', msg);
+    window.location.href = '/factura';
   }
 
 
@@ -418,13 +417,12 @@ const Formfactura = () => {
                   name="cod"
                   id="cod"
                   onChange={(e) => handleTipo(e)}
-                  value={parseInt(factcab[0].desc_id)}
+                  value={parseInt(desc_id)}
                 >
                   <option value="0">Seleccionar</option>
                   {tabla && tabla.map((data) => {
                         return (
                           <option
-                            selected
                             value={data.cod}
                             key={data.cod}
                           >{`${data.description + '  ' + data.valor + ' %'}`}</option>

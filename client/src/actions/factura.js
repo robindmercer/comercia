@@ -104,7 +104,6 @@ export function UpdateFacturaSts(id, sts) {
   }
 }
 
-
 export function resetFact() {
   return {
     type: RESET_FAC

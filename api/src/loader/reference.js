@@ -350,13 +350,13 @@ async function refLoad() {
 
 
    Factura.bulkCreate([
-      {cli_id: 1,dir_id: 1,subtotal: 1000000,iva: 160000,descuento: 0, desc_id: 0,total: 1160000,observ:'Algun Dato',cod_status: 1},
-      {cli_id: 2,dir_id: 1,subtotal: 1000000,iva: 160000,descuento: 0, desc_id: 0,total: 1160000,observ:'Algun Dato',cod_status: 2},
+      {cli_id: 1,dir_id: 1,subtotal: 284158,iva: 45465,descuento: 0, desc_id: 0,total: 329623,observ:'Algun Dato',cod_status: 1},
+      {cli_id: 2,dir_id: 1,subtotal: 265279,iva: 42445,descuento: 0, desc_id: 0,total: 307724,observ:'Algun Dato',cod_status: 2},
    ]).then(() => console.log('Factura Grabada'));
-   
+      
    Factdet.bulkCreate([
       {fac_id:1, orden:1, prod_id:1, precio:246400, cantidad:1,total:246400},
-      {fac_id:1, orden:2, prod_id:5, precio:18879,  cantidad:2,total:18879},
+      {fac_id:1, orden:2, prod_id:5, precio:18879,  cantidad:2,total:37758},
       {fac_id:1, orden:3, prod_id:6, precio:0,      cantidad:1,total:0},
       {fac_id:2, orden:1, prod_id:1, precio:246400, cantidad:1,total:246400},
       {fac_id:2, orden:2, prod_id:5, precio:18879,  cantidad:1,total:18879},
