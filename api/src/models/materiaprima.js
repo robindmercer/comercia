@@ -8,6 +8,7 @@ module.exports = (sequelize) => {
         name: {
             type: DataTypes.STRING,
             allowNull: false,
+            primaryKey: true,
         },
         description: {                                  // 1 Activo 2-Inactivo no a la venta 
             type: DataTypes.STRING(1000),

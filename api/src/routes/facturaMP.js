@@ -24,6 +24,7 @@ router.get('/', async function (req, res, next) {
       sql = sql + " join clientes on clientes.id = facturas.cli_id "
       sql = sql + " join status   on status.id_status = facturas.cod_status "
       sql = sql + " left join tabla on tabla.id = 2 and tabla.cod = facturas.desc_id"
+      sql = sql + " where facturas.cod_status = 3" // Solo Confeccionados
       const records = await seq.query(sql,
         {
           logging: console.log,

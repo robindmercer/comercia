@@ -80,3 +80,13 @@ export function resetProd() {
     type: RESET_PRODMP
   }
 }
+// Busca todas las materias primas de una factura
+export function getMateriaprimaFac(id) {
+  return async function (dispatch) {
+    var prodmp = await axios.get(`/materiaprima/fac?id=${id}`);
+    return dispatch({
+      type: GET_MPFAC,
+      payload: prodmp.data
+    })
+  }
+}

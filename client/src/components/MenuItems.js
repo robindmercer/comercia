@@ -1,11 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from "react-redux";
 import Dropdown from './Dropdown';
 
 import { Link } from 'react-router-dom';
 
 const MenuItems = ({ items, depthLevel }) => {
   const [dropdown, setDropdown] = useState(false);
-
+  const { usuariomenu } = useSelector((state) => state);
   let ref = useRef();
 
   useEffect(() => {
@@ -39,6 +40,11 @@ const MenuItems = ({ items, depthLevel }) => {
     dropdown && setDropdown(false);
   };
 
+  var found = usuariomenu.find((element) => element.nivel === items.nivel);
+  if (found === undefined){
+    found=0
+  }
+
   return (
     <li
       className="menu-items"
@@ -47,7 +53,7 @@ const MenuItems = ({ items, depthLevel }) => {
       onMouseLeave={onMouseLeave}
       onClick={closeDropdown}
     >
-      {items.url && items.submenu ? (
+      {items.url && items.submenu && found !== 0 ? (
         <>
           <button
             type="button"
@@ -56,7 +62,7 @@ const MenuItems = ({ items, depthLevel }) => {
             onClick={() => setDropdown((prev) => !prev)}
           >
             {window.innerWidth < 960 && depthLevel === 0 ? (
-              items.title
+              items.title 
             ) : (
               <Link to={items.url}>{items.title}</Link>
             )}
@@ -75,7 +81,7 @@ const MenuItems = ({ items, depthLevel }) => {
             dropdown={dropdown}
           />
         </>
-      ) : !items.url && items.submenu ? (
+      ) : !items.url && items.submenu  && found !== 0 ? (
         <>
           <button
             type="button"
@@ -96,9 +102,9 @@ const MenuItems = ({ items, depthLevel }) => {
             dropdown={dropdown}
           />
         </>
-      ) : (
+      ) : found !== 0 ?(
         <Link to={items.url}>{items.title}</Link>
-      )}
+      ) : (null)}
     </li>
   );
 };

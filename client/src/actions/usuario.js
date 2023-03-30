@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GET_USUARIOS } from './constant'
+import { GET_MAILS, GET_USUARIOS } from './constant'
 
 export function getUsuario(){
     console.log('Action getUsuario: All');
@@ -47,3 +47,14 @@ export function getUsuario(){
         })
     }
   }  
+ 
+  export function GetMails(perfil) {
+    console.log('Action getUsuario: All');
+    return async function (dispatch) {
+        var mails = await axios.get(`/usuario/perfil/${perfil}`);
+        return dispatch({
+            type: GET_MAILS,
+            payload: mails.data
+        })
+    }
+  }

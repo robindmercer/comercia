@@ -1,9 +1,10 @@
-import { LOG_CONTROL,GET_MENU,GET_MENUID,GET_USUARIOS,GET_PERFIL,GET_STATUS,GET_USUARIOSMENU } from '../actions/constant.js'
+import { LOG_CONTROL,GET_MENU,GET_MENUID,GET_USUARIOS,GET_PERFIL,GET_STATUS,GET_USUARIOSMENU,GET_MAILS,GET_FACTURAMP } from '../actions/constant.js'
 import {GET_TABLA,GET_CLIENTE,GET_FACTURA,GET_DIRECCION,SET_IVA } from '../actions/constant.js'
 import {GET_PRODUCTOS,GET_PRODUCTOSLANG,GET_PRODUCTOSID,GET_MATERIAPRIMA,GET_MATERIAPRIMAPROD,RESET_PRODMP } from '../actions/constant.js'
-import {GET_FACTURADET,GET_FACTCAB, RESET_FAC } from '../actions/constant.js'
+import {GET_FACTURADET,GET_FACTCAB, RESET_FAC,GET_MPDEFAC } from '../actions/constant.js'
 const initialState = {
   lang: "",
+  mails:[],
   actlogin: [],// quien se logeo 
   menu:[],
   usuario:[],
@@ -22,6 +23,8 @@ const initialState = {
   idcli:0,
   porciva:[],
   materiaprima:[],
+  facturaMP:[],
+  mpfactura:[],
   prodmp:[], // materia prima por producto
 }
 
@@ -188,7 +191,21 @@ const rootReducer = (state = initialState, action) => {
       factcab: [],
     }
   }    
-
+  ///////////////////////////////////////////
+  // ****         Planeacion                  ***
+  ///////////////////////////////////////////
+  if (action.type === GET_FACTURAMP) {
+    return {
+  ...state,
+  facturaMP: action.payload,
+  }
+  }
+  if (action.type === GET_MPDEFAC) {
+    return {
+  ...state,
+  mpfactura: action.payload,
+  }
+  }  
   ///////////////////////////////////////////
   // ****         Direccion                  ***
   ///////////////////////////////////////////
@@ -198,6 +215,14 @@ const rootReducer = (state = initialState, action) => {
       direccion: action.payload,
     }
   }    
+  
+  // Se usa en confirmacion de facturas 
+  if (action.type === GET_MAILS) {
+    return {
+      ...state,
+      mails: action.payload,
+    }
+  }
   
   return state
 }

@@ -39,21 +39,22 @@ router.get('/', function (req, res, next) {
       )
         .then((resp) => {
           resp.length
-            ? res.send(resp)
-            : res.send({ message: 'No pude acceder a productos' })
+          ? res.send(resp)
+          : res.send({ message: 'No pude acceder a productos' })
         })
 
+      }
+    } catch (error) {
+      console.log('Error', error)
     }
-  } catch (error) {
-    console.log('Error', error)
-  }
-})
-
-
-
-router.get('/detail/:id', function (req, res, next) {
-  try {
-    const { id } = req.params;
+  })
+  
+  
+  
+  router.get('/detail/:id', function (req, res, next) {
+    try {
+      const { id } = req.params;
+      console.log('Hola');
       Producto.findAll({
         where: {
           id: req.params.id

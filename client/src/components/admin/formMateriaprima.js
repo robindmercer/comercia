@@ -11,9 +11,6 @@ import { getStatus } from '../../actions/status';
 
 export function validate(input) {
   let errors = {};
-  if (input.id === "") {
-    errors.id = "Debe indicar Id!";
-  }
 
   if (input.cod === "") {
     errors.cod = "Debe Ingresar un codigo";
@@ -48,8 +45,7 @@ function ABMMateriaprima() {
   }, [dispatch, state.id]);
 
   const [input, setInput] = useState({
-    id: state ? state.id : 0,
-    name: state ? state.name : 0,
+    name: state ? state.name : '',
     description: state ? state.description : "",
     udm: state ? state.udm : 0,
     stock: state ? state.stock:0,
@@ -96,23 +92,6 @@ function ABMMateriaprima() {
             </h1>
             <br />
             <ul>
-              <li className="lbl-w-25">
-                <label
-                  htmlFor="id"
-                >
-                  Id:{" "}
-                </label>
-                <input
-                  type="number"
-                  id="id"
-                  name="id"
-                  value={input.id}
-                  onChange={handleChange}
-                />
-                <span>Ingrese ID de la Materia Prima</span>
-                {errors.id && <p className="text-red-500">{errors.id}</p>}
-
-              </li>
               <li className="lbl-w-25">
                 <label
                   htmlFor="name"

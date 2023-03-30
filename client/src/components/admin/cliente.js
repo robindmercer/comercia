@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getCliente, getClienteByName } from "../../actions/cliente";
+import { getUsuariomenId } from "../../actions/usuariomenu";
 import { Link } from "react-router-dom";
 import '../../css/all.css'
 import Header from '../Header';
@@ -10,9 +11,22 @@ const Cliente = () => {
     const { cliente } = useSelector((state) => state);
     const dispatch = useDispatch();
     const estilo = { fontSize: "200%", transition: 'font-size 0.5s' };
-    
+    const [acceso, setAcceso] = useState("A");
+    const id_usuario = localStorage.getItem("usuario");
+    const usuariomenu = useSelector((state) => state.usuariomenu);
+    const idProg = 6; // es el nivel 
+
     useEffect(() => {
         dispatch(getCliente());
+        dispatch(getUsuariomenId(id_usuario));
+        if (usuariomenu) {
+          for (var i = 0; i < usuariomenu.length; i++) {
+            if (usuariomenu[i].nivel === idProg) {
+              setAcceso(usuariomenu[i].accion);
+            }
+          }
+        }
+    
     }, [dispatch]);
 
     const [nombre, setName] = useState("");
@@ -51,6 +65,7 @@ const Cliente = () => {
                             />
                         </div>
                         <div>
+                        {acceso === "A" ? (
                             <Link
                                 to={'/formCliente'}
                                 className="dLink"
@@ -69,7 +84,8 @@ const Cliente = () => {
                             > <FcBusinessman style={estilo}
                                 onMouseEnter={({ target }) => target.style.fontSize = "280%"}
                                 onMouseLeave={({ target }) => target.style.fontSize = "200%"} />
-                            </Link>&nbsp;&nbsp;
+                            </Link>
+                             ) : null}
                         </div>
                     </div>
                 </div>
@@ -132,7 +148,7 @@ const Cliente = () => {
                                             onMouseEnter={({ target }) => target.style.fontSize = "280%"}
                                             onMouseLeave={({ target }) => target.style.fontSize = "200%"} />
                                         </Link>&nbsp;&nbsp;
-                                        { parseInt(data.cantdir) > 0 ? (
+                                        { parseInt(data.cantdir) > 0  && acceso === "A" ? (
                                         <Link
                                             title="Crear Venta"
                                             to={'/formfacturaAlta'}

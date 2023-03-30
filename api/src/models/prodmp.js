@@ -9,8 +9,8 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             allowNull: false,
         },
-        mp_id: {
-            type: DataTypes.INTEGER,
+        mp_name: {
+            type: DataTypes.STRING,
             allowNull: false,
         },
         cantidad: {

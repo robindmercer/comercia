@@ -78,7 +78,6 @@ const Materiaprima = () => {
                 <table className="styled-table">
                     <thead>
                         <tr>
-                            <th >Id</th>
                             <th >Codigo</th>
                             <th >Descripcion</th>
                             <th >Unidad de medida </th>
@@ -90,8 +89,7 @@ const Materiaprima = () => {
                     <tbody>
                         {materiaprima && materiaprima.map(data => {
                             return (
-                                <tr key={data.id} >
-                                    <td >{data.id}</td>
+                                <tr  >
                                     <td >{data.name}</td>
                                     <td >{data.description}</td>
                                     <td >{data.udm}</td>
@@ -104,7 +102,6 @@ const Materiaprima = () => {
                                             title="Actualizar M.P."
                                             state={
                                                 {
-                                                    id: data.id,
                                                     name: data.name,
                                                     description: data.description,
                                                     udm: data.udm,

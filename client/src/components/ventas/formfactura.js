@@ -124,11 +124,9 @@ const Formfactura = () => {
         const quantityNumber = parseFloat(fact.cantidad)
         const rateNumber = parseFloat(fact.precio)
         const amount = quantityNumber && rateNumber ? quantityNumber * rateNumber : 0
-        console.log('amount: ', parseFloat(amount));
-
         subTotal += amount
       })
-      console.log('calculo subTotal: ', subTotal);
+      // console.log('calculo subTotal: ', subTotal);
       setSubTotal(subTotal)
       if (subTotal > 0) {
         iva = subTotal * (parseFloat(porciva[0].valor) / 100)
@@ -160,10 +158,6 @@ const Formfactura = () => {
       setOnChange(true)
     }
   }
-  // function handleChange(e) {
-  //       e.preventDefault();
-  //   console.log('e.target.value: ', e.target.value);
-  // }
 
   function handleTipo(e, i) {
     e.preventDefault();
@@ -282,11 +276,14 @@ const Formfactura = () => {
 
 
 
+  console.log('formFactura---------------------------------------------------' )
   console.log('factcab: ', factcab);
   console.log('factdet: ', factdet);
   console.log('total: ', total);
   console.log('usuariomenu: ', usuariomenu);
   console.log('acceso: ', acceso);
+  console.log('porciva: ', porciva);
+  console.log('formFactura---------------------------------------------------' )
 
   if (factcab.length > 0) {
     if (saleDesc === 0 && factcab[0].descuento > 0) {

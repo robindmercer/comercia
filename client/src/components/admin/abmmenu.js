@@ -57,6 +57,7 @@ function  AbmMenu() {
         } else {
             setOnChange(true)
         }
+        window.location.href = '/abmmenu';
     }
 
     console.log('usuariomenu: ', usuariomenu);
@@ -72,7 +73,7 @@ function  AbmMenu() {
                 <table className="styled-table">
                     <thead>
                         <tr><th colSpan='4' className="lblname">{state.nombre}</th></tr>
-                        <tr><th colSpan='4'>Referencia :&nbsp;&nbsp; T = Acceso Total&nbsp;&nbsp; C = Solo consulta&nbsp;&nbsp; E = Eliminar Acceso
+                        <tr><th colSpan='4'>Referencia :&nbsp;&nbsp; A = Acceso Total&nbsp;&nbsp; C = Solo consulta&nbsp;&nbsp; E = Eliminar Acceso
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<FcLeft style={estilo}
                               title='Volver'
                               onClick={() => { navigate("/usuarios"); }} />
@@ -94,7 +95,7 @@ function  AbmMenu() {
                                 <>
                                     <tr key={index}>
                                         <td>
-                                            <button className='nibbotBtn' onClick={() => verDetalle(menu.nivel, 'A')}>T</button>&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <button className='nibbotBtn' onClick={() => verDetalle(menu.nivel, 'A')}>A</button>&nbsp;&nbsp;&nbsp;&nbsp;
                                             <button className='nibbotBtn' onClick={() => verDetalle(menu.nivel, 'C')}>C</button>&nbsp;&nbsp;&nbsp;&nbsp;
                                             <button className='nibbotBtn' onClick={() => verDetalle(menu.nivel, '')}>E</button>
                                         </td>
@@ -109,7 +110,7 @@ function  AbmMenu() {
                                         return (
                                             <tr key={indx}>
                                                 <td>
-                                                    <button className='nibbotBtn' onClick={() => verDetalle(data.nivel, 'A')}>T</button>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <button className='nibbotBtn' onClick={() => verDetalle(data.nivel, 'A')}>A</button>&nbsp;&nbsp;&nbsp;&nbsp;
                                                     <button className='nibbotBtn' onClick={() => verDetalle(data.nivel, 'C')}>C</button>&nbsp;&nbsp;&nbsp;&nbsp;
                                                     <button className='nibbotBtn' onClick={() => verDetalle(data.nivel, '')}>E</button>
                                                 </td>

@@ -49,6 +49,7 @@ router.get("/:id", function (req, res, next) {
 
 router.get("/usr/:clave", function (req, res, next) {
   try {
+    console.log('req.params: ', req.params);
     const  usr_id  = req.params.clave;
     if (usr_id) {
       Usuario.findAll({
@@ -72,6 +73,33 @@ router.get("/usr/:clave", function (req, res, next) {
     next(error);
   }
 });
+
+router.get("/perfil/:perfil", function (req, res, next) {
+  try {
+    console.log('req.params: ', req.params);
+    const  perfil  = req.params.perfil;
+    if (perfil) {
+      Usuario.findAll({
+        attributes: {exclude: ['id_status','id_perfil']},
+        where: {
+          cod_perfil: perfil,
+        },
+         include: [
+          {model: Perfil},
+          {model: Status},
+        ],
+      }).then((resp) => {
+        resp.length
+          ? res.send(resp)
+          : res.send({ usr_id: '0' });
+      });
+    }
+  } catch (error) {
+    console.log('error: ', error);
+    next(error);
+  }
+});
+
 
 router.post("/", async function (req, res, next) {
   console.log('req.body: ', req.body);

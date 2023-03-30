@@ -28,15 +28,15 @@ const Navbar = () => {
   }
   //console.log('usuariomenu: ', usuariomenu);
   //console.log('NAVBAR: ', actlogin);
-
   return (
     <div className="divhead">
       <div >
         <nav>
           <ul className="menus">
             {menuItems.map((menu, index) => {
-              //console.log('menu: ', menu);
               const depthLevel = 0;
+              const found = usuariomenu.find((element) => element.nivel === menu.nivel);
+              //console.log('found: ', found);
               if (nivel.includes(menu.nivel) || menu.nivel === 0) {
                 return (
                   <MenuItems

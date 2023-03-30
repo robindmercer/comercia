@@ -13,14 +13,18 @@ const Layout = () => {
   const { tabla } = useSelector((state) => state)
   const porciva = useSelector((state) => state.porciva)
   const dispatch = useDispatch()
-
+  
   useEffect(() => {
     dispatch(getDetailIva(1));
     dispatch(AccessCtrl(id_usuario));
     // dispatch(GetMenu(id_usuario));
   }, []);
-
+  
+  console.log('LayOut------------------------------------');
   console.log('actlogin', actlogin);
+  console.log('porciva: ', porciva);
+  console.log('LayOut fin--------------------------------');
+  
   //console.log('actlogin.usr_id: ', actlogin[0].usr_id);
   if (tabla) {
     console.log('Layout Tabla: ', tabla);

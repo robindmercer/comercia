@@ -10,6 +10,7 @@ export const GET_MENU = 'GET_MENU'
 export const GET_MENUID = 'GET_MENUID'
 // Perfiles 
 export const GET_PERFIL = 'GET_PERFIL'
+export const GET_MAILS = 'GET_MAILS'
 // Status
 export const GET_STATUS = 'GET_STATUS'
 // Productos BD
@@ -28,9 +29,13 @@ export const GET_FACTCAB = 'GET_FACTCAB'
 export const GET_FACTURADET = 'GET_FACTURADET'
 export const GET_FACTURAID = 'GET_FACTURAID'
 export const RESET_FAC = 'RESET_FAC' // LO SACO DE MEMORIA
+// Facturas Confeccionadas
+export const GET_FACTURAMP = 'GET_FACTURAMP'  // Facturas Confeccionadas busca Materias Primas sdfc
+export const GET_MPDEFAC = 'GET_MPDEFAC'      // Materias primas de una factura
 // Materia Prima 
 export const GET_MATERIAPRIMA   = 'GET_MATERIAPRIMA'
 export const GET_MATERIAPRIMAID = 'GET_MATERIAPRIMAID'
 export const GET_MATERIAPRIMAPROD = 'GET_MATERIAPRIMAIDPROD'
 export const RESET_PRODMP = 'RESET_PRODMP'
 export const DEL_MATERIAPRIMAPROD = 'DEL_MATERIAPRIMAPROD'
+export const GET_MPFAC='GET_MPFAC'

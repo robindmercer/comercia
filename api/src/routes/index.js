@@ -15,9 +15,9 @@ const tabla =require("./tablas")
 const materiaprima = require("./materiaprima")
 const factura =require("./factura")
 const factdet =require("./factdet")
-
+const facturaMP =require("./facturaMP")
 const email = require('./send_mail')
-
+const mpFactura =require("./mpFactura") // Materias primas utilizadas en una factura 
 const router = Router();
 
 // Send Email
@@ -52,5 +52,9 @@ router.use('/email', email);
 router.use('/factura', factura);
 // factdet
 router.use('/factdet', factdet);
+//facturaMP
+router.use('/facturaMP',facturaMP);
+//mpFactura
+router.use('/mpfactura',mpFactura);
 
 module.exports = router;

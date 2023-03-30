@@ -27,8 +27,7 @@ const FormProdMp = () => {
 
   const initialProductLine = {
     prod_id: state.id,
-    mp_id: '',
-    name: '',
+    mp_name: '',
     description: '',
     udm: 'Pieza',
     cantidad: 1,
@@ -65,7 +64,6 @@ const FormProdMp = () => {
       if (materiaprima[z].id === e.target.value) {
         const newProdmp = {
           prod_id : state.id,
-          mp_id : materiaprima[z].id,
           name : materiaprima[z].name,
           description : materiaprima[z].description,
           cantidad : 1
@@ -101,13 +99,12 @@ const FormProdMp = () => {
     console.log('e.target.name: ', e.target.name);
     console.log('e.target.id: ', i.i);
 
-    if (e.target.name === 'mp_id') {
+    if (e.target.name === 'mp_name') {
       if (e.target.value === '0') {
         handleRemove(i.i)
       } else {
         for (var z = 0; z < materiaprima.length; z++) {
           if (materiaprima[z].id === e.target.value) {
-            prodmp[i.i].mp_id = e.target.value
             prodmp[i.i].name = materiaprima[z].name
             prodmp[i.i].description = materiaprima[z].description
             prodmp[i.i].udm = materiaprima[z].udm
@@ -140,7 +137,7 @@ const FormProdMp = () => {
     prodmp.forEach(e => {
       const send={
         prod_id : state.id,
-        mp_id : e.mp_id,
+        mp_name : e.mp_name,
         cantidad: e.cantidad
       }
       console.log('prodmp submit: ', send);

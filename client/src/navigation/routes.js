@@ -23,7 +23,9 @@ import Factura from '../components/ventas/factura'
 import Formfactura from '../components/ventas/formfactura'
 import FormfacturaAlta from '../components/ventas/formfacturaAlta'
 import FacturaCompleta from '../components/ventas/facturaCompleta';
-
+// Manejo Materias Primas de OC confeccionadas
+import FacturaMP from '../components/planeacion/facturaMP'
+import FormfacturaMP from '../components/planeacion/formfacturaMP'
 function HandleRoutes() {
 
     const routes = [
@@ -158,7 +160,20 @@ function HandleRoutes() {
             element: <FacturaCompleta />,
             exact: true,
             private: true,
+        },
+        {
+            path: "/facturaMP",
+            element: <FacturaMP />,
+            exact: true,
+            private: true,
+        },
+        {
+            path: "/formfacturaMP",
+            element: <FormfacturaMP />,
+            exact: true,
+            private: true,
         }
+                
     ]
     return routes;
 };

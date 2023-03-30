@@ -7,6 +7,8 @@ async function refLoad() {
    Perfil.bulkCreate([
       { description: "Administrador" },
       { description: "Ventas" },
+      { description: "Planeación" },
+      { description: "Manufactura" },
       { description: "Compras" },
    ]).then(() => console.log('Perfil ha sido grabado'));
 
@@ -14,16 +16,25 @@ async function refLoad() {
       { description: "Activo" },
       { description: "Congelado" },
       { description: "Confeccionado" },
+      { description: "Espera Aprobación" },
    ]).then(() => console.log('Status ha sido grabado'));
 
    Usuario.bulkCreate([
-      { usr_id: "RM",  name: "Robin Mercer",   email: "COMERC@gmail.com", cod_perfil: '1', cod_status: '1', password: "pass1+" },
-      { usr_id: "RDM", name: "Robin D Mercer", email: "rdm@gmail.com",    cod_perfil: '1', cod_status: '1', password: "pass1+" },
-      { usr_id: "LF",  name: "Luis Fernando",  email: "lfr@gmail.com",    cod_perfil: '2', cod_status: '1', password: "pass1+" },
-      { usr_id: "MM",  name: "Miriam",         email: "miriam@gmail.com", cod_perfil: '2', cod_status: '1', password: "pass1+" },
+      { usr_id: "RM",  name: "Robin Mercer",                     email: "robindmercer@gmail.com",    cod_perfil: '1', cod_status: '1', password: "pass1+" },
+      { usr_id: "RDM", name: "Robin D Mercer",                   email: "robindmercer@yahoo.com.ar", cod_perfil: '1', cod_status: '1', password: "pass1+" },
+      { usr_id: "DR",  name: "Dinora Castro Ríos",               email: "robindmercer@yahoo.com.ar", cod_perfil: '2', cod_status: '1', password: "pass1+" },
+      { usr_id: "JC",  name: "Jennifer Areli Chavira",           email: "robindmercer@yahoo.com.ar", cod_perfil: '3', cod_status: '1', password: "pass1+" },
+      { usr_id: "LH",  name: "Laura Alejandra Cortés Hernandez", email: "robindmercer@yahoo.com.ar", cod_perfil: '2', cod_status: '1', password: "pass1+" },
+      { usr_id: "VG",  name: "Víctor Manuel Oviedo Govea",       email: "robindmercer@yahoo.com.ar", cod_perfil: '2', cod_status: '1', password: "pass1+" },
+      { usr_id: "FC",  name: "Fernando Bravo Collar",            email: "robindmercer@yahoo.com.ar", cod_perfil: '4', cod_status: '1', password: "pass1+" },
+      { usr_id: "DL",  name: "Diana Laura Torres López",         email: "robindmercer@yahoo.com.ar", cod_perfil: '4', cod_status: '1', password: "pass1+" },
+      { usr_id: "AS",  name: "Ana Melisa Padrón Salazar",        email: "robindmercer@yahoo.com.ar", cod_perfil: '2', cod_status: '1', password: "pass1+" },
+      { usr_id: "MT",  name: "Miriam Felicia Hernández Tovar",   email: "robindmercer@yahoo.com.ar", cod_perfil: '2', cod_status: '1', password: "pass1+" },
+      { usr_id: "YG",  name: "Yolanda Hernandez García",         email: "robindmercer@yahoo.com.ar", cod_perfil: '5', cod_status: '1', password: "pass1+" }
    ]).then(() => console.log('Usuario ha sido grabado'));
 
    Usuariomenu.bulkCreate([
+      { usrid: "RM", nivel: 0,accion:"A"},
       { usrid: "RM", nivel: 1,accion:"A"},
       { usrid: "RM", nivel: 2,accion:"A"},
       { usrid: "RM", nivel: 3,accion:"A"},
@@ -41,13 +52,17 @@ async function refLoad() {
       { usrid: "RM", nivel: 15,accion:"A"},
       { usrid: "RM", nivel: 16,accion:"A"},
       { usrid: "RM", nivel: 17,accion:"A"},
+      { usrid: "RM", nivel: 18,accion:"A"},
+      { usrid: "RM", nivel: 19,accion:"A"},
 
+      { usrid: "LF", nivel: 0,accion:"C"},
       { usrid: "LF", nivel: 10,accion:"C"},
       { usrid: "LF", nivel: 11,accion:"C"},
       { usrid: "LF", nivel: 12,accion:"C"},
       { usrid: "LF", nivel: 13,accion:"C"},
       { usrid: "LF", nivel: 14,accion:"C"},
       { usrid: "LF", nivel: 15,accion:"C"},
+      { usrid: "RDM", nivel: 0,accion:"A"},      
       { usrid: "RDM", nivel: 16,accion:"A"},      
       { usrid: "RDM", nivel: 17,accion:"A"},      
       { usrid: "RDM", nivel: 10,accion:"C"},      
@@ -96,6 +111,7 @@ async function refLoad() {
       { id: 5, cod: 1, description: "Casa", valor: 0, control : 'N', cod_status: 1 },
       { id: 5, cod: 2, description: "Oficina", valor: 0, control : 'N', cod_status: 1 },
       { id: 5, cod: 3, description: "Deposito", valor: 0, control : 'N', cod_status: 1 },
+      { id: 5, cod: 4, description: "Clinica", valor: 0, control : 'N', cod_status: 1 },
       { id: 6, cod: 0, description: "Ordenes de Compra", valor: 0, control : 'N', cod_status: 1 },
       { id: 6, cod: 1, description: "En Ingreso", valor: 0, control : 'N', cod_status: 1 },
       { id: 6, cod: 2, description: "Aprobada", valor: 0, control : 'N', cod_status: 1 },
@@ -112,6 +128,8 @@ async function refLoad() {
       { cli_id:1, orden:1, calle: 'Corrientes 2166', localidad: 'Bella vista', cp: '1661', ciudad: 'Bella vista', pais: 'Argentina',cod_tipo:1,cod_status: 1 },
       { cli_id:1, orden:2, calle: 'Florida 229', localidad: 'C.A.B.A.', cp: '1231', ciudad: 'C.A.B.A.', pais: 'Argentina',cod_tipo:2,cod_status: 1 },
       { cli_id:2, orden:1, calle: 'corrientes 1234', localidad: 'Bella vista', cp: '1661', ciudad: 'Bella vista', pais: 'Argentina',cod_tipo:1,cod_status: 1 },
+      { cli_id:3, orden:1, calle: '20 de Junio 321', localidad: 'Bella vista', cp: '1661', ciudad: 'Bella vista', pais: 'Argentina',cod_tipo:1,cod_status: 1 },
+      { cli_id:4, orden:1, calle: 'Salta 252', localidad: 'Bella vista', cp: '1661', ciudad: 'Bella vista', pais: 'Argentina',cod_tipo:1,cod_status: 1 },
    ]).then(() => console.log('Direccion grabados'));
 
    ProductoLang.bulkCreate([
@@ -298,7 +316,7 @@ async function refLoad() {
       { name:"NI0085", description:"Termofith 5/16(DISCONTINUADO)",udm:"DISCONTINUADO",stock:10,stockmin:4},
       { name:"NI0086", description:"Tomacorriente AC",udm:"Pieza",stock:10,stockmin:4},
       { name:"NI0087", description:"Tornillo m3 x 5mm",udm:"Pieza",stock:10,stockmin:4},
-      { name:"NI0088", description:"Tornillo m2.5 x16 mm",udm:"Pieza",stock:10,stockmin:4},
+      { name:"NI0088", description:"Tornillo m2.5 x16 mm",udm:"Pieza",stock:3,stockmin:4},
       { name:"NI0091", description:"Tornillos m2.5 x 8mm con tuerca",udm:"Pieza",stock:10,stockmin:4},
       { name:"NI0094", description:"Tuerca m3(DISCONTINUADO)",udm:"DISCONTINUADO",stock:10,stockmin:4},
       { name:"NI0095", description:"Ventilador 5V 400 MA",udm:"Pieza",stock:10,stockmin:4},
@@ -332,34 +350,67 @@ async function refLoad() {
       ]).then(() => console.log('Materias primas han sido grabadas'));  
 
    Prodmp.bulkCreate([
-      { prod_id : 1 , mp_id:35, cantidad: 1 },
-      { prod_id : 1 , mp_id:46, cantidad: 1 },
-      { prod_id : 1 , mp_id:47, cantidad: 1 },
-      { prod_id : 1 , mp_id:9, cantidad: 1 },
-      { prod_id : 1 , mp_id:73, cantidad: 1 },
-      { prod_id : 1 , mp_id:29, cantidad: 1 },
-      { prod_id : 1 , mp_id:57, cantidad: 1 },
-      { prod_id : 1 , mp_id:68, cantidad: 1 },
-      { prod_id : 1 , mp_id:24, cantidad: 1 },
-      { prod_id : 5 , mp_id:4, cantidad: 2 },
-      { prod_id : 5 , mp_id:5, cantidad: 1 },
-      { prod_id : 5 , mp_id:6, cantidad: 1 },
-      { prod_id : 6 , mp_id:1, cantidad: 1 },
-      { prod_id : 6 , mp_id:2, cantidad: 1 },
+      { prod_id : 1 , mp_name:"NI0041", cantidad: 1 },
+      { prod_id : 1 , mp_name:"NI0056", cantidad: 1 },
+      { prod_id : 1 , mp_name:"NI0057", cantidad: 1 },
+      { prod_id : 1 , mp_name:"NI0010", cantidad: 1 },
+      { prod_id : 1 , mp_name:"NI0095", cantidad: 1 },
+      { prod_id : 1 , mp_name:"NI0035", cantidad: 1 },
+      { prod_id : 1 , mp_name:"NI0074", cantidad: 1 },
+      { prod_id : 1 , mp_name:"NI0086", cantidad: 1 },
+      { prod_id : 1 , mp_name:"NI0028", cantidad: 1 },
+      { prod_id : 1 , mp_name:"NI0077", cantidad: 1 },
+      { prod_id : 1 , mp_name:"NI0014", cantidad: 1 },
+      { prod_id : 1 , mp_name:"NI0079", cantidad: 1 },
+      { prod_id : 1 , mp_name:"NI0076", cantidad: 1 },
+      { prod_id : 1 , mp_name:"NI0078", cantidad: 1 },
+      { prod_id : 1 , mp_name:"NI0009", cantidad: 2 },
+      { prod_id : 1 , mp_name:"NI0003", cantidad: 1 },
+      { prod_id : 1 , mp_name:"NI0002", cantidad: 1 },
+      { prod_id : 1 , mp_name:"NI0036", cantidad: 1 },
+      { prod_id : 1 , mp_name:"NI0067", cantidad: 1 },
+      { prod_id : 1 , mp_name:"NI0016", cantidad: 1 },
+      { prod_id : 1 , mp_name:"NI0017", cantidad: 2 },
+      { prod_id : 1 , mp_name:"NI0012", cantidad: 1 },
+      { prod_id : 1 , mp_name:"NI0013", cantidad: 80 },
+      { prod_id : 1 , mp_name:"NI0015", cantidad: 105 },
+      { prod_id : 1 , mp_name:"NI0081", cantidad: 10 },
+      { prod_id : 1 , mp_name:"NI0082", cantidad: 10 },
+      { prod_id : 1 , mp_name:"NI0004", cantidad: 1 },
+      { prod_id : 1 , mp_name:"NI0088", cantidad: 4 },
+      { prod_id : 1 , mp_name:"NI0109", cantidad: 4 },
+      { prod_id : 1 , mp_name:"NI0087", cantidad: 4 },
+      { prod_id : 1 , mp_name:"NI0103", cantidad: 1 },
+      { prod_id : 1 , mp_name:"NI0091", cantidad: 4 },
+      { prod_id : 1 , mp_name:"NI0064", cantidad: 3 },
+      { prod_id : 1 , mp_name:"NI0080", cantidad: 1 },
+      { prod_id : 1 , mp_name:"NI0037", cantidad: 1 },
+      { prod_id : 1 , mp_name:"NI0065", cantidad: 1 },
+      { prod_id : 1 , mp_name:"NI0058", cantidad: 1 },
+      { prod_id : 2 , mp_name:"NI0041", cantidad: 1 },
+      { prod_id : 2 , mp_name:"NI0056", cantidad: 1 },
+      { prod_id : 2 , mp_name:"NI0057", cantidad: 1 },
+      { prod_id : 2 , mp_name:"NI0010", cantidad: 1 },
+      { prod_id : 2 , mp_name:"NI0095", cantidad: 1 },
+      { prod_id : 2 , mp_name:"NI0035", cantidad: 1 },
+      { prod_id : 2 , mp_name:"NI0074", cantidad: 1 },
    ]).then(() => console.log('Prodmp ha sido grabado'));
 
 
    Factura.bulkCreate([
-      {cli_id: 1,dir_id: 1,subtotal: 284158,iva: 45465,descuento: 0, desc_id: 0,total: 329623,observ:'Algun Dato',cod_status: 1},
-      {cli_id: 2,dir_id: 1,subtotal: 265279,iva: 42445,descuento: 0, desc_id: 0,total: 307724,observ:'Algun Dato',cod_status: 2},
+      {cli_id: 1,dir_id: 1,subtotal: 284158,iva: 45465,descuento: 0, desc_id: 0,total: 329623,observ:'Algun Dato',cod_status: 3},
+      {cli_id: 2,dir_id: 1,subtotal: 265279,iva: 42445,descuento: 0, desc_id: 0,total: 307724,observ:'Algun Dato',cod_status: 1},
+      {cli_id: 3,dir_id: 1,subtotal: 24600,iva: 39424,descuento: 0, desc_id: 0,total: 285824,observ:'Algun Dato',cod_status: 1},
+      {cli_id: 4,dir_id: 1,subtotal: 14900,iva: 2384,descuento: 0, desc_id: 0,total: 17284,observ:'Algun Dato',cod_status: 1},
    ]).then(() => console.log('Factura Grabada'));
       
    Factdet.bulkCreate([
       {fac_id:1, orden:1, prod_id:1, precio:246400, cantidad:1,total:246400},
-      {fac_id:1, orden:2, prod_id:5, precio:18879,  cantidad:2,total:37758},
-      {fac_id:1, orden:3, prod_id:6, precio:0,      cantidad:1,total:0},
+      {fac_id:1, orden:2, prod_id:2, precio:18879,  cantidad:2,total:37758},
       {fac_id:2, orden:1, prod_id:1, precio:246400, cantidad:1,total:246400},
       {fac_id:2, orden:2, prod_id:5, precio:18879,  cantidad:1,total:18879},
+      {fac_id:3, orden:1, prod_id:1, precio:24600,      cantidad:1,total:24600},
+      {fac_id:4, orden:1, prod_id:2, precio:14900,      cantidad:1,total:14900},
    ]).then(() => console.log('Factura Det Grabada'));
 
 

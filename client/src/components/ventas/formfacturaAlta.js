@@ -6,7 +6,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 // Acciones 
 // import { getFacturaDet } from '../../actions/factdet';
 import { resetFact, AddFactura } from '../../actions/factura';
-import { getDetailIva } from '../../actions/tabla';
+// import { getDetailIva } from '../../actions/tabla';
 import { getProducto } from '../../actions/producto';
 import { getClienteId } from '../../actions/cliente'
 import { getDireccion } from '../../actions/direccion'
@@ -115,7 +115,7 @@ const Formfactura = () => {
   
   useEffect(() => {
     //dispatch(getDetail(1));
-    dispatch(getDetailIva(1));
+    //dispatch(getDetailIva(1));
     dispatch(getDetail(2))
     dispatch(getProducto());
     dispatch(getClienteId(state.idCli))
@@ -127,12 +127,12 @@ const Formfactura = () => {
                 setAcceso(usuariomenu[i].accion)
             } 
         } }
-
-    
-    return (
-      dispatch(resetFact())
-      )
-    }, [dispatch,]);
+   
+    // return (
+    //   dispatch(resetFact())
+    //   )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [dispatch]);
     
     // useEffect(() => {
       //   if (onChange) {
@@ -223,6 +223,7 @@ const Formfactura = () => {
       return;
     }
     dispatch(AddFactura(input,factdet,inputDet))
+    window.location.href = '/factura';
     // if (onChange) {
     //   setOnChange(false)
     // } else {
@@ -243,7 +244,7 @@ const Formfactura = () => {
         setOnChange(true)
       }
     }
-      if (e.target.name === 'domi') {
+    if (e.target.name === 'domi') {
       // console.log('Domicilio: ', e.target.value);
       setDirCode(e.target.value)
     }
@@ -300,19 +301,19 @@ const Formfactura = () => {
   // if (cliente) {
   //   factcab[0].nombre = cliente[0].nombre
   // }
-
+  
   // console.log('Cliente_1: ', cliente, state.idCli);
   // console.log('direccion: ', direccion);
-
+  
   // console.log('factcab: ', factcab);
   // console.log('factdet: ', factdet);
-  // console.log('porciva: ', porciva,porciva.length);
+  console.log('porciva: ', porciva,porciva.length);
   // console.log('tabla: ', tabla);
   //   if (porciva.length === 1){
-  //     if (onIva) {
-  //       setOnIva(false)
+    //     if (onIva) {
+      //       setOnIva(false)
   //     } else {
-  //       setOnIva(true)
+    //       setOnIva(true)
   //     }
   // }
   if (factcab.length > 0) {

@@ -85,12 +85,23 @@ export const menuItems = [
     nivel: 16,
     submenu: [
       {
-        title: 'Pedidos',
+        title: 'Stock',
         nivel: 17,
         url: '/factura',
       },
     ]
   },
+  {
+    title: 'Planeación',
+    nivel: 18,
+    submenu: [
+      {
+        title: 'Pendientes',
+        nivel: 19,
+        url: '/facturaMP',
+      },
+    ]
+  },  
   {
     title: 'About',
     nivel: 0,
