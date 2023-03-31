@@ -2,13 +2,13 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Outlet } from 'react-router-dom';
 import Header from './Header';
-import { AccessCtrl, GetMenu } from '../actions/index'
+import { AccessCtrl } from '../actions/index'
 import { getDetailIva } from '../actions/tabla';
 import '../App.css'
 
 const Layout = () => {
   const id_usuario = localStorage.getItem("usuario");
-  const id_pass = localStorage.getItem("pass");
+  // const id_pass = localStorage.getItem("pass");
   const actlogin = useSelector((state) => state.actlogin)
   const { tabla } = useSelector((state) => state)
   const porciva = useSelector((state) => state.porciva)
@@ -18,7 +18,7 @@ const Layout = () => {
     dispatch(getDetailIva(1));
     dispatch(AccessCtrl(id_usuario));
     // dispatch(GetMenu(id_usuario));
-  }, []);
+  }, [dispatch, id_usuario]);
   
   console.log('LayOut------------------------------------');
   console.log('actlogin', actlogin);

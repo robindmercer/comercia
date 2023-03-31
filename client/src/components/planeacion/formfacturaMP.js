@@ -60,8 +60,8 @@ const Factura = () => {
         // Perfil Planeacion
         dispatch(GetMails(3));
         console.log("mails 2: ", mails);
-        for (var x = 0; x < mails.length; x++) {
-        dispatch(mailEnviar(crearMail("Confeccionado", mails[x].email, found)));
+        for (var x1 = 0; x1 < mails.length; x1++) {
+        dispatch(mailEnviar(crearMail("Confeccionado", mails[x1].email, found)));
         }
     }
     ///window.location.href = '/mpfactura';

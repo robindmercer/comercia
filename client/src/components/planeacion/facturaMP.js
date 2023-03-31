@@ -3,20 +3,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { getFacturaMP } from "../../actions/facturaMP";
 import { Link } from "react-router-dom";
 import Header from "../Header";
-import { FcAddDatabase, FcApproval } from "react-icons/fc";
+import { FcAddDatabase} from "react-icons/fc";
 import style from "../../css/factura.module.css";
 import { AccessCtrl } from "../../actions/index";
 import { getUsuariomenId } from "../../actions/usuariomenu";
 // import { getDetail } from "../../actions/tabla";
-import crearMail from "../CrearMails";
-import { mailEnviar } from "../../actions/index";
-import { GetMails } from "../../actions/usuario";
+// import crearMail from "../CrearMails";
+// import { mailEnviar } from "../../actions/index";
+// import { GetMails } from "../../actions/usuario";
 
 const Factura = () => {
   const idProg = 11;
   const id_usuario = localStorage.getItem("usuario");
   const { facturaMP } = useSelector((state) => state);
-  const { mails } = useSelector((state) => state);
+  //const { mails } = useSelector((state) => state);
   // const actlogin = useSelector((state) => state.actlogin)
   const usuariomenu = useSelector((state) => state.usuariomenu);
   const dispatch = useDispatch();
@@ -39,30 +39,30 @@ const Factura = () => {
     }
   }, [dispatch, id_usuario]);
 
-  const handleSubmit = (id) => {
-    var control = "x";
-    const found = facturaMP.find((element) => element.id === id);
-    control = found.control;
-    if (control === "S") {
-        // dispatch(UpdateFacturaSts(id,4))
-      // Perfil Administrador
-        dispatch(GetMails(1));
-        for (var x = 0; x < mails.length; x++) {
-            dispatch(
-            mailEnviar(crearMail("Espera Aprobación", mails[x].email, found))
-            );
-        }
-    } else {
-        // dispatch(UpdateFacturaSts(id,3))
-        // Perfil Planeacion
-        dispatch(GetMails(3));
-        console.log("mails 2: ", mails);
-        for (var x = 0; x < mails.length; x++) {
-        dispatch(mailEnviar(crearMail("Confeccionado", mails[x].email, found)));
-        }
-    }
-    window.location.href = '/facturaMP';
-  };
+  // const handleSubmit = (id) => {
+  //   var control = "x";
+  //   const found = facturaMP.find((element) => element.id === id);
+  //   control = found.control;
+  //   if (control === "S") {
+  //       // dispatch(UpdateFacturaSts(id,4))
+  //     // Perfil Administrador
+  //       dispatch(GetMails(1));
+  //       for (var x = 0; x < mails.length; x++) {
+  //           dispatch(
+  //           mailEnviar(crearMail("Espera Aprobación", mails[x].email, found))
+  //           );
+  //       }
+  //   } else {
+  //       // dispatch(UpdateFacturaSts(id,3))
+  //       // Perfil Planeacion
+  //       dispatch(GetMails(3));
+  //       console.log("mails 2: ", mails);
+  //       for (var x1 = 0; x1 < mails.length; x1++) {
+  //       dispatch(mailEnviar(crearMail("Confeccionado", mails[x1].email, found)));
+  //       }
+  //   }
+  //   window.location.href = '/facturaMP';
+  // };
 
 console.log('facturaMP: ', facturaMP);
 

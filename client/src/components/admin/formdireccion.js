@@ -37,6 +37,8 @@ function ABMDireccion() {
   //const direccion = useSelector((state) => state.direccion)
   const status = useSelector((state) => state.status)
   const tabla = useSelector((state) => state.tabla)
+  const [errors, setErrors] = useState({});
+
   useEffect(() => {
     dispatch(getStatus());
     dispatch(getDetail(5));
@@ -59,7 +61,6 @@ function ABMDireccion() {
 
   });
 
-  const [errors, setErrors] = useState({});
   console.log('input: ', input);
 
   // function handleTipo(e) {

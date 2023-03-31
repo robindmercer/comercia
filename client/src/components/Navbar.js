@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { menuItems } from '../menuNibbot';
@@ -9,7 +9,6 @@ import '../css/all.css'
 
 
 const Navbar = () => {
-  const actlogin = useSelector((state) => state.actlogin)
   const { usuariomenu } = useSelector((state) => state);
   const id_usuario = localStorage.getItem("usuario");
   const dispatch = useDispatch();
@@ -35,8 +34,6 @@ const Navbar = () => {
           <ul className="menus">
             {menuItems.map((menu, index) => {
               const depthLevel = 0;
-              const found = usuariomenu.find((element) => element.nivel === menu.nivel);
-              //console.log('found: ', found);
               if (nivel.includes(menu.nivel) || menu.nivel === 0) {
                 return (
                   <MenuItems
@@ -45,7 +42,7 @@ const Navbar = () => {
                     depthLevel={depthLevel}
                   />
                 );
-              }
+              } else { return ( null ) }
             })}
           </ul>
         </nav>
