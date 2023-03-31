@@ -86,7 +86,7 @@ console.log('mpfactura: ', mpfactura);
               <th>Pedido</th>
               <th>Acciones</th>
             </tr>
-          </thead>
+          </thead> 
           <tbody>
             {mpfactura &&
               mpfactura.message === undefined &&
