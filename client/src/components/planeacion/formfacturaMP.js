@@ -74,8 +74,8 @@ console.log('mpfactura: ', mpfactura);
       <Header />
       <div className={style.adminHeader}>
         <br />
-        <h2>Pendientes de Entrega</h2>
-        <table className={style.styledTable}>
+        <h2 >Pendientes de Entrega</h2>
+        <table className={style.styledTable2}>
           <thead>
             <tr>
               <th>Nombre</th>
@@ -90,9 +90,9 @@ console.log('mpfactura: ', mpfactura);
           <tbody>
             {mpfactura &&
               mpfactura.message === undefined &&
-              mpfactura.map((data) => {
+              mpfactura.map((data,index) => {
                 return (
-                  <tr key={data.id} className="style.row">
+                  <tr key={index} className={data.stock < data.pedido ? style.redRow : style.blackRow}>
                     <td>{data.prodname}</td>
                     <td>{data.name}</td>
                     <td>{data.description}</td>

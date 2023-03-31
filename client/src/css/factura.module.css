@@ -44,3 +44,21 @@
 .dLink{
 	text-decoration: unset;
 }
+
+.redRow{
+    background-color:red;
+}
+.blackRow{
+    background-color:white;
+}
+.styledTable2{
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 1000px;
+    box-shadow: 0 0 20px rgb(0 0 0 / 15%);
+   background-color: #009879;
+}
+.styledTable2 td {
+    padding: 2px 8px;
+}
