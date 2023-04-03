@@ -1,87 +1,100 @@
 //****************/
 // Menus
 //****************/
-const { Router } = require("express");
-const { Menu,Usuariomenu } = require("../db");
-const { Sequelize, Op } = require("sequelize");
+const { Router, response } = require('express');
 const router = Router();
 
-// Busca todos 
-router.get('/', function (req, res, next) {
-  try {
-    const  usrid  = req.params.clave;
-    
-    Usuariomenu.findAll()
-      .then((resp) => {
-        resp.length
-          ? res.status(200).send(resp)
-          : res.status(404).json({message:'Error para mostrar las categorias'});
-      })
-  } catch (error) {
-    next(error)
-  }
-})
+require('dotenv').config();
+const { Sequelize, QueryTypes } = require('sequelize');
+const fs = require('fs');
+const path = require('path');
+const { DB_USER, DB_PASSWORD, DB_HOST, DB_DATABASE,DB_PORT } = process.env;
 
-router.get("/:id", function (req, res, next) {
-  try {
-    const { id } = req.params;
-
-    Usuariomenu.findByPk(id).then((response) => {
-      res.json(response);
-    });
-  } catch (error) {
-    next(error);
-  }
+const seq = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_DATABASE}`, {
+  logging: false, // set to console.log to see the raw SQL queries
+  native: false, // lets Sequelize know we can use pg-native for ~30% more speed
 });
 
-router.get("/usr/:clave", function (req, res, next) {
+// Busca todos 
+router.get('/', async function (req, res, next) {
+  try {
+    sql="select * from usuariomenus"
+    const records = await seq.query(sql,
+      {
+        logging: console.log,
+        type: QueryTypes.SELECT
+      });      
+    res.send(records)    
+} catch (error) {
+  console.log(error)
+}
+})
+
+router.get("/:id", async function (req, res, next) {
+  try {
+    const { id } = req.params;
+    sql=`select * from usuariomenus where id = ${id}`
+    const records = await seq.query(sql,
+      {
+        logging: console.log,
+        type: QueryTypes.SELECT
+      });      
+    res.send(records)    
+} catch (error) {
+  console.log(error)
+}
+})
+
+router.get("/usr/:clave", async function (req, res, next) {
   try {
     const  usrid  = req.params.clave;
     if (usrid) {
-      Usuariomenu.findAll({
-        where: {
-          usrid: usrid,
-        },
-      }).then((resp) => {
-//        console.log('resp1: ', resp);
-        resp.length
-          ? res.send(resp)
-          : res.send({ message: "No pude acceder a Menus" });
-      });
+      sql = `select a.*,cod_perfil from usuariomenus a`
+      sql = sql + ` join Usuarios on usr_id = usrid`
+      sql = sql + ` where usrid = '${usrid}'`
+      const records = await seq.query(sql,
+        {
+          logging: console.log,
+          type: QueryTypes.SELECT
+        });      
+      res.send(records)    
     }
-  } catch (error) {
-    console.log('error: ', error);
-    // next(error);
-  }
-});
-
-router.post("/", async function (req, res, next) {
-  const { id, usr_id, name, email, Perfil,status,pass } = req.body;
-  console.log('req.body: ', req.body);
-
-  if (!id || !usr_id || !name || !email || !Perfil || !status || !pass) {
-    return res.send("Falta información para poder darte de alta el Menu");
-  }
-  const Menu = await Menu.findOne({
-    where: { id: id },
-  });
-
-  if (!Menu) {
-    try {
-      const newMenu = await Menu.create({
-        usr_id,
-        name,
-        email,
-        Perfil,
-        status,
-        pass
-      });
-      res.status(200).send("Menu Created");
-    } catch (error) {
-      res.status(200).send("Usario ya creado");
-      //      next(error)
+        }  catch (error) {
+      console.log(error)
+      }
     }
-  }
+)
+
+// router.post("/", async function (req, res, next) {
+//   const { id, usr_id, name, email, Perfil,status,pass } = req.body;
+//   console.log('req.body: ', req.body);
+
+//   if (!id || !usr_id || !name || !email || !Perfil || !status || !pass) {
+//     return res.send("Falta información para poder darte de alta el Menu");
+//   }
+//   sql = "update usuariomenus set "
+//   sql = sql + `name = '${name}`
+//   sql = sql + `fullname = '${name}`
+//   const Menu = await Menu.findOne({
+//     where: { id: id },
+//   });
+
+//   if (!Menu) {
+//     try {
+//       const newMenu = await Menu.create({
+//         usr_id,
+//         name,
+//         email,
+//         Perfil,
+//         status,
+//         pass
+//       });
+//       res.status(200).send("Menu Created");
+//     } catch (error) {
+//       res.status(200).send("Usario ya creado");
+//       //      next(error)
+//     }
+//   }
   //  else {
   //     Menu.full_name = full_name;
   //     Menu.email = email;
@@ -89,43 +102,40 @@ router.post("/", async function (req, res, next) {
   //     if (id) await Menu.save();
   //     res.json(Menu);
   // }
-});
+
 
 router.put("/", async (req, res) => {
   const { usrid, nivel, accion } = req.body;
   console.log('req.body: ', req.body);
   try {
-    const Menu = await Usuariomenu.findOne({
-      where:  {usrid:usrid,nivel:nivel }
-    });
-    if (Menu) {
-      Menu.accion = accion;
-      console.log("lo encontre")
-      await Menu.save();
-    } else {
-      const newMenu = await Usuariomenu.create({
-        usrid,
-        nivel,
-        accion,
-      });     
-    }
-    res.json(Menu);
+    sql = `insert into usuariomenus (usrid,nivel,accion) values ('${usrid}', ${nivel}, '${accion}')`
+    const records = await seq.query(sql,
+      {
+        logging: console.log,
+        type: QueryTypes.UPDATE
+      });
+      //console.log('records: ', records);
+    res.send(records)
   } catch (error) {
-    console.log('error: ', error);
-    res.send(error);
+    console.log(error)
   }
-});
+}) 
 
 router.delete("/", async (req, res) => {
   const { usrid, nivel, accion } = req.body;
   try {
-    let eliminados = await Usuariomenu.destroy({
-            where:  {usrid:usrid,nivel:nivel }      
-    });
-    res.send(`Deleted  ${eliminados} registro`);
+    sql = 'Delete usuariomenus ' 
+    sql = sql  + ` where usrid:'${usrid}' and nivel:${nivel}`
+    const records = await seq.query(sql,
+      {
+        logging: console.log,
+        type: QueryTypes.UPDATE
+      });
+      //console.log('records: ', records);
+    res.send(records)
   } catch (error) {
-    res.send(error);
+    console.log(error)
   }
-});
+}) 
 
 module.exports = router;

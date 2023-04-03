@@ -23,7 +23,7 @@ router.get("/fac", async function (req, res, next) {
   const { id } = req.query;
   if (id) {
     try {
-      sql = "select prodmp.prod_id,productos.name as ProdName , materiaprima.name,";
+      sql = "select fac_id,prodmp.prod_id,productos.name as ProdName , materiaprima.name,";
       sql = sql + " materiaprima.description,materiaprima.udm,materiaprima.stock,prodmp.cantidad * factdet.cantidad as Pedido";
       sql = sql + " from productos ";
       sql = sql + " join prodmp on prodmp.prod_id = productos.id";
