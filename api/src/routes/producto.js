@@ -72,8 +72,8 @@ router.get('/', function (req, res, next) {
 
 router.put('/', async function (req, res, next) {
   console.log(' req.body: ',  req.body);
-  const { name, description, price, cod_status } = req.body;
-  if (!name || !description || !price || !cod_status) {
+  const { name, description, price, dolar,cod_status } = req.body;
+  if (!name || !description || !price || !dolar || !cod_status) {
     return res.send("Falta información para poder darte de alta el Productoo")
   }
   try {
@@ -81,6 +81,7 @@ router.put('/', async function (req, res, next) {
       name,
       description,
       price,
+      dolar,
       cod_status:1
     })
     res.status(200).send(`Producto Created : ${newProducto.id}`);
@@ -92,8 +93,8 @@ router.put('/', async function (req, res, next) {
 
 
 router.post("/", async function (req, res, next) {
-  const { id,name, description, price, cod_status } = req.body;
-  if (!name || !description || !price || !cod_status) {
+  const { id,name, description, price, dolar, cod_status } = req.body;
+  if (!name || !description || !price || !dolar || !cod_status) {
     return res.send("Falta información para poder darte de alta el Productoo")
   }
 
@@ -108,6 +109,7 @@ router.post("/", async function (req, res, next) {
         name,
         description,
         price,
+        dolar,
         cod_status:1
       });
       res.status(200).send("Producto Creado");
@@ -121,6 +123,7 @@ router.post("/", async function (req, res, next) {
     producto.description = description;
     producto.cod_status = cod_status;
     producto.price = price;
+    producto.dolar = dolar;
     if (producto.id) await producto.save();
       res.json(producto);
   }

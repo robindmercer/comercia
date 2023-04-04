@@ -47,10 +47,15 @@ router.get('/', async function (req, res, next) {
     const {nombre} = req.query;
     
     sql='select clientes.*,tabla.description as Actividad,status.description as StsDesc, '
-    sql = sql + '(select count(*) from direccion where cli_id = clientes.id) as CantDir'
+    sql = sql + '(select count(*) from direccion where cli_id = clientes.id) as CantDir,'
+    sql = sql + ' t1.description as IdiomaDes,'
+    sql = sql + ' t2.description as MonedaDes '
     sql = sql + ' from clientes'
     sql = sql + ' join tabla on tabla.id = 3 and tabla.cod = cod_cliente'
     sql = sql + ' join status on status.id_status = clientes.cod_status'
+    sql = sql + ' join tabla t1 on t1.id = 7 and t1.cod = idioma'
+    sql = sql + ' join tabla t2 on t2.id = 8 and t2.cod = moneda'
+    
     if(busco) {
       sql = sql + ' where clientes.id = '+   busco 
     }
@@ -71,7 +76,7 @@ router.get('/', async function (req, res, next) {
 
 router.post('/', async function (req, res, next) {
   try {
-    const {id,nombre,email,movil,fijo,rfc_cod,cod_cliente,cod_status} = req.body
+    const {id,nombre,email,movil,fijo,rfc_cod,idioma,moneda,cod_cliente,cod_status} = req.body
     if (id != 0){
       sql=`update clientes set `
       sql= sql + ` nombre='${nombre}',`
@@ -80,11 +85,13 @@ router.post('/', async function (req, res, next) {
       sql= sql + ` fijo='${fijo}',`
       sql= sql + ` rfc_cod='${rfc_cod}',`
       sql= sql + ` cod_cliente=${cod_cliente},`
-      sql= sql + ` cod_status=${cod_status}`
+      sql= sql + ` cod_status=${cod_status},`
+      sql= sql + ` idioma=${idioma},`
+      sql= sql + ` moneda=${moneda}`
       sql= sql + ` where id = ${id}`
     } else {
       sql=`insert into clientes (nombre,email,movil,fijo,rfc_cod,cod_cliente,cod_status) `
-      sql= sql + `values ('${nombre}','${email}','${movil}','${fijo}','${rfc_cod}',${cod_cliente},${cod_status})`
+      sql= sql + `values ('${nombre}','${email}','${movil}','${fijo}','${rfc_cod}','${idioma}','${moneda}',${cod_cliente},${cod_status})`
     }
     const records = await seq.query(sql,
       {

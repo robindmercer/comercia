@@ -28,6 +28,14 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING,
             allowNull: false,
         },
+        idioma: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
+        moneda: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
         cod_cliente: {
             type: DataTypes.INTEGER,
             allowNull: false,

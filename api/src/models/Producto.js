@@ -17,6 +17,10 @@ module.exports = (sequelize) => {
             type: DataTypes.NUMERIC,
             allowNull: false,
         },
+        dolar: {
+            type: DataTypes.NUMERIC,
+            allowNull: false,
+        },
         cod_status: {
             type: DataTypes.INTEGER,
             allowNull: false,

@@ -113,15 +113,25 @@ async function refLoad() {
       { id: 5, cod: 3, description: "Deposito", valor: 0, control : 'N', cod_status: 1 },
       { id: 5, cod: 4, description: "Clinica", valor: 0, control : 'N', cod_status: 1 },
       { id: 6, cod: 0, description: "Ordenes de Compra", valor: 0, control : 'N', cod_status: 1 },
-      { id: 6, cod: 1, description: "En Ingreso", valor: 0, control : 'N', cod_status: 1 },
-      { id: 6, cod: 2, description: "Aprobada", valor: 0, control : 'N', cod_status: 1 },
+      { id: 6, cod: 1, description: "DRAFT", valor: 0, control : 'N', cod_status: 1 },
+      { id: 6, cod: 2, description: "Espera Aprobación", valor: 0, control : 'N', cod_status: 1 },
+      { id: 6, cod: 3, description: "Aprobado GC.", valor: 0, control : 'N', cod_status: 1 },
+      { id: 6, cod: 4, description: "Pendiente ADMIN.", valor: 0, control : 'N', cod_status: 1 },
+      { id: 6, cod: 5, description: "Pendiente Pago", valor: 0, control : 'N', cod_status: 1 },
+      { id: 6, cod: 6, description: "Liberado", valor: 0, control : 'N', cod_status: 1 },
+      { id: 7, cod: 0, description: "Idioma", valor: 0, control : 'N', cod_status: 1 },
+      { id: 7, cod: 1, description: "Español", valor: 0, control : 'N', cod_status: 1 },
+      { id: 7, cod: 2, description: "Ingles", valor: 0, control : 'N', cod_status: 1 },
+      { id: 8, cod: 0, description: "Moneda", valor: 0, control : 'N', cod_status: 1 },
+      { id: 8, cod: 1, description: "Peso Mex.", valor: 0, control : 'N', cod_status: 1 },
+      { id: 8, cod: 2, description: "Dolar", valor: 0, control : 'N', cod_status: 1 },
    ]).then(() => console.log('Tablas ha sido grabado'));
 
    Cliente.bulkCreate([
-      { nombre: "Cliente 1", email: "cliente@gmail.com", movil: '123456789', fijo: '46661234', rfc_cod: 'rfc-1', cod_cliente: 1, cod_status: 1 },
-      { nombre: "Cliente 2", email: "cliente@gmail.com", movil: '123456789', fijo: '46661234', rfc_cod: 'rfc-2', cod_cliente: 2, cod_status: 1 },
-      { nombre: "Cliente 3", email: "cliente@gmail.com", movil: '123456789', fijo: '46661234', rfc_cod: 'rfc-3', cod_cliente: 2, cod_status: 1 },
-      { nombre: "YPF", email: "YPF@gmail.com", movil: '123456789', fijo: '46661234', rfc_cod: 'rfc-4', cod_cliente: 1, cod_status: 1 },
+      { nombre: "Cliente 1", email: "cliente@gmail.com", movil: '123456789', fijo: '46661234', rfc_cod: 'rfc-1', idioma:1, moneda:1,cod_cliente: 1, cod_status: 1 },
+      { nombre: "Cliente 2", email: "cliente@gmail.com", movil: '123456789', fijo: '46661234', rfc_cod: 'rfc-2', idioma:1, moneda:1,cod_cliente: 2, cod_status: 1 },
+      { nombre: "Client  3", email: "cliente@gmail.com", movil: '123456789', fijo: '46661234', rfc_cod: 'rfc-3', idioma:2, moneda:2,cod_cliente: 2, cod_status: 1 },
+      { nombre: "YPF", email: "YPF@gmail.com", movil: '123456789', fijo: '46661234', rfc_cod: 'rfc-4', idioma:1, moneda:1, cod_cliente: 1, cod_status: 1 },
    ]).then(() => console.log('Clientes grabados'));
   
    Direccion.bulkCreate([
@@ -193,55 +203,55 @@ async function refLoad() {
       {
          name: "PROFESIONAL V22®",
          description: "PROFESIONAL V21® - RB4 - Unidad de estimulación magnética transcraneal DE PULSO (Li-rTMS) para uso profesional. Tipo de onda magnética: Cuadrada / Intensidad magnética max: 300G / / Intensidad magnética min: 1 G / 0.1    mT / Frecuencias max: 600 Hz / Frecuencias min: 1 Hz / Duración: continua / Programación manual de variables independientes Frecuencia / Intensidad / Selección manual de parámetros. Sistema de detección de campo magnético",
-         price: "246400",
+         price: "246400",dolar:"2464",
          cod_status: '1'
       },
       {
          name: "Bobina principal de tratamiento en forma de ocho COIL  VCPRO®",
          description: "Bobina principal de tratamiento en forma de ocho COIL VCPRO® Bobina de 3.7″ de diámetro cada espiral– Campo magnético inducido: Cono invertido– Peso: 1.5 Kg– Longitud: 9.6″– Profundidad del CM: 3.9″– Material: Plástico de alta resistencia– Var. temperatura: + 5.5 °C / +/- 5%– Aplicación : Craneal",
-         price: "14900",
+         price: "14900",dolar:"1490",
          cod_status: '1'
       },
       {
          name: "Bobina principal de tratamiento circular COIL VCPRO®",
          description: "Bobina principal de tratamiento circular COIL VCPRO®Bobina de 6.5″ de diámetro– Campo magnético inducido: Conoidal– Peso: 1.9 Kg– Longitud: 12″– Profundidad del CM: 2.3″– Material: Plástico de alta resistencia– Var. temperatura: + 4 °C / +/- 5%– Aplicación : Craneal / Corporal",
-         price: "14900",
+         price: "14900",dolar:"1490",
          cod_status: '1'
       },
       {
          name: "Brazo mecanico 360",
          description: "Brazo mecanico 360° para multiple colocación transcranealCLAMP + ARM + LC)",
-         price: "4200",
+         price: "4200",dolar:"4200",
          cod_status: '1'
       },
       {
          name: "Casco multibobina HELMET®",
          description: "Casco multibobina HELMET® Unidad de Neuro- estimulación magnética transcraneal, integrado con 7 bobinas de estimulación de tipo continuo en los lóbulos:                    - Frontal Dorzolateral izquiero y derecho /parietal central/ temporal izquiero y derecho/occitipal izquierdo y derecho. Frecuencias de terapia: 1Hz a 600 Hz. Intensidad de terapia: Intensidad (0.05 mT a 5mT) Pulso: Continuo",
-         price: "18879",
+         price: "18879",dolar:"1887",
          cod_status: '1'
       },
       {
          name: "ACCESORIO XVT",
          description: "ACCESORIO XVT",
-         price: "2544",
+         price: "2544",dolar:"254",
          cod_status: '1'
       },
       {
          name: "Programa de capaciitación y certificación profesional como Especialista en Estimulación Magnetica Transcraneal",
          description: "Programa de capacitación y certificación profesional. Modalidad digital asicrinico para 3 personas. Incluye material de studio, clases en formato video y exámenes 3",
-         price: "0",
+         price: "0",dolar:"0",
          cod_status: '1'
       },
       {
          name: "Garantía",
          description: "Garantía de 72 meses de buen funcionamiento para unidad principal y accesorios",
-         price: "0",
+         price: "0",dolar:"0",
          cod_status: '1'
       },
       {
          name: "Software V20 (actualización remota)",
          description: "Sistema de monitoreo SOFTWARE V20 - con actualización remota sin cargo",
-         price: "0",
+         price: "0",dolar:"0",
          cod_status: '1'
       },
    ]).then(() => console.log('Productos ha sido grabado'));

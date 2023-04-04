@@ -37,6 +37,38 @@ router.get("/", function (req, res, next) {
   }
 });
 
+// Busca todos los datos de la tabla 
+// despues con un map busco lo que necesito 
+// asi accedo una sola vez 
+router.get("/all", function (req, res, next) {
+  try {
+    const { id } = req.query;
+
+    if (id) {
+      Tabla.findByPk(id)
+        .then((resp) => {
+          resp.length
+            ? res.send(resp)
+            : res.send({ message: "No pude acceder a Tabla" });
+        });
+    } else {
+      Tabla.findAll({
+        include: [
+          { model: Status },
+        ],
+      }
+      ).then((resp) => {
+        resp.length
+          ? res.send(resp)
+          : res.send({ message: "No pude acceder a Tabla" });
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+
 router.get("/cod/:id", function (req, res, next) {
   try {
     const { id } = req.params;
