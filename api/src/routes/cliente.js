@@ -90,7 +90,7 @@ router.post('/', async function (req, res, next) {
       sql= sql + ` moneda=${moneda}`
       sql= sql + ` where id = ${id}`
     } else {
-      sql=`insert into clientes (nombre,email,movil,fijo,rfc_cod,cod_cliente,cod_status) `
+      sql=`insert into clientes (nombre,email,movil,fijo,rfc_cod,idioma,moneda,cod_cliente,cod_status) `
       sql= sql + `values ('${nombre}','${email}','${movil}','${fijo}','${rfc_cod}','${idioma}','${moneda}',${cod_cliente},${cod_status})`
     }
     const records = await seq.query(sql,

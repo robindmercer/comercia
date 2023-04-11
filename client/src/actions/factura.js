@@ -69,7 +69,7 @@ export function UpdateFactura(factcab, factdet, inputDet) {
     axios.put(`factura`, factcab)
       .then(response => {
         if (response.data !== 'OK') {
-          console.log('response: ', response);
+          console.log('UpdateFactura - response: ', response);
           alert(response.data);
           return "Err";
         } else {

@@ -151,7 +151,7 @@ router.put('/', async function (req, res, next) {
   try {
     const { desc_id,  id, subtotal, iva, descuento,total,observ } = req.body;
 
-    console.log('Puta Factura: ', req.body);
+    console.log('Put Factura: ', req.body);
   
    if (!subtotal || !iva || !total  ) {
     console.log('total: ', total); 
@@ -159,7 +159,7 @@ router.put('/', async function (req, res, next) {
     console.log('subtotal: ', subtotal);
      return res.send("Aviso: Falta información para poder MODIFICAR de alta el Documento")
     }    
-    if (id !== 0){
+    if (id != 0){
       sqlDel=`delete from factdet where fac_id = ${id}`
       sql=`update facturas set `
       // sql= sql + ` cli_id='${cli_id}',`
@@ -185,8 +185,8 @@ router.put('/', async function (req, res, next) {
             logging: console.log,
             type: QueryTypes.UPDATE
           });        
-        console.log('records: ', sqlDel);
-        console.log('records: ', sql);
+        console.log('records: ', records);
+        console.log('records: ', records2);
         res.send("OK")
       } catch (error) {
     console.log("Error put FACTURAS:",error)

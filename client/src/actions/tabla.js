@@ -12,6 +12,18 @@ export function getTabla(){
          })
      }
  }
+// trae todos los registros de la tabla 
+export function getTablaAll(){
+   return async function (dispatch) {
+       var tabla = await axios.get(`/tabla/all`);
+       return dispatch({
+           type: GET_TABLA,
+           payload: tabla.data
+       })
+   }
+}
+
+
  // trae todos los registros de in ID 
  export function getDetail(id){
   console.log('Action Tabla getDetail: ',id);

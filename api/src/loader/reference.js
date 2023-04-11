@@ -1,6 +1,6 @@
 require('dotenv').config();
 const { Usuario, Perfil, Status, Perfilmenu, Menu, Usuariomenu,  Tabla, Cliente} = require('../db')
-const { Direccion,ProductoLang,Producto,Materiaprima,Factura,Factdet,Prodmp } = require('../db');
+const {Factcond,Condiciones, Direccion,ProductoLang,Producto,Materiaprima,Factura,Factdet,Prodmp } = require('../db');
 
 async function refLoad() {
 
@@ -128,9 +128,9 @@ async function refLoad() {
    ]).then(() => console.log('Tablas ha sido grabado'));
 
    Cliente.bulkCreate([
-      { nombre: "Cliente 1", email: "cliente@gmail.com", movil: '123456789', fijo: '46661234', rfc_cod: 'rfc-1', idioma:1, moneda:1,cod_cliente: 1, cod_status: 1 },
-      { nombre: "Cliente 2", email: "cliente@gmail.com", movil: '123456789', fijo: '46661234', rfc_cod: 'rfc-2', idioma:1, moneda:1,cod_cliente: 2, cod_status: 1 },
-      { nombre: "Client  3", email: "cliente@gmail.com", movil: '123456789', fijo: '46661234', rfc_cod: 'rfc-3', idioma:2, moneda:2,cod_cliente: 2, cod_status: 1 },
+      { nombre: "DR. JAVIER CEBALLOS MEDINA", email: "cliente@gmail.com", movil: '123456789', fijo: '46661234', rfc_cod: 'rfc-1', idioma:1, moneda:1,cod_cliente: 1, cod_status: 1 },
+      { nombre: "DRA. MARIA TERESA RAZO SOLIS", email: "cliente@gmail.com", movil: '123456789', fijo: '46661234', rfc_cod: 'rfc-2', idioma:1, moneda:1,cod_cliente: 2, cod_status: 1 },
+      { nombre: "ING. JAVIER VELA", email: "cliente@gmail.com", movil: '123456789', fijo: '46661234', rfc_cod: 'rfc-3', idioma:2, moneda:2,cod_cliente: 2, cod_status: 1 },
       { nombre: "YPF", email: "YPF@gmail.com", movil: '123456789', fijo: '46661234', rfc_cod: 'rfc-4', idioma:1, moneda:1, cod_cliente: 1, cod_status: 1 },
    ]).then(() => console.log('Clientes grabados'));
   
@@ -407,7 +407,7 @@ async function refLoad() {
    ]).then(() => console.log('Prodmp ha sido grabado'));
 
 
-   Factura.bulkCreate([
+   Factura.bulkCreate([ 
       {cli_id: 1,dir_id: 1,subtotal: 284158,iva: 45465,descuento: 0, desc_id: 0,total: 329623,observ:'Algun Dato',cod_status: 3},
       {cli_id: 2,dir_id: 1,subtotal: 265279,iva: 42445,descuento: 0, desc_id: 0,total: 307724,observ:'Algun Dato',cod_status: 1},
       {cli_id: 3,dir_id: 1,subtotal: 24600,iva: 39424,descuento: 0, desc_id: 0,total: 285824,observ:'Algun Dato',cod_status: 1},
@@ -422,6 +422,20 @@ async function refLoad() {
       {fac_id:3, orden:1, prod_id:1, precio:24600,      cantidad:1,total:24600},
       {fac_id:4, orden:1, prod_id:2, precio:14900,      cantidad:1,total:14900},
    ]).then(() => console.log('Factura Det Grabada'));
+
+   Condiciones.bulkCreate([
+      {id:1, nombre:'Contado',descuento:15,enganche:0,meses:0,interes:0},
+      {id:2, nombre:'Financiamiento 12 Meses',descuento:0,enganche:20,meses:12,interes:5},
+      {id:3, nombre:'Financiamiento 24 Meses',descuento:0,enganche:20,meses:24,interes:5},
+
+   ]).then(() => console.log('Condiciones grabados'));
+  
+   Factcond.bulkCreate([
+      {id:1,fac_id:1,cond_id:1,descuento:15,enganche:0,meses:0,interes:0},
+      {id:2,fac_id:2,cond_id:1,descuento:15,enganche:0,meses:0,interes:0},
+      {id:3,fac_id:3,cond_id:1,descuento:15,enganche:0,meses:0,interes:0},
+      {id:4,fac_id:4,cond_id:1,descuento:15,enganche:0,meses:0,interes:0},
+   ]).then(() => console.log('Factcond ha sido grabado'));
 
 
    return 'ok';

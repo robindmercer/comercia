@@ -62,6 +62,7 @@ router.get('/det', async function (req, res, next) {
 
 router.post('/', async function (req, res, next) {
   const { fac_id, orden, precio, prod_id, cantidad, total } = req.body;
+  console.log('Post FACTDET req.body: ', req.body);
   if (!fac_id || !orden || !prod_id || !cantidad ) {
     return res.send("Falta información para poder darte de alta el Producto")
   }

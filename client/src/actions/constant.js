@@ -39,3 +39,6 @@ export const GET_MATERIAPRIMAPROD = 'GET_MATERIAPRIMAIDPROD'
 export const RESET_PRODMP = 'RESET_PRODMP'
 export const DEL_MATERIAPRIMAPROD = 'DEL_MATERIAPRIMAPROD'
 export const GET_MPFAC='GET_MPFAC'
+// Condiciones Generales de facturacion 
+export const GET_CONDICION = 'GET_CONDICION'
+export const GET_FACTCOND = 'GET_FACTCOND'
