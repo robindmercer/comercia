@@ -1,4 +1,11 @@
-.cabecera {
+.Post{
+    max-width: 800px;
+    width: 100%;
+    display: table;
+    margin: 0 auto;
+    padding: 20px 50px;
+  }
+  .cabecera {
     width           : 90%;
     padding: 10PX;
     margin-top      : 10px;

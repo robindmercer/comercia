@@ -68,6 +68,7 @@ const Producto = () => {
              <th>Nombre</th>
              <th className="d-none d-lg-table-cell">Descripcion</th>
              <th className="d-none d-lg-table-cell">Precio</th>
+             <th className="d-none d-lg-table-cell">Dolar</th>
              <th className="d-none d-lg-table-cell">Estado</th>
              <th >Acciones</th>
          </tr>
@@ -80,6 +81,7 @@ const Producto = () => {
                      <td>{prod.name}</td>
                      <td className="d-none d-lg-table-cell">{prod.description}</td>
                      <td className="d-none d-lg-table-cell">{prod.price}</td>
+                     <td className="d-none d-lg-table-cell">{prod.dolar}</td>
                      <td className="d-none d-lg-table-cell">{prod.status.description}</td>
                      <td>
                          <Link
@@ -91,6 +93,7 @@ const Producto = () => {
                                      name: prod.name,
                                      description:prod.description ,
                                      price: prod.price,
+                                     dolar: prod.dolar,
                                      cod_status: prod.cod_status                                 
                                     }
                                 }
@@ -116,10 +119,11 @@ const Producto = () => {
                              title="Modificación Producto"
                              state={
                                  {
-                                    id: prod.id,
+                                     id: prod.id,
                                      name: prod.name,
                                      description:prod.description ,
                                      price: prod.price,
+                                     dolar: prod.dolar,
                                      cod_status: prod.cod_status                                 
                                     }
                                 }

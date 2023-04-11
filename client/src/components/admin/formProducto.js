@@ -26,6 +26,9 @@ export function validate(input) {
   if (input.price === "") {
     errors.price = "Debe Ingresar un Precio";
   }
+  if (input.dolar === "") {
+    errors.dolar = "Debe Ingresar un Dolar";
+  }
 
   return errors;
 }
@@ -48,6 +51,7 @@ function ABMProducto() {
     name: state ? state.name : "",
     description: state ? state.description : "",
     price: state ? state.price : 0,
+    dolar: state ? state.dolar : 0,
     cod_status: state ? state.cod_status : "1",
 
   });
@@ -171,6 +175,22 @@ function ABMProducto() {
                 <span>Ingrese Precio</span>
                 {errors.price && (
                   <p className="text-red-500">{errors.price}</p>
+                )}
+              </li>
+              <li className='lbl-w-50'>
+                <label htmlFor="dolar" >
+                  Precio Dolar:
+                </label>
+                <input
+                  type="number"
+                  id="dolar"
+                  name="dolar"
+                  value={input.dolar}
+                  onChange={handleChange}
+                />
+                <span>Ingrese Precio en Dolares</span>
+                {errors.dolar && (
+                  <p className="text-red-500">{errors.dolar}</p>
                 )}
               </li>
               <li  className='lbl-w-50'>

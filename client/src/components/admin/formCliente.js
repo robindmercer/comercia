@@ -1,16 +1,16 @@
 //robin
-import React, { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 import { AddCliente, getCliente } from "../../actions/cliente";
-import { getDetail } from '../../actions/tabla';
-import { getStatus } from '../../actions/status';
-import { FcHome, FcOk, FcLeft } from 'react-icons/fc'
+import { getTablaAll } from "../../actions/tabla";
+import { getStatus } from "../../actions/status";
+import { FcHome, FcOk, FcLeft } from "react-icons/fc";
 
-import Header from '../Header';
-import '../../css/all.css'
+import Header from "../Header";
+import style from "../../css/cliente.css";
 // Acciones
 
 export function validate(input) {
@@ -33,8 +33,8 @@ export function validate(input) {
   if (input.fijo === "") {
     errors.fijo = "Debe Ingresar telefono Fijo";
   }
-  if (input.rfc === "") {
-    errors.rfc = "Debe Ingresar codigo rfc";
+  if (input.rfc_cod === "") {
+    errors.rfc_cod = "Debe Ingresar codigo rfc";
   }
 
   return errors;
@@ -46,13 +46,13 @@ function ABMCliente() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   //const cliente = useSelector((state) => state.cliente)
-  const status = useSelector((state) => state.status)
-  const tabla = useSelector((state) => state.tabla)
+  const status = useSelector((state) => state.status);
+  const tabla = useSelector((state) => state.tabla);
 
-  const estilo = { fontSize: "200%", transition: 'font-size 0.5s' };
+  const estilo = { fontSize: "200%", transition: "font-size 0.5s" };
 
   useEffect(() => {
-    dispatch(getDetail(3));
+    dispatch(getTablaAll());
     dispatch(getStatus());
     dispatch(getCliente(state.id));
   }, [dispatch, state.id]);
@@ -64,13 +64,14 @@ function ABMCliente() {
     movil: state ? state.movil : "",
     fijo: state ? state.fijo : "",
     rfc_cod: state ? state.rfc_cod : "",
+    idioma: state ? state.idioma : "1",
+    moneda: state ? state.moneda : "1",
     cod_cliente: state ? state.cod_cliente : "1",
     cod_status: state ? state.cod_status : "1",
-
   });
 
   const [errors, setErrors] = useState({});
-  console.log('input: ', input);
+  console.log("tabla: ", tabla);
 
   function handleChange(e) {
     e.preventDefault();
@@ -129,215 +130,296 @@ function ABMCliente() {
   // }
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('input', input);
+    console.log("input", input);
     dispatch(AddCliente(input));
     //navigate("/cliente");
-    window.location.href = '/cliente';
+    window.location.href = "/cliente";
   };
   return (
     <>
       <Header />
-      <div >
-        <div >
-          <form
-            onSubmit={(e) => handleSubmit(e)}
-            className="form-style-list"
-          >
-            <h1 className="justify-self-center">
+      <div>
+        <div>
+          <form onSubmit={(e) => handleSubmit(e)} className="form_style">
+            <table>
+            <tr >
+              <td colSpan={2} className="tdCEnter">
               COMPLETE LOS SIGUIENTES CAMPOS:
-            </h1>
-            <ul>
-              <li className='lblId'>
-                <label
-                  htmlFor="id"
-                >
-                  Id:{" "}
-                </label>
-                <input
-                  type="text"
-                  id="id"
-                  name="id"
-                  value={input.id}
-                  onChange={handleChange}
-                />
-                <span>Ingrese ID del Cliente</span>
-                {errors.id && <p className="text-red-500">{errors.id}</p>}
+              </td>
+            </tr>
+              <tr>
+                <td className="tdTitulo">Id: </td>
+                <td className="tdSmall">
+                  <input
+                    type="text"
+                    id="id"
+                    name="id"
+                    value={input.id}
+                    onChange={handleChange}
+                    placeholder="Ingrese ID del Cliente"
+                  />
+                  {errors.id && <p className="text-red-500">{errors.id}</p>}
+                </td>
+              </tr>
 
-              </li>
+              <tr>
+                <td className="tdTitulo">Razon Social: </td>
+                <td >
+                  <input
+                    className="tdBig"
+                    type="text"
+                    id="nombre"
+                    name="nombre"
+                    value={input.nombre}
+                    onChange={handleChange}
+                    placeholder="Ingrese Nombre"
+                  />
+                  {errors.nombre && (
+                    <p className="text-red-500">{errors.nombre}</p>
+                  )}
+                </td>
+              </tr>
 
-              <li>
-                <label
-                  htmlFor="nombre"
-                >
-                  Razon Social:{" "}
-                </label>
-                <input
-                  type="text"
-                  id="nombre"
-                  name="nombre"
-                  value={input.nombre}
-                  onChange={handleChange}
-                />
-                <span>Ingrese Nombre</span>
-                {errors.nombre && <p className="text-red-500">{errors.nombre}</p>}
-              </li>
+              <tr>
+                <td className="tdTitulo">Mail: </td>
+                <td>
+                  <input
+                    className="tdBig"
+                    type="text"
+                    id="email"
+                    cols="30"
+                    rows="5"
+                    name="email"
+                    value={input.email}
+                    onChange={handleChange}
+                    placeholder="Ingrese Mail"
+                  />
+                  {errors.email && (
+                    <p className="text-red-500">{errors.email}</p>
+                  )}
+                </td>
+              </tr>
+              <tr>
+                <td className="tdTitulo">Telefono Movil:</td>
+                <td>
+                  <input
+                    className={style.facinput}
+                    type="text"
+                    id="movil"
+                    name="movil"
+                    value={input.movil}
+                    onChange={handleChange}
+                    placeholder="Ingrese Movil"
+                  />
+                  {errors.movil && (
+                    <p className="text-red-500">{errors.movil}</p>
+                  )}
+                </td>
+              </tr>
+              <tr>
+                <td className="tdTitulo">Telefono Fijo:</td>
+                <td>
+                  <input
+                    className={style.facinput}
+                    type="text"
+                    id="fijo"
+                    name="fijo"
+                    value={input.fijo}
+                    onChange={handleChange}
+                    placeholder="Ingrese Telefono Fijo"
+                  />
+                  {errors.fijo && <p className="text-red-500">{errors.fijo}</p>}
+                </td>
+              </tr>
+              <tr>
+                <td className="tdTitulo">Codigo RFC:</td>
+                <td>
+                  <input
+                    className={style.facinput}
+                    type="text"
+                    id="rfc_cod"
+                    name="rfc_cod"
+                    value={input.rfc_cod}
+                    onChange={handleChange}
+                    placeholder="Ingrese codigo RFC"
+                  />
+                  {errors.rfc_cod && <p className="text-red-500">{errors.rfc_cod}</p>}
+                </td>
+              </tr>
 
-              <li>
-                <label
-                  htmlFor="email"
-                  className="block text-gray-700 text-sm font-bold mb-2"
-                >
-                  Mail:{" "}
-                </label>
-                <input
-                  type="text"
-                  id="email"
-                  cols="30"
-                  rows="5"
-                  name="email"
-                  value={input.email}
-                  onChange={handleChange}
-                  className="txtarea"
-                />
-                <span>Ingrese Mail</span>
-                {errors.email && <p className="text-red-500">{errors.email}</p>}
-              </li>
-              <li className='lbl-w-50'>
-                <label htmlFor="movil" >
-                  Telefono Movil:
-                </label>
-                <input
-                  type="text"
-                  id="movil"
-                  name="movil"
-                  value={input.movil}
-                  onChange={handleChange}
-                />
-                <span>Ingrese Movil</span>
-                {errors.movil && (
-                  <p className="text-red-500">{errors.movil}</p>
-                )}
-              </li>
-              <li className='lbl-w-25'>
-                <label htmlFor="fijo" >
-                  Telefono Fijo:
-                </label>
-                <input
-                  type="text"
-                  id="fijo"
-                  name="fijo"
-                  value={input.fijo}
-                  onChange={handleChange}
-                />
-                <span>Ingrese Fijo</span>
-                {errors.fijo && (
-                  <p className="text-red-500">{errors.fijo}</p>
-                )}
-              </li>
-              <li className='lbl-w-50'>
-                <label htmlFor="rfc" >
-                  Codigo RFC:
-                </label>
-                <input
-                  type="text"
-                  id="rfc_cod"
-                  name="rfc_cod"
-                  value={input.rfc_cod}
-                  onChange={handleChange}
-                />
-                <span>Ingrese codigo RFC</span>
-                {errors.rfc && (
-                  <p className="text-red-500">{errors.rfc}</p>
-                )}
-              </li>
+              <tr>
+                <td className="tdTitulo">Tipo de Cliente:</td>
+                <td>
+                  <select
+                    className={style.facinput}
+                    name="cod"
+                    id="tipocli"
+                    onChange={(e) => handleTipo(e)}
+                    value={input.cod_cliente}
+                    placeholder="Seleccione el Tipo del Cliente"
+                  >
+                    <option value="0">Seleccionar</option>
+                    {tabla &&
+                      tabla.map((tabla) => {
+                        if (tabla.id === 3 && tabla.cod !== 0) {
+                          return (
+                            <option
+                              value={tabla.cod}
+                              key={tabla.cod}
+                            >{`${tabla.description}`}</option>
+                          );
+                        } else {
+                          return null;
+                        }
+                      })}{" "}
+                  </select>
+                  {errors.tipocli && (
+                    <p className="text-red-500">{errors.tipocli}</p>
+                  )}
+                </td>
+              </tr>
+              <tr>
+                <td className="tdTitulo">Idioma:</td>
+                <td>
+                  <select
+                    className={style.facinput}
+                    name="idioma"
+                    id="idioma"
+                    onChange={(e) => handleTipo(e)}
+                    value={input.idioma}
+                    placeholder="Seleccione el Idioma"
+                  >
+                    <option value="0">Seleccionar</option>
+                    {tabla &&
+                      tabla.map((tabla) => {
+                        if (tabla.id === 7 && tabla.cod !== 0) {
+                          return (
+                            <option
+                              selected
+                              value={tabla.cod}
+                              key={tabla.cod}
+                            >{`${tabla.description}`}</option>
+                          );
+                        } else {
+                          return null;
+                        }
+                      })}{" "}
+                  </select>
+                  {errors.idioma && (
+                    <p className="text-red-500">{errors.idioma}</p>
+                  )}
+                </td>
+              </tr>
+              <tr>
+                <td className="tdTitulo">Moneda:</td>
+                <td>
+                  <select
+                    className={style.facinput}
+                    name="moneda"
+                    id="moneda"
+                    onChange={(e) => handleTipo(e)}
+                    value={input.moneda}
+                    placeholder="Seleccione el Idioma"
+                  >
+                    <option value="0">Seleccionar</option>
+                    {tabla &&
+                      tabla.map((tabla) => {
+                        if (tabla.id === 8 && tabla.cod !== 0) {
+                          return (
+                            <option
+                              selected
+                              value={tabla.cod}
+                              key={tabla.cod}
+                            >{`${tabla.description}`}</option>
+                          );
+                        } else {
+                          return null;
+                        }
+                      })}{" "}
+                  </select>
+                  {errors.moneda && (
+                    <p className="text-red-500">{errors.moneda}</p>
+                  )}
+                </td>
+              </tr>
 
-              <li className='lbl-w-50'>
-                <label
-                  htmlFor="tipocli"
-                  className="block text-gray-700 text-sm font-bold mb-2"
-                >
-                  Tipo de Cliente:
-                </label>
-                <select
-                  name="cod"
-                  id="tipocli"
-                  onChange={(e) => handleTipo(e)}
-                  value={input.cod_cliente}
-                >
-                  <option value="0">Seleccionar</option>
-                  {tabla && tabla.map((tabla) => {
-                        return (
-                          <option
-                            selected
-                            value={tabla.cod}
-                            key={tabla.cod}
-                          >{`${tabla.description}`}</option>
-                        );
-                  })}                </select>
-                <span>Seleccione el Tipo del Cliente</span>
-                {errors.tipocli && (
-                  <p className="text-red-500">{errors.tipocli}</p>
-                )}
-              </li>
-
-
-              <li className='lbl-w-50'>
-                <label
-                  htmlFor="status"
-                  className="block text-gray-700 text-sm font-bold mb-2"
-                >
-                  Status:
-                </label>
-                <select
-                  name="status"
-                  id="status"
-                  onChange={(e) => handleStatus(e)}
-                  value={input.cod_status}
-                >
-                  <option value="0">Seleccionar</option>
-                  {status.map((sts) => {
-                        return (
-                          <option
+              <tr>
+                <td  className="tdTitulo">Status:</td>
+                <td>
+                  <select
+                    className={style.facinput}
+                    name="status"
+                    id="status"
+                    onChange={(e) => handleStatus(e)}
+                    value={input.cod_status}
+                    placeholder="Seleccione el Status del Cliente"
+                  >
+                    <option value="0">Seleccionar</option>
+                    {status.map((sts) => {
+                      return (
+                        <option
                           selected
-                            value={sts.id_status}
-                            key={sts.id_status}
-                          >{`${sts.description}`}</option>
-                        );
-                  })}                </select>
-                <span>Seleccione el Status del Cliente</span>
-                {errors.status && (
-                  <p className="text-red-500">{errors.status}</p>
-                )}
-              </li>
-              <li>
-                <button className="botButton"
-                  type="submit"
-                >
+                          value={sts.id_status}
+                          key={sts.id_status}
+                        >{`${sts.description}`}</option>
+                      );
+                    })}{" "}
+                  </select>
+                  {errors.status && (
+                    <p className="text-red-500">{errors.status}</p>
+                  )}
+                </td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td >
+                <button className="botButton" type="submit">
                   {/* {state ? "GRABAR" : "AGREGAR"} */}
-                <FcOk style={estilo}
-                  onMouseEnter={({ target }) => target.style.fontSize = "280%"}
-                  onMouseLeave={({ target }) => target.style.fontSize = "200%"} />
+                  <FcOk
+                    style={estilo}
+                    onMouseEnter={({ target }) =>
+                      (target.style.fontSize = "280%")
+                    }
+                    onMouseLeave={({ target }) =>
+                      (target.style.fontSize = "200%")
+                    }
+                  />
                 </button>
                 &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp;
                 <Link
-                  to={'/direccion'}
+                  to={"/direccion"}
                   className="dLink"
-                  state={
-                    {
-                      id: input.id,
+                  state={{
+                    id: input.id,
+                  }}
+                >
+                  {" "}
+                  <FcHome
+                    style={estilo}
+                    onMouseEnter={({ target }) =>
+                      (target.style.fontSize = "280%")
                     }
-                  }
-                > <FcHome style={estilo}
-                  onMouseEnter={({ target }) => target.style.fontSize = "280%"}
-                  onMouseLeave={({ target }) => target.style.fontSize = "200%"} />
+                    onMouseLeave={({ target }) =>
+                      (target.style.fontSize = "200%")
+                    }
+                  />
                 </Link>
                 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
-                <FcLeft style={estilo}
-                  onMouseEnter={({ target }) => target.style.fontSize = "280%"}
-                  onMouseLeave={({ target }) => target.style.fontSize = "200%"}
-                  onClick={() => { navigate("/cliente"); }} />
-              </li>
-            </ul>
+                <FcLeft
+                  style={estilo}
+                  onMouseEnter={({ target }) =>
+                    (target.style.fontSize = "280%")
+                  }
+                  onMouseLeave={({ target }) =>
+                    (target.style.fontSize = "200%")
+                  }
+                  onClick={() => {
+                    navigate("/cliente");
+                  }}
+                />
+                  </td>
+              </tr>
+            </table>
           </form>
         </div>
       </div>

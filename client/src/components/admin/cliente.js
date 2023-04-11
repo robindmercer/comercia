@@ -77,6 +77,8 @@ const Cliente = () => {
                                         movil: "",
                                         fijo: "",
                                         rfc: "",
+                                        idioma:1,
+                                        moneda:1,
                                         cod_cliente: "1",
                                         cod_status: "1",
                                     }
@@ -98,6 +100,8 @@ const Cliente = () => {
                             <th>Movil</th>
                             <th>Fijo</th>
                             <th>Tipo Cliente</th>
+                            <th>Idioma</th>
+                            <th>Moneda</th>
                             <th>Estado</th>
                             <th>Acciones</th>
                         </tr>
@@ -112,6 +116,8 @@ const Cliente = () => {
                                     <td>{data.movil}</td>
                                     <td>{data.fijo}</td>
                                     <td>{data.actividad}</td>
+                                    <td>{data.idiomades}</td>
+                                    <td>{data.monedades}</td>
                                     <td>{data.stsdesc}</td>
                                     <td>
                                         <Link
