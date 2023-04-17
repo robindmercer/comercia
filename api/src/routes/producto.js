@@ -84,7 +84,7 @@ router.put('/', async function (req, res, next) {
       dolar,
       cod_status:1
     })
-    res.status(200).send(`Producto Created : ${newProducto.id}`);
+    res.status(200).send(`Producto Creado : ${newProducto.id}`);
   } catch (error) {
     console.log('Error', req.body)
     next(error)
@@ -94,7 +94,8 @@ router.put('/', async function (req, res, next) {
 
 router.post("/", async function (req, res, next) {
   const { id,name, description, price, dolar, cod_status } = req.body;
-  if (!name || !description || !price || !dolar || !cod_status) {
+  console.log('Post Procuto req.body: ', req.body);
+  if (!name || !description || !cod_status) {
     return res.send("Falta información para poder darte de alta el Productoo")
   }
 

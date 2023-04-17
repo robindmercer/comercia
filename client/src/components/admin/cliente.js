@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import '../../css/all.css'
 import Header from '../Header';
 import { FcHome, FcBusinessman,FcCurrencyExchange } from 'react-icons/fc'
-
+//import Modal from "../../components/admin/formCliente"
 const Cliente = () => {
     const { cliente } = useSelector((state) => state);
     const dispatch = useDispatch();
@@ -15,6 +15,7 @@ const Cliente = () => {
     const id_usuario = localStorage.getItem("usuario");
     const usuariomenu = useSelector((state) => state.usuariomenu);
     const idProg = 6; // es el nivel 
+    const [openModal, SetOpenModal]=useState(false);
 
     useEffect(() => {
         dispatch(getCliente());
@@ -177,6 +178,10 @@ const Cliente = () => {
                     </tbody>
                 </table>
             </div>
+            {/* <div>
+                <button onClick={()=> {SetOpenModal(true)}} >Click Here</button>
+            </div>
+            {openModal && <Modal  closeModal={SetOpenModal} />} */}
         </>
     )
 };

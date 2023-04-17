@@ -1,7 +1,7 @@
 import { LOG_CONTROL,GET_MENU,GET_MENUID,GET_USUARIOS,GET_PERFIL,GET_STATUS,GET_USUARIOSMENU,GET_MAILS,GET_FACTURAMP } from '../actions/constant.js'
 import {GET_TABLA,GET_CLIENTE,GET_FACTURA,GET_DIRECCION,SET_IVA } from '../actions/constant.js'
 import {GET_PRODUCTOS,GET_PRODUCTOSLANG,GET_PRODUCTOSID,GET_MATERIAPRIMA,GET_MATERIAPRIMAPROD,RESET_PRODMP } from '../actions/constant.js'
-import {GET_FACTURADET,GET_FACTCAB, RESET_FAC,GET_MPDEFAC } from '../actions/constant.js'
+import {GET_FACTURADET,GET_FACTCAB, RESET_FAC,GET_MPDEFAC,GET_CONDICION,GET_FACTCOND } from '../actions/constant.js'
 const initialState = {
   lang: "",
   mails:[],
@@ -25,6 +25,8 @@ const initialState = {
   materiaprima:[],
   facturaMP:[],
   mpfactura:[],
+  condiciones:[], // Condiciones Generales
+  factcond:[],    // Condiciones Generales elegidas en una factura 
   prodmp:[], // materia prima por producto
 }
 
@@ -223,7 +225,23 @@ const rootReducer = (state = initialState, action) => {
       mails: action.payload,
     }
   }
-  
+  ///////////////////////////////////////////
+  // Condiciones generales 
+  ///////////////////////////////////////////
+  if (action.type === GET_CONDICION) {
+    return {
+      ...state,
+      condiciones: action.payload,
+    }
+  }
+  if (action.type === GET_FACTCOND) {
+    return {
+      ...state,
+      factcond: action.payload,
+    }
+  }
+
+
   return state
 }
 

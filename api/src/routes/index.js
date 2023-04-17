@@ -19,6 +19,7 @@ const facturaMP =require("./facturaMP")
 const email = require('./send_mail')
 const mpFactura =require("./mpFactura") // Materias primas utilizadas en una factura 
 const condiciones = require("./condiciones") // condiciones generales de fecturacion 
+const log = require ("./log")
 const router = Router();
 
 // Send Email
@@ -59,5 +60,6 @@ router.use('/facturaMP',facturaMP);
 router.use('/mpfactura',mpFactura);
 //condiciones
 router.use('/condiciones',condiciones);
-
+//Log 
+router.use('/log',log)
 module.exports = router;

@@ -47,68 +47,53 @@ const Factura = () => {
     const found = mpfactura.find((element) => element.id === id);
     control = found.control;
     if (control === "S") {
-      // dispatch(UpdateFacturaSts(id,4))
+        // dispatch(UpdateFacturaSts(id,4))
       // Perfil Administrador
-      dispatch(GetMails(1));
-      for (var x = 0; x < mails.length; x++) {
-        dispatch(
-          mailEnviar(crearMail("Espera Aprobación", mails[x].email, found))
-        );
-      }
+        dispatch(GetMails(1));
+        for (var x = 0; x < mails.length; x++) {
+            dispatch(
+            mailEnviar(crearMail("Espera Aprobación", mails[x].email, found))
+            );
+        }
     } else {
-      // dispatch(UpdateFacturaSts(id,3))
-      // Perfil Planeacion
-      dispatch(GetMails(3));
-      console.log("mails 2: ", mails);
-      for (var x1 = 0; x1 < mails.length; x1++) {
-        dispatch(
-          mailEnviar(crearMail("Confeccionado", mails[x1].email, found))
-        );
-      }
+        // dispatch(UpdateFacturaSts(id,3))
+        // Perfil Planeacion
+        dispatch(GetMails(3));
+        console.log("mails 2: ", mails);
+        for (var x1 = 0; x1 < mails.length; x1++) {
+        dispatch(mailEnviar(crearMail("Confeccionado", mails[x1].email, found)));
+        }
     }
     ///window.location.href = '/mpfactura';
   };
-  var fac_id = ''  // ID de la OC
-  var prod_ant= "" // Corte de control de productos 
-   if (mpfactura.length>0){
-     fac_id = mpfactura[0].fac_id
-   }
+
+console.log('mpfactura: ', mpfactura);
 
   return (
     <>
       <Header />
       <div className={style.adminHeader}>
         <br />
-        <h2>Materia prima para la OC:{fac_id}</h2>
+        <h2 >Pendientes de Entrega</h2>
         <table className={style.styledTable2}>
-
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Id MP</th>
+              <th>MP</th>
+              <th>UDM.</th>
+              <th>Stock</th>
+              <th>Pedido</th>
+              <th>Acciones</th>
+            </tr>
+          </thead> 
           <tbody>
             {mpfactura &&
               mpfactura.message === undefined &&
-              mpfactura.map((data, index) => {
-                if (prod_ant !== data.prod_id ){
-                  prod_ant = data.prod_id
-                  return (
-                    <>
-                    <tr key={index * 100} className={style.styledTable3}><td colSpan={6}>Producto : {data.prodname}</td></tr>
-                    <tr>
-                      <th>&nbsp;&nbsp;Id MP</th>
-                      <th>Materia prima</th>
-                      <th>UDM.</th>
-                      <th>Stock</th>
-                      <th>Pedido</th>
-                      <th>Acciones</th>
-                    </tr>
-                    </>
-                  )
-                }
+              mpfactura.map((data,index) => {
                 return (
-                  <tr
-                    key={index}
-                    className={
-                      data.stock < data.pedido ? style.redRow : style.blackRow
-                    }
-                  >
+                  <tr key={index} className={data.stock < data.pedido ? style.redRow : style.blackRow}>
+                    <td>{data.prodname}</td>
                     <td>{data.name}</td>
                     <td>{data.description}</td>
                     <td>{data.udm}</td>

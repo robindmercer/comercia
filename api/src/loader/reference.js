@@ -5,7 +5,8 @@ const {Factcond,Condiciones, Direccion,ProductoLang,Producto,Materiaprima,Factur
 async function refLoad() {
 
    Perfil.bulkCreate([
-      { description: "Administrador" },
+      { description: "Gerencia" },
+      { description: "Administracion" },
       { description: "Ventas" },
       { description: "Planeación" },
       { description: "Manufactura" },
@@ -21,10 +22,10 @@ async function refLoad() {
 
    Usuario.bulkCreate([
       { usr_id: "RM",  name: "Robin Mercer",                     email: "robindmercer@gmail.com",    cod_perfil: '1', cod_status: '1', password: "pass1+" },
-      { usr_id: "RDM", name: "Robin D Mercer",                   email: "robindmercer@yahoo.com.ar", cod_perfil: '1', cod_status: '1', password: "pass1+" },
+      { usr_id: "RDM", name: "Robin D Mercer",                   email: "robindmercer@yahoo.com.ar", cod_perfil: '3', cod_status: '1', password: "pass1+" },
       { usr_id: "DR",  name: "Dinora Castro Ríos",               email: "robindmercer@yahoo.com.ar", cod_perfil: '2', cod_status: '1', password: "pass1+" },
       { usr_id: "JC",  name: "Jennifer Areli Chavira",           email: "robindmercer@yahoo.com.ar", cod_perfil: '3', cod_status: '1', password: "pass1+" },
-      { usr_id: "LH",  name: "Laura Alejandra Cortés Hernandez", email: "robindmercer@yahoo.com.ar", cod_perfil: '2', cod_status: '1', password: "pass1+" },
+      { usr_id: "AC",  name: "Laura Alejandra Cortés Hernandez", email: "robindmercer@yahoo.com.ar", cod_perfil: '2', cod_status: '1', password: "pass1+" },
       { usr_id: "VG",  name: "Víctor Manuel Oviedo Govea",       email: "robindmercer@yahoo.com.ar", cod_perfil: '2', cod_status: '1', password: "pass1+" },
       { usr_id: "FC",  name: "Fernando Bravo Collar",            email: "robindmercer@yahoo.com.ar", cod_perfil: '4', cod_status: '1', password: "pass1+" },
       { usr_id: "DL",  name: "Diana Laura Torres López",         email: "robindmercer@yahoo.com.ar", cod_perfil: '4', cod_status: '1', password: "pass1+" },
@@ -54,21 +55,32 @@ async function refLoad() {
       { usrid: "RM", nivel: 17,accion:"A"},
       { usrid: "RM", nivel: 18,accion:"A"},
       { usrid: "RM", nivel: 19,accion:"A"},
-
-      { usrid: "LF", nivel: 0,accion:"C"},
-      { usrid: "LF", nivel: 10,accion:"C"},
-      { usrid: "LF", nivel: 11,accion:"C"},
-      { usrid: "LF", nivel: 12,accion:"C"},
-      { usrid: "LF", nivel: 13,accion:"C"},
-      { usrid: "LF", nivel: 14,accion:"C"},
-      { usrid: "LF", nivel: 15,accion:"C"},
       { usrid: "RDM", nivel: 0,accion:"A"},      
+      { usrid: "RDM", nivel: 1,accion:"C"},      
+      { usrid: "RDM", nivel: 6,accion:"A"},      
       { usrid: "RDM", nivel: 16,accion:"A"},      
       { usrid: "RDM", nivel: 17,accion:"A"},      
-      { usrid: "RDM", nivel: 10,accion:"C"},      
-      { usrid: "RDM", nivel: 11,accion:"C"},      
+      { usrid: "RDM", nivel: 10,accion:"A"},      
+      { usrid: "RDM", nivel: 11,accion:"A"},      
+      { usrid: "YG", nivel: 0,accion:"A"},      
+      { usrid: "YG", nivel: 1,accion:"A"},      
+      { usrid: "YG", nivel: 5,accion:"A"},      
+      { usrid: "YG", nivel: 10,accion:"C"},      
+      { usrid: "YG", nivel: 11,accion:"C"},      
+      { usrid: "FC", nivel: 0,accion:"A"},      
+      { usrid: "DL", nivel: 0,accion:"A"},      
+      { usrid: "JC", nivel: 0,accion:"A"},      
+      { usrid: "DR", nivel: 0,accion:"A"},      
+      { usrid: "VG", nivel: 0,accion:"A"},      
+      { usrid: "AS", nivel: 0,accion:"A"},      
+      { usrid: "MT", nivel: 0,accion:"A"},      
+      { usrid: "AC", nivel: 0,accion:"A"},      
+      { usrid: "AC", nivel: 1,accion:"C"},      
+      { usrid: "AC", nivel: 6,accion:"C"},      
+      { usrid: "AC", nivel: 10,accion:"A"},      
+      { usrid: "AC", nivel: 11,accion:"A"},      
    ]).then(() => console.log('UsuarioMenu ha sido grabado'));
-
+   
    Menu.bulkCreate([
       { description: "Logout",          nivel: '1', programa: "/" },
       { description: "Administración",  nivel: '2', programa: "/" },
@@ -131,7 +143,7 @@ async function refLoad() {
       { nombre: "DR. JAVIER CEBALLOS MEDINA", email: "cliente@gmail.com", movil: '123456789', fijo: '46661234', rfc_cod: 'rfc-1', idioma:1, moneda:1,cod_cliente: 1, cod_status: 1 },
       { nombre: "DRA. MARIA TERESA RAZO SOLIS", email: "cliente@gmail.com", movil: '123456789', fijo: '46661234', rfc_cod: 'rfc-2', idioma:1, moneda:1,cod_cliente: 2, cod_status: 1 },
       { nombre: "ING. JAVIER VELA", email: "cliente@gmail.com", movil: '123456789', fijo: '46661234', rfc_cod: 'rfc-3', idioma:2, moneda:2,cod_cliente: 2, cod_status: 1 },
-      { nombre: "YPF", email: "YPF@gmail.com", movil: '123456789', fijo: '46661234', rfc_cod: 'rfc-4', idioma:1, moneda:1, cod_cliente: 1, cod_status: 1 },
+      { nombre: "YPF", email: "YPF@gmail.com", movil: '123456789', fijo: '46661234', rfc_cod: 'rfc-4', idioma:2, moneda:2, cod_cliente: 1, cod_status: 1 },
    ]).then(() => console.log('Clientes grabados'));
   
    Direccion.bulkCreate([
@@ -408,10 +420,10 @@ async function refLoad() {
 
 
    Factura.bulkCreate([ 
-      {cli_id: 1,dir_id: 1,subtotal: 284158,iva: 45465,descuento: 0, desc_id: 0,total: 329623,observ:'Algun Dato',cod_status: 3},
-      {cli_id: 2,dir_id: 1,subtotal: 265279,iva: 42445,descuento: 0, desc_id: 0,total: 307724,observ:'Algun Dato',cod_status: 1},
-      {cli_id: 3,dir_id: 1,subtotal: 24600,iva: 39424,descuento: 0, desc_id: 0,total: 285824,observ:'Algun Dato',cod_status: 1},
-      {cli_id: 4,dir_id: 1,subtotal: 14900,iva: 2384,descuento: 0, desc_id: 0,total: 17284,observ:'Algun Dato',cod_status: 1},
+      {cli_id: 1,dir_id: 1,subtotal: 284158,iva: 45465,total: 329623,observ:'Include popular icons in your React projects easily with react-icons, which utilizes ES6 imports that allows you to include only the icons that your project is using.',cod_status: 1},
+      {cli_id: 2,dir_id: 1,subtotal: 265279,iva: 42445,total: 307724,observ:'Algun Dato',cod_status: 1},
+      {cli_id: 3,dir_id: 1,subtotal: 24600,iva: 39424,total: 285824,observ:'Algun Dato',cod_status: 1},
+      {cli_id: 4,dir_id: 1,subtotal: 14900,iva: 2384,total: 17284,observ:'Algun Dato',cod_status: 1},
    ]).then(() => console.log('Factura Grabada'));
       
    Factdet.bulkCreate([
@@ -424,17 +436,17 @@ async function refLoad() {
    ]).then(() => console.log('Factura Det Grabada'));
 
    Condiciones.bulkCreate([
-      {id:1, nombre:'Contado',descuento:15,enganche:0,meses:0,interes:0},
-      {id:2, nombre:'Financiamiento 12 Meses',descuento:0,enganche:20,meses:12,interes:5},
-      {id:3, nombre:'Financiamiento 24 Meses',descuento:0,enganche:20,meses:24,interes:5},
+      {id:1, nombre:'Sin Descuento',descuento:0,enganche:0,meses:0,interes:0},
+      {id:2, nombre:'Contado',descuento:15,enganche:0,meses:0,interes:0},
+      {id:3, nombre:'Financiamiento 12 Meses',descuento:0,enganche:20,meses:12,interes:5},
+      {id:4, nombre:'Financiamiento 24 Meses',descuento:0,enganche:20,meses:24,interes:5},
 
    ]).then(() => console.log('Condiciones grabados'));
   
    Factcond.bulkCreate([
-      {id:1,fac_id:1,cond_id:1,descuento:15,enganche:0,meses:0,interes:0},
-      {id:2,fac_id:2,cond_id:1,descuento:15,enganche:0,meses:0,interes:0},
-      {id:3,fac_id:3,cond_id:1,descuento:15,enganche:0,meses:0,interes:0},
-      {id:4,fac_id:4,cond_id:1,descuento:15,enganche:0,meses:0,interes:0},
+      {id:1,fac_id:1,cond_id:2,descuento:15,enganche:0,meses:0,interes:0},
+      {id:2,fac_id:2,cond_id:2,descuento:15,enganche:0,meses:0,interes:0},
+      {id:3,fac_id:3,cond_id:2,descuento:15,enganche:0,meses:0,interes:0},
    ]).then(() => console.log('Factcond ha sido grabado'));
 
 

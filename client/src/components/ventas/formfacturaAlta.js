@@ -1,77 +1,74 @@
 // eslint-disable-next-line
-import React, { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 
-// Acciones 
+// Acciones
 // import { getFacturaDet } from '../../actions/factdet';
-import { resetFact, AddFactura } from '../../actions/factura';
+import { resetFact, AddFactura } from "../../actions/factura";
 // import { getDetailIva } from '../../actions/tabla';
-import { getProducto } from '../../actions/producto';
-import { getClienteId } from '../../actions/cliente'
-import { getDireccion } from '../../actions/direccion'
-import {getUsuariomenId} from '../../actions/usuariomenu'
+import { getProducto } from "../../actions/producto";
+import { getClienteId } from "../../actions/cliente";
+import { getDireccion } from "../../actions/direccion";
+import { getUsuariomenId } from "../../actions/usuariomenu";
 
-// Descuentos 
+// Descuentos
 import { getDetail } from "../../actions/tabla";
 
-// Iconos 
-import { FcDeleteRow, FcAddRow, FcOk, FcLeft } from 'react-icons/fc'
-import Header from '../Header';
+// Iconos
+import { FcDeleteRow, FcAddRow, FcOk, FcLeft } from "react-icons/fc";
+import Header from "../Header";
 // CSS
-import '../../css/factdet.css'
+import "../../css/factdet.css";
 
 const Formfactura = () => {
+  let fecha = new Date().toLocaleDateString("en-GB");
 
-  let fecha = new Date().toLocaleDateString('en-GB');
-// Manejo acceso del Usuario 
-  const usuariomenu = useSelector((state) => state.usuariomenu)
-  const [acceso, setAcceso] = useState('A')
+  // Manejo acceso del Usuario
+  const usuariomenu = useSelector((state) => state.usuariomenu);
+  const [acceso, setAcceso] = useState("A");
   const idProg = 11;
 
   const id_usuario = localStorage.getItem("usuario");
   const navigate = useNavigate();
-  const { cliente } = useSelector((state) => state)
-  const { direccion } = useSelector((state) => state)
-  const { factcab } = useSelector((state) => state)
-  const { factdet } = useSelector((state) => state)
-  const { porciva } = useSelector((state) => state)
-  const { producto } = useSelector((state) => state)
+  const { cliente } = useSelector((state) => state);
+  const { direccion } = useSelector((state) => state);
+  const { factcab } = useSelector((state) => state);
+  const { factdet } = useSelector((state) => state);
+  const { porciva } = useSelector((state) => state);
+  const { producto } = useSelector((state) => state);
   const { tabla } = useSelector((state) => state);
   // const { idfact } = useSelector((state) => state)
 
   const dispatch = useDispatch();
   const location = useLocation();
   const { state } = location;
-  const estilo = { fontSize: "150%", transition: 'font-size 0.5s' };
-  const estilo2 = { fontSize: "200%"};
+  const estilo = { fontSize: "150%", transition: "font-size 0.5s" };
+  const estilo2 = { fontSize: "200%" };
 
-  const [onChange, setOnChange] = useState(false)
+  const [onChange, setOnChange] = useState(false);
   // const [onIva, setOnIva] = useState(false)
 
+  const [subTotal, setSubTotal] = useState(0);
+  const [DirCode, setDirCode] = useState(0);
+  const [saleTax, setSaleTax] = useState(0);
+  const [saleDesc, setSaleDesc] = useState("");
+  const [saleDescto, setSaleDescto] = useState(0);
+  const [total, setTotal] = useState(0);
 
-  const [subTotal, setSubTotal] = useState(0)
-  const [DirCode, setDirCode] = useState(0)
-  const [saleTax, setSaleTax] = useState(0)
-  const [saleDesc, setSaleDesc] = useState('')
-  const [saleDescto, setSaleDescto] = useState(0)
-  const [total, setTotal] = useState(0)
-  const [desc_id, setDesc_id] = useState(0)
   // Formato Numeros
-  const dollarUSLocale = Intl.NumberFormat('de-DE');
+  const dollarUSLocale = Intl.NumberFormat("de-DE");
 
   const [input, setInput] = useState({
     cli_id: 0,
     dir_id: 0,
-    desc_id: 0,
     fac_id: 0,
     subtotal: 0,
     iva: 0,
-    descuento: 0,
     total: 0,
-    observ:'',
+    observ: "",
     cod_status: 1,
-    fecha: new Date().toLocaleDateString('en-GB')
+    fecha: new Date().toLocaleDateString("en-GB"),
   });
 
   const [inputDet, setInputDet] = useState({
@@ -80,19 +77,18 @@ const Formfactura = () => {
     prod_id: 0,
     precio: 0,
     cantidad: 0,
-    total: 0
+    total: 0,
   });
-  
 
   const initialProductLine = {
-    prod_id: '',
+    prod_id: "",
     cantidad: 1,
-    description: '',    
+    description: "",
     fac_id: 0,
     orden: factcab.length,
     precio: 0,
-    total: 0
-  }
+    total: 0,
+  };
   const initialHead = {
     cli_id: state.idCli,
     dir_id: 0,
@@ -101,99 +97,129 @@ const Formfactura = () => {
     iva: "0",
     descuento: "0",
     total: "0",
-    observ:'',
+    observ: "",
     cod_status: 1,
-    fecha: new Date().toLocaleDateString('en-GB')
+    fecha: new Date().toLocaleDateString("en-GB"),
+  };
 
-  }
+  // Manejo de Botones a ver
+  var btnGrabar = false;
+  var btnAgregar = false;
+  var btnEliminarReg = false;
+
+  const control = (data) => {
+    btnGrabar = false;
+    btnAgregar = false;
+    btnEliminarReg = false;
+    if (acceso === "A1") {
+      // Gerencia All
+      btnGrabar = true;
+      btnAgregar = true;
+      btnEliminarReg = true;
+    }
+    if (acceso === "A1") {
+      // Gerencia All
+      btnGrabar = true;
+      btnAgregar = true;
+      btnEliminarReg = true;
+    }
+    if (acceso.substring(1,1) === "C") {
+      // Consulta
+      btnGrabar = false;
+      btnAgregar = false;
+      btnEliminarReg = false;
+    }
+  };
+
   // var cantidad = []
   //console.log('factcab: ', factcab.length);
   if (factcab.length === 0) {
-    factcab.push(initialHead)
+    factcab.push(initialHead);
   }
   // console.log('fecha: ', fecha);
-  
+
   useEffect(() => {
     //dispatch(getDetail(1));
     //dispatch(getDetailIva(1));
-    dispatch(getDetail(2))
+    dispatch(getDetail(2));
     dispatch(getProducto());
-    dispatch(getClienteId(state.idCli))
-    dispatch(getDireccion(state.idCli))
+    dispatch(getClienteId(state.idCli));
+    dispatch(getDireccion(state.idCli));
     dispatch(getUsuariomenId(id_usuario));
-    if (usuariomenu){
-        for (var i = 0; i < usuariomenu.length; i++) {
-            if (usuariomenu[i].nivel === idProg){
-                setAcceso(usuariomenu[i].accion)
-            } 
-        } }
-   
+    if (usuariomenu) {
+      for (var i = 0; i < usuariomenu.length; i++) {
+        if (usuariomenu[i].nivel === idProg) {
+          setAcceso(usuariomenu[i].accion);
+        }
+      }
+    }
+
     // return (
     //   dispatch(resetFact())
     //   )
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [dispatch]);
-    
-    // useEffect(() => {
-      //   if (onChange) {
-        //   }
-        // }, [onChange, factdet])
-        
-        // useEffect(() => {
-          //   if (input.dir_id != 0) {
-            //     console.log('AddFactura input ', input);
-            //     dispatch(AddFactura(input))
-            //     factdet.forEach((fact) => {
-              //       console.log('fact.precio: ', fact.precio);
-              //     })
+  }, [dispatch]);
+
+  // useEffect(() => {
+  //   if (onChange) {
+  //   }
+  // }, [onChange, factdet])
+
+  // useEffect(() => {
+  //   if (input.dir_id != 0) {
+  //     console.log('AddFactura input ', input);
+  //     dispatch(AddFactura(input))
+  //     factdet.forEach((fact) => {
+  //       console.log('fact.precio: ', fact.precio);
+  //     })
   //   }
   // }, [onChange, input])
-  
-  // Calculo subtotal 
-  useEffect(() => {
-    let subTotal = 0
-    let iva = 0
-    let total = 0
-    if (factdet && porciva) {
-      
-      factdet.forEach((fact) => {
-        const quantityNumber = parseFloat(fact.cantidad)
-        const rateNumber = parseFloat(fact.precio)
-        const amount = quantityNumber && rateNumber ? quantityNumber * rateNumber : 0
 
-        subTotal += amount
-      })
-      setSubTotal(subTotal)
+  // Calculo subtotal
+  useEffect(() => {
+    let subTotal = 0;
+    let iva = 0;
+    let total = 0;
+    if (factdet && porciva) {
+      factdet.forEach((fact) => {
+        const quantityNumber = parseFloat(fact.cantidad);
+        const rateNumber = parseFloat(fact.precio);
+        const amount =
+          quantityNumber && rateNumber ? quantityNumber * rateNumber : 0;
+
+        subTotal += amount;
+      });
+      setSubTotal(subTotal);
       if (subTotal > 0) {
-        iva = subTotal * (parseFloat(porciva[0].valor) / 100)
-        setSaleTax(iva)
-        total = subTotal + iva
-        setTotal(total)
+        iva = subTotal * (parseFloat(porciva[0].valor) / 100);
+        setSaleTax(iva);
+        total = subTotal + iva;
+        setTotal(total);
       } else {
-        setSaleTax(0)
-        setTotal(0)
+        setSaleTax(0);
+        setTotal(0);
       }
     }
-  }, [onChange, factdet])
+  }, [onChange, factdet]);
 
   const handleRemove = (i) => {
-    factdet.splice(i, 1)
+    factdet.splice(i, 1);
     if (onChange) {
-      setOnChange(false)
+      setOnChange(false);
     } else {
-      setOnChange(true)
+      setOnChange(true);
     }
-  }
-  
+  };
+
   const handleAdd = () => {
-    factdet.push(initialProductLine)
+    factdet.push(initialProductLine);
     //    console.log('factdet: ', factdet);
     if (onChange) {
-      setOnChange(false)
+      setOnChange(false);
     } else {
-      setOnChange(true)
+      setOnChange(true);
     }
-  }
+  };
   const handleSubmit = () => {
     // console.log('DirCode: ', DirCode);
     // console.log('subTotal: ', subTotal);
@@ -201,29 +227,26 @@ const Formfactura = () => {
     // console.log('Total: ', total);
     factcab[0].subtotal = subTotal;
     factcab[0].iva = saleTax;
-    factcab[0].descuento = saleDescto;
     factcab[0].total = total;
     factcab[0].dir_id = parseInt(DirCode);
-    setInput(input.subtotal = subTotal);
-    setInput(input.iva = saleTax);
-    setInput(input.descuento = saleDescto);
-    setInput(input.total = total);
-    setInput(input.dir_id = DirCode);
-    setInput(input.desc_id = desc_id);
-    setInput(input.cli_id = factcab[0].cli_id);
+    setInput((input.subtotal = subTotal));
+    setInput((input.iva = saleTax));
+    setInput((input.total = total));
+    setInput((input.dir_id = DirCode));
+    setInput((input.cli_id = factcab[0].cli_id));
     // console.log('factcab: ', factcab);
     // console.log('factdet: ', factdet);
     // console.log('input: ', input);
-    if (factcab[0].dir_id === '0') {
-      alert("Debes selecionar una dirección.")
+    if (factcab[0].dir_id === "0") {
+      alert("Debes selecionar una dirección.");
       return;
     }
     if (factcab[0].subtotal === 0) {
-      alert("La Orden de Compra no puede quedar en 0")
+      alert("La Orden de Compra no puede quedar en 0");
       return;
     }
-    dispatch(AddFactura(input,factdet,inputDet))
-    window.location.href = '/factura';
+    dispatch(AddFactura(input, factdet, inputDet));
+    window.location.href = "/factura";
     // if (onChange) {
     //   setOnChange(false)
     // } else {
@@ -231,100 +254,84 @@ const Formfactura = () => {
     // }
     // var msg = dispatch(AddFactura(input));
     // console.log('msg: ', msg);
-  }
+  };
 
   function handleTipo(e, i) {
     e.preventDefault();
-    if (e.target.name === 'observ') {
-      console.log('e.target.name: ', e.target.value);
-      input.observ = e.target.value
+    if (e.target.name === "observ") {
+      console.log("e.target.name: ", e.target.value);
+      input.observ = e.target.value;
       if (onChange) {
-        setOnChange(false)
+        setOnChange(false);
       } else {
-        setOnChange(true)
+        setOnChange(true);
       }
     }
-    if (e.target.name === 'domi') {
+    if (e.target.name === "domi") {
       // console.log('Domicilio: ', e.target.value);
-      setDirCode(e.target.value)
+      setDirCode(e.target.value);
     }
-    if (e.target.name === 'cod') {
-      if (e.target.value > 0) {
-        setSaleDesc(e.target[e.target.value].innerText);
-        var desctoporc = 0
-        setDesc_id(e.target.value);
-        tabla.forEach((z) => {
-          if (parseInt(z.cod) === parseInt(e.target.value)) {
-            desctoporc = z.valor
-          }
-        });
-        var dscto = Math.round((subTotal + saleTax) * desctoporc / 100)
-        // console.log('desctoporc : ', desctoporc);
-        // console.log('Descuento: ', dscto);
-        setTotal(total - dscto)
-        setSaleDescto(dscto)
-      } else {
-        setSaleDesc('')
-        setSaleDescto(0)
-        setDesc_id(0);
-      }
-    }
-    if (e.target.name === 'quantity') {
-      factdet[i.i].cantidad = e.target.value
-      factdet[i.i].total = factdet[i.i].cantidad * factdet[i.i].precio
+    if (e.target.name === "quantity") {
+      factdet[i.i].cantidad = e.target.value;
+      factdet[i.i].total = factdet[i.i].cantidad * factdet[i.i].precio;
       if (onChange) {
-        setOnChange(false)
+        setOnChange(false);
       } else {
-        setOnChange(true)
+        setOnChange(true);
       }
     }
-    if (e.target.name === 'prod_id') {
-      if (e.target.value == '0') {
-        handleRemove(i.i)
+    if (e.target.name === "prod_id") {
+      if (e.target.value == "0") {
+        handleRemove(i.i);
       } else {
         for (var z = 0; z < producto.length; z++) {
           if (producto[z].id == e.target.value) {
-            factdet[i.i].prod_id = e.target.value
-            factdet[i.i].name = producto[z].name
-            factdet[i.i].precio = producto[z].price
-            factdet[i.i].total = factdet[i.i].cantidad * factdet[i.i].precio
+            factdet[i.i].prod_id = e.target.value;
+            factdet[i.i].name = producto[z].name;
+            if (cliente[0].moneda === 2) {
+              factdet[i.i].precio = producto[z].dolar;
+            } else {
+              factdet[i.i].precio = producto[z].price;
+            }
+            factdet[i.i].total = factdet[i.i].cantidad * factdet[i.i].precio;
           }
         }
       }
       if (onChange) {
-        setOnChange(false)
+        setOnChange(false);
       } else {
-        setOnChange(true)
+        setOnChange(true);
       }
     }
   }
   // if (cliente) {
   //   factcab[0].nombre = cliente[0].nombre
   // }
-  
-  // console.log('Cliente_1: ', cliente, state.idCli);
-  // console.log('direccion: ', direccion);
-  
+
+  console.log("Cliente_1: ", cliente, state.idCli);
+  console.log("producto: ", producto);
+
   // console.log('factcab: ', factcab);
   // console.log('factdet: ', factdet);
-  console.log('porciva: ', porciva,porciva.length);
+  // console.log('porciva: ', porciva,porciva.length);
   // console.log('tabla: ', tabla);
   //   if (porciva.length === 1){
-    //     if (onIva) {
-      //       setOnIva(false)
+  //     if (onIva) {
+  //       setOnIva(false)
   //     } else {
-    //       setOnIva(true)
+  //       setOnIva(true)
   //     }
   // }
   if (factcab.length > 0) {
     return (
       <>
         <Header />
-        <div >
-          <div className='cabeceraAlta'>
+        <div>
+          <div className="cabeceraAlta">
             <div className="row gap-1">
-              <div className='row'>
-                <div className='col'>Cliente:&nbsp;
+              <div className="row">
+                <div className="col">
+                  Cliente:&nbsp;
                   {/* <!--input className='input_fact'
                     type="text"
                     id="cli_id"
@@ -332,7 +339,8 @@ const Formfactura = () => {
                     value={factcab[0].cli_id}
                     onChange={(e) => handleTipo(e, 0)}
                   /--> */}
-                  &nbsp;{cliente[0].nombre}</div>
+                  &nbsp;{cliente[0].nombre}
+                </div>
                 {/* <div className='col'>Cliente:&nbsp;
                   <input className='input_fact'
                     type="text"
@@ -342,7 +350,7 @@ const Formfactura = () => {
                     onChange={(e) => handleTipo(e, 0)}
                     />
                   &nbsp;{factcab[0].nombre}</div> */}
-                <div className='col'>Fecha: {fecha}</div>
+                <div className="col">Fecha: {fecha}</div>
               </div>
               <div>
                 <label
@@ -351,20 +359,16 @@ const Formfactura = () => {
                 >
                   Seleccione Domicilio:
                 </label>
-                <select
-                  name="domi"
-                  id="domi"
-                  onChange={(e) => handleTipo(e)}
-                >
+                <select name="domi" id="domi" onChange={(e) => handleTipo(e)}>
                   <option value="0">Seleccionar</option>
-                  {direccion && direccion.map((tabla) => {
+                  {direccion &&
+                    direccion.map((tabla) => {
                       return (
-                        <option
-                          value={tabla.id}
-                          key={tabla.id}
-                        >{`${tabla.calle + ' - ' + tabla.localidad}`}</option>
+                        <option value={tabla.id} key={tabla.id}>{`${
+                          tabla.calle + " - " + tabla.localidad
+                        }`}</option>
                       );
-                  })}
+                    })}
                 </select>
               </div>
             </div>
@@ -373,7 +377,6 @@ const Formfactura = () => {
           <div className="detalleCab">
             <div className="detalle">
               <table className="table table-striped bg-white">
-
                 <thead>
                   <tr className="table-success">
                     <th>Id</th>
@@ -385,79 +388,81 @@ const Formfactura = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {factdet && factdet.map((fact, i) => {
-                    return (
-                      <tr key={i} >
-                        <td>
-                          <input className='input_fact'
-                            type="text"
-                            id="prod_id"
-                            name="prod_id"
-                            value={fact.prod_id}
-                            onChange={(e) => handleTipo(e, { i })}
-                          />
-                        </td>
-                        <td>{fact.name}</td>
-                        {fact.precio > 0 ? (
-                          <td className='totaltr'>{dollarUSLocale.format(fact.precio)}</td>
-                        ) : (
-                          <td className='incluido' colSpan={3}>Incluido</td>
-                        )}
-                        {fact.precio > 0 ? (
-                          <td><input className='input_fact'
-                            type="text"
-                            id="quantity"
-                            name="quantity"
-                            value={fact.cantidad}
-                            onChange={(e) => handleTipo(e, { i })}></input>
+                  {factdet &&
+                    factdet.map((fact, i) => {
+                      return (
+                        <tr key={i}>
+                          <td>
+                            <input
+                              className="input_fact"
+                              type="text"
+                              id="prod_id"
+                              name="prod_id"
+                              value={fact.prod_id}
+                              onChange={(e) => handleTipo(e, { i })}
+                            />
                           </td>
-                        ) : (null)}
-                        {fact.precio > 0 ? (
-                          <td className='totaltr'>{dollarUSLocale.format(fact.total)}</td>
-                        ) : (null)}
-                        <td onClick={() => handleRemove(i)}>
-                          <FcDeleteRow style={estilo}
-                            onMouseEnter={({ target }) => target.style.fontSize = "200%"}
-                            onMouseLeave={({ target }) => target.style.fontSize = "150%"} />
-                        </td>
-                      </tr>
-                    )
-                  })}
+                          <td>{fact.name}</td>
+                          {fact.precio > 0 ? (
+                            <td className="totaltr">
+                              {dollarUSLocale.format(fact.precio)}
+                            </td>
+                          ) : (
+                            <td className="incluido" colSpan={3}>
+                              Incluido
+                            </td>
+                          )}
+                          {fact.precio > 0 ? (
+                            <td>
+                              <input
+                                className="input_fact"
+                                type="text"
+                                id="quantity"
+                                name="quantity"
+                                value={fact.cantidad}
+                                onChange={(e) => handleTipo(e, { i })}
+                              ></input>
+                            </td>
+                          ) : null}
+                          {fact.precio > 0 ? (
+                            <td className="totaltr">
+                              {dollarUSLocale.format(fact.total)}
+                            </td>
+                          ) : null}
+                          {btnEliminarReg ? (
+                            <td onClick={() => handleRemove(i)}>
+                            <FcDeleteRow
+                              style={estilo}
+                              onMouseEnter={({ target }) =>
+                              (target.style.fontSize = "200%")
+                            }
+                            onMouseLeave={({ target }) =>
+                            (target.style.fontSize = "150%")
+                          }
+                          />
+                          </td>
+                          ): null}
+                        </tr>
+                      );
+                    })}
                 </tbody>
               </table>
               <div className="addprod">
                 <p onClick={() => handleAdd()}>
-                  <FcAddRow style={estilo}
-                    onMouseEnter={({ target }) => target.style.fontSize = "200%"}
-                    onMouseLeave={({ target }) => target.style.fontSize = "150%"} />Agregar Producto
+                  <FcAddRow
+                    style={estilo}
+                    onMouseEnter={({ target }) =>
+                      (target.style.fontSize = "200%")
+                    }
+                    onMouseLeave={({ target }) =>
+                      (target.style.fontSize = "150%")
+                    }
+                  />
+                  Agregar Producto
                 </p>
               </div>
-              <div className="addprod">
-                <label
-                  htmlFor="descto"
-                  className="block text-gray-700 text-sm font-bold mb-2"
-                >
-                  Descuento:&nbsp;
-                </label>
-                <select
-                  name="cod"
-                  id="cod"
-                  onChange={(e) => handleTipo(e)}
-                >
-                  <option value="0">Seleccionar</option>
-                  {tabla && tabla.map((data) => {
-                      return (
-                        <option
-                          value={data.cod}
-                          key={data.cod}
-                        >{`${data.description + '  ' + data.valor + ' %'}`}</option>
-                      );
-                  })}
-                </select>
-              </div>
               <div className="addprod addprod2">
-                
-              <textarea
+                <textarea
                   type="text"
                   id="observ"
                   cols="80"
@@ -470,52 +475,62 @@ const Formfactura = () => {
                 />
               </div>
 
-              <div className='total'>
+              <div className="total">
                 <table>
                   <tbody>
-
-                    <tr className='totaltr'>
-                      <td colSpan='3' className='totaltd1'>
+                    <tr className="totaltr">
+                      <td colSpan="3" className="totaltd1">
                         Subtotal:
                       </td>
-                      <td className='totaltd2'>
+                      <td className="totaltd2">
                         {dollarUSLocale.format(subTotal)}
                       </td>
                     </tr>
-                    <tr className='totaltr'>
-                      <td colSpan='3' className='totaltd1'>
+                    <tr className="totaltr">
+                      <td colSpan="3" className="totaltd1">
                         IVA({porciva[0].valor}%)
                       </td>
-                      <td className='totaltd2'>
+                      <td className="totaltd2">
                         {dollarUSLocale.format(saleTax.toFixed(0))}
                       </td>
                     </tr>
-                    {saleDesc !== '' ? (
-                      <tr className='totaltr'>
-                        <td colSpan='3' className='totaltd1'>
+                    {saleDesc !== "" ? (
+                      <tr className="totaltr">
+                        <td colSpan="3" className="totaltd1">
                           {saleDesc}
                         </td>
-                        <td className='totaltr'>{dollarUSLocale.format(saleDescto)}</td>
+                        <td className="totaltr">
+                          {dollarUSLocale.format(saleDescto)}
+                        </td>
                       </tr>
-                    ) : (null)
-                    }
-                    <tr className='totaltr'>
-                    {acceso === "A" ? (
-                      <td >
-                        <FcOk style={estilo2}
-                          title="Crear OC"
-                          onClick={handleSubmit} />
-                      </td>
-                    ):(null)}
-                      <td >
-                        <FcLeft style={estilo2}
+                    ) : null}
+                    <tr className="totaltr">
+                      {acceso === "A" ? (
+                        <td>
+                          <FcOk
+                            style={estilo2}
+                            title="Crear OC"
+                            onClick={handleSubmit}
+                          />
+                        </td>
+                      ) : null}
+                      <td>
+                        <FcLeft
+                          style={estilo2}
                           title="Volver"
-                          onClick={() => { navigate("/cliente"); }} />
+                          onClick={() => {
+                            navigate("/cliente");
+                          }}
+                        />
                       </td>
-                      <td >
-                        <b>TOTAL A PAGAR</b>
+                      <td>
+                        {cliente[0].moneda === 2 ? (
+                          <b>TOTAL A PAGAR USD.</b>
+                        ) : (
+                          <b>TOTAL A PAGAR USD.</b>
+                        )}
                       </td>
-                      <td className='totaltd2'>
+                      <td className="totaltd2">
                         {dollarUSLocale.format(total.toFixed(0))}
                       </td>
                     </tr>
@@ -533,9 +548,7 @@ const Formfactura = () => {
         <h1>Error</h1>
       </div>
     );
-
   }
-}
-
+};
 
 export default Formfactura;

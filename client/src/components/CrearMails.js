@@ -1,5 +1,5 @@
-export default function crearMail(estado, to, factura) {
-  if (estado === "Confeccionado") {
+export default function crearMail(status, to, factura) {
+  if (status === 4) {
     return {
       subject: `Factura ${factura.id} Completada`,
       to,
@@ -17,7 +17,7 @@ export default function crearMail(estado, to, factura) {
             </table>`,
     };
   }
-  if (estado === "Espera Aprobación") {
+  if (status === 2) {
     return {
       subject: `Factura ${factura.id} Completada`,
       to,

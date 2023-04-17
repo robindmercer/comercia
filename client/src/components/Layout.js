@@ -4,6 +4,7 @@ import { Outlet } from 'react-router-dom';
 import Header from './Header';
 import { AccessCtrl } from '../actions/index'
 import { getDetailIva } from '../actions/tabla';
+import { getUsuariomenId } from "../actions/usuariomenu";
 import '../App.css'
 
 const Layout = () => {
@@ -12,17 +13,21 @@ const Layout = () => {
   const actlogin = useSelector((state) => state.actlogin)
   const { tabla } = useSelector((state) => state)
   const porciva = useSelector((state) => state.porciva)
+  const usuariomenu = useSelector((state) => state.usuariomenu);
+
   const dispatch = useDispatch()
   
   useEffect(() => {
     dispatch(getDetailIva(1));
     dispatch(AccessCtrl(id_usuario));
+    dispatch(getUsuariomenId(id_usuario));
     // dispatch(GetMenu(id_usuario));
   }, [dispatch, id_usuario]);
   
   console.log('LayOut------------------------------------');
   console.log('actlogin', actlogin);
   console.log('porciva: ', porciva);
+  console.log('usuariomenu: ', usuariomenu);
   console.log('LayOut fin--------------------------------');
   
   //console.log('actlogin.usr_id: ', actlogin[0].usr_id);

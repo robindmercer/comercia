@@ -44,7 +44,10 @@
 .dLink{
 	text-decoration: unset;
 }
-
+.row_green{
+    color:darkgreen;
+    font-weight: bold;    
+}
 .redRow{
     background-color:red;
 }

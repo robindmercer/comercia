@@ -18,12 +18,11 @@ const seq = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_
 
 router.get('/', async function (req, res, next) {
   try {
-      sql="select facturas.id,to_char(facturas.fecha,'dd/mm/yyyy') as fecha,facturas.subtotal,facturas.desc_id,facturas.iva,facturas.desc_id,facturas.descuento,facturas.total,status.description as stsdes,"
+      sql="select facturas.id,to_char(facturas.fecha,'dd/mm/yyyy') as fecha,facturas.subtotal,facturas.iva,facturas.total,status.description as stsdes,"
       sql = sql + " clientes.nombre,facturas.cod_status,facturas.observ,coalesce(control,'N') as Control "
       sql = sql + " from facturas"
       sql = sql + " join clientes on clientes.id = facturas.cli_id "
       sql = sql + " join status   on status.id_status = facturas.cod_status "
-      sql = sql + " left join tabla on tabla.id = 2 and tabla.cod = facturas.desc_id"
       const records = await seq.query(sql,
         {
           logging: console.log,
@@ -40,7 +39,7 @@ router.get('/cab', async function (req, res, next) {
   const {id} = req.query;
   if(id) {
       try {
-      sql='select facturas.id,facturas.subtotal,facturas.iva,facturas.desc_id,facturas.descuento,facturas.total,facturas.desc_id,'
+      sql='select facturas.id,facturas.subtotal,facturas.iva,facturas.total,'
       sql = sql + ' direccion.calle,direccion.localidad,direccion.cp,direccion.ciudad,direccion.pais, '
       sql = sql + ' clientes.nombre,facturas.cli_id,s.description as Status,facturas.observ  '
       sql = sql + ' from facturas'
@@ -113,7 +112,7 @@ router.put('/stat', async function (req, res, next) {
 
 router.post('/', async function (req, res, next) {
   try {
-    const { cli_id, dir_id, desc_id, fac_id, subtotal, iva, descuento,total,cod_status,observ,fecha } = req.body;
+    const { cli_id, dir_id,  fac_id, subtotal, iva, total,cod_status,observ,fecha } = req.body;
     console.log('Post Facturassss: ', req.body);
   
    if (!cli_id || !dir_id || !subtotal || !iva || !total || !cod_status  ) {
@@ -129,8 +128,8 @@ router.post('/', async function (req, res, next) {
     if (fac_id !== 0){
       return res.send("Error en la información recibida")
     } else {
-      sql=`insert into facturas (cli_id,dir_id,desc_id,subtotal,iva,descuento,total,cod_status,observ,fecha) `
-      sql= sql + `values (${cli_id},${dir_id},${desc_id},${subtotal},${iva},${descuento},${total},${cod_status},'${observ}','${fecha}') RETURNING id`
+      sql=`insert into facturas (cli_id,dir_id,subtotal,iva,total,cod_status,observ,fecha) `
+      sql= sql + `values (${cli_id},${dir_id},${subtotal},${iva},${total},${cod_status},'${observ}','${fecha}') RETURNING id`
     }
     const records = await seq.query(sql,
       {
@@ -149,7 +148,7 @@ router.post('/', async function (req, res, next) {
 
 router.put('/', async function (req, res, next) {
   try {
-    const { desc_id,  id, subtotal, iva, descuento,total,observ } = req.body;
+    const {   id, subtotal, iva, total,observ } = req.body;
 
     console.log('Put Factura: ', req.body);
   
@@ -164,10 +163,8 @@ router.put('/', async function (req, res, next) {
       sql=`update facturas set `
       // sql= sql + ` cli_id='${cli_id}',`
       // sql= sql + ` dir_id='${dir_id}',`
-      sql= sql + ` desc_id='${desc_id}',`
       sql= sql + ` subtotal='${subtotal}',`
       sql= sql + ` iva='${iva}',`
-      sql= sql + ` descuento='${descuento}',`
       sql= sql + ` total=${total},`
       sql= sql + ` cod_status=1,` 
       sql= sql + ` observ='${observ}'`

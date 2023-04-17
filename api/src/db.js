@@ -51,8 +51,8 @@ Cliente.belongsTo(Status,{foreignKey:"cod_status"});
 Tabla.hasOne(Cliente,{ foreignKey:"cod"});
 Cliente.belongsTo(Tabla,{foreignKey:"cod_cliente"});
 
-Status.hasOne(Factura,{ foreignKey:"id_status"});
-Factura.belongsTo(Status,{foreignKey:"cod_status"});
+// Tabla.hasOne(Factura,{ foreignKey:"cod"});
+// Factura.belongsTo(Tabla,{foreignKey:"cod_status"});
 
 module.exports = {
   ...sequelize.models, // para poder importar los modelos así: const { Product, Usuario } = require('./db.js');

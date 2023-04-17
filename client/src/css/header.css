@@ -1,8 +1,17 @@
-.logos{
+.logos {
     background-image: url('../images/logito.png');
-    height: 34px;
-    width: 30px;
+    height          : 34px;
+    width           : 30px;
 }
-.nav-area{
-    display:flex;    
+
+.nav-area {
+    display: flex;
+}
+.usuarioHead{
+    width:40%;
+}
+.usuarioId {
+    margin-top : 23px;
+    margin-left: 20px;
+    text-align: right;
 }

@@ -65,7 +65,7 @@ function LandingPage() {
 
   return (
     <>
-      <div className={style.landing}>.
+      <div className={style.landing}>
         <div className={style.msgContainer}>
           <form onSubmit={handleSubmit} className={style.formDetail}>
             <p className={style.title}>&nbsp;</p>

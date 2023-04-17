@@ -21,14 +21,6 @@ module.exports = (sequelize) => {
             type: DataTypes.NUMERIC,
             allowNull: false,
         },
-        descuento:{
-            type: DataTypes.NUMERIC,
-            allowNull: false,
-        },
-        desc_id:{
-            type: DataTypes.NUMERIC,
-            allowNull: false,
-        },
         total:{
             type: DataTypes.NUMERIC,
             allowNull: false,
