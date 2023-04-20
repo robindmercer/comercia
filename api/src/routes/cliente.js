@@ -15,7 +15,6 @@ const seq = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_
   native: false, // lets Sequelize know we can use pg-native for ~30% more speed
 });
 
-
 router.get('/:id', async function (req, res, next) {
   console.log("cliente con :id")
   try {
