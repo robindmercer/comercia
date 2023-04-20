@@ -34,8 +34,11 @@ const Factura = () => {
   var btnAddDatabase = false;
   var btnApproval = false;
   var btnDiploma2 = false;
+  var btnCancel = false;
   var verStatus = [];
   var muestroRegistro = false;
+
+
   // Control Botones a mostrar
   const control = (data) => {
     btnAddDatabase = false;
@@ -49,6 +52,7 @@ const Factura = () => {
       btnApproval = true;
       if (data.cod_status > 2) {
         btnDiploma2 = true;
+        btnCancel=true
       }
       verStatus.push(1, 2, 3, 4, 5, 6, 7, 8, 9);
     }
@@ -56,6 +60,7 @@ const Factura = () => {
       // Adminsitracion All
       btnAddDatabase = true;
       btnApproval = true;
+      btnCancel=true
       if (data.cod_status > 2) {
         btnDiploma2 = true;
       }
@@ -65,6 +70,7 @@ const Factura = () => {
       // Ventas all
       btnAddDatabase = true;
       btnApproval = true;
+      btnCancel=true
       if (data.cod_status === 2) {
         btnApproval = false;
         btnAddDatabase = false;
@@ -78,6 +84,7 @@ const Factura = () => {
       verStatus.push(1, 2, 3, 4, 5, 6, 7, 8, 9);
     }
     if (acceso.substring(0, 1) === "C") {
+      btnCancel=false
       btnApproval = false;
       btnAddDatabase = true;
       btnDiploma2 = false;
@@ -302,7 +309,7 @@ const Factura = () => {
                             </Link>
                           </>
                         ) : null}
-                        {data.cod_status > 1 ? (
+                        {btnCancel && data.cod_status > 1 ? (
                           <>
                             <FcCancel
                               style={estilo}

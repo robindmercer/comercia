@@ -17,7 +17,6 @@ async function refLoad() {
       { description: "Activo" },
       { description: "Congelado" },
       { description: "Confeccionado" },
-      { description: "Espera Aprobación" },
    ]).then(() => console.log('Status ha sido grabado'));
 
    Usuario.bulkCreate([

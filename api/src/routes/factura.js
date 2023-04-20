@@ -45,12 +45,12 @@ router.get('/cab', async function (req, res, next) {
       try {
       sql='select facturas.id,facturas.subtotal,facturas.iva,facturas.total,'
       sql = sql + ' direccion.calle,direccion.localidad,direccion.cp,direccion.ciudad,direccion.pais, '
-      sql = sql + ' clientes.nombre,facturas.cli_id,s.description as Status,facturas.observ  '
+      sql = sql + ' clientes.nombre,facturas.cli_id,t.description as Status,facturas.observ  '
       sql = sql + ' from facturas'
       sql = sql + ' join clientes  on clientes.id = facturas.cli_id '
       sql = sql + ' join direccion on direccion.orden = facturas.dir_id '
       sql = sql + '               and direccion.cli_id  = facturas.cli_id '
-      sql = sql + ' join status s  on s.id_status  = facturas.cod_status '
+      sql = sql + " join tabla   t            on t.id = 6 and t.cod= facturas.cod_status" 
       sql = sql + '  where facturas.id =  ' + id
   
       const records = await seq.query(sql,

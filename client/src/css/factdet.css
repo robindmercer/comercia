@@ -63,6 +63,7 @@
 .totaltr {
     height         : 30px;
     text-align-last: right;
+    margin-right: 10px;
 }
 
 .totaltd1 {
@@ -71,6 +72,7 @@
 
 .totaltd2 {
     width: 200px;
+    padding-right: 15px;
 }
 
 .dLink {

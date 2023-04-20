@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getCliente, getClienteByName } from "../../actions/cliente";
 import { getUsuariomenId } from "../../actions/usuariomenu";
+import { getDetailIva  } from "../../actions/tabla";
 import { Link } from "react-router-dom";
 import '../../css/all.css'
 import Header from '../Header';
 import { FcHome, FcBusinessman,FcCurrencyExchange } from 'react-icons/fc'
-//import Modal from "../../components/admin/formCliente"
+// import Modal from "../../components/modal"
 const Cliente = () => {
     const { cliente } = useSelector((state) => state);
     const dispatch = useDispatch();
@@ -14,10 +15,12 @@ const Cliente = () => {
     const [acceso, setAcceso] = useState("A");
     const id_usuario = localStorage.getItem("usuario");
     const usuariomenu = useSelector((state) => state.usuariomenu);
+    const { porciva } = useSelector((state) => state);
     const idProg = 6; // es el nivel 
-    const [openModal, SetOpenModal]=useState(false);
+    // const [openModal, SetOpenModal]=useState(false);
 
     useEffect(() => {
+        dispatch(getDetailIva(1))
         dispatch(getCliente());
         dispatch(getUsuariomenId(id_usuario));
         if (usuariomenu) {
@@ -133,6 +136,8 @@ const Cliente = () => {
                                                     movil: data.movil,
                                                     fijo: data.fijo,
                                                     rfc_cod: data.rfc_cod,
+                                                    idioma:data.idioma ,
+                                                    moneda:data.moneda,
                                                     cod_cliente: data.cod_cliente,
                                                     cod_status: data.cod_status
                                                 }

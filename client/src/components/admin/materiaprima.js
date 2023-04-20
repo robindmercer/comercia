@@ -27,13 +27,13 @@ const Materiaprima = () => {
             setName('');
         }
     }
-    console.log('materiaprima: ', materiaprima);
+    // console.log('materiaprima: ', materiaprima);
     //    const verDetalle = (id) =>{
     //       dispatch(getDetail(id));
     //       Setdetail(true);
     //     }
 
-    console.log('id: : ', materiaprima.id);
+    // console.log('id: : ', materiaprima.id);
 
     return (
         <>
@@ -87,9 +87,9 @@ const Materiaprima = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {materiaprima && materiaprima.map(data => {
+                        {materiaprima && materiaprima.map((data,i) => {
                             return (
-                                <tr  >
+                                <tr key={i} >
                                     <td >{data.name}</td>
                                     <td >{data.description}</td>
                                     <td >{data.udm}</td>

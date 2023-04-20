@@ -1,13 +1,13 @@
-//robin
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
+import { FcHome, FcOk, FcLeft } from "react-icons/fc";
 import { Link } from "react-router-dom";
 
 import { AddCliente, getCliente } from "../../actions/cliente";
 import { getTablaAll } from "../../actions/tabla";
 import { getStatus } from "../../actions/status";
-import { FcHome, FcOk, FcLeft } from "react-icons/fc";
+import { getDetailIva } from "../../actions/tabla";
 
 import Header from "../Header";
 import style from "../../css/cliente.css";
@@ -54,6 +54,7 @@ function ABMCliente() {
   useEffect(() => {
     dispatch(getTablaAll());
     dispatch(getStatus());
+    dispatch(getDetailIva(1));
     dispatch(getCliente(state.id));
   }, [dispatch, state.id]);
 
@@ -64,14 +65,14 @@ function ABMCliente() {
     movil: state ? state.movil : "",
     fijo: state ? state.fijo : "",
     rfc_cod: state ? state.rfc_cod : "",
-    idioma: state ? state.idioma : "1",
-    moneda: state ? state.moneda : "1",
-    cod_cliente: state ? state.cod_cliente : "1",
-    cod_status: state ? state.cod_status : "1",
+    idioma: state ? state.idioma : 1,
+    moneda: state ? state.moneda : 1,
+    cod_cliente: state ? state.cod_cliente : 1,
+    cod_status: state ? state.cod_status : 1,
   });
 
   const [errors, setErrors] = useState({});
-  console.log("tabla: ", tabla);
+  console.log("tabla: ", input);
 
   function handleChange(e) {
     e.preventDefault();
@@ -88,17 +89,19 @@ function ABMCliente() {
   }
 
   function handleTipo(e) {
+    console.log('e.target.value: ', e.target.name,e.target.value);
     e.preventDefault();
-    setInput({
-      ...input,
-      cod_cliente: e.target.value,
-    });
+    if (e.target.name==="cod_cliente")   setInput(input.cod_cliente= e.target.value);
+    if (e.target.name==="idioma")   setInput(input.idioma= e.target.value);
+    if (e.target.name==="moneda")   setInput(input.moneda= e.target.value);
+    if (e.target.name==="cod_status")   setInput(input.cod_status= e.target.value);
     setErrors(
       validate({
         ...input,
         [e.target.name]: e.target.value,
       })
-    );
+      );
+      console.log('input: ', input);
   }
 
   function handleStatus(e) {
@@ -252,8 +255,8 @@ function ABMCliente() {
                 <td>
                   <select
                     className={style.facinput}
-                    name="cod"
-                    id="tipocli"
+                    name="cod_cliente"
+                    id="cod_cliente"
                     onChange={(e) => handleTipo(e)}
                     value={input.cod_cliente}
                     placeholder="Seleccione el Tipo del Cliente"
@@ -295,7 +298,6 @@ function ABMCliente() {
                         if (tabla.id === 7 && tabla.cod !== 0) {
                           return (
                             <option
-                              selected
                               value={tabla.cod}
                               key={tabla.cod}
                             >{`${tabla.description}`}</option>
@@ -319,7 +321,7 @@ function ABMCliente() {
                     id="moneda"
                     onChange={(e) => handleTipo(e)}
                     value={input.moneda}
-                    placeholder="Seleccione el Idioma"
+                    placeholder="Seleccione el moneda"
                   >
                     <option value="0">Seleccionar</option>
                     {tabla &&

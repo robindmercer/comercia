@@ -171,9 +171,9 @@ function Formfactura() {
 
   function handleTipo(e, i) {
     e.preventDefault();
-    console.log("i: ", i);
-    console.log("e.target.name: ", e.target.name);
-    console.log("e.target.value: ", e.target.value);
+    // console.log("i: ", i);
+    // console.log("e.target.name: ", e.target.name);
+    // console.log("e.target.value: ", e.target.value);
     if (e.target.name === "miCheck") {
       for (var xcond = 0; xcond < condiciones.length; xcond++) {
         condiciones[xcond].sel = " ";
@@ -215,30 +215,6 @@ function Formfactura() {
         setOnChange(true);
       }
     }
-    // console.log('e.target.value: ', e.target.value);
-    // console.log('e.target.name: ', e.target.name);
-    // console.log('e.target.id: ', i.i);
-    // if (e.target.name === "cod") {
-    //   if (e.target.value > 0) {
-    //     setSaleDesc(e.target[e.target.value].innerText);
-    //     var desctoporc = 0;
-    //     setDesc_id(e.target.value);
-    //     tabla.forEach((z) => {
-    //       if (parseInt(z.cod) === parseInt(e.target.value)) {
-    //         desctoporc = z.valor;
-    //       }
-    //     });
-    //     var dscto = Math.round(((subTotal + saleTax) * desctoporc) / 100);
-    //     // console.log('desctoporc : ', desctoporc);
-    //     // console.log('Descuento: ', dscto);
-    //     setTotal(total - dscto);
-    //     setSaleDescto(dscto);
-    //   } else {
-    //     setSaleDesc("");
-    //     setSaleDescto(0);
-    //     setDesc_id(0);
-    //   }
-    // }
 
     if (e.target.name === "cli_id") {
       console.log("busco", e.target.value);
@@ -296,9 +272,9 @@ function Formfactura() {
     console.log("found: ", found);
 
     setInput((input.id = factcab[0].id));
-    setInput((input.subtotal = subTotal));
-    setInput((input.iva = saleTax));
-    setInput((input.total = total));
+    setInput((input.subtotal = subTotal.toFixed(0)));
+    setInput((input.iva = saleTax.toFixed(0)));
+    setInput((input.total = total.toFixed(0)));
     setInput((input.observ = factcab[0].observ));
     initialFacdet.id = 0;
     initialFacdet.fac_id = state.idfact;
@@ -328,7 +304,7 @@ function Formfactura() {
     // }
     dispatch(UpdateFactura(input, factdet, inputDet));
     dispatch(PostCondicionesFac(initialFacdet));
-    // window.location.href = "/factura";
+    window.location.href = "/factura";
   };
 
   // console.log("total: ", total);
@@ -353,7 +329,6 @@ function Formfactura() {
     // } else {
     //   factcond.push(initialFacdet);
   }
-    console.log("condiciones: ", condiciones);
 
   if (factcab.length > 0) {
     // if (saleDesc === 0 && factcab[0].descuento > 0) {
@@ -559,16 +534,18 @@ function Formfactura() {
                       <td colSpan="3" className="totaltd1">
                         Subtotal:
                       </td>
-                      <td className="totaltd2">
+                      <td className="totaltd2"><b>
                         {dollarUSLocale.format(subTotal)}
+                      </b>
                       </td>
                     </tr>
                     <tr className="totaltr">
                       <td colSpan="3" className="totaltd1">
                         IVA({porciva[0].valor}%)
                       </td>
-                      <td className="totaltd2">
+                      <td className="totaltd2"><b>
                         {dollarUSLocale.format(saleTax.toFixed(0))}
+                      </b>
                       </td>
                     </tr>
                     <tr className="totaltr">
@@ -595,8 +572,9 @@ function Formfactura() {
                       <td>
                         <b>TOTAL A PAGAR</b>
                       </td>
-                      <td className="totaltd2">
+                      <td className="totaltd2"><b>
                         {dollarUSLocale.format(total.toFixed(0))}
+                      </b>
                       </td>
                     </tr>
                   </tbody>
@@ -837,6 +815,15 @@ function Formfactura() {
       </>
     );
   } else {
+    console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
+    console.log('Logeo de Errores')
+    console.log("factcab: ", factcab);
+    console.log("factdet: ", factdet);
+    console.log("initialFacdet: ", initialFacdet);
+    console.log("input: ", input);
+    console.log("factcond: ", factcond);
+    console.log("condiciones: ", condiciones);
+    console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
     return (
       <div>
         <h1>Error</h1>

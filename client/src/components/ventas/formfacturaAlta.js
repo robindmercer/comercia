@@ -6,7 +6,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 // Acciones
 // import { getFacturaDet } from '../../actions/factdet';
 import { resetFact, AddFactura } from "../../actions/factura";
-// import { getDetailIva } from '../../actions/tabla';
+import { getDetailIva } from '../../actions/tabla';
 import { getProducto } from "../../actions/producto";
 import { getClienteId } from "../../actions/cliente";
 import { getDireccion } from "../../actions/direccion";
@@ -20,6 +20,10 @@ import { FcDeleteRow, FcAddRow, FcOk, FcLeft } from "react-icons/fc";
 import Header from "../Header";
 // CSS
 import "../../css/factdet.css";
+
+var btnGrabar = false;
+var btnAgregar = false;
+var btnEliminarReg = false;
 
 const Formfactura = () => {
   let fecha = new Date().toLocaleDateString("en-GB");
@@ -103,23 +107,15 @@ const Formfactura = () => {
   };
 
   // Manejo de Botones a ver
-  var btnGrabar = false;
-  var btnAgregar = false;
-  var btnEliminarReg = false;
 
-  const control = (data) => {
-    btnGrabar = false;
+
+  const control = () => {
+    // btnGrabar = false;
+    console.log('control1: ',     btnGrabar ,btnAgregar,btnEliminarReg);
     btnAgregar = false;
     btnEliminarReg = false;
     if (acceso === "A1") {
       // Gerencia All
-      btnGrabar = true;
-      btnAgregar = true;
-      btnEliminarReg = true;
-    }
-    if (acceso === "A1") {
-      // Gerencia All
-      btnGrabar = true;
       btnAgregar = true;
       btnEliminarReg = true;
     }
@@ -129,8 +125,9 @@ const Formfactura = () => {
       btnAgregar = false;
       btnEliminarReg = false;
     }
+    console.log('control2: ',     btnGrabar ,btnAgregar,btnEliminarReg);
   };
-
+  
   // var cantidad = []
   //console.log('factcab: ', factcab.length);
   if (factcab.length === 0) {
@@ -140,20 +137,19 @@ const Formfactura = () => {
 
   useEffect(() => {
     //dispatch(getDetail(1));
-    //dispatch(getDetailIva(1));
     dispatch(getDetail(2));
     dispatch(getProducto());
     dispatch(getClienteId(state.idCli));
     dispatch(getDireccion(state.idCli));
+    dispatch(getDetailIva(1));
     dispatch(getUsuariomenId(id_usuario));
     if (usuariomenu) {
       for (var i = 0; i < usuariomenu.length; i++) {
         if (usuariomenu[i].nivel === idProg) {
-          setAcceso(usuariomenu[i].accion);
+          setAcceso(usuariomenu[i].accion + usuariomenu[i].cod_perfil);
         }
       }
     }
-
     // return (
     //   dispatch(resetFact())
     //   )
@@ -221,7 +217,6 @@ const Formfactura = () => {
     }
   };
   const handleSubmit = () => {
-    // console.log('DirCode: ', DirCode);
     // console.log('subTotal: ', subTotal);
     // console.log('saleTax: ', saleTax);
     // console.log('Total: ', total);
@@ -234,26 +229,12 @@ const Formfactura = () => {
     setInput((input.total = total));
     setInput((input.dir_id = DirCode));
     setInput((input.cli_id = factcab[0].cli_id));
-    // console.log('factcab: ', factcab);
+    // console.log('factcab: ', factcab[0]);
     // console.log('factdet: ', factdet);
     // console.log('input: ', input);
-    if (factcab[0].dir_id === "0") {
-      alert("Debes selecionar una dirección.");
-      return;
-    }
-    if (factcab[0].subtotal === 0) {
-      alert("La Orden de Compra no puede quedar en 0");
-      return;
-    }
+
     dispatch(AddFactura(input, factdet, inputDet));
     window.location.href = "/factura";
-    // if (onChange) {
-    //   setOnChange(false)
-    // } else {
-    //   setOnChange(true)
-    // }
-    // var msg = dispatch(AddFactura(input));
-    // console.log('msg: ', msg);
   };
 
   function handleTipo(e, i) {
@@ -268,8 +249,13 @@ const Formfactura = () => {
       }
     }
     if (e.target.name === "domi") {
-      // console.log('Domicilio: ', e.target.value);
       setDirCode(e.target.value);
+      if (e.target.value > 0 )  btnGrabar = true
+      if (onChange) {
+        setOnChange(false);
+      } else {
+        setOnChange(true);
+      }      
     }
     if (e.target.name === "quantity") {
       factdet[i.i].cantidad = e.target.value;
@@ -281,7 +267,7 @@ const Formfactura = () => {
       }
     }
     if (e.target.name === "prod_id") {
-      if (e.target.value == "0") {
+      if (e.target.value === "0") {
         handleRemove(i.i);
       } else {
         for (var z = 0; z < producto.length; z++) {
@@ -304,25 +290,25 @@ const Formfactura = () => {
       }
     }
   }
-  // if (cliente) {
-  //   factcab[0].nombre = cliente[0].nombre
-  // }
 
-  console.log("Cliente_1: ", cliente, state.idCli);
-  console.log("producto: ", producto);
+
+  // console.log("Cliente_1: ", cliente, state.idCli);
+   console.log("acceso: ", acceso);
 
   // console.log('factcab: ', factcab);
   // console.log('factdet: ', factdet);
   // console.log('porciva: ', porciva,porciva.length);
   // console.log('tabla: ', tabla);
   //   if (porciva.length === 1){
-  //     if (onIva) {
-  //       setOnIva(false)
+    //     if (onIva) {
+      //       setOnIva(false)
   //     } else {
   //       setOnIva(true)
   //     }
   // }
+  // console.log('direccion: ', direccion);
   if (factcab.length > 0) {
+    control();
     return (
       <>
         <Header />
@@ -359,13 +345,17 @@ const Formfactura = () => {
                 >
                   Seleccione Domicilio:
                 </label>
-                <select name="domi" id="domi" onChange={(e) => handleTipo(e)}>
+                <select 
+                name="domi" 
+                id="domi" 
+                onChange={(e) => handleTipo(e)}
+                >
                   <option value="0">Seleccionar</option>
                   {direccion &&
-                    direccion.map((tabla) => {
+                    direccion.map((direc) => {
                       return (
-                        <option value={tabla.id} key={tabla.id}>{`${
-                          tabla.calle + " - " + tabla.localidad
+                        <option value={direc.orden} key={direc.orden}>{`${
+                          direc.calle + " - " + direc.localidad
                         }`}</option>
                       );
                     })}
@@ -505,7 +495,7 @@ const Formfactura = () => {
                       </tr>
                     ) : null}
                     <tr className="totaltr">
-                      {acceso === "A" ? (
+                      {acceso === "A1" && btnGrabar ? (
                         <td>
                           <FcOk
                             style={estilo2}
@@ -527,7 +517,7 @@ const Formfactura = () => {
                         {cliente[0].moneda === 2 ? (
                           <b>TOTAL A PAGAR USD.</b>
                         ) : (
-                          <b>TOTAL A PAGAR USD.</b>
+                          <b>TOTAL A PAGAR</b>
                         )}
                       </td>
                       <td className="totaltd2">

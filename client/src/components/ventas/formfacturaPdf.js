@@ -67,13 +67,13 @@ const FormfacturaPDF = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, id_usuario]);
 
-  // console.log("formFactura---------------------------------------------------");
-  console.log("factcond: ", factcond);
+   console.log("formFactura---------------------------------------------------");
+   console.log("tate.idfact ", state.idfact);
   // console.log("total: ", total);
   // console.log("usuariomenu: ", usuariomenu);
   // console.log("acceso: ", acceso);
   // console.log("porciva: ", porciva);
-  // console.log("formFactura---------------------------------------------------");
+   console.log("formFactura---------------------------------------------------");
 
   if (factcab.length > 0) {
     return (
@@ -344,6 +344,12 @@ const FormfacturaPDF = () => {
       </>
     );
   } else {
+    console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
+    console.log('Logeo de Errores')
+    console.log("factcab: ", factcab);
+    console.log("factdet: ", factdet);
+    console.log("factcond: ", factcond);
+    console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
     return (
       <div>
         <h1>Error</h1>
