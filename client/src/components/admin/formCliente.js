@@ -134,6 +134,8 @@ function ABMCliente() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("input", input);
+    if (input.nombre === ''){ return alert('Debe ingresar un Nombre') }
+    if (input.email === ''){ return alert('Debe ingresar una direccion de Mail') }
     dispatch(AddCliente(input));
     //navigate("/cliente");
     window.location.href = "/cliente";

@@ -121,6 +121,24 @@ function ABMDireccion() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('input', input);
+    if (input.calle === "") {
+      return alert("Debe Ingresar un Calle");
+    }
+  
+    if (input.localidad === "") {
+      return alert("Debe Ingresar una Localidad");
+    }
+    if (input.cp === "") {
+      return alert("Debe Ingresar el codigo postal");
+    }
+    if (input.ciudad === "") {
+      return alert("Debe Ingresar la Cuidad");
+    }
+    if (input.pais === "") {
+      return alert("Debe Ingresar el Pais");
+    }
+  
+
     dispatch(AddDireccion(input));
     window.location.href = "/cliente";
   };

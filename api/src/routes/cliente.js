@@ -76,6 +76,7 @@ router.get('/', async function (req, res, next) {
 router.post('/', async function (req, res, next) {
   try {
     const {id,nombre,email,movil,fijo,rfc_cod,idioma,moneda,cod_cliente,cod_status} = req.body
+    console.log('req.body: ', req.body);
     if (id != 0){
       sql=`update clientes set `
       sql= sql + ` nombre='${nombre}',`
