@@ -303,7 +303,7 @@ function Formfactura() {
     // }
     dispatch(UpdateFactura(input, factdet, inputDet));
     dispatch(PostCondicionesFac(initialFacdet));
-    // window.location.href = "/factura";
+    window.location.href = "/factura";
   };
 
   // console.log("total: ", total);
