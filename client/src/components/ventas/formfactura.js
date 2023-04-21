@@ -276,7 +276,11 @@ function Formfactura() {
     setInput((input.iva = saleTax.toFixed(0)));
     setInput((input.total = total.toFixed(0)));
     setInput((input.observ = factcab[0].observ));
-    initialFacdet.id = 0;
+    if (tieneCG === 1) {
+      initialFacdet.id = 1;  // si ya tiene una C.General grabada el id es siempre 1
+    } else {
+      initialFacdet.id = 0;
+    }
     initialFacdet.fac_id = state.idfact;
     initialFacdet.cond_id = found.id;
     initialFacdet.descuento = found.descuento;
@@ -292,24 +296,24 @@ function Formfactura() {
     console.log("factcond: ", factcond);
     console.log("condiciones: ", condiciones);
     // console.log("tieneCG",tieneCG );
-    
+
     // if (factcab[0].subtotal === 0) {
-      //   alert("La Orden de Compra no puede quedar en 0");
+    //   alert("La Orden de Compra no puede quedar en 0");
     //   return;
     // }
     dispatch(UpdateFactura(input, factdet, inputDet));
     dispatch(PostCondicionesFac(initialFacdet));
     // window.location.href = "/factura";
   };
-  
+
   // console.log("total: ", total);
   // console.log("usuariomenu: ", usuariomenu);
   // console.log("acceso: ", acceso);
   // console.log("porciva: ", porciva);
-  
+
   if (factcond.length !== 0 && condiciones) {
     console.log("factcond: ", factcond);
-    setTieneCG(1)
+    setTieneCG(1);
     for (var xi = 0; xi < condiciones.length; xi++) {
       if (factcond[0].cond_id === condiciones[xi].id) {
         condiciones[xi].descuento = factcond[0].descuento;
@@ -325,7 +329,7 @@ function Formfactura() {
     // } else {
     //   factcond.push(initialFacdet);
   }
-  console.log("tieneCG",tieneCG );
+  console.log("tieneCG", tieneCG);
 
   if (factcab.length > 0) {
     // if (saleDesc === 0 && factcab[0].descuento > 0) {
@@ -531,18 +535,16 @@ function Formfactura() {
                       <td colSpan="3" className="totaltd1">
                         Subtotal:
                       </td>
-                      <td className="totaltd2"><b>
-                        {dollarUSLocale.format(subTotal)}
-                      </b>
+                      <td className="totaltd2">
+                        <b>{dollarUSLocale.format(subTotal)}</b>
                       </td>
                     </tr>
                     <tr className="totaltr">
                       <td colSpan="3" className="totaltd1">
                         IVA({porciva[0].valor}%)
                       </td>
-                      <td className="totaltd2"><b>
-                        {dollarUSLocale.format(saleTax.toFixed(0))}
-                      </b>
+                      <td className="totaltd2">
+                        <b>{dollarUSLocale.format(saleTax.toFixed(0))}</b>
                       </td>
                     </tr>
                     <tr className="totaltr">
@@ -569,9 +571,8 @@ function Formfactura() {
                       <td>
                         <b>TOTAL A PAGAR</b>
                       </td>
-                      <td className="totaltd2"><b>
-                        {dollarUSLocale.format(total.toFixed(0))}
-                      </b>
+                      <td className="totaltd2">
+                        <b>{dollarUSLocale.format(total.toFixed(0))}</b>
                       </td>
                     </tr>
                   </tbody>
@@ -604,7 +605,7 @@ function Formfactura() {
                           if (cond.id === 1) {
                             xEnganche = 0;
                             xFinanciar = 0;
-                            xTotal = total ;
+                            xTotal = total;
                             return (
                               <>
                                 <tr key={i * 10}>
@@ -628,14 +629,15 @@ function Formfactura() {
                                   </td>
                                 </tr>
                               </>
-                            );}
+                            );
+                          }
                           if (cond.id === 2) {
                             xEnganche = 0;
                             xFinanciar = 0;
                             xTotal = total - (total * cond.descuento) / 100;
                           }
-                            return (
-                              <>
+                          return (
+                            <>
                               <tr key={i * 10}>
                                 <td>{cond.nombre}</td>
                                 <td>
@@ -689,7 +691,7 @@ function Formfactura() {
                                     name="miCheck"
                                     checked
                                     onChange={(e) => handleTipo(e, { i })}
-                                    ></input>
+                                  ></input>
                                 </td>
                               </tr>
                               <tr>
@@ -742,7 +744,6 @@ function Formfactura() {
                               </tr>
                             </>
                           );
-                        
                         } else {
                           return (
                             <tr key={i}>
@@ -812,15 +813,15 @@ function Formfactura() {
       </>
     );
   } else {
-    console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
-    console.log('Logeo de Errores')
+    console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+    console.log("Logeo de Errores");
     console.log("factcab: ", factcab);
     console.log("factdet: ", factdet);
     console.log("initialFacdet: ", initialFacdet);
     console.log("input: ", input);
     console.log("factcond: ", factcond);
     console.log("condiciones: ", condiciones);
-    console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
+    console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
     return (
       <div>
         <h1>Error</h1>
