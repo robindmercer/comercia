@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import Pdf from "react-to-pdf";
 // Iconos
-import {FcLeft } from "react-icons/fc";
+import { FcLeft } from "react-icons/fc";
 
 // Acciones
 import { getFacturaDet } from "../../actions/factdet";
@@ -20,6 +20,25 @@ import style from "../../css/factdetPdf.module.css";
 import imagen from "../../images/logospdf.png";
 
 const ref = React.createRef();
+// var campos del PDF
+var xCliente = "Cliente";
+var xFecha = "Fecha";
+var xCalle = "Calle";
+var xLocalidad = "Localidad CP";
+var xCiudad = "Ciudad";
+var xPais = "Pais";
+var xUnidad = "Unidad";
+var xDescripcion = "Descripción";
+var xPrecio = "Precio";
+var xCant = "Cant";
+var xTotal = "Total";
+var xIncluido = "Incluido";
+var xTotPag = "TOTAL A PAGAR";
+var xCond = "Condiciones Generales";
+var xImporte = "Importe";
+var xIva = "Iva";
+var xProdName = ""
+var xProdDescrip = ""
 
 const FormfacturaPDF = () => {
   // Manejo acceso del Usuario
@@ -67,13 +86,35 @@ const FormfacturaPDF = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, id_usuario]);
 
-   console.log("formFactura---------------------------------------------------");
-   console.log("tate.idfact ", state.idfact);
+  console.log("formFactura---------------------------------------------------");
+  console.log("state.idfact ", state.idfact);
   // console.log("total: ", total);
   // console.log("usuariomenu: ", usuariomenu);
   // console.log("acceso: ", acceso);
   // console.log("porciva: ", porciva);
-   console.log("formFactura---------------------------------------------------");
+  console.log("factcab: ", factcab);
+  console.log("factdet: ", factdet);
+  console.log("formFactura---------------------------------------------------");
+
+  if (factcab.length > 0) {
+    if (factcab[0].idioma === 2) {
+      xCliente = "Client";
+      xFecha = "Date";
+      xCalle = "Street";
+      xLocalidad = "Postal Code";
+      xCiudad = "City";
+      xPais = "Country";
+      xUnidad = "Units";
+      xDescripcion = "Description";
+      xPrecio = "Price";
+      xCant = "Amount";
+      xTotPag = "TOTAL PAYMENT";
+      xCond = "General Conditions";
+      xImporte = "Amount";
+      xIncluido = "Included";
+      xIva = "Tax";
+    }
+  }
 
   if (factcab.length > 0) {
     return (
@@ -91,28 +132,28 @@ const FormfacturaPDF = () => {
             <div>
               <div>
                 <div className={style.colCab0}>
-                  Cliente : &nbsp;<b>{factcab[0].nombre}</b>
+                  {xCliente} : &nbsp;<b>{factcab[0].nombre}</b>
                 </div>
               </div>
               <div className={style.colCab0}>
-                <div>Fecha: 12/11/2022</div>
+                <div>{xFecha}: 12/11/2022</div>
               </div>
               <div className={style.row}>
-                <div className={style.colCab1}>Calle</div>
+                <div className={style.colCab1}>{xCalle}</div>
                 <div className={style.colCab2}>{factcab[0].calle}</div>
               </div>
               <div className={style.row}>
-                <div className={style.colCab1}>Localidad CP</div>
+                <div className={style.colCab1}>{xLocalidad}</div>
                 <div className={style.colCab2}>
                   {factcab[0].localidad} ({factcab[0].cp})
                 </div>
               </div>
               <div className={style.row}>
-                <div className={style.colCab1}>Ciudad</div>
+                <div className={style.colCab1}>{xCiudad}</div>
                 <div className={style.colCab2}>{factcab[0].ciudad}</div>
               </div>
               <div className={style.row}>
-                <div className={style.colCab1}>Pais</div>
+                <div className={style.colCab1}>{xPais}</div>
                 <div className={style.colCab2}>{factcab[0].pais}</div>
               </div>
             </div>
@@ -123,33 +164,34 @@ const FormfacturaPDF = () => {
               <table className="table table-striped bg-white">
                 <thead>
                   <tr className="table-success">
-                    <th>Unidad</th>
-                    <th>Descripción</th>
-                    <th>Precio</th>
-                    <th>Cant.</th>
-                    <th>Total</th>
+                    <th>{xUnidad}</th>
+                    <th>{xDescripcion}</th>
+                    <th>{xPrecio}</th>
+                    <th>{xCant}</th>
+                    <th>{xTotal}</th>
                   </tr>
                 </thead>
                 <tbody>
                   {factdet &&
                     factdet.map((fact, i) => {
+                      xProdName = fact.name
+                      xProdDescrip = fact.decription
+                      if (factcab[0].idioma === 2) xProdName = fact.nameext
+                      if (factcab[0].idioma === 2) xProdDescrip = fact.descripext
                       return (
                         <tr key={i}>
-                          <td>{fact.name}</td>
-                          <td>{fact.description}</td>
+                          <td>{xProdName}</td>
+                          <td>{xProdDescrip}</td>
                           {fact.precio > 0 ? (
                             <td className="totaltr">
                               {dollarUSLocale.format(fact.precio)}
                             </td>
                           ) : (
                             <td className={style.incluido} colSpan={3}>
-                              Incluido
+                              {xIncluido}
                             </td>
                           )}
-                          {fact.precio > 0 ? (
-                            <td>{fact.cantidad}
-                            </td>
-                          ) : null}
+                          {fact.precio > 0 ? <td>{fact.cantidad}</td> : null}
                           {fact.precio > 0 ? (
                             <td className="totaltr">
                               {dollarUSLocale.format(fact.total)}
@@ -173,7 +215,7 @@ const FormfacturaPDF = () => {
                     </tr>
                     <tr className="totaltr">
                       <td colSpan="3" className="totaltd1">
-                        IVA({porciva[0].valor}%)
+                        {xIva}({porciva[0].valor}%)
                       </td>
                       <td className="totaltd2">
                         {dollarUSLocale.format(factcab[0].iva)}
@@ -181,7 +223,7 @@ const FormfacturaPDF = () => {
                     </tr>
                     <tr className="totaltr">
                       <td colSpan="3">
-                        <b>TOTAL A PAGAR</b>
+                        <b>{xTotPag}</b>
                       </td>
                       <td className="totaltd2">
                         {dollarUSLocale.format(factcab[0].total)}
@@ -196,16 +238,17 @@ const FormfacturaPDF = () => {
             </div>
           </div>
           {/* Condiciones Generales  */}
+          { factcond.length > 0 ? (
           <div className="addprod addprod2">
             <table className="table table-striped bg-white">
               <thead>
                 <tr className="table-success">
-                  <th colSpan={3}>Condiciones Generales</th>
+                  <th colSpan={3}>{xCond}</th>
                 </tr>
                 <tr className="table-success">
-                  <th>Descripción</th>
+                  <th>{xDescripcion}</th>
                   <th>&nbsp;</th>
-                  <th>Importe</th>
+                  <th>{xImporte}</th>
                 </tr>
               </thead>
               <tbody>
@@ -218,11 +261,11 @@ const FormfacturaPDF = () => {
                     var xPorMes = xFinanciar * (cond.interes / 100) * xAnos;
                     var xPagoMens = (xFinanciar + xPorMes) / cond.meses;
                     var xTotal = xPagoMens * cond.meses;
-                    console.log("total: ", factcab[0].total);
-                    console.log("xEnganche: ", xEnganche);
-                    console.log("xFinanciar: ", xFinanciar);
-                    console.log("xTotal: ", xTotal);
-                    console.log("cond.id: ", cond.cond_id);
+                    // console.log("total: ", factcab[0].total);
+                    // console.log("xEnganche: ", xEnganche);
+                    // console.log("xFinanciar: ", xFinanciar);
+                    // console.log("xTotal: ", xTotal);
+                    // console.log("cond.id: ", cond.cond_id);
                     if (cond.cond_id === 1) {
                       xEnganche = 0;
                       xFinanciar = 0;
@@ -234,7 +277,7 @@ const FormfacturaPDF = () => {
                             <td colSpan={2}>&nbsp;</td>
                           </tr>
                           <tr>
-                            <td>Total a Pagar</td>
+                            <td>{xTotPag}</td>
                             <td className="totaltr">
                               {dollarUSLocale.format(xTotal)}
                             </td>
@@ -269,7 +312,7 @@ const FormfacturaPDF = () => {
                             </td>
                           </tr>
                           <tr>
-                            <td colSpan={2}>Total a Pagar</td>
+                            <td colSpan={2}>{xTotPag}</td>
                             <td className="totaltr">
                               {dollarUSLocale.format(xTotal.toFixed(0))}
                             </td>
@@ -281,7 +324,7 @@ const FormfacturaPDF = () => {
                       return (
                         <>
                           <tr>
-                            <td colSpan={2}>Total Factura</td>
+                            <td colSpan={2}>Total</td>
                             <td className="totaltr">
                               {dollarUSLocale.format(factcab[0].total)}
                             </td>
@@ -322,6 +365,8 @@ const FormfacturaPDF = () => {
               </tbody>
             </table>
           </div>
+          ): (null)
+          }
           <div>
             <p>
               NIBBOT INTERNATIONAL - RFC NIN180922KJ2 - San Luis, S.L.P.
@@ -330,13 +375,13 @@ const FormfacturaPDF = () => {
           </div>
         </div>
         <div>
-                        <FcLeft
-                          style={estilo2}
-                          title="Volver"
-                          onClick={() => {
-                            navigate("/factura");
-                          }}
-                        />
+          <FcLeft
+            style={estilo2}
+            title="Volver"
+            onClick={() => {
+              navigate("/factura");
+            }}
+          />
         </div>
         <Pdf targetRef={ref} filename="post.pdf">
           {({ toPdf }) => <button onClick={toPdf}>Crear PDF</button>}
@@ -344,12 +389,12 @@ const FormfacturaPDF = () => {
       </>
     );
   } else {
-    console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
-    console.log('Logeo de Errores')
+    console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+    console.log("Logeo de Errores");
     console.log("factcab: ", factcab);
     console.log("factdet: ", factdet);
     console.log("factcond: ", factcond);
-    console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
+    console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
     return (
       <div>
         <h1>Error</h1>

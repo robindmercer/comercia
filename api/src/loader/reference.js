@@ -1,6 +1,6 @@
 require('dotenv').config();
 const { Usuario, Perfil, Status, Perfilmenu, Menu, Usuariomenu,  Tabla, Cliente} = require('../db')
-const {Factcond,Condiciones, Direccion,ProductoLang,Producto,Materiaprima,Factura,Factdet,Prodmp } = require('../db');
+const {Factcond,Condiciones, Direccion,Productolang,Producto,Materiaprima,Factura,Factdet,Prodmp } = require('../db');
 
 async function refLoad() {
 
@@ -153,7 +153,7 @@ async function refLoad() {
       { cli_id:4, orden:1, calle: 'Salta 252', localidad: 'Bella vista', cp: '1661', ciudad: 'Bella vista', pais: 'Argentina',cod_tipo:1,cod_status: 1 },
    ]).then(() => console.log('Direccion grabados'));
 
-   ProductoLang.bulkCreate([
+   Productolang.bulkCreate([
       {
          id: 1,
          lang: "ENG",
@@ -443,9 +443,9 @@ async function refLoad() {
    ]).then(() => console.log('Condiciones grabados'));
   
    Factcond.bulkCreate([
-      {id:1,fac_id:1,cond_id:2,descuento:15,enganche:0,meses:0,interes:0},
-      {id:2,fac_id:2,cond_id:2,descuento:15,enganche:0,meses:0,interes:0},
-      {id:3,fac_id:3,cond_id:2,descuento:15,enganche:0,meses:0,interes:0},
+      {fac_id:1,cond_id:2,descuento:15,enganche:0,meses:0,interes:0},
+      {fac_id:2,cond_id:2,descuento:15,enganche:0,meses:0,interes:0},
+      {fac_id:3,cond_id:2,descuento:15,enganche:0,meses:0,interes:0},
    ]).then(() => console.log('Factcond ha sido grabado'));
 
 

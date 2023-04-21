@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
-import { AddProductoLang, getProductoLangId } from "../../actions/productoLang";
+import { AddProductoLang, getProductoLangId } from "../../actions/productolang";
 import Header from '../Header';
 import '../../css/all.css'
 import '../../css/formProducto.css'
@@ -34,7 +34,7 @@ function ABMProductoLang() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   //const { producto } = useSelector((state) => state);
-  var { productoLang } = useSelector((state) => state);
+  var { productolang } = useSelector((state) => state);
   
   useEffect(() => {
     dispatch(getProductoLangId(state.id));
@@ -47,29 +47,29 @@ function ABMProductoLang() {
   });
   
   const [errors, setErrors] = useState({});
-  //console.log('producto lang: ', productoLang);
-  if (productoLang) {
-    input.id= productoLang.id
-    input.name= productoLang.name 
-    input.description= productoLang.description 
-    input.lang=  productoLang.lang 
+  //console.log('producto lang: ', productolang);
+  if (productolang) {
+    input.id= productolang.id
+    input.name= productolang.name 
+    input.description= productolang.description 
+    input.lang=  productolang.lang 
   } else {
     input.id= 0
     input.name= ''
     input.description=''
     input.lang=  'ENG'
     if (input){
-      productoLang = input
+      productolang = input
     }
   }
   // console.log('input: ', input);
-  // console.log('productoLang: ', productoLang);
+  // console.log('productolang: ', productolang);
   
   function handleChange(e) {
     e.preventDefault();
-    if (e.target.name === "lang" ) productoLang.lang = e.target.value
-    if (e.target.name === "description" ) productoLang.description = e.target.value
-    if (e.target.name === "name" ) productoLang.name = e.target.value
+    if (e.target.name === "lang" ) productolang.lang = e.target.value
+    if (e.target.name === "description" ) productolang.description = e.target.value
+    if (e.target.name === "name" ) productolang.name = e.target.value
     
     setInput({
       ...input,
@@ -81,7 +81,7 @@ function ABMProductoLang() {
         [e.target.name]: e.target.value,
       })
       );
-      console.log('e.target.name: ', e.target.name, e.target.value,productoLang);
+      console.log('e.target.name: ', e.target.name, e.target.value,productolang);
     }
     
     const handleSubmit = (e) => {
@@ -145,7 +145,7 @@ function ABMProductoLang() {
                   htmlFor="description"
                   className="block text-gray-700 text-sm font-bold mb-2"
                 >
-                  Descripción de productoLang:{" "}
+                  Descripción de productolang:{" "}
                 </label>
                 <textarea
                   type="text"

@@ -4,10 +4,10 @@ import { GET_PRODUCTOSLANG } from './constant'
 export function getProductoLang(){
     console.log('Action getProductoLang: All');
      return async function (dispatch) {
-         var productoLang = await axios.get(`/productoLang`);
+         var productolang = await axios.get(`/productolang`);
          return dispatch({
              type: GET_PRODUCTOSLANG,
-             payload: productoLang.data
+             payload: productolang.data
          })
      }
  }
@@ -15,17 +15,17 @@ export function getProductoLang(){
  export function getProductoLangId(id){
   console.log('Action getProductoLang: All');
    return async function (dispatch) {
-       var productoLang = await axios.get(`/productoLang/${id}`);
+       var productolang = await axios.get(`/productolang/${id}`);
        return dispatch({
            type: GET_PRODUCTOSLANG,
-           payload: productoLang.data
+           payload: productolang.data
        })
    }
 }
 
- export function AddProductoLang(productoLang) {
+ export function AddProductoLang(productolang) {
     return function (dispatch) {
-      axios.post('/productoLang', productoLang)
+      axios.post('/productolang', productolang)
         .then(response => {
           return response
         })
@@ -35,9 +35,9 @@ export function getProductoLang(){
     }
   }
   
-  export function UpdateProductoLang(productoLang) {
+  export function UpdateProductoLang(productolang) {
     return function (dispatch) {
-      axios.put('/productoLang', productoLang)
+      axios.put('/productolang', productolang)
         .then(response => {
           return response
         })
@@ -49,7 +49,7 @@ export function getProductoLang(){
 
   export function ChangeStatus(id) {
     return function (dispatch) {
-      axios.put(`/productoLang/status/${id}`)
+      axios.put(`/productolang/status/${id}`)
         .then(response => {
           return response
         })

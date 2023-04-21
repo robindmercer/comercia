@@ -52,7 +52,7 @@ function Formfactura() {
 
   const [subTotal, setSubTotal] = useState(0);
   const [saleTax, setSaleTax] = useState(0);
-  const [saleDesc, setSaleDesc] = useState(0);
+  const [tieneCG, setTieneCG] = useState(0);
   const [total, setTotal] = useState(0);
 
   // Formato Numeros
@@ -284,9 +284,6 @@ function Formfactura() {
     initialFacdet.meses = found.meses;
     initialFacdet.interes = found.interes;
 
-    console.log(
-      "formFactura---------------------------------------------------"
-    );
     console.log("state.idfact: ", state.idfact);
     console.log("factcab: ", factcab);
     console.log("factdet: ", factdet);
@@ -294,19 +291,17 @@ function Formfactura() {
     console.log("input: ", input);
     console.log("factcond: ", factcond);
     console.log("condiciones: ", condiciones);
-    console.log(
-      "formFactura---------------------------------------------------"
-    );
-
+    // console.log("tieneCG",tieneCG );
+    
     // if (factcab[0].subtotal === 0) {
-    //   alert("La Orden de Compra no puede quedar en 0");
+      //   alert("La Orden de Compra no puede quedar en 0");
     //   return;
     // }
     dispatch(UpdateFactura(input, factdet, inputDet));
     dispatch(PostCondicionesFac(initialFacdet));
-    window.location.href = "/factura";
+    // window.location.href = "/factura";
   };
-
+  
   // console.log("total: ", total);
   // console.log("usuariomenu: ", usuariomenu);
   // console.log("acceso: ", acceso);
@@ -314,6 +309,7 @@ function Formfactura() {
   
   if (factcond.length !== 0 && condiciones) {
     console.log("factcond: ", factcond);
+    setTieneCG(1)
     for (var xi = 0; xi < condiciones.length; xi++) {
       if (factcond[0].cond_id === condiciones[xi].id) {
         condiciones[xi].descuento = factcond[0].descuento;
@@ -329,6 +325,7 @@ function Formfactura() {
     // } else {
     //   factcond.push(initialFacdet);
   }
+  console.log("tieneCG",tieneCG );
 
   if (factcab.length > 0) {
     // if (saleDesc === 0 && factcab[0].descuento > 0) {

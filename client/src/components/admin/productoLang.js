@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getProductoLang } from "../../actions/productoLang";
+import { getProductoLang } from "../../actions/productolang";
 import { Link } from "react-router-dom";
 import '../../css/producto.css'
 import Header from '../Header';
 const ProductoLang = () => {
-    const { productoLang } = useSelector((state) => state);
+    const { productolang } = useSelector((state) => state);
     const dispatch = useDispatch();
     
     useEffect(() => {
@@ -13,7 +13,7 @@ const ProductoLang = () => {
     }, [dispatch]);
     //   //const navigate = useNavigate();
     
-    console.log('productoLang: ', productoLang);
+    console.log('productolang: ', productolang);
 
 
   return (
@@ -33,7 +33,7 @@ const ProductoLang = () => {
          </tr>
      </thead>
      <tbody>
-         {productoLang && productoLang.map(prod => { 
+         {productolang && productolang.map(prod => { 
              return (
                  <tr key={prod.id} >
                      <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{prod.id}</td>

@@ -19,7 +19,7 @@ const seq = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_
 router.get('/', async function (req, res, next) {
   try {
       sql="select f.id,to_char(f.fecha,'dd/mm/yyyy') as fecha,f.subtotal,f.iva,f.total,t.description as stsdes,"
-      sql = sql + " c.nombre,f. cod_status,f. observ, "
+      sql = sql + " c.nombre,f. cod_status,f. observ, c.moneda,c.idioma,"
       sql = sql + " coalesce(fc.descuento,0)  fde,coalesce(fc.enganche,0) fen,coalesce(fc.meses,0) fme,coalesce(fc.interes,0) finter,"
       sql = sql + " coalesce(con.descuento,0) de, coalesce(con.enganche,0) en,coalesce(con.meses,0) me,coalesce(con.interes,0) inter"
       sql = sql + " from facturas f" 
@@ -43,15 +43,15 @@ router.get('/cab', async function (req, res, next) {
   const {id} = req.query;
   if(id) {
       try {
-      sql='select facturas.id,facturas.subtotal,facturas.iva,facturas.total,'
-      sql = sql + ' direccion.calle,direccion.localidad,direccion.cp,direccion.ciudad,direccion.pais, '
-      sql = sql + ' clientes.nombre,facturas.cli_id,t.description as Status,facturas.observ  '
-      sql = sql + ' from facturas'
-      sql = sql + ' join clientes  on clientes.id = facturas.cli_id '
-      sql = sql + ' join direccion on direccion.orden = facturas.dir_id '
-      sql = sql + '               and direccion.cli_id  = facturas.cli_id '
-      sql = sql + " join tabla   t            on t.id = 6 and t.cod= facturas.cod_status" 
-      sql = sql + '  where facturas.id =  ' + id
+      sql='select f.id,f.subtotal,f.iva,f.total,'
+      sql = sql + ' d.calle,d.localidad,d.cp,d.ciudad,d.pais, '
+      sql = sql + ' c.nombre,f.cli_id,t.description as Status,f.observ, c.moneda,c.idioma'
+      sql = sql + ' from facturas f'
+      sql = sql + ' join clientes c on c.id = f.cli_id '
+      sql = sql + ' join direccion d on d.orden = f.dir_id '
+      sql = sql + '               and d.cli_id  = f.cli_id '
+      sql = sql + " join tabla   t            on t.id = 6 and t.cod= f.cod_status" 
+      sql = sql + '  where f.id =  ' + id
   
       const records = await seq.query(sql,
         {

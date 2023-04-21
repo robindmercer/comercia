@@ -22,7 +22,7 @@ export const menuItems = [
       {
         title: 'Traducciones',
         nivel: 4,
-        url: '/productoLang',
+        url: '/productolang',
       },
       {
         title: 'Materia Prima',

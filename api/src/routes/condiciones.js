@@ -82,7 +82,7 @@ router.post('/fact', async function (req, res, next) {
   try {
     const {id,fac_id,cond_id,descuento,enganche,meses,interes} = req.body
     console.log('POST req.body: ', req.body);
-    if (fac_id !== 0){
+    if (id !== 0){
       sql=`update factcond set `
       sql= sql + ` cond_id='${cond_id}',`
       sql= sql + ` descuento='${descuento}',`

@@ -4,7 +4,7 @@
 const { DataTypes, Sequelize } = require('sequelize');
 
 module.exports = (sequelize) => {
-    sequelize.define('productoLang', {
+    sequelize.define('productolang', {
         id:{
             type: DataTypes.INTEGER,
             allowNull: false,
@@ -24,6 +24,6 @@ module.exports = (sequelize) => {
             allowNull: false,
         },             
     },
-        { timestamps: false }
+        { freezeTableName: true, timestamps: false }
     );
 }

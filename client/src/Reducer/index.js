@@ -12,7 +12,7 @@ const initialState = {
   perfil:[],
   status:[],
   producto:[],
-  productoLang:[],
+  productolang:[],
   tabla:[],
   cliente:[],
   factura:[],
@@ -112,7 +112,7 @@ const rootReducer = (state = initialState, action) => {
   if (action.type === GET_PRODUCTOSLANG) {
     return {
       ...state,
-      productoLang: action.payload,
+      productolang: action.payload,
     }
   }   
   if (action.type === GET_PRODUCTOSID) {

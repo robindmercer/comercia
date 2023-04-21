@@ -22,7 +22,7 @@ router.get('/', async function (req, res, next) {
     
     sql='select factdet.*,producto.name'
     sql = sql + ' from factdet'
-    sql = sql + ' join producto on producto.id = factdet.fac_id'
+    sql = sql + ' join producto on producto.id = factdet.prod_id'
     if(fac_id) {
       sql = sql + ' where fac_id = '+   fac_id 
     }
@@ -37,15 +37,16 @@ router.get('/', async function (req, res, next) {
   } catch (error) {
     console.log(error)
   }
-
+  
 })
 
 router.get('/det', async function (req, res, next) {
   const {id} = req.query;
   if(id) {
-      try {
-      sql='select factdet.*,productos.name,productos.description from factdet '
+    try {
+      sql='select factdet.*,productos.name,productos.description,l.name nameExt,l.description descripExt from factdet '
       sql = sql + ' join productos on productos.id = factdet.prod_id'
+      sql = sql + ' join productolang l on l.id = factdet.prod_id'
       sql = sql + ' where fac_id = ' + id
       const records = await seq.query(sql,
         {

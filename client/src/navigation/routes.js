@@ -16,7 +16,7 @@ import FormUsuario from '../components/admin/formUsuario'
 import Landing from '../components/Landing/Landing'
 import MateriaPrima from '../components/admin/materiaprima'
 import Producto from '../components/admin/producto';
-import ProductoLang from '../components/admin/productoLang';
+import ProductoLang from '../components/admin/productolang';
 import Tablas from '../components/admin/tablas'
 import Usuarios from '../components/admin/usuario';
 import Factura from '../components/ventas/factura'
@@ -56,7 +56,7 @@ function HandleRoutes() {
             private: true,
         },
         {
-            path: "/productoLang",
+            path: "/productolang",
             element: <ProductoLang />,
             exact: true,
             private: true,
