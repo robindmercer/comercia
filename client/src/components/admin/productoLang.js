@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getProductoLang } from "../../actions/productolang";
+import { getProductoLang } from "../../actions/productoLang";
 import { Link } from "react-router-dom";
 import '../../css/producto.css'
 import Header from '../Header';
