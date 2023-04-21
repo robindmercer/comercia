@@ -1,8 +1,7 @@
-//robin
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
-import { AddProductoLang, getProductoLangId } from "../../actions/productolang";
+import { AddProductoLang, getProductoLangId } from "../../actions/productoLang";
 import Header from '../Header';
 import '../../css/all.css'
 import '../../css/formProducto.css'
