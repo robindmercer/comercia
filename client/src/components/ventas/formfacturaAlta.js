@@ -111,15 +111,15 @@ const Formfactura = () => {
 
   const control = () => {
     // btnGrabar = false;
-    console.log('control1: ',     btnGrabar ,btnAgregar,btnEliminarReg);
+    console.log('control1: ',     btnGrabar ,btnAgregar,btnEliminarReg,acceso.substring(0,1));
     btnAgregar = false;
     btnEliminarReg = false;
-    if (acceso === "A1") {
+    if (acceso.substring(0,1) === "A") {
       // Gerencia All
       btnAgregar = true;
       btnEliminarReg = true;
     }
-    if (acceso.substring(1,1) === "C") {
+    if (acceso.substring(0,1) === "C") {
       // Consulta
       btnGrabar = false;
       btnAgregar = false;
@@ -232,7 +232,9 @@ const Formfactura = () => {
     // console.log('factcab: ', factcab[0]);
     // console.log('factdet: ', factdet);
     // console.log('input: ', input);
-
+   if (subTotal===0){
+       return alert("O/C no puede quedar en 0 (Cero)")
+   }
     dispatch(AddFactura(input, factdet, inputDet));
     window.location.href = "/factura";
   };
@@ -495,7 +497,7 @@ const Formfactura = () => {
                       </tr>
                     ) : null}
                     <tr className="totaltr">
-                      {acceso === "A1" && btnGrabar ? (
+                      {btnGrabar ? (
                         <td>
                           <FcOk
                             style={estilo2}
