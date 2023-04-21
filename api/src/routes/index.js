@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const usuario  = require("./usuario");
 const producto = require("./producto")
-const productoLang = require("./productoLang")
+const productolang = require("./productolang")
 const cliente = require("./cliente")
 const direccion =  require("./direccion")
 
@@ -35,7 +35,7 @@ router.use('/usuario', usuario);
 // Producto
 router.use('/producto', producto);
 // Producto Lanf
-router.use('/productoLang', productoLang);
+router.use('/productolang', productolang);
 // menu
 router.use('/menu', menu);
 // status

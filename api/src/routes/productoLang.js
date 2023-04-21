@@ -3,7 +3,7 @@
 //****************/
 const { Router } = require("express");
 const { Sequelize, Op } = require("sequelize");
-const { ProductoLang } = require("../db");
+const { Productolang } = require("../db");
 const router = Router();
 
 router.get("/", function (req, res, next) {
@@ -13,7 +13,7 @@ router.get("/", function (req, res, next) {
     console.log('req.body: ', req.body);
  
     if (id) {
-      ProductoLang.findAll({
+      Productolang.findAll({
         where: {
           id: id,
           //lang : lang,
@@ -25,10 +25,10 @@ router.get("/", function (req, res, next) {
         : res.send({ message: 'No pude acceder a productos' })
       })
     } else {
-      ProductoLang.findAll().then((resp) => {
+      Productolang.findAll().then((resp) => {
         resp.length
           ? res.send(resp)
-          : res.send({ message: "No pude acceder a ProductoLang" });
+          : res.send({ message: "No pude acceder a Productolang" });
       });
     }
   } catch (error) {
@@ -40,7 +40,7 @@ router.get("/:id", function (req, res, next) {
   try {
     const { id } = req.params;
 
-    ProductoLang.findByPk(id).then((response) => {
+    Productolang.findByPk(id).then((response) => {
       res.json(response);
     });
   } catch (error) {
@@ -53,13 +53,13 @@ router.post("/", async function (req, res, next) {
   if (!name || !description || !lang ) {
     return res.send("Falta información para poder darte de alta el Productoo")
   }
-  const producto = await ProductoLang.findOne({
+  const producto = await Productolang.findOne({
     where: { id: id },
   });
 
   if (!producto) {
     try {
-      const newProducto = await ProductoLang.create({
+      const newProducto = await Productolang.create({
         name,
         description,
         lang

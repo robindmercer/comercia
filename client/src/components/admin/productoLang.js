@@ -4,7 +4,7 @@ import { getProductoLang } from "../../actions/productolang";
 import { Link } from "react-router-dom";
 import '../../css/producto.css'
 import Header from '../Header';
-const ProductoLang = () => {
+const Productolang = () => {
     const { productolang } = useSelector((state) => state);
     const dispatch = useDispatch();
     
@@ -42,7 +42,7 @@ const ProductoLang = () => {
                      <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{prod.description}</td>
                      <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
                          <Link
-                             to={'/formProductoLang'}
+                             to={'/formProductolang'}
                              state={
                                  {
                                     id: prod.id,
@@ -66,5 +66,5 @@ const ProductoLang = () => {
   )
 };
 
-export default ProductoLang;
+export default Productolang;
 
