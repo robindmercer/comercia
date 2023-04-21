@@ -194,7 +194,7 @@ const Factura = () => {
     //   // }
     // }
     //console.log("mails 2: ", mails);
-   // window.location.href = "/factura";
+    window.location.href = "/factura";
   };
 
   console.log("------------------------------");
