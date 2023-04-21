@@ -11,11 +11,7 @@ const Productolang = () => {
     useEffect(() => {
         dispatch(getProductoLang());
     }, [dispatch]);
-    //   //const navigate = useNavigate(); 
-    
-    console.log('productolang: ', productolang);
-
-
+   
   return (
     <>
     <Header />

@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const usuario  = require("./usuario");
 const producto = require("./producto")
-const productolang = require("./productolang")
+const productolang = require("./productoLang")
 const cliente = require("./cliente")
 const direccion =  require("./direccion")
 
