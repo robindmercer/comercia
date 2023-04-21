@@ -6,6 +6,7 @@ const { Log } = require("../db");
 const { Sequelize, Op } = require("sequelize");
 const router = Router();
 
+
 router.get("/", function (req, res, next) {
   console.log('get');
   try {
