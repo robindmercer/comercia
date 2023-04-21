@@ -21,7 +21,9 @@ const Factura = () => {
   const idProg = 11;
   const id_usuario = localStorage.getItem("usuario");
   const { factura } = useSelector((state) => state);
-  const { mails } = useSelector((state) => state);
+  // const { mails } = useSelector((state) => state);''
+  
+  const [onChange, setOnChange] = useState(false);
   // const actlogin = useSelector((state) => state.actlogin)
   const usuariomenu = useSelector((state) => state.usuariomenu);
   const dispatch = useDispatch();
@@ -99,12 +101,14 @@ const Factura = () => {
   };
 
   useEffect(() => {
-    console.log("Factura Use Efect");
-    console.log("id_usuario: ", id_usuario);
     dispatch(AccessCtrl(id_usuario));
     dispatch(getFactura());
     //  dispatch(getUsuariomenId(id_usuario));
   }, [dispatch, id_usuario]);
+
+  useEffect(() => {
+    dispatch(getFactura());
+  }, [onChange]);
 
   const handleSubmit = (id, accion) => {
     var control = "x";
@@ -169,6 +173,11 @@ const Factura = () => {
 
     dispatch(UpdateFacturaSts(id, newStatus)); // Espera Aprobacion
     dispatch(GetMails(paramMail));
+    if (onChange) {
+      setOnChange(false);
+    } else {
+      setOnChange(true);
+    }    
     // for (var x1 = 0; x1 < mails.length; x1++) {
     //   dispatch(mailEnviar(crearMail(newStatus, mails[x1].email, found)));
     // }
@@ -194,7 +203,7 @@ const Factura = () => {
     //   // }
     // }
     //console.log("mails 2: ", mails);
-    window.location.href = "/factura";
+   // window.location.href = "/factura";
   };
 
   console.log("------------------------------");
