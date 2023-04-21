@@ -8,7 +8,6 @@ const router = Router();
 
 router.get("/", function (req, res, next) {
   try {
-    
     const { id,lang } = req.body;
     console.log('req.body: ', req.body);
  
