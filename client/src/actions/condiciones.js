@@ -46,7 +46,6 @@ export function PostCondicionesFac(condiciones) {
   }
 }
  
-
  export function AddCondiciones(condiciones) {
     return function (dispatch) {
       axios.post('condiciones', condiciones)
