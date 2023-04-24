@@ -2,7 +2,7 @@ import axios from "axios";
 import { GET_FACTURAMP,GET_MPDEFAC} from './constant'
 
 export function getFacturaMP() {
-  console.log('Action getFacturaMP: All');
+  // console.log('Action getFacturaMP: All');
   return async function (dispatch) {
     var facturaMP = await axios.get(`facturaMP`);
     return dispatch({
@@ -13,7 +13,7 @@ export function getFacturaMP() {
 }
 
 export function getMPFactura(id) {
-  console.log('Action getFacturaMP: All');
+  // console.log('Action getFacturaMP: All');
   return async function (dispatch) {
     var mpfactura = await axios.get(`mpfactura/fac?id=${id}`);
     return dispatch({

@@ -2,7 +2,7 @@ import axios from "axios";
 import { GET_PERFIL } from './constant'
 
 export function getPerfil(){
-    console.log('Action getPerfil: All');
+    //console.log('Action getPerfil: All');
      return async function (dispatch) {
          var perfil = await axios.get(`/perfil`);
          return dispatch({

@@ -2,7 +2,7 @@ import axios from "axios";
 import { GET_USUARIOSMENU } from './constant'
 
 export function getUsuariomenu(){
-    console.log('Action getUsuariomenu: All');
+    //console.log('Action getUsuariomenu: All');
      return async function (dispatch) {
          var usuariomenu = await axios.get(`/usuariomenu`);
          return dispatch({

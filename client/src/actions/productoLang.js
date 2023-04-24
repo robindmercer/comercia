@@ -2,7 +2,7 @@ import axios from "axios";
 import { GET_PRODUCTOSLANG } from './constant'
 
 export function getProductoLang(){
-    console.log('Action getProductoLang: All');
+    //console.log('Action getProductoLang: All');
      return async function (dispatch) {
          var productolang = await axios.get(`/productolang`);
          return dispatch({
@@ -13,7 +13,7 @@ export function getProductoLang(){
  }
  
  export function getProductoLangId(id){
-  console.log('Action getProductoLang: All');
+  //console.log('Action getProductoLang: All');
    return async function (dispatch) {
        var productolang = await axios.get(`/productolang/${id}`);
        return dispatch({

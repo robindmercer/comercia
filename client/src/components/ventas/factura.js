@@ -108,7 +108,8 @@ const Factura = () => {
 
   useEffect(() => {
     dispatch(getFactura());
-  }, [onChange]);
+    console.log('Use Efect 2');
+  }, [dispatch, onChange]);
 
   const handleSubmit = (id, accion) => {
     var control = "x";

@@ -2,7 +2,7 @@ import axios from "axios";
 import { GET_DIRECCION } from './constant'
 
 export function getDireccion(id){
-    console.log('Action getDireccion: All');
+    //console.log('Action getDireccion: All');
      return async function (dispatch) {
          var direccion = await axios.get(`direccion?cli_id=${id}`);
          return dispatch({

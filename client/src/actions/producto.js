@@ -2,7 +2,7 @@ import axios from "axios";
 import { GET_PRODUCTOS,GET_PRODUCTOSID } from './constant'
 
 export function getProducto(){
-    console.log('Action getProducto: All');
+    //console.log('Action getProducto: All');
      return async function (dispatch) {
          var producto = await axios.get(`/producto`);
          return dispatch({

@@ -2,7 +2,7 @@ import axios from "axios";
 import { GET_CLIENTE } from './constant'
 
 export function getCliente(){
-    console.log('Action getCliente: All');
+    // console.log('Action getCliente: All');
      return async function (dispatch) {
          var cliente = await axios.get(`cliente`);
          return dispatch({
@@ -13,7 +13,7 @@ export function getCliente(){
  }
  
  export function getClienteId(id){
-  console.log('Action getClienteId:',id);
+  // console.log('Action getClienteId:',id);
    return async function (dispatch) {
        var cliente = await axios.get(`cliente/${id}`);
        return dispatch({
@@ -24,7 +24,7 @@ export function getCliente(){
 }
 
  export function getClienteByName(nombre){
-  console.log('Action getClienteByName: ',nombre);
+  // console.log('Action getClienteByName: ',nombre);
    return async function (dispatch) {
        var cliente = await axios.get(`cliente?nombre=${nombre}`);
        return dispatch({

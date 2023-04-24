@@ -2,7 +2,7 @@ import axios from "axios";
 import { GET_CONDICION,GET_FACTCOND } from './constant'
 
 export function getCondicionesID(id){
-    console.log('Action getCondiciones: All');
+    //console.log('Action getCondiciones: All');
      return async function (dispatch) {
          var condiciones = await axios.get(`condiciones?id=${id}`);
          return dispatch({
@@ -13,7 +13,7 @@ export function getCondicionesID(id){
  }
 
  export function getCondiciones(){
-  console.log('Action getCondiciones: All');
+  //console.log('Action getCondiciones: All');
    return async function (dispatch) {
        var condiciones = await axios.get(`condiciones`);
        return dispatch({
@@ -24,7 +24,7 @@ export function getCondicionesID(id){
 }
 
  export function getCondicionesFac(fac_id){
-  console.log('Action getCondiciones: FAC');
+  //console.log('Action getCondiciones: FAC');
    return async function (dispatch) {
        var factcond = await axios.get(`condiciones?fac_id=${fac_id}`);
        return dispatch({
@@ -34,7 +34,7 @@ export function getCondicionesID(id){
    }
 }
 export function PostCondicionesFac(condiciones) {
-  console.log('PostCondicionesFac: ', condiciones);
+  //console.log('PostCondicionesFac: ', condiciones);
   return function (dispatch) {
     axios.post('condiciones/fact', condiciones)
       .then(response => {

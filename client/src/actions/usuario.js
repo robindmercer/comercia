@@ -2,7 +2,7 @@ import axios from "axios";
 import { GET_MAILS, GET_USUARIOS } from './constant'
 
 export function getUsuario(){
-    console.log('Action getUsuario: All');
+    //console.log('Action getUsuario: All');
      return async function (dispatch) {
          var usuario = await axios.get(`/usuario`);
          return dispatch({
@@ -49,7 +49,7 @@ export function getUsuario(){
   }  
  
   export function GetMails(perfil) {
-    console.log('Action getUsuario: All');
+    //console.log('Action getUsuario: All');
     return async function (dispatch) {
         var mails = await axios.get(`/usuario/perfil/${perfil}`);
         return dispatch({

@@ -3,7 +3,7 @@ import { GET_TABLA,SET_IVA } from './constant'
 
 // trae todos los registros con codsigo 0
 export function getTabla(){
-    console.log('Action getTabla: All');
+    //console.log('Action getTabla: All');
      return async function (dispatch) {
          var tabla = await axios.get(`/tabla`);
          return dispatch({
@@ -26,7 +26,7 @@ export function getTablaAll(){
 
  // trae todos los registros de in ID 
  export function getDetail(id){
-  console.log('Action Tabla getDetail: ',id);
+  //console.log('Action Tabla getDetail: ',id);
    return async function (dispatch) {
        var tabla = await axios.get(`/tabla/cod/${id}`);
        return dispatch({
@@ -37,7 +37,7 @@ export function getTablaAll(){
 }
 
 export function getDetailIva(id){
-  console.log('Action Tabla getDetailIva: ',id);
+  //console.log('Action Tabla getDetailIva: ',id);
    return async function (dispatch) {
        var porciva = await axios.get(`/tabla/iva/${id}`);
        return dispatch({

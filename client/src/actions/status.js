@@ -2,7 +2,7 @@ import axios from "axios";
 import { GET_STATUS } from './constant'
 
 export function getStatus(){
-    console.log('Action getStatus: All');
+    //console.log('Action getStatus: All');
      return async function (dispatch) {
          var status = await axios.get(`/status`);
          return dispatch({
