@@ -4,7 +4,7 @@ import { GET_FACTURA, GET_FACTCAB, RESET_FAC } from './constant'
 import { AddFacturaDet } from "./factdet";
 
 export function getFactura() {
-  // console.log('Action getFactura: All');
+  console.log('Action getFactura: All');
   return async function (dispatch) {
     var factura = await axios.get(`factura`);
     return dispatch({
@@ -95,7 +95,9 @@ export function UpdateFactura(factcab, factdet, inputDet) {
 }
 
 export function UpdateFacturaSts(id, sts) {
+  console.log('UpdateFacturaSTS');
   return async function (dispatch) {
+
     var factura = await axios.put(`factura/stat?id=${id}&sts=${sts}`);
     return dispatch({
       type: GET_FACTCAB,

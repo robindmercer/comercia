@@ -14,7 +14,7 @@ const Navbar = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log('navebar useEffect');
+    // console.log('navebar useEffect');
     dispatch(getUsuariomenId(id_usuario));
   }, [dispatch, id_usuario]);
 

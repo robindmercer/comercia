@@ -49,7 +49,7 @@ router.get("/:id", function (req, res, next) {
 
 router.get("/usr/:clave", function (req, res, next) {
   try {
-    console.log('req.params: ', req.params);
+    console.log('/usr/:clave req.params: ', req.params);
     const  usr_id  = req.params.clave;
     if (usr_id) {
       Usuario.findAll({
@@ -76,7 +76,7 @@ router.get("/usr/:clave", function (req, res, next) {
 
 router.get("/perfil/:perfil", function (req, res, next) {
   try {
-    console.log('req.params: ', req.params);
+    console.log('/perfil/:perfil req.params: ', req.params);
     const  perfil  = req.params.perfil;
     if (perfil) {
       Usuario.findAll({

@@ -13,16 +13,16 @@ import style from "../../css/factura.module.css";
 import { AccessCtrl } from "../../actions/index";
 //import { getUsuariomenId } from "../../actions/usuariomenu";
 // import { getDetail } from "../../actions/tabla";
-import crearMail from "../CrearMails";
-import { mailEnviar } from "../../actions/index";
+// import crearMail from "../CrearMails";
+// import { mailEnviar } from "../../actions/index";
 import { GetMails } from "../../actions/usuario";
 
 const Factura = () => {
   const idProg = 11;
   const id_usuario = localStorage.getItem("usuario");
   const { factura } = useSelector((state) => state);
-  // const { mails } = useSelector((state) => state);''
-  
+  const { mails } = useSelector((state) => state);
+
   const [onChange, setOnChange] = useState(false);
   // const actlogin = useSelector((state) => state.actlogin)
   const usuariomenu = useSelector((state) => state.usuariomenu);
@@ -30,6 +30,9 @@ const Factura = () => {
   const dollarUSLocale = Intl.NumberFormat("de-DE");
   const estilo = { fontSize: "200%", transition: "font-size 0.5s" };
   const [acceso, setAcceso] = useState("");
+  const [idFact, setIdFact] = useState(0);
+  const [newStatus, setNewStatus] = useState(0);
+  const [idMail, setIdMail] = useState(0);
   // const { tabla } = useSelector((state) => state);
   // Manejo de Botones a ver
   var toLink = "/formfactura";
@@ -39,7 +42,6 @@ const Factura = () => {
   var btnCancel = false;
   var verStatus = [];
   var muestroRegistro = false;
-
 
   // Control Botones a mostrar
   const control = (data) => {
@@ -54,7 +56,7 @@ const Factura = () => {
       btnApproval = true;
       if (data.cod_status > 2) {
         btnDiploma2 = true;
-        btnCancel=true
+        btnCancel = true;
       }
       verStatus.push(1, 2, 3, 4, 5, 6, 7, 8, 9);
     }
@@ -62,7 +64,7 @@ const Factura = () => {
       // Adminsitracion All
       btnAddDatabase = true;
       btnApproval = true;
-      btnCancel=true
+      btnCancel = true;
       if (data.cod_status > 2) {
         btnDiploma2 = true;
       }
@@ -72,7 +74,7 @@ const Factura = () => {
       // Ventas all
       btnAddDatabase = true;
       btnApproval = true;
-      btnCancel=true
+      btnCancel = true;
       if (data.cod_status === 2) {
         btnApproval = false;
         btnAddDatabase = false;
@@ -86,7 +88,7 @@ const Factura = () => {
       verStatus.push(1, 2, 3, 4, 5, 6, 7, 8, 9);
     }
     if (acceso.substring(0, 1) === "C") {
-      btnCancel=false
+      btnCancel = false;
       btnApproval = false;
       btnAddDatabase = true;
       btnDiploma2 = false;
@@ -101,31 +103,41 @@ const Factura = () => {
   };
 
   useEffect(() => {
+    console.log("Use Efect 1");
     dispatch(AccessCtrl(id_usuario));
     dispatch(getFactura());
     //  dispatch(getUsuariomenId(id_usuario));
-  }, [dispatch, id_usuario]);
+  }, [dispatch, id_usuario,onChange]);
 
   useEffect(() => {
-    dispatch(getFactura());
-    console.log('Use Efect 2');
-  }, [dispatch, onChange]);
-
-  const handleSubmit = (id, accion) => {
+    if (idFact > 0) {
+      dispatch(UpdateFacturaSts(idFact, newStatus)); // Espera Aprobacion
+      dispatch(GetMails(idMail));
+      if (onChange) {
+        setOnChange(false);
+      } else {
+        setOnChange(true);
+      }
+      console.log("Use Efect 2",onChange);
+    }
+  }, [dispatch, idFact, idMail, newStatus]);
+  
+   const handleSubmit = (id, accion) => {
     var control = "x";
     var newStatus = 0;
     var paramMail = 1;
+    setOnChange(false);
     const found = factura.find((element) => element.id === id);
     console.log("found: ", found);
     if (accion === "-" && found.cod_status > 1) {
       newStatus = found.cod_status - 1;
-      console.log('newStatus: ', newStatus);
+      console.log("newStatus: ", newStatus);
       paramMail = 2;
       if (newStatus < 4) {
         newStatus = 1;
         paramMail = 1;
       }
-      control = "N"
+      control = "N";
     }
     if (accion === "+") {
       if (found.cod_status === 1) {
@@ -168,21 +180,19 @@ const Factura = () => {
     }
     console.log("Log Data");
     console.log("usuario:", id_usuario);
-    console.log("Factura:", found.id,'Status',found.cod_status);
+    console.log("Factura:", found.id, "Status", found.cod_status);
     console.log("Control:", control);
-    console.log('newStatus: ', newStatus);
+    console.log("newStatus: ", newStatus);
+    console.log("paramMail: ", paramMail);
+    setIdFact(id);
+    setNewStatus(newStatus);
+    setIdMail(paramMail);
 
-    dispatch(UpdateFacturaSts(id, newStatus)); // Espera Aprobacion
-    dispatch(GetMails(paramMail));
-    if (onChange) {
-      setOnChange(false);
-    } else {
-      setOnChange(true);
-    }    
+    console.log("mails: ", mails);
     // for (var x1 = 0; x1 < mails.length; x1++) {
     //   dispatch(mailEnviar(crearMail(newStatus, mails[x1].email, found)));
     // }
-    
+
     // control = found.control;
     // if (control === "S") {
     //   dispatch(UpdateFacturaSts(id, newStatus)); // Espera Aprobacion
@@ -204,19 +214,19 @@ const Factura = () => {
     //   // }
     // }
     //console.log("mails 2: ", mails);
-   // window.location.href = "/factura";
+    // window.location.href = "/factura";
   };
 
   console.log("------------------------------");
   if (usuariomenu && acceso === "") {
-    console.log("usuariomenu: ", usuariomenu);
+    // console.log("usuariomenu: ", usuariomenu);
     for (var i = 0; i < usuariomenu.length; i++) {
       if (usuariomenu[i].nivel === idProg) {
         setAcceso(usuariomenu[i].accion + usuariomenu[i].cod_perfil);
       }
     }
   }
-  console.log("factura: ", factura);
+  // console.log("factura: ", factura);
   return (
     <>
       <Header />

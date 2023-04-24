@@ -8,7 +8,6 @@ const router = Router();
 
 
 router.get("/", function (req, res, next) {
-  console.log('get');
   try {
     Log.findAll().then((resp) => {
       resp.length
@@ -23,7 +22,7 @@ router.get("/", function (req, res, next) {
 
 router.get("/fac/:id", function (req, res, next) {
   try {
-    console.log("req.params: ", req.params);
+    console.log("Log req.params: ", req.params);
     const id = req.params;
     if (id) {
       Log.findAll({
@@ -42,9 +41,8 @@ router.get("/fac/:id", function (req, res, next) {
 });
 
 router.post("/", async function (req, res, next) {
-  const newpass = "nada";
   const { fac_id, usr_id, cod_status } = req.body;
-  console.log("req.body: ", req.body);
+  console.log("Log Post : ", req.body);
 
   if (!fac_id || !usr_id || !cod_status) {
     return res.send("Falta información para poder darte de alta el Log");
