@@ -10,7 +10,7 @@ import { GET_FACTURADET } from './constant'
            payload: factdet.data
        })
    }
-}
+} 
 
 export function AddFacturaDet(input) {
     //console.log('AddFacturaDet input: ', input);
