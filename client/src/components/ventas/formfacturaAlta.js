@@ -41,7 +41,7 @@ const Formfactura = () => {
   const { factdet } = useSelector((state) => state);
   const { porciva } = useSelector((state) => state);
   const { producto } = useSelector((state) => state);
-  const { tabla } = useSelector((state) => state);
+  // const { tabla } = useSelector((state) => state);
   // const { idfact } = useSelector((state) => state)
 
   const dispatch = useDispatch();
@@ -273,7 +273,7 @@ const Formfactura = () => {
         handleRemove(i.i);
       } else {
         for (var z = 0; z < producto.length; z++) {
-          if (producto[z].id == e.target.value) {
+          if (producto[z].id === e.target.value) {
             factdet[i.i].prod_id = e.target.value;
             factdet[i.i].name = producto[z].name;
             if (cliente[0].moneda === 2) {

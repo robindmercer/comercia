@@ -37,7 +37,7 @@ function Formfactura() {
   const { factcab } = useSelector((state) => state);
   const { factdet } = useSelector((state) => state);
   const { porciva } = useSelector((state) => state);
-  const tabla = useSelector((state) => state.tabla);
+  // const tabla = useSelector((state) => state.tabla);
   const { producto } = useSelector((state) => state);
   const dispatch = useDispatch();
   const location = useLocation();
