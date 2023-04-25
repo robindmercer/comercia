@@ -220,7 +220,6 @@ const Formfactura = () => {
    console.log('fecha: ', fecha);
    var newDate1 = fecha.split('/')
    const newdate =  newDate1[2] + newDate1[1] + newDate1[0]
-   factcab[0].fecha = newdate
    // console.log('saleTax: ', saleTax);
    // console.log('Total: ', total);
    factcab[0].subtotal = subTotal;
@@ -232,9 +231,11 @@ const Formfactura = () => {
     setInput((input.total = total));
     setInput((input.dir_id = DirCode));
     setInput((input.cli_id = factcab[0].cli_id));
-    console.log('newDate1: ', newDate1);
-    console.log('newdate: ', newdate);
-    console.log('factcab: ', factcab[0]);
+    setInput((input.fecha = newdate));
+
+    // console.log('newDate1: ', newDate1);
+    // console.log('newdate: ', newdate);
+    // console.log('factcab: ', factcab[0]);
     // console.log('factdet: ', factdet);
     // console.log('input: ', input);
    if (subTotal===0){
