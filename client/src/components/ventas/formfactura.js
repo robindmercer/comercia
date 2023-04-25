@@ -108,7 +108,7 @@ function Formfactura() {
     dispatch(getUsuariomenId(id_usuario));
     dispatch(getCondiciones());
     dispatch(getCondicionesFac(state.idfact));
-    console.log("useeffect");
+    // console.log("useeffect");
     if (usuariomenu) {
       for (var i = 0; i < usuariomenu.length; i++) {
         if (usuariomenu[i].nivel === idProg) {
@@ -329,7 +329,7 @@ function Formfactura() {
     // } else {
     //   factcond.push(initialFacdet);
   }
-  console.log("tieneCG", tieneCG);
+  //console.log("tieneCG", tieneCG);
 
   if (factcab.length > 0) {
     // if (saleDesc === 0 && factcab[0].descuento > 0) {

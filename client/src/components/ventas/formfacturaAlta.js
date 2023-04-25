@@ -235,6 +235,7 @@ const Formfactura = () => {
    if (subTotal===0){
        return alert("O/C no puede quedar en 0 (Cero)")
    }
+   //console.log('i f d',input, factdet, inputDet);
     dispatch(AddFactura(input, factdet, inputDet));
     window.location.href = "/factura";
   };
@@ -269,11 +270,12 @@ const Formfactura = () => {
       }
     }
     if (e.target.name === "prod_id") {
+      console.log('e.target.name: ', e.target.name,e.target.value,producto);
       if (e.target.value === "0") {
         handleRemove(i.i);
       } else {
         for (var z = 0; z < producto.length; z++) {
-          if (producto[z].id === e.target.value) {
+          if (parseInt(producto[z].id) === parseInt(e.target.value)) {
             factdet[i.i].prod_id = e.target.value;
             factdet[i.i].name = producto[z].name;
             if (cliente[0].moneda === 2) {

@@ -42,6 +42,7 @@ var xProdDescrip = ""
 var xEngancheTit = "Enganche"
 var xSaldo="Saldo a financiar"
 var xPagosMens="Pagos Mensuales"
+var xInteres="Interes del"
 
 
 const FormfacturaPDF = () => {
@@ -112,15 +113,16 @@ const FormfacturaPDF = () => {
       xDescripcion = "Description";
       xPrecio = "Price";
       xCant = "Amount";
-      xTotPag = "TOTAL PAYMENT";
+      xTotPag = "Total Payment USD";
       xCond = "General Conditions";
       xImporte = "Amount";
       xIncluido = "Included";
       xIva = "Tax";
       xEngancheTit = "First Payment"
-      xSaldo="Finance"
-      xPagosMens="Monthy Payments"
-          }
+      xSaldo="Finance";
+      xPagosMens="Monthy Payments";
+      xInteres="Interes Rate"
+    }
   }
 
   if (factcab.length > 0) {
@@ -352,7 +354,7 @@ const FormfacturaPDF = () => {
                               </tr>
                               <tr>
                                 <td>{cond.meses} {xPagosMens}</td>
-                                <td>Interes del {cond.interes} %</td>
+                                <td>{xInteres} {cond.interes} %</td>
                                 <td className="totaltr">
                                   {dollarUSLocale.format(xPagoMens.toFixed(0))}
                                 </td>
@@ -360,7 +362,7 @@ const FormfacturaPDF = () => {
                             </>
                           ) : null}
                           <tr>
-                            <td colSpan={2}>Total a Pagar</td>
+                            <td colSpan={2}>{xTotPag}</td>
                             <td className="totaltr">
                               {dollarUSLocale.format(xTotal.toFixed(0))}
                             </td>

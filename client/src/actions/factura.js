@@ -42,8 +42,8 @@ export function AddFactura(factcab, factdet, inputDet) {
     axios.post(`factura`, factcab)
       .then(response => {
         var xOrden = 0;
-        // console.log('response: ', response.data);
-        // console.log('response: ', response.data[0][0].id);
+         console.log('response: ', response.data);
+         console.log('response: ', response.data[0][0].id);
         factdet.forEach((fact) => {
           xOrden += 1
           inputDet.fac_id = response.data[0][0].id
@@ -53,7 +53,7 @@ export function AddFactura(factcab, factdet, inputDet) {
           inputDet.cantidad = fact.cantidad
           inputDet.total = fact.total
           dispatch(AddFacturaDet(inputDet))
-          //console.log('factDet ', inputDet);
+          console.log('factDet ', inputDet);
         })
         return response
       })
