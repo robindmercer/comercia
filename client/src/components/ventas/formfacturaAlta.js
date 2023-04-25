@@ -217,11 +217,14 @@ const Formfactura = () => {
     }
   };
   const handleSubmit = () => {
-    // console.log('subTotal: ', subTotal);
-    // console.log('saleTax: ', saleTax);
-    // console.log('Total: ', total);
-    factcab[0].subtotal = subTotal;
-    factcab[0].iva = saleTax;
+   console.log('fecha: ', fecha);
+   var newDate1 = fecha.split('/')
+   const newdate =  newDate1[2] + newDate1[1] + newDate1[0]
+   factcab[0].fecha = newdate
+   // console.log('saleTax: ', saleTax);
+   // console.log('Total: ', total);
+   factcab[0].subtotal = subTotal;
+   factcab[0].iva = saleTax;
     factcab[0].total = total;
     factcab[0].dir_id = parseInt(DirCode);
     setInput((input.subtotal = subTotal));
@@ -229,15 +232,17 @@ const Formfactura = () => {
     setInput((input.total = total));
     setInput((input.dir_id = DirCode));
     setInput((input.cli_id = factcab[0].cli_id));
-    // console.log('factcab: ', factcab[0]);
+    console.log('newDate1: ', newDate1);
+    console.log('newdate: ', newdate);
+    console.log('factcab: ', factcab[0]);
     // console.log('factdet: ', factdet);
     // console.log('input: ', input);
    if (subTotal===0){
        return alert("O/C no puede quedar en 0 (Cero)")
    }
    //console.log('i f d',input, factdet, inputDet);
-    dispatch(AddFactura(input, factdet, inputDet));
-    window.location.href = "/factura";
+   dispatch(AddFactura(input, factdet, inputDet));
+   //window.location.href = "/factura";
   };
 
   function handleTipo(e, i) {
