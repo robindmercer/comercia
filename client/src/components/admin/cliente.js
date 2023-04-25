@@ -29,8 +29,7 @@ const Cliente = () => {
               setAcceso(usuariomenu[i].accion);
             }
           }
-        }
-    
+        }    
     }, [dispatch]);
 
     const [nombre, setName] = useState("");
