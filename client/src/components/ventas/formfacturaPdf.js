@@ -39,6 +39,10 @@ var xImporte = "Importe";
 var xIva = "Iva";
 var xProdName = ""
 var xProdDescrip = ""
+var xEngancheTit = "Enganche"
+var xSaldo="Saldo a financiar"
+var xPagosMens="Pagos Mensuales"
+
 
 const FormfacturaPDF = () => {
   // Manejo acceso del Usuario
@@ -113,7 +117,10 @@ const FormfacturaPDF = () => {
       xImporte = "Amount";
       xIncluido = "Included";
       xIva = "Tax";
-    }
+      xEngancheTit = "First Payment"
+      xSaldo="Finance"
+      xPagosMens="Monthy Payments"
+          }
   }
 
   if (factcab.length > 0) {
@@ -332,19 +339,19 @@ const FormfacturaPDF = () => {
                           {xEnganche !== 0 ? (
                             <>
                               <tr>
-                                <td colSpan={2}>Enganche</td>
+                                <td colSpan={2}>{xEngancheTit}</td>
                                 <td className="totaltr">
                                   {dollarUSLocale.format(xEnganche.toFixed(0))}
                                 </td>
                               </tr>
                               <tr>
-                                <td colSpan={2}>Saldo a financiar</td>
+                                <td colSpan={2}>{xSaldo}</td>
                                 <td className="totaltr">
                                   {dollarUSLocale.format(xFinanciar.toFixed(0))}
                                 </td>
                               </tr>
                               <tr>
-                                <td>{cond.meses} Pagos Mensuales</td>
+                                <td>{cond.meses} {xPagosMens}</td>
                                 <td>Interes del {cond.interes} %</td>
                                 <td className="totaltr">
                                   {dollarUSLocale.format(xPagoMens.toFixed(0))}
