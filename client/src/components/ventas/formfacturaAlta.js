@@ -237,13 +237,13 @@ const Formfactura = () => {
     // console.log('newdate: ', newdate);
     // console.log('factcab: ', factcab[0]);
     // console.log('factdet: ', factdet);
-    // console.log('input: ', input);
+    console.log('input: ', input);
    if (subTotal===0){
        return alert("O/C no puede quedar en 0 (Cero)")
    }
    //console.log('i f d',input, factdet, inputDet);
    dispatch(AddFactura(input, factdet, inputDet));
-   //window.location.href = "/factura";
+   window.location.href = "/factura";
   };
 
   function handleTipo(e, i) {
