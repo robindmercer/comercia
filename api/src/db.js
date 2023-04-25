@@ -29,7 +29,7 @@ sequelize.models = Object.fromEntries(capsEntries);
 // console.log('sequelize: ', sequelize.models);
 // En sequelize.models están todos los modelos importados como propiedades
 // Para relacionarlos hacemos un destructuring
-const { Usuario, Perfil, Status,Producto,Tabla,Cliente ,Factura} = sequelize.models;
+const { Usuario, Perfil, Status,Producto,Tabla,Cliente} = sequelize.models;
 // Aca vendrian las relaciones
 // Relaciones One to One 
 
