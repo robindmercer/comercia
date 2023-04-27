@@ -121,6 +121,9 @@ function Formfactura() {
         }
       }
     }
+    if (factcab){
+      setSaleDHL(factcab[0].dhl)
+    }
   }, [dispatch, id_usuario]);
 
   useEffect(() => {
@@ -141,24 +144,25 @@ function Formfactura() {
           quantityNumber && rateNumber ? quantityNumber * rateNumber : 0;
         subTotal += amount;
       });
-      //console.log("ver DHL: ", factcab[0].dhl);
-      if (factcab && factcab[0].dhl > 0) {
-        subTotal += parseInt(factcab[0].dhl);
-      }
       setSubTotal(subTotal);
       if (subTotal > 0) {
-        iva = subTotal * (parseFloat(porciva[0].valor) / 100);
+        if (cliente[0].moneda === 1){
+          iva = subTotal * (parseFloat(porciva[0].valor) / 100);
+          setSaleTax(iva);
+        } 
         setSaleTax(iva);
-        total = subTotal + iva;
+        if (saleDHL.length===0) setSaleDHL(0);
+        total = subTotal + iva + parseInt(saleDHL);
         setTotal(total);
       } else {
         setSaleTax(0);
         setTotal(0);
       }
     }
+    console.log('saleDHL: ', saleDHL);
   }, [onChange, factdet]);
 
-  // console.log("cliente: ", cliente);
+  //console.log("cliente: ", cliente);
   // console.log("state.idCli: ", state.idCli);
 
   useEffect(() => {
@@ -182,10 +186,11 @@ function Formfactura() {
       // } else {
       //   setSubTotal(aux);
       // }
-      if (subTotal > 0) {
+      if (aux > 0) {
         if (cliente[0].moneda === 1){
           iva = aux * (parseFloat(porciva[0].valor) / 100);
-        }        
+        }     
+        setSubTotal(aux);   
         setSaleTax(iva);
         if (saleDHL.length===0) setSaleDHL(0);
         var total = aux + iva + parseInt(saleDHL);
@@ -586,6 +591,7 @@ function Formfactura() {
                         <b>{dollarUSLocale.format(subTotal)}</b>
                       </td>
                     </tr>
+                    {(cliente[0].moneda === 1 ? (
                     <tr className="totaltr">
                       <td colSpan="3" className="totaltd1">
                         IVA({porciva[0].valor}%)
@@ -594,6 +600,7 @@ function Formfactura() {
                         <b>{dollarUSLocale.format(saleTax.toFixed(0))}</b>
                       </td>
                     </tr>
+                    ) : null)   }
                     {cliente[0].moneda > 1 ? (
                       <tr className="totaltr">
                         <td colSpan="3" className="totaltd1">
