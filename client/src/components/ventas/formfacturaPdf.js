@@ -147,7 +147,7 @@ const FormfacturaPDF = () => {
               <div>
                 <img height="29px" width="200px" src={imagen} alt="" />
               </div>
-              <div>&nbsp;ORDEN DE COMPRA N°: 254</div>
+              <div>&nbsp;ORDEN DE COMPRA N°: {factcab[0].id}</div>
             </div>
           </div>
           <div className={style.cabecera}>

@@ -9,7 +9,7 @@ import '../App.css'
 
 const Layout = () => {
   const id_usuario = localStorage.getItem("usuario");
-  // const id_pass = localStorage.getItem("pass");
+  const id_pass = localStorage.getItem("pass");
   const actlogin = useSelector((state) => state.actlogin)
   const { tabla } = useSelector((state) => state)
   const porciva = useSelector((state) => state.porciva)
@@ -35,7 +35,8 @@ const Layout = () => {
     console.log('Layout Tabla: ', tabla);
     //  setIva(tabla[0].valor)
   }
-  if (actlogin.length > 0) {
+  console.log('actlogin: ', actlogin);
+  if (actlogin.length > 0 && actlogin[0].password === id_pass) {
     return (
       <div>
        <Header />
