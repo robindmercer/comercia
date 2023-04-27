@@ -122,7 +122,7 @@ function Formfactura() {
       }
     }
     if (factcab.length>0){
-      console.log('factcab: ', factcab);
+      console.log('factcab ok: ', factcab,' lenght ' , factcab.length);
       setSaleDHL(factcab[0].dhl)
     }
   }, [dispatch, id_usuario]);
@@ -134,6 +134,7 @@ function Formfactura() {
 
   // Calculo subtotal
   useEffect(() => {
+    console.log('useEffect: ', 1);
     let subTotal = 0;
     let iva = 0;
     let total = 0;
@@ -152,21 +153,22 @@ function Formfactura() {
           setSaleTax(iva);
         } 
         setSaleTax(iva);
-        if (saleDHL.length===0) setSaleDHL(0);
-        total = subTotal + iva + parseInt(saleDHL);
+        setSaleDHL(factcab[0].dhl);
+        total = subTotal + iva + parseInt(factcab[0].dhl);
         setTotal(total);
       } else {
         setSaleTax(0);
         setTotal(0);
       }
     }
-    console.log('saleDHL: ', saleDHL);
+    console.log('total: ', total);
   }, [onChange, factdet]);
 
   //console.log("cliente: ", cliente);
   // console.log("state.idCli: ", state.idCli);
 
   useEffect(() => {
+    console.log('useEffect: ', 2);
     var aux = 0;
     var iva = 0;
     if (factdet && porciva) {
@@ -196,6 +198,7 @@ function Formfactura() {
         if (saleDHL.length===0) setSaleDHL(0);
         var total = aux + iva + parseInt(saleDHL);
         setTotal(total);
+        console.log('total: ', total);
       }
     }
   }, [onChange, saleDHL]);
