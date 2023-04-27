@@ -226,7 +226,7 @@ const Factura = () => {
       }
     }
   }
-  // console.log("factura: ", factura);
+  console.log("factura: ", factura);
   return (
     <>
       <Header />
@@ -273,7 +273,7 @@ const Factura = () => {
                             className="dLink"
                             state={{
                               idfact: data.id,
-                              idCli: 0,
+                              idCli: data.cli_id,
                             }}
                           >
                             <FcAddDatabase

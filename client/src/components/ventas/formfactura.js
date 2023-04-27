@@ -8,6 +8,7 @@ import { getFacturaDet } from "../../actions/factdet";
 import { getFacturaCab, UpdateFactura } from "../../actions/factura";
 import { getDetailIva } from "../../actions/tabla";
 import { getProducto } from "../../actions/producto";
+import { getClienteId } from "../../actions/cliente";
 import {
   getCondiciones,
   getCondicionesFac,
@@ -45,8 +46,7 @@ function Formfactura() {
   // Condiciones generales
   const { condiciones } = useSelector((state) => state);
   const { factcond } = useSelector((state) => state);
-  const estilo = { fontSize: "150%", transition: "font-size 0.5s" };
-  const estilo2 = { fontSize: "200%" };
+  const { cliente } = useSelector((state) => state);
 
   const [onChange, setOnChange] = useState(false);
 
@@ -54,9 +54,12 @@ function Formfactura() {
   const [saleTax, setSaleTax] = useState(0);
   const [tieneCG, setTieneCG] = useState(0);
   const [total, setTotal] = useState(0);
-
+  const [saleDHL, setSaleDHL] = useState(0);
   // Formato Numeros
   const dollarUSLocale = Intl.NumberFormat("de-DE");
+  // Estilos
+  const estilo = { fontSize: "150%", transition: "font-size 0.5s" };
+  const estilo2 = { fontSize: "200%" };
 
   // eslint-disable-next-line no-unused-vars
   const [inputDet, setInputDet] = useState({
@@ -73,6 +76,7 @@ function Formfactura() {
     subtotal: 0,
     iva: 0,
     total: 0,
+    dhl: 0,
     observ: "",
   });
 
@@ -108,6 +112,7 @@ function Formfactura() {
     dispatch(getUsuariomenId(id_usuario));
     dispatch(getCondiciones());
     dispatch(getCondicionesFac(state.idfact));
+    dispatch(getClienteId(state.idCli));
     // console.log("useeffect");
     if (usuariomenu) {
       for (var i = 0; i < usuariomenu.length; i++) {
@@ -136,7 +141,10 @@ function Formfactura() {
           quantityNumber && rateNumber ? quantityNumber * rateNumber : 0;
         subTotal += amount;
       });
-      // console.log('calculo subTotal: ', subTotal);
+      console.log("ver DHL: ", factcab[0].dhl);
+      if (factcab[0].dhl > 0) {
+        subTotal += parseInt(factcab[0].dhl);
+      }
       setSubTotal(subTotal);
       if (subTotal > 0) {
         iva = subTotal * (parseFloat(porciva[0].valor) / 100);
@@ -149,6 +157,38 @@ function Formfactura() {
       }
     }
   }, [onChange, factdet]);
+
+  // console.log("cliente: ", cliente);
+  // console.log("state.idCli: ", state.idCli);
+
+  useEffect(() => {
+    var aux = 0;
+    if (factdet && porciva) {
+      factdet.forEach((fact) => {
+        const quantityNumber = parseFloat(fact.cantidad);
+        const rateNumber = parseFloat(fact.precio);
+        const amount =
+          quantityNumber && rateNumber ? quantityNumber * rateNumber : 0;
+
+        aux += amount;
+      });
+
+      // if (saleDHL > 0) {
+      //   aux += parseInt(saleDHL);
+      //   console.log("subTotal: ", subTotal);
+      //   setSubTotal(aux);
+      //   console.log("saleDHL d: ", saleDHL, subTotal);
+      // } else {
+      //   setSubTotal(aux);
+      // }
+      if (subTotal > 0) {
+        var iva = aux * (parseFloat(porciva[0].valor) / 100);
+        setSaleTax(iva);
+        var total = aux + iva + parseInt(saleDHL);
+        setTotal(total);
+      }
+    }
+  }, [onChange, saleDHL]);
 
   const handleRemove = (i) => {
     factdet.splice(i, 1);
@@ -171,6 +211,10 @@ function Formfactura() {
 
   function handleTipo(e, i) {
     e.preventDefault();
+    if (e.target.name === "dhl") {
+      factcab[0].dhl = e.target.value;
+      setSaleDHL(e.target.value);
+    }
     // console.log("i: ", i);
     // console.log("e.target.name: ", e.target.name);
     // console.log("e.target.value: ", e.target.value);
@@ -277,7 +321,7 @@ function Formfactura() {
     setInput((input.total = total.toFixed(0)));
     setInput((input.observ = factcab[0].observ));
     if (tieneCG === 1) {
-      initialFacdet.id = 1;  // si ya tiene una C.General grabada el id es siempre 1
+      initialFacdet.id = 1; // si ya tiene una C.General grabada el id es siempre 1
     } else {
       initialFacdet.id = 0;
     }
@@ -329,7 +373,7 @@ function Formfactura() {
     // } else {
     //   factcond.push(initialFacdet);
   }
-  //console.log("tieneCG", tieneCG);
+  // console.log("factcab", factcab);
 
   if (factcab.length > 0) {
     // if (saleDesc === 0 && factcab[0].descuento > 0) {
@@ -491,30 +535,6 @@ function Formfactura() {
                   </p>
                 </div>
               ) : null}
-              {/* <div className="addprod">
-                <label
-                  htmlFor="descto"
-                  className="block text-gray-700 text-sm font-bold mb-2"
-                >
-                  Descuento:&nbsp;
-                </label>
-                <select
-                  name="cod"
-                  id="cod"
-                  onChange={(e) => handleTipo(e)}
-                  value={parseInt(desc_id)}
-                >
-                  <option value="0">Seleccionar</option>
-                  {tabla && tabla.map((data) => {
-                        return (
-                          <option
-                            value={data.cod}
-                            key={data.cod}
-                          >{`${data.description + '  ' + data.valor + ' %'}`}</option>
-                        );
-                  })}
-                </select>
-              </div> */}
               <div className="addprod addprod2">
                 <textarea
                   type="text"
@@ -528,6 +548,29 @@ function Formfactura() {
                   className="txtarea"
                 />
               </div>
+              {/* {cliente[0].moneda > 1 ? (
+                <div className="total">
+                  <table>
+                    <tbody>
+                      <tr className="totaltr">
+                        <td colSpan="3" className="totaltd1">
+                          Costo de Envio:&nbsp;
+                        </td>
+                        <td>
+                          <input
+                            className="costoEnvio"
+                            type="text"
+                            id="dhl"
+                            name="dhl"
+                            value={factcab[0].dhl}
+                            onChange={(e) => handleTipo(e, 0)}
+                          />
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              ) : null} */}
               <div className="total">
                 <table>
                   <tbody>
@@ -547,28 +590,25 @@ function Formfactura() {
                         <b>{dollarUSLocale.format(saleTax.toFixed(0))}</b>
                       </td>
                     </tr>
-                    <tr className="totaltr">
-                      {acceso === "A" ? (
+                    {cliente[0].moneda > 1 ? (
+                      <tr className="totaltr">
+                        <td colSpan="3" className="totaltd1">
+                          Costo de Envio:&nbsp;
+                        </td>
                         <td>
-                          <FcOk
-                            style={estilo2}
-                            title="Crear OC"
-                            onClick={handleSubmit}
+                          <input
+                            className="costoEnvio"
+                            type="text"
+                            id="dhl"
+                            name="dhl"
+                            value={factcab[0].dhl}
+                            onChange={(e) => handleTipo(e, 0)}
                           />
                         </td>
-                      ) : (
-                        <td>&nbsp;</td>
-                      )}
-                      <td>
-                        <FcLeft
-                          style={estilo2}
-                          title="Volver"
-                          onClick={() => {
-                            navigate("/factura");
-                          }}
-                        />
-                      </td>
-                      <td>
+                      </tr>
+                    ) : null}
+                    <tr className="totaltr">
+                      <td colSpan="3" className="totaltd1">
                         <b>TOTAL A PAGAR</b>
                       </td>
                       <td className="totaltd2">
@@ -583,8 +623,8 @@ function Formfactura() {
                 <table className="table table-striped bg-white">
                   <thead>
                     <tr className="table-success">
+                      <th>Metodo de Pago</th>
                       <th>Descuento</th>
-                      <th>Porcentaje</th>
                       <th>Enganche</th>
                       <th>Meses</th>
                       <th>Interes Anual</th>
@@ -671,7 +711,6 @@ function Formfactura() {
                                     value={cond.meses}
                                     onChange={(e) => handleTipo(e, { i })}
                                   ></input>
-                                  %
                                 </td>
                                 <td>
                                   <input
@@ -779,7 +818,6 @@ function Formfactura() {
                                   value={cond.meses}
                                   onChange={(e) => handleTipo(e, { i })}
                                 ></input>
-                                %
                               </td>
                               <td>
                                 <input
@@ -804,6 +842,35 @@ function Formfactura() {
                           );
                         }
                       })}
+                  </tbody>
+                </table>
+              </div>
+              <div>
+                <table>
+                  <tbody>
+                    <tr className="totaltr">
+                      {acceso === "A" ? (
+                        <td>
+                          <FcOk
+                            style={estilo2}
+                            title="Crear OC"
+                            onClick={handleSubmit}
+                          />
+                        </td>
+                      ) : (
+                        <td>&nbsp;</td>
+                      )}
+                      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                      <td>
+                        <FcLeft
+                          style={estilo2}
+                          title="Volver"
+                          onClick={() => {
+                            navigate("/factura");
+                          }}
+                        />
+                      </td>
+                    </tr>
                   </tbody>
                 </table>
               </div>

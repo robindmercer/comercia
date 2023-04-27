@@ -76,8 +76,9 @@ router.post('/', async function (req, res, next) {
       cantidad,
       total    
     })
-    res.status(200).send(`FacDet Created`);
+    res.status(200).json({message:'FactDet Creada'});
   } catch (error) {
+    res.status(400).json({message:'FactDet No Creado'});
     console.log('Error', req.body)
     next(error)
   }

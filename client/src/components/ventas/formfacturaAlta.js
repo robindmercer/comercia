@@ -6,7 +6,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 // Acciones
 // import { getFacturaDet } from '../../actions/factdet';
 import { resetFact, AddFactura } from "../../actions/factura";
-import { getDetailIva } from '../../actions/tabla';
+import { getDetailIva } from "../../actions/tabla";
 import { getProducto } from "../../actions/producto";
 import { getClienteId } from "../../actions/cliente";
 import { getDireccion } from "../../actions/direccion";
@@ -56,8 +56,8 @@ const Formfactura = () => {
   const [subTotal, setSubTotal] = useState(0);
   const [DirCode, setDirCode] = useState(0);
   const [saleTax, setSaleTax] = useState(0);
-  const [saleDesc, setSaleDesc] = useState("");
-  const [saleDescto, setSaleDescto] = useState(0);
+
+  const [saleDHL, setSaleDHL] = useState(0);
   const [total, setTotal] = useState(0);
 
   // Formato Numeros
@@ -72,6 +72,7 @@ const Formfactura = () => {
     total: 0,
     observ: "",
     cod_status: 1,
+    dhl: 0,
     fecha: new Date().toLocaleDateString("en-GB"),
   });
 
@@ -108,26 +109,31 @@ const Formfactura = () => {
 
   // Manejo de Botones a ver
 
-
   const control = () => {
     // btnGrabar = false;
-    console.log('control1: ',     btnGrabar ,btnAgregar,btnEliminarReg,acceso.substring(0,1));
+    // console.log(
+    //   "control1: ",
+    //   btnGrabar,
+    //   btnAgregar,
+    //   btnEliminarReg,
+    //   acceso.substring(0, 1)
+    // );
     btnAgregar = false;
     btnEliminarReg = false;
-    if (acceso.substring(0,1) === "A") {
+    if (acceso.substring(0, 1) === "A") {
       // Gerencia All
       btnAgregar = true;
       btnEliminarReg = true;
     }
-    if (acceso.substring(0,1) === "C") {
+    if (acceso.substring(0, 1) === "C") {
       // Consulta
       btnGrabar = false;
       btnAgregar = false;
       btnEliminarReg = false;
     }
-    console.log('control2: ',     btnGrabar ,btnAgregar,btnEliminarReg);
+    // console.log("control2: ", btnGrabar, btnAgregar, btnEliminarReg);
   };
-  
+
   // var cantidad = []
   //console.log('factcab: ', factcab.length);
   if (factcab.length === 0) {
@@ -198,6 +204,35 @@ const Formfactura = () => {
     }
   }, [onChange, factdet]);
 
+  useEffect(() => {
+    var aux = 0;
+    if (factdet && porciva) {
+      factdet.forEach((fact) => {
+        const quantityNumber = parseFloat(fact.cantidad);
+        const rateNumber = parseFloat(fact.precio);
+        const amount =
+          quantityNumber && rateNumber ? quantityNumber * rateNumber : 0;
+
+        aux += amount;
+      });
+
+      // if (saleDHL > 0) {
+      //   aux += parseInt(saleDHL);
+      //   console.log("subTotal: ", subTotal);
+      //   setSubTotal(aux);
+      //   console.log("saleDHL d: ", saleDHL, subTotal);
+      // } else {
+      //   setSubTotal(aux);
+      // }
+      if (subTotal > 0) {
+        var iva = aux * (parseFloat(porciva[0].valor) / 100);
+        setSaleTax(iva);
+        var total = aux + iva + parseInt(saleDHL);
+        setTotal(total);
+      }
+    }
+  }, [onChange, saleDHL]);
+
   const handleRemove = (i) => {
     factdet.splice(i, 1);
     if (onChange) {
@@ -217,13 +252,13 @@ const Formfactura = () => {
     }
   };
   const handleSubmit = () => {
-   console.log('fecha: ', fecha);
-   var newDate1 = fecha.split('/')
-   const newdate =  newDate1[2] + newDate1[1] + newDate1[0]
-   // console.log('saleTax: ', saleTax);
-   // console.log('Total: ', total);
-   factcab[0].subtotal = subTotal;
-   factcab[0].iva = saleTax;
+    console.log("fecha: ", fecha);
+    var newDate1 = fecha.split("/");
+    const newdate = newDate1[2] + newDate1[1] + newDate1[0];
+    // console.log('saleTax: ', saleTax);
+    // console.log('Total: ', total);
+    factcab[0].subtotal = subTotal;
+    factcab[0].iva = saleTax;
     factcab[0].total = total;
     factcab[0].dir_id = parseInt(DirCode);
     setInput((input.subtotal = subTotal));
@@ -233,23 +268,25 @@ const Formfactura = () => {
     setInput((input.cli_id = factcab[0].cli_id));
     setInput((input.fecha = newdate));
 
-    // console.log('newDate1: ', newDate1);
-    // console.log('newdate: ', newdate);
-    // console.log('factcab: ', factcab[0]);
-    // console.log('factdet: ', factdet);
-    console.log('input: ', input);
-   if (subTotal===0){
-       return alert("O/C no puede quedar en 0 (Cero)")
-   }
-   //console.log('i f d',input, factdet, inputDet);
-   dispatch(AddFactura(input, factdet, inputDet));
-   window.location.href = "/factura";
+    console.log("factcab: ", factcab[0]);
+    console.log("factdet: ", factdet);
+    console.log("input: ", input);
+    if (subTotal === 0) {
+      return alert("O/C no puede quedar en 0 (Cero)");
+    }
+    //console.log('i f d',input, factdet, inputDet);
+    dispatch(AddFactura(input, factdet, inputDet));
+    // window.location.href = "/factura";
   };
 
   function handleTipo(e, i) {
     e.preventDefault();
+    if (e.target.name === "dhl") {
+      input.dhl = e.target.value;
+      console.log("e.target.name: ", e.target.name, e.target.value, input);
+      setSaleDHL(e.target.value);
+    }
     if (e.target.name === "observ") {
-      console.log("e.target.name: ", e.target.value);
       input.observ = e.target.value;
       if (onChange) {
         setOnChange(false);
@@ -259,12 +296,12 @@ const Formfactura = () => {
     }
     if (e.target.name === "domi") {
       setDirCode(e.target.value);
-      if (e.target.value > 0 )  btnGrabar = true
+      if (e.target.value > 0) btnGrabar = true;
       if (onChange) {
         setOnChange(false);
       } else {
         setOnChange(true);
-      }      
+      }
     }
     if (e.target.name === "quantity") {
       factdet[i.i].cantidad = e.target.value;
@@ -276,7 +313,7 @@ const Formfactura = () => {
       }
     }
     if (e.target.name === "prod_id") {
-      console.log('e.target.name: ', e.target.name,e.target.value,producto);
+      console.log("e.target.name: ", e.target.name, e.target.value, producto);
       if (e.target.value === "0") {
         handleRemove(i.i);
       } else {
@@ -301,22 +338,23 @@ const Formfactura = () => {
     }
   }
 
-
   // console.log("Cliente_1: ", cliente, state.idCli);
-   console.log("acceso: ", acceso);
+  console.log("acceso: ", acceso);
+  console.log("total: ", total);
+  console.log("saleDHL: ", saleDHL);
 
   // console.log('factcab: ', factcab);
   // console.log('factdet: ', factdet);
   // console.log('porciva: ', porciva,porciva.length);
   // console.log('tabla: ', tabla);
   //   if (porciva.length === 1){
-    //     if (onIva) {
-      //       setOnIva(false)
+  //     if (onIva) {
+  //       setOnIva(false)
   //     } else {
   //       setOnIva(true)
   //     }
   // }
-  // console.log('direccion: ', direccion);
+  console.log("cliente: ", cliente);
   if (factcab.length > 0) {
     control();
     return (
@@ -355,11 +393,7 @@ const Formfactura = () => {
                 >
                   Seleccione Domicilio:
                 </label>
-                <select 
-                name="domi" 
-                id="domi" 
-                onChange={(e) => handleTipo(e)}
-                >
+                <select name="domi" id="domi" onChange={(e) => handleTipo(e)}>
                   <option value="0">Seleccionar</option>
                   {direccion &&
                     direccion.map((direc) => {
@@ -431,17 +465,17 @@ const Formfactura = () => {
                           ) : null}
                           {btnEliminarReg ? (
                             <td onClick={() => handleRemove(i)}>
-                            <FcDeleteRow
-                              style={estilo}
-                              onMouseEnter={({ target }) =>
-                              (target.style.fontSize = "200%")
-                            }
-                            onMouseLeave={({ target }) =>
-                            (target.style.fontSize = "150%")
-                          }
-                          />
-                          </td>
-                          ): null}
+                              <FcDeleteRow
+                                style={estilo}
+                                onMouseEnter={({ target }) =>
+                                  (target.style.fontSize = "200%")
+                                }
+                                onMouseLeave={({ target }) =>
+                                  (target.style.fontSize = "150%")
+                                }
+                              />
+                            </td>
+                          ) : null}
                         </tr>
                       );
                     })}
@@ -474,6 +508,26 @@ const Formfactura = () => {
                   className="txtarea"
                 />
               </div>
+              {/* {cliente[0].moneda > 1 ? (
+                <div className="addprod">
+                  <label
+                    htmlFor="DHL"
+                    className="block text-gray-700 text-sm font-bold mb-2"
+                  >
+                    Costo de Envio:&nbsp;
+                  </label>
+                  <p>
+                    <input
+                      className="input_fact"
+                      type="text"
+                      id="dhl"
+                      name="dhl"
+                      value={input.dhl}
+                      onChange={(e) => handleTipo(e, 0)}
+                    />
+                  </p>
+                </div>
+              ) : null} */}
 
               <div className="total">
                 <table>
@@ -494,22 +548,41 @@ const Formfactura = () => {
                         {dollarUSLocale.format(saleTax.toFixed(0))}
                       </td>
                     </tr>
-                    {saleDesc !== "" ? (
+                    {cliente[0].moneda > 1 ? (
                       <tr className="totaltr">
                         <td colSpan="3" className="totaltd1">
-                          {saleDesc}
+                          Costo de Envio:&nbsp;
                         </td>
-                        <td className="totaltr">
-                          {dollarUSLocale.format(saleDescto)}
+                        <td>
+                          <input
+                            className="costoEnvio"
+                            type="text"
+                            id="dhl"
+                            name="dhl"
+                            value={factcab[0].dhl}
+                            onChange={(e) => handleTipo(e, 0)}
+                          />
                         </td>
                       </tr>
                     ) : null}
                     <tr className="totaltr">
+                      <td colSpan="3">
+                        {cliente[0].moneda === 2 ? (
+                          <b>TOTAL A PAGAR USD.</b>
+                        ) : (
+                          <b>TOTAL A PAGAR</b>
+                        )}
+                      </td>
+                      <td className="totaltd2">
+                        {dollarUSLocale.format(total.toFixed(0))}
+                      </td>
+                    </tr>
+                    <tr className="totaltr">
                       {btnGrabar ? (
-                        <td>
+                        <td colSpan="3">
                           <FcOk
                             style={estilo2}
-                            title="Crear OC"
+                            title="Grabar OC"
                             onClick={handleSubmit}
                           />
                         </td>
@@ -522,16 +595,6 @@ const Formfactura = () => {
                             navigate("/cliente");
                           }}
                         />
-                      </td>
-                      <td>
-                        {cliente[0].moneda === 2 ? (
-                          <b>TOTAL A PAGAR USD.</b>
-                        ) : (
-                          <b>TOTAL A PAGAR</b>
-                        )}
-                      </td>
-                      <td className="totaltd2">
-                        {dollarUSLocale.format(total.toFixed(0))}
                       </td>
                     </tr>
                   </tbody>

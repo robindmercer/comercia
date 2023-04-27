@@ -13,6 +13,10 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             allowNull: false,
         },        
+        dhl:{
+            type: DataTypes.NUMERIC,
+            allowNull: false,
+        },
         subtotal:{
             type: DataTypes.NUMERIC,
             allowNull: false,
