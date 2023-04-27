@@ -86,7 +86,7 @@ const Tabla = () => {
                                     &nbsp;&nbsp;
                                     {!detail && (
                                     <button onClick={() => verDetalle(data.id)}>
-                                        Det
+                                        Detalle
                                     </button>
                                     )}
                                 </td>

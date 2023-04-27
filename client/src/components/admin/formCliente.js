@@ -60,7 +60,9 @@ function ABMCliente() {
 
   const [input, setInput] = useState({
     id: state ? state.id : 0,
+    razsoc: state ? state.razsoc : "",
     nombre: state ? state.nombre : "",
+    apellido: state ? state.apellido : "",
     email: state ? state.email : "",
     movil: state ? state.movil : "",
     fijo: state ? state.fijo : "",
@@ -134,8 +136,7 @@ function ABMCliente() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("input", input);
-    if (input.nombre === ''){ return alert('Debe ingresar un Nombre') }
-    if (input.email === ''){ return alert('Debe ingresar una direccion de Mail') }
+    if (input.pais === ''){ return alert('Debe ingresar un Pais') }
     dispatch(AddCliente(input));
     //navigate("/cliente");
     window.location.href = "/cliente";
@@ -173,6 +174,23 @@ function ABMCliente() {
                   <input
                     className="tdBig"
                     type="text"
+                    id="razsoc"
+                    name="razsoc"
+                    value={input.razsoc}
+                    onChange={handleChange}
+                    placeholder="Ingrese Razon Social"
+                  />
+                  {errors.nombre && (
+                    <p className="text-red-500">{errors.nombre}</p>
+                  )}
+                </td>
+              </tr>
+              <tr>
+                <td className="tdTitulo">Nombre: </td>
+                <td >
+                  <input
+                    className="tdBig"
+                    type="text"
                     id="nombre"
                     name="nombre"
                     value={input.nombre}
@@ -184,7 +202,23 @@ function ABMCliente() {
                   )}
                 </td>
               </tr>
-
+              <tr>
+                <td className="tdTitulo">Apellido: </td>
+                <td >
+                  <input
+                    className="tdBig"
+                    type="text"
+                    id="apellido"
+                    name="apellido"
+                    value={input.apellido}
+                    onChange={handleChange}
+                    placeholder="Ingrese Nombre"
+                  />
+                  {errors.nombre && (
+                    <p className="text-red-500">{errors.nombre}</p>
+                  )}
+                </td>
+              </tr>
               <tr>
                 <td className="tdTitulo">Mail: </td>
                 <td>

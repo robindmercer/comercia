@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import '../../css/all.css'
 import Header from '../Header';
 import { FcHome, FcBusinessman,FcCurrencyExchange } from 'react-icons/fc'
+import { resetFact } from "../../actions/factura";
 // import Modal from "../../components/modal"
 const Cliente = () => {
     const { cliente } = useSelector((state) => state);
@@ -20,7 +21,8 @@ const Cliente = () => {
     // const [openModal, SetOpenModal]=useState(false);
 
     useEffect(() => {
-        dispatch(getDetailIva(1))
+        dispatch(resetFact());
+        dispatch(getDetailIva(1));
         dispatch(getCliente());
         dispatch(getUsuariomenId(id_usuario));
         if (usuariomenu) {
@@ -75,7 +77,9 @@ const Cliente = () => {
                                 state={
                                     {
                                         id: 0,
+                                        razsoc:"",
                                         nombre: "",
+                                        apellido:"",
                                         email: "",
                                         movil: "",
                                         fijo: "",
@@ -130,7 +134,9 @@ const Cliente = () => {
                                             state={
                                                 {
                                                     id: data.id,
+                                                    razsoc:data.razsoc,
                                                     nombre: data.nombre,
+                                                    apellido:data.apellido,
                                                     email: data.email,
                                                     movil: data.movil,
                                                     fijo: data.fijo,

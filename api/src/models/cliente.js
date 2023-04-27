@@ -8,7 +8,15 @@ module.exports = (sequelize) => {
             autoIncrement: true,
             primaryKey: true,
         },
+        razsoc: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
         nombre: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        apellido: {
             type: DataTypes.STRING,
             allowNull: false,
         },

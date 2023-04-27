@@ -75,11 +75,13 @@ router.get('/', async function (req, res, next) {
 
 router.post('/', async function (req, res, next) {
   try {
-    const {id,nombre,email,movil,fijo,rfc_cod,idioma,moneda,cod_cliente,cod_status} = req.body
+    const {id,razsoc,nombre,apellido,email,movil,fijo,rfc_cod,idioma,moneda,cod_cliente,cod_status} = req.body
     console.log('req.body: ', req.body);
     if (id != 0){
       sql=`update clientes set `
+      sql= sql + ` razsoc='${razsoc}',`
       sql= sql + ` nombre='${nombre}',`
+      sql= sql + ` apellido='${apellido}',`
       sql= sql + ` email='${email}',`
       sql= sql + ` movil='${movil}',`
       sql= sql + ` fijo='${fijo}',`
@@ -90,8 +92,8 @@ router.post('/', async function (req, res, next) {
       sql= sql + ` moneda=${moneda}`
       sql= sql + ` where id = ${id}`
     } else {
-      sql=`insert into clientes (nombre,email,movil,fijo,rfc_cod,idioma,moneda,cod_cliente,cod_status) `
-      sql= sql + `values ('${nombre}','${email}','${movil}','${fijo}','${rfc_cod}','${idioma}','${moneda}',${cod_cliente},${cod_status})`
+      sql=`insert into clientes (razsoc,nombre,apellido,email,movil,fijo,rfc_cod,idioma,moneda,cod_cliente,cod_status) `
+      sql= sql + `values ('${razsoc}','${nombre}','${apellido}','${email}','${movil}','${fijo}','${rfc_cod}','${idioma}','${moneda}',${cod_cliente},${cod_status})`
     }
     const records = await seq.query(sql,
       {

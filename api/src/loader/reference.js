@@ -115,6 +115,8 @@ async function refLoad() {
       { id: 3, cod: 0, description: "Tipo Cliente", valor: 0, control : 'N', cod_status: 1 },
       { id: 3, cod: 1, description: "Profesional", valor: 0, control : 'N', cod_status: 1 },
       { id: 3, cod: 2, description: "Paciente", valor: 0, control : 'N', cod_status: 1 },
+      { id: 3, cod: 3, description: "Distribuidor", valor: 0, control : 'N', cod_status: 1 },
+      { id: 3, cod: 4, description: "Otros", valor: 0, control : 'N', cod_status: 1 },
       { id: 4, cod: 0, description: "Tipo de Cambio", valor: 0, control : 'N', cod_status: 1 },
       { id: 4, cod: 1, description: "U$S", valor: 20.10, control : 'N', cod_status: 1 },
       { id: 4, cod: 2, description: "GPB", valor: 23, control : 'N', cod_status: 1 },
@@ -136,13 +138,28 @@ async function refLoad() {
       { id: 8, cod: 0, description: "Moneda", valor: 0, control : 'N', cod_status: 1 },
       { id: 8, cod: 1, description: "Peso Mex.", valor: 0, control : 'N', cod_status: 1 },
       { id: 8, cod: 2, description: "Dolar", valor: 0, control : 'N', cod_status: 1 },
+      { id: 9, cod: 0, description: "Terminos y Condiciones Local", valor: 0, control : 'N', cod_status: 1 },
+      { id: 9, cod: 1, description: "* Cotización expresada en pesos mexicanos. Los precios incluyen I.V.A.", valor: 0, control : 'N', cod_status: 1 },
+      { id: 9, cod: 2, description: "* Envío por medio de DHL EXPRESS en un plazo de 15 a 45 días a partir de la confirmación de pago.", valor: 0, control : 'N', cod_status: 1 },
+      { id: 9, cod: 3, description: "* Capacitación incluidas", valor: 0, control : 'N', cod_status: 1 },
+      { id: 9, cod: 4, description: "* Certificaciones hasta 3 cupos incluidas", valor: 0, control : 'N', cod_status: 1 },
+      { id: 10, cod: 0, description: "Terminos y Condiciones Internacional", valor: 0, control : 'N', cod_status: 1 },
+      { id: 10, cod: 1, description: "* Cotización expresada en dólar americano.", valor: 0, control : 'N', cod_status: 1 },
+      { id: 10, cod: 2, description: "* Envío por medio de DHL EXPRESS.", valor: 0, control : 'N', cod_status: 1 },
+      { id: 10, cod: 3, description: "* Capacitación incluidas.", valor: 0, control : 'N', cod_status: 1 },
+      { id: 10, cod: 4, description: "* Certificaciones hasta 3 cupos incluidas.", valor: 0, control : 'N', cod_status: 1 },      
+      { id: 11, cod: 0, description: "Terminos y Condiciones Internacional ENG", valor: 0, control : 'N', cod_status: 1 },
+      { id: 11, cod: 1, description: "* Price expressed in US dollars. .", valor: 0, control : 'N', cod_status: 1 },
+      { id: 11, cod: 2, description: "*Shipping by DHL EXPRESS.", valor: 0, control : 'N', cod_status: 1 },
+      { id: 11, cod: 3, description: "* Training included", valor: 0, control : 'N', cod_status: 1 },
+      { id: 11, cod: 4, description: "* Certifications up to 3 places included", valor: 0, control : 'N', cod_status: 1 },
    ]).then(() => console.log('Tablas ha sido grabado'));
 
    Cliente.bulkCreate([
-      { nombre: "DR. JAVIER CEBALLOS MEDINA", email: "cliente@gmail.com", movil: '123456789', fijo: '46661234', rfc_cod: 'rfc-1', idioma:1, moneda:1,cod_cliente: 1, cod_status: 1 },
-      { nombre: "DRA. MARIA TERESA RAZO SOLIS", email: "cliente@gmail.com", movil: '123456789', fijo: '46661234', rfc_cod: 'rfc-2', idioma:1, moneda:1,cod_cliente: 2, cod_status: 1 },
-      { nombre: "ING. JAVIER VELA", email: "cliente@gmail.com", movil: '123456789', fijo: '46661234', rfc_cod: 'rfc-3', idioma:2, moneda:2,cod_cliente: 2, cod_status: 1 },
-      { nombre: "YPF", email: "YPF@gmail.com", movil: '123456789', fijo: '46661234', rfc_cod: 'rfc-4', idioma:2, moneda:2, cod_cliente: 1, cod_status: 1 },
+      { razsoc:"RAZON",nombre: "JAVIER CEBALLOS"  ,apellido:"MEDINA", email: "cliente@gmail.com", movil: '123456789', fijo: '46661234', rfc_cod: 'rfc-1', idioma:1, moneda:1,cod_cliente: 1, cod_status: 1 },
+      { razsoc:"RAZON",nombre: "DRA. MARIA TERESA",apellido:"RAZO SOLIS", email: "cliente@gmail.com", movil: '123456789', fijo: '46661234', rfc_cod: 'rfc-2', idioma:1, moneda:1,cod_cliente: 2, cod_status: 1 },
+      { razsoc:"RAZON",nombre: "ING. JAVIER"      ,apellido:"VELA", email: "cliente@gmail.com", movil: '123456789', fijo: '46661234', rfc_cod: 'rfc-3', idioma:2, moneda:2,cod_cliente: 2, cod_status: 1 },
+      { razsoc:"RAZON",nombre: "YPF"              ,apellido:"", email: "YPF@gmail.com", movil: '123456789', fijo: '46661234', rfc_cod: 'rfc-4', idioma:2, moneda:2, cod_cliente: 1, cod_status: 1 },
    ]).then(() => console.log('Clientes grabados'));
   
    Direccion.bulkCreate([
@@ -419,10 +436,10 @@ async function refLoad() {
 
 
    Factura.bulkCreate([ 
-      {cli_id: 1,dir_id: 1,subtotal: 284158,iva: 45465,total: 329623,observ:'Include popular icons in your React projects easily with react-icons, which utilizes ES6 imports that allows you to include only the icons that your project is using.',cod_status: 1},
-      {cli_id: 2,dir_id: 1,subtotal: 265279,iva: 42445,total: 307724,observ:'Algun Dato',cod_status: 1},
-      {cli_id: 3,dir_id: 1,subtotal: 24600,iva: 39424,total: 285824,observ:'Algun Dato',cod_status: 1},
-      {cli_id: 4,dir_id: 1,subtotal: 14900,iva: 2384,total: 17284,observ:'Algun Dato',cod_status: 1},
+      {cli_id: 1,dir_id: 1,dhl:0,subtotal: 284158,iva: 45465,total: 329623,observ:'Include popular icons in your React projects easily with react-icons, which utilizes ES6 imports that allows you to include only the icons that your project is using.',cod_status: 1},
+      {cli_id: 2,dir_id: 1,dhl:0,subtotal: 265279,iva: 42445,total: 307724,observ:'Algun Dato',cod_status: 1},
+      {cli_id: 3,dir_id: 1,dhl:0,subtotal: 24600,iva: 39424,total: 285824,observ:'Algun Dato',cod_status: 1},
+      {cli_id: 4,dir_id: 1,dhl:0,subtotal: 14900,iva: 2384,total: 17284,observ:'Algun Dato',cod_status: 1},
    ]).then(() => console.log('Factura Grabada'));
       
    Factdet.bulkCreate([
