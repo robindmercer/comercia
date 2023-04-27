@@ -52,31 +52,9 @@ export const menuItems = [
         url: '/factura',
       },
       {
-        title: 'web development',
+        title: 'Cotizacion',
         nivel: 12,
-        url: '/web-dev',
-        submenu: [
-          {
-            title: 'Frontend',
-            nivel: 13,
-            url: 'frontend',
-          },
-          {
-            title: 'Backend',
-            submenu: [
-              {
-                title: 'NodeJS',
-                nivel: 14,
-                url: 'node',
-              },
-              {
-                title: 'PHP',
-                nivel: 15,
-                url: 'php',
-              },
-            ],
-          },
-        ],
+        url: '/formfacturaAlta',
       },
     ],
   },

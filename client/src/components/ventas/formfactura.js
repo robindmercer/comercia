@@ -141,8 +141,8 @@ function Formfactura() {
           quantityNumber && rateNumber ? quantityNumber * rateNumber : 0;
         subTotal += amount;
       });
-      console.log("ver DHL: ", factcab[0].dhl);
-      if (factcab[0].dhl > 0) {
+      //console.log("ver DHL: ", factcab[0].dhl);
+      if (factcab && factcab[0].dhl > 0) {
         subTotal += parseInt(factcab[0].dhl);
       }
       setSubTotal(subTotal);
@@ -163,6 +163,7 @@ function Formfactura() {
 
   useEffect(() => {
     var aux = 0;
+    var iva = 0;
     if (factdet && porciva) {
       factdet.forEach((fact) => {
         const quantityNumber = parseFloat(fact.cantidad);
@@ -182,8 +183,11 @@ function Formfactura() {
       //   setSubTotal(aux);
       // }
       if (subTotal > 0) {
-        var iva = aux * (parseFloat(porciva[0].valor) / 100);
+        if (cliente[0].moneda === 1){
+          iva = aux * (parseFloat(porciva[0].valor) / 100);
+        }        
         setSaleTax(iva);
+        if (saleDHL.length===0) setSaleDHL(0);
         var total = aux + iva + parseInt(saleDHL);
         setTotal(total);
       }
@@ -661,7 +665,7 @@ function Formfactura() {
                                     ></input>
                                   </td>
                                 </tr>
-                                <tr>
+                                <tr  key={i * 11}>
                                   <td>&nbsp;</td>
                                   <td colSpan={3}>Total a Pagar</td>
                                   <td className="totaltr">
@@ -678,7 +682,7 @@ function Formfactura() {
                           }
                           return (
                             <>
-                              <tr key={i * 10}>
+                              <tr key={i * 12}>
                                 <td>{cond.nombre}</td>
                                 <td>
                                   <input

@@ -1,22 +1,22 @@
 // eslint-disable-next-line
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 // Acciones
 // import { getFacturaDet } from '../../actions/factdet';
-import { resetFact, AddFactura } from "../../actions/factura";
-import { getDetailIva } from "../../actions/tabla";
-import { getProducto } from "../../actions/producto";
 import { getClienteId } from "../../actions/cliente";
 import { getDireccion } from "../../actions/direccion";
+import { AddFactura } from "../../actions/factura";
+import { getProducto } from "../../actions/producto";
+import { getDetailIva } from "../../actions/tabla";
 import { getUsuariomenId } from "../../actions/usuariomenu";
 
 // Descuentos
 import { getDetail } from "../../actions/tabla";
 
 // Iconos
-import { FcDeleteRow, FcAddRow, FcOk, FcLeft } from "react-icons/fc";
+import { FcAddRow, FcDeleteRow, FcLeft, FcOk } from "react-icons/fc";
 import Header from "../Header";
 // CSS
 import "../../css/factdet.css";
@@ -94,8 +94,9 @@ const Formfactura = () => {
     precio: 0,
     total: 0,
   };
+
   const initialHead = {
-    cli_id: state.idCli,
+    cli_id: state.idCli ,
     dir_id: 0,
     fac_id: 0,
     subtotal: "0",
@@ -193,8 +194,10 @@ const Formfactura = () => {
       });
       setSubTotal(subTotal);
       if (subTotal > 0) {
-        iva = subTotal * (parseFloat(porciva[0].valor) / 100);
-        setSaleTax(iva);
+        if (cliente[0].moneda === 1){
+          iva = subTotal * (parseFloat(porciva[0].valor) / 100);
+          setSaleTax(iva);
+        } 
         total = subTotal + iva;
         setTotal(total);
       } else {
@@ -203,9 +206,10 @@ const Formfactura = () => {
       }
     }
   }, [onChange, factdet]);
-
+  
   useEffect(() => {
     var aux = 0;
+    var iva = 0
     if (factdet && porciva) {
       factdet.forEach((fact) => {
         const quantityNumber = parseFloat(fact.cantidad);
@@ -225,8 +229,11 @@ const Formfactura = () => {
       //   setSubTotal(aux);
       // }
       if (subTotal > 0) {
-        var iva = aux * (parseFloat(porciva[0].valor) / 100);
+        if (cliente[0].moneda === 1){
+            iva = aux * (parseFloat(porciva[0].valor) / 100);
+        }
         setSaleTax(iva);
+        if (saleDHL.length===0) setSaleDHL(0);
         var total = aux + iva + parseInt(saleDHL);
         setTotal(total);
       }
@@ -540,14 +547,16 @@ const Formfactura = () => {
                         {dollarUSLocale.format(subTotal)}
                       </td>
                     </tr>
-                    <tr className="totaltr">
-                      <td colSpan="3" className="totaltd1">
-                        IVA({porciva[0].valor}%)
-                      </td>
-                      <td className="totaltd2">
-                        {dollarUSLocale.format(saleTax.toFixed(0))}
-                      </td>
-                    </tr>
+                    {(cliente[0].moneda === 1 ? (
+                        <tr className="totaltr">
+                          <td colSpan="3" className="totaltd1">
+                            IVA({porciva[0].valor}%)
+                          </td>
+                          <td className="totaltd2">
+                            {dollarUSLocale.format(saleTax.toFixed(0))}
+                          </td>
+                        </tr>
+                      ) : null)                    }
                     {cliente[0].moneda > 1 ? (
                       <tr className="totaltr">
                         <td colSpan="3" className="totaltd1">

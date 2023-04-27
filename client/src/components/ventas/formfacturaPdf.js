@@ -11,6 +11,7 @@ import { getFacturaCab } from "../../actions/factura";
 import { getDetailIva } from "../../actions/tabla";
 import { getUsuariomenId } from "../../actions/usuariomenu";
 import { getCondicionesFac } from "../../actions/condiciones";
+import { getTablaAll } from "../../actions/tabla";
 // Descuentos
 import { getDetail } from "../../actions/tabla";
 
@@ -37,14 +38,15 @@ var xTotPag = "TOTAL A PAGAR";
 var xCond = "Condiciones Generales";
 var xImporte = "Importe";
 var xIva = "Iva";
-var xProdName = ""
-var xProdDescrip = ""
-var xEngancheTit = "Enganche"
-var xSaldo="Saldo a financiar"
-var xPagosMens="Pagos Mensuales"
-var xInteres="Interes del"
-
-
+var xProdName = "";
+var xProdDescrip = "";
+var xEngancheTit = "Enganche";
+var xSaldo = "Saldo a financiar";
+var xPagosMens = "Pagos Mensuales";
+var xInteres = "Interes del";
+var xTablaId = 9;
+var xTerminos = "Terminos y Condiciones";
+var xDHL = "Costos de Envio"
 const FormfacturaPDF = () => {
   // Manejo acceso del Usuario
   const navigate = useNavigate();
@@ -54,6 +56,7 @@ const FormfacturaPDF = () => {
   const { porciva } = useSelector((state) => state);
   const { factcond } = useSelector((state) => state);
   const estilo2 = { fontSize: "200%" };
+  const tabla = useSelector((state) => state.tabla);
 
   const dispatch = useDispatch();
 
@@ -84,6 +87,7 @@ const FormfacturaPDF = () => {
     dispatch(getFacturaDet(state.idfact));
     dispatch(getCondicionesFac(state.idfact));
     dispatch(getUsuariomenId(id_usuario));
+    dispatch(getTablaAll());
     //setInput(input.fac_id=1)
     // return (
     //   dispatch(resetFact())
@@ -93,10 +97,9 @@ const FormfacturaPDF = () => {
 
   console.log("formFactura---------------------------------------------------");
   console.log("state.idfact ", state.idfact);
-  // console.log("total: ", total);
+  console.log("tabla: ", tabla);
   // console.log("usuariomenu: ", usuariomenu);
   // console.log("acceso: ", acceso);
-  // console.log("porciva: ", porciva);
   console.log("factcab: ", factcab);
   console.log("factdet: ", factdet);
   console.log("formFactura---------------------------------------------------");
@@ -118,13 +121,23 @@ const FormfacturaPDF = () => {
       xImporte = "Amount";
       xIncluido = "Included";
       xIva = "Tax";
-      xEngancheTit = "First Payment"
-      xSaldo="Finance";
-      xPagosMens="Monthy Payments";
-      xInteres="Interes Rate"
+      xEngancheTit = "First Payment";
+      xSaldo = "Finance";
+      xPagosMens = "Monthy Payments";
+      xInteres = "Interes Rate";
+      xTablaId = 2;
+      xTerminos = "Conditions";
+      xDHL="Shipping Costs"
+    }
+    if (factcab[0].moneda === 2) {
+      xTablaId = 11;
+    }
+    if (factcab[0].moneda === 2 && factcab[0].idioma === 1) {
+      xTablaId = 10;
     }
   }
 
+  console.log("xTablaId: ", xTablaId);
   if (factcab.length > 0) {
     return (
       <>
@@ -183,10 +196,11 @@ const FormfacturaPDF = () => {
                 <tbody>
                   {factdet &&
                     factdet.map((fact, i) => {
-                      xProdName = fact.name
-                      xProdDescrip = fact.decription
-                      if (factcab[0].idioma === 2) xProdName = fact.nameext
-                      if (factcab[0].idioma === 2) xProdDescrip = fact.descripext
+                      xProdName = fact.name;
+                      xProdDescrip = fact.decription;
+                      if (factcab[0].idioma === 2) xProdName = fact.nameext;
+                      if (factcab[0].idioma === 2)
+                        xProdDescrip = fact.descripext;
                       return (
                         <tr key={i}>
                           <td>{xProdName}</td>
@@ -222,14 +236,26 @@ const FormfacturaPDF = () => {
                         {dollarUSLocale.format(factcab[0].subtotal)}
                       </td>
                     </tr>
-                    <tr className="totaltr">
-                      <td colSpan="3" className="totaltd1">
-                        {xIva}({porciva[0].valor}%)
-                      </td>
-                      <td className="totaltd2">
-                        {dollarUSLocale.format(factcab[0].iva)}
-                      </td>
-                    </tr>
+                    {factcab[0].moneda !== 2 ? (
+                      <tr className="totaltr">
+                        <td colSpan="3" className="totaltd1">
+                          {xIva}({porciva[0].valor}%)
+                        </td>
+                        <td className="totaltd2">
+                          {dollarUSLocale.format(factcab[0].iva)}
+                        </td>
+                      </tr>
+                    ) : null}
+                    {factcab[0].dhl > 0 ? (
+                      <tr className="totaltr">
+                        <td colSpan="3" className="totaltd1">
+                          {xDHL}
+                        </td>
+                        <td className="totaltd2">
+                          {dollarUSLocale.format(factcab[0].dhl)}
+                        </td>
+                      </tr>
+                    ) : null}
                     <tr className="totaltr">
                       <td colSpan="3">
                         <b>{xTotPag}</b>
@@ -247,135 +273,163 @@ const FormfacturaPDF = () => {
             </div>
           </div>
           {/* Condiciones Generales  */}
-          { factcond.length > 0 ? (
+          {factcond.length > 0 ? (
+            <div className="addprod addprod2">
+              <table className="table table-striped bg-white">
+                <thead>
+                  <tr className="table-success">
+                    <th colSpan={3}>{xCond}</th>
+                  </tr>
+                  <tr className="table-success">
+                    <th>{xDescripcion}</th>
+                    <th>&nbsp;</th>
+                    <th>{xImporte}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {factcond &&
+                    factcond.map((cond, i) => {
+                      console.log("cond: ", cond);
+                      var xEnganche = (factcab[0].total * cond.enganche) / 100;
+                      var xFinanciar = factcab[0].total - xEnganche;
+                      var xAnos = cond.meses / 12;
+                      var xPorMes = xFinanciar * (cond.interes / 100) * xAnos;
+                      var xPagoMens = (xFinanciar + xPorMes) / cond.meses;
+                      var xTotal = xPagoMens * cond.meses;
+                      // console.log("total: ", factcab[0].total);
+                      // console.log("xEnganche: ", xEnganche);
+                      // console.log("xFinanciar: ", xFinanciar);
+                      // console.log("xTotal: ", xTotal);
+                      // console.log("cond.id: ", cond.cond_id);
+                      if (cond.cond_id === 1) {
+                        xEnganche = 0;
+                        xFinanciar = 0;
+                        xTotal = factcab[0].total;
+                        return (
+                          <>
+                            <tr key={i * 10}>
+                              <td>{cond.nombre}</td>
+                              <td colSpan={2}>&nbsp;</td>
+                            </tr>
+                            <tr>
+                              <td>{xTotPag}</td>
+                              <td className="totaltr">
+                                {dollarUSLocale.format(xTotal)}
+                              </td>
+                            </tr>
+                          </>
+                        );
+                      }
+                      if (cond.cond_id === 2) {
+                        xEnganche = 0;
+                        xFinanciar = 0;
+                        var xDescuento =
+                          (factcab[0].total * cond.descuento) / 100;
+                        xTotal =
+                          factcab[0].total -
+                          (factcab[0].total * cond.descuento) / 100;
+                        return (
+                          <>
+                            <tr>
+                              <td colSpan={2}>Total Factura</td>
+                              <td className="totaltr">
+                                {dollarUSLocale.format(factcab[0].total)}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td colSpan={2}>
+                                Descuento{" "}
+                                {dollarUSLocale.format(
+                                  cond.descuento.toFixed(0)
+                                )}
+                                %
+                              </td>
+                              <td className="totaltr">
+                                {dollarUSLocale.format(xDescuento.toFixed(0))}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td colSpan={2}>{xTotPag}</td>
+                              <td className="totaltr">
+                                {dollarUSLocale.format(xTotal.toFixed(0))}
+                              </td>
+                            </tr>
+                          </>
+                        );
+                      }
+                      if (cond.cond_id > 2) {
+                        return (
+                          <>
+                            <tr>
+                              <td colSpan={2}>Total</td>
+                              <td className="totaltr">
+                                {dollarUSLocale.format(factcab[0].total)}
+                              </td>
+                            </tr>
+                            {xEnganche !== 0 ? (
+                              <>
+                                <tr>
+                                  <td colSpan={2}>{xEngancheTit}</td>
+                                  <td className="totaltr">
+                                    {dollarUSLocale.format(
+                                      xEnganche.toFixed(0)
+                                    )}
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td colSpan={2}>{xSaldo}</td>
+                                  <td className="totaltr">
+                                    {dollarUSLocale.format(
+                                      xFinanciar.toFixed(0)
+                                    )}
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td>
+                                    {cond.meses} {xPagosMens}
+                                  </td>
+                                  <td>
+                                    {xInteres} {cond.interes} %
+                                  </td>
+                                  <td className="totaltr">
+                                    {dollarUSLocale.format(
+                                      xPagoMens.toFixed(0)
+                                    )}
+                                  </td>
+                                </tr>
+                              </>
+                            ) : null}
+                            <tr>
+                              <td colSpan={2}>{xTotPag}</td>
+                              <td className="totaltr">
+                                {dollarUSLocale.format(xTotal.toFixed(0))}
+                              </td>
+                            </tr>
+                          </>
+                        );
+                      }
+                    })}
+                </tbody>
+              </table>
+            </div>
+          ) : null}
           <div className="addprod addprod2">
-            <table className="table table-striped bg-white">
+            <table className="table table-striped">
               <thead>
-                <tr className="table-success">
-                  <th colSpan={3}>{xCond}</th>
-                </tr>
-                <tr className="table-success">
-                  <th>{xDescripcion}</th>
-                  <th>&nbsp;</th>
-                  <th>{xImporte}</th>
-                </tr>
+                <th>{xTerminos}</th>
               </thead>
-              <tbody>
-                {factcond &&
-                  factcond.map((cond, i) => {
-                    console.log("cond: ", cond);
-                    var xEnganche = (factcab[0].total * cond.enganche) / 100;
-                    var xFinanciar = factcab[0].total - xEnganche;
-                    var xAnos = cond.meses / 12;
-                    var xPorMes = xFinanciar * (cond.interes / 100) * xAnos;
-                    var xPagoMens = (xFinanciar + xPorMes) / cond.meses;
-                    var xTotal = xPagoMens * cond.meses;
-                    // console.log("total: ", factcab[0].total);
-                    // console.log("xEnganche: ", xEnganche);
-                    // console.log("xFinanciar: ", xFinanciar);
-                    // console.log("xTotal: ", xTotal);
-                    // console.log("cond.id: ", cond.cond_id);
-                    if (cond.cond_id === 1) {
-                      xEnganche = 0;
-                      xFinanciar = 0;
-                      xTotal = factcab[0].total;
-                      return (
-                        <>
-                          <tr key={i * 10}>
-                            <td>{cond.nombre}</td>
-                            <td colSpan={2}>&nbsp;</td>
-                          </tr>
-                          <tr>
-                            <td>{xTotPag}</td>
-                            <td className="totaltr">
-                              {dollarUSLocale.format(xTotal)}
-                            </td>
-                          </tr>
-                        </>
-                      );
-                    }
-                    if (cond.cond_id === 2) {
-                      xEnganche = 0;
-                      xFinanciar = 0;
-                      var xDescuento =
-                        (factcab[0].total * cond.descuento) / 100;
-                      xTotal =
-                        factcab[0].total -
-                        (factcab[0].total * cond.descuento) / 100;
-                      return (
-                        <>
-                          <tr>
-                            <td colSpan={2}>Total Factura</td>
-                            <td className="totaltr">
-                              {dollarUSLocale.format(factcab[0].total)}
-                            </td>
-                          </tr>
-                          <tr>
-                            <td colSpan={2}>
-                              Descuento{" "}
-                              {dollarUSLocale.format(cond.descuento.toFixed(0))}
-                              %
-                            </td>
-                            <td className="totaltr">
-                              {dollarUSLocale.format(xDescuento.toFixed(0))}
-                            </td>
-                          </tr>
-                          <tr>
-                            <td colSpan={2}>{xTotPag}</td>
-                            <td className="totaltr">
-                              {dollarUSLocale.format(xTotal.toFixed(0))}
-                            </td>
-                          </tr>
-                        </>
-                      );
-                    }
-                    if (cond.cond_id > 2) {
-                      return (
-                        <>
-                          <tr>
-                            <td colSpan={2}>Total</td>
-                            <td className="totaltr">
-                              {dollarUSLocale.format(factcab[0].total)}
-                            </td>
-                          </tr>
-                          {xEnganche !== 0 ? (
-                            <>
-                              <tr>
-                                <td colSpan={2}>{xEngancheTit}</td>
-                                <td className="totaltr">
-                                  {dollarUSLocale.format(xEnganche.toFixed(0))}
-                                </td>
-                              </tr>
-                              <tr>
-                                <td colSpan={2}>{xSaldo}</td>
-                                <td className="totaltr">
-                                  {dollarUSLocale.format(xFinanciar.toFixed(0))}
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>{cond.meses} {xPagosMens}</td>
-                                <td>{xInteres} {cond.interes} %</td>
-                                <td className="totaltr">
-                                  {dollarUSLocale.format(xPagoMens.toFixed(0))}
-                                </td>
-                              </tr>
-                            </>
-                          ) : null}
-                          <tr>
-                            <td colSpan={2}>{xTotPag}</td>
-                            <td className="totaltr">
-                              {dollarUSLocale.format(xTotal.toFixed(0))}
-                            </td>
-                          </tr>
-                        </>
-                      );
-                    }
-                  })}
-              </tbody>
+              {tabla &&
+                tabla.map((tabla) => {
+                  if (tabla.id === xTablaId && tabla.cod !== 0) {
+                    return (
+                      <tr>
+                        <td>{`${tabla.description}`}</td>
+                      </tr>
+                    );
+                  }
+                })}
             </table>
           </div>
-          ): (null)
-          }
           <div>
             <p>
               NIBBOT INTERNATIONAL - RFC NIN180922KJ2 - San Luis, S.L.P.

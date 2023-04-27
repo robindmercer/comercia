@@ -27,6 +27,7 @@ router.get('/', async function (req, res, next) {
       sql = sql + " join tabla   t            on t.id = 6 and t.cod= f.cod_status" 
       sql = sql + " left join factcond fc     on fc.fac_id = f.id" 
       sql = sql + " left join condiciones con on con.id = fc.cond_id"       
+      sql = sql + " order by f.id"
       const records = await seq.query(sql,
         {
           logging: console.log,
@@ -119,17 +120,17 @@ router.post('/', async function (req, res, next) {
     const { cli_id, dir_id, fac_id, subtotal, iva,total,cod_status,observ,fecha,dhl } = req.body;
     console.log('Post Factura: ', req.body);
   
-   if (!cli_id || !dir_id || !subtotal || !iva || !total || !cod_status  ) {
+   if (!cli_id || !dir_id || !subtotal || !total || !cod_status  ) {
     console.log('cod_status: ', cod_status);
     console.log('total: ', total);
     console.log('iva: ', iva);
     console.log('subtotal: ', subtotal);
     console.log('dir_id: ', dir_id);
     console.log('cli_id: ', cli_id);
-     res.status(400).json({message:"Falta información para poder darte de alta el Documento"})
+     return res.status(400).json({message:"Falta información para poder darte de alta el Documento"})
     }    
     if (fac_id !== 0){
-      return res.status(400).json({message:"Error en la información recibida"})
+      res.status(400).json({message:"Error en la información recibida"})
     } else {
       sql=`insert into facturas (cli_id,dir_id,dhl,subtotal,iva,total,cod_status,observ,fecha) `
       sql= sql + `values (${cli_id},${dir_id},${dhl},${subtotal},${iva},${total},${cod_status},'${observ}','${fecha}') RETURNING id`
