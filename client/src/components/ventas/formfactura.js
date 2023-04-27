@@ -121,7 +121,8 @@ function Formfactura() {
         }
       }
     }
-    if (factcab){
+    if (factcab.length>0){
+      console.log('factcab: ', factcab);
       setSaleDHL(factcab[0].dhl)
     }
   }, [dispatch, id_usuario]);

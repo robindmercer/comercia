@@ -438,8 +438,8 @@ async function refLoad() {
    Factura.bulkCreate([ 
       {cli_id: 1,dir_id: 1,dhl:0,subtotal: 284158,iva: 45465,total: 329623,observ:'Include popular icons in your React projects easily with react-icons, which utilizes ES6 imports that allows you to include only the icons that your project is using.',cod_status: 1},
       {cli_id: 2,dir_id: 1,dhl:0,subtotal: 265279,iva: 42445,total: 307724,observ:'Algun Dato',cod_status: 1},
-      {cli_id: 3,dir_id: 1,dhl:0,subtotal: 24600,iva: 39424,total: 285824,observ:'Algun Dato',cod_status: 1},
-      {cli_id: 4,dir_id: 1,dhl:0,subtotal: 14900,iva: 2384,total: 17284,observ:'Algun Dato',cod_status: 1},
+      {cli_id: 3,dir_id: 1,dhl:100,subtotal: 24600,iva: 0,total: 24500,observ:'Algun Dato',cod_status: 1},
+      {cli_id: 4,dir_id: 1,dhl:100,subtotal: 14900,iva: 0,total: 15000,observ:'Algun Dato',cod_status: 1},
    ]).then(() => console.log('Factura Grabada'));
       
    Factdet.bulkCreate([
