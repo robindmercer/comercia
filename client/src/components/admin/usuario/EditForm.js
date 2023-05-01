@@ -107,7 +107,7 @@ const EditForm = ({ theUsuario }) => {
         </tr>
       </table>
       <Button variant="success" type="submit" block>
-        Edit Usuario
+        Grabar Usuario
       </Button>
     </Form>
   );

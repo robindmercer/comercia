@@ -94,7 +94,7 @@ const EditForm = ({ theMateriaprima }) => {
         </tr>
       </table>
       <Button variant="success" type="submit" block>
-        Edit Materiaprima
+        Grabar Materiaprima
       </Button>
     </Form>
   );

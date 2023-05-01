@@ -94,7 +94,7 @@ const EditForm = ({ theCondicion }) => {
         </tr>
       </table>
       <Button variant="success" type="submit" block>
-        Edit Condicion
+        Grabar Condicion
       </Button>
     </Form>
   );
