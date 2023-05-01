@@ -2,7 +2,7 @@ import axios from "axios";
 import { GET_MATERIAPRIMA, GET_MATERIAPRIMAPROD, RESET_PRODMP, DEL_MATERIAPRIMAPROD } from './constant'
 // Lista Materias Primas 
 export function getMateriaprima() {
-  //console.log('Action getMateriaprima: All');
+  console.log('Action getMateriaprima: All');
   return async function (dispatch) {
     var materiaprima = await axios.get(`/materiaprima`);
     return dispatch({

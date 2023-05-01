@@ -188,10 +188,6 @@ const Cliente = () => {
                     </tbody>
                 </table>
             </div>
-            {/* <div>
-                <button onClick={()=> {SetOpenModal(true)}} >Click Here</button>
-            </div>
-            {openModal && <Modal  closeModal={SetOpenModal} />} */}
         </>
     )
 };
