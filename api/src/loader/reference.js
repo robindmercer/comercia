@@ -435,27 +435,27 @@ async function refLoad() {
    ]).then(() => console.log('Prodmp ha sido grabado'));
 
 
-   Factura.bulkCreate([ 
-      {cli_id: 1,dir_id: 1,dhl:0,subtotal: 284158,iva: 45465,total: 329623,observ:'Include popular icons in your React projects easily with react-icons, which utilizes ES6 imports that allows you to include only the icons that your project is using.',cod_status: 1},
-      {cli_id: 2,dir_id: 1,dhl:0,subtotal: 265279,iva: 42445,total: 307724,observ:'Algun Dato',cod_status: 1},
-      {cli_id: 3,dir_id: 1,dhl:100,subtotal: 24600,iva: 0,total: 24500,observ:'Algun Dato',cod_status: 1},
-      {cli_id: 4,dir_id: 1,dhl:100,subtotal: 14900,iva: 0,total: 15000,observ:'Algun Dato',cod_status: 1},
-   ]).then(() => console.log('Factura Grabada'));
+   // Factura.bulkCreate([ 
+   //    {cli_id: 1,dir_id: 1,dhl:0,subtotal: 284158,iva: 45465,total: 329623,observ:'Include popular icons in your React projects easily with react-icons, which utilizes ES6 imports that allows you to include only the icons that your project is using.',cod_status: 1},
+   //    {cli_id: 2,dir_id: 1,dhl:0,subtotal: 265279,iva: 42445,total: 307724,observ:'Algun Dato',cod_status: 1},
+   //    {cli_id: 3,dir_id: 1,dhl:100,subtotal: 24600,iva: 0,total: 24500,observ:'Algun Dato',cod_status: 1},
+   //    {cli_id: 4,dir_id: 1,dhl:100,subtotal: 14900,iva: 0,total: 15000,observ:'Algun Dato',cod_status: 1},
+   // ]).then(() => console.log('Factura Grabada'));
       
-   Factdet.bulkCreate([
-      {fac_id:1, orden:1, prod_id:1, precio:246400, cantidad:1,total:246400},
-      {fac_id:1, orden:2, prod_id:2, precio:18879,  cantidad:2,total:37758},
-      {fac_id:2, orden:1, prod_id:1, precio:246400, cantidad:1,total:246400},
-      {fac_id:2, orden:2, prod_id:5, precio:18879,  cantidad:1,total:18879},
-      {fac_id:3, orden:1, prod_id:1, precio:24600,      cantidad:1,total:24600},
-      {fac_id:4, orden:1, prod_id:2, precio:14900,      cantidad:1,total:14900},
-   ]).then(() => console.log('Factura Det Grabada'));
+   // Factdet.bulkCreate([
+   //    {fac_id:1, orden:1, prod_id:1, precio:246400, cantidad:1,total:246400},
+   //    {fac_id:1, orden:2, prod_id:2, precio:18879,  cantidad:2,total:37758},
+   //    {fac_id:2, orden:1, prod_id:1, precio:246400, cantidad:1,total:246400},
+   //    {fac_id:2, orden:2, prod_id:5, precio:18879,  cantidad:1,total:18879},
+   //    {fac_id:3, orden:1, prod_id:1, precio:24600,      cantidad:1,total:24600},
+   //    {fac_id:4, orden:1, prod_id:2, precio:14900,      cantidad:1,total:14900},
+   // ]).then(() => console.log('Factura Det Grabada'));
 
    Condiciones.bulkCreate([
-      {id:1, nombre:'Sin Descuento',descuento:0,enganche:0,meses:0,interes:0},
-      {id:2, nombre:'Contado',descuento:15,enganche:0,meses:0,interes:0},
-      {id:3, nombre:'Financiamiento 12 Meses',descuento:0,enganche:20,meses:12,interes:5},
-      {id:4, nombre:'Financiamiento 24 Meses',descuento:0,enganche:20,meses:24,interes:5},
+      {nombre:'Sin Descuento',descuento:0,enganche:0,meses:0,interes:0},
+      {nombre:'Contado',descuento:15,enganche:0,meses:0,interes:0},
+      {nombre:'Financiamiento 12 Meses',descuento:0,enganche:20,meses:12,interes:5},
+      {nombre:'Financiamiento 24 Meses',descuento:0,enganche:20,meses:24,interes:5},
 
    ]).then(() => console.log('Condiciones grabados'));
   

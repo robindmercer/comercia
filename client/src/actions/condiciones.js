@@ -57,6 +57,18 @@ export function PostCondicionesFac(condiciones) {
         })
     }
   }
+
+  export function DelCondiciones(id) {
+    return function (dispatch) {
+      axios.delete('condiciones', id)
+        .then(response => {
+          return response
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    }
+  }  
   
   export function UpdateCondiciones(condiciones) {
     return function (dispatch) {

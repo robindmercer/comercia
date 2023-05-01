@@ -47,11 +47,9 @@ router.post("/", async function (req, res, next) {
   if (!name || !description || !udm) {
     return res.send("Falta información para poder darte de alta la Materia Prima");
   }
-  if (id > 0){
-    sql = `update materiaprima set description='${description}', udm='${udm}', stock=${stock},stockmin=${stockmin} where name= '${name}'`
-  } else{
-    sql = `insert into materiaprima (name,description,udm,stock,stockmin)  values('${name}', '${description}','${udm}',${stock},${stockmin})`
-  }
+
+  sql = `insert into materiaprima (name,description,udm,stock,stockmin)  values('${name}', '${description}','${udm}',${stock},${stockmin})`
+
   try {
     const records = await seq.query(sql,
       {
@@ -64,6 +62,29 @@ router.post("/", async function (req, res, next) {
     console.log('Error:',error)
   }
 });
+
+router.put("/", async function (req, res, next) {
+  const { id, name, description, udm,stock,stockmin } = req.body;
+
+  if (!name || !description || !udm) {
+    return res.send("Falta información para poder darte de alta la Materia Prima");
+  }
+  if (id > 0){
+    sql = `update materiaprima set description='${description}', udm='${udm}', stock=${stock},stockmin=${stockmin} where name= '${name}'`
+    try {
+      const records = await seq.query(sql,
+        {
+          logging: console.log,
+          type: QueryTypes.SELECT
+        });
+        console.log('records: ', records);
+    res.send(records)
+  } catch (error) {
+    console.log('Error:',error)
+  }
+}
+});
+
 
 // Manejo Relacion Materia Prima con el producto
 router.get('/prod', async function (req, res, next) {
@@ -89,21 +110,27 @@ router.get('/prod', async function (req, res, next) {
     }
   }
 })
-
+// Borro en ProdMp y en Materia primas
 router.delete('/prod', async function (req, res, next) {
   const { id } = req.query;
   if (id) {
     try {
-      sql = 'delete from prodmp '
-      sql = sql + ' where prodmp.prod_id = ' + id
+      sql = `delete from prodmp where prodmp.mp_name = '${id}' `
+      sql2 = `delete from materiaprima  where name = '${id}' `
 
       const records = await seq.query(sql,
         {
           logging: console.log,
           type: QueryTypes.SELECT
         });
-        res.send(records)
-      } catch (error) {
+
+        const records2 = await seq.query(sql2,
+          {
+            logging: console.log,
+            type: QueryTypes.SELECT
+          });
+          res.send(records2)
+        } catch (error) {
         console.log(error)
     }
   }

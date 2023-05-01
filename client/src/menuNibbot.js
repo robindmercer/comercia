@@ -20,9 +20,9 @@ export const menuItems = [
         url: '/producto',
       },
       {
-        title: 'Traducciones',
+        title: 'Condiciones',
         nivel: 4,
-        url: '/productolang',
+        url: '/condiciones',
       },
       {
         title: 'Materia Prima',
