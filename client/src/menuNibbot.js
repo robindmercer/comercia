@@ -47,14 +47,14 @@ export const menuItems = [
     url: '/factura',
     submenu: [
       {
+        title: 'Cotizacion',
+        nivel: 12,
+        url: '/cotizacion',
+      },
+      {
         title: 'Orden de Compra',
         nivel: 11,
         url: '/factura',
-      },
-      {
-        title: 'Cotizacion',
-        nivel: 12,
-        url: '/formfacturaAlta',
       },
     ],
   },

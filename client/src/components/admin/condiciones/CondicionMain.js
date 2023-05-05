@@ -6,7 +6,7 @@ function Conn() {
   return (
     <>
     <Header />
-    <div className="container-xl">
+    <div className="container-xl  bg-white">
       <div className="table-responsive">
         <div className="table-wrapper">
           <CondicionContextProvider>

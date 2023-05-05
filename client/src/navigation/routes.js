@@ -28,7 +28,10 @@ import FormfacturaPDF from '../components/ventas/formfacturaPdf'
 // Manejo Materias Primas de OC confeccionadas
 import FacturaMP from '../components/planeacion/facturaMP'
 import FormfacturaMP from '../components/planeacion/formfacturaMP'
-
+//Cotizaciones 
+import Cotizacion from '../components/ventas/cotizacion'
+import CotizacionModif from '../components/ventas/cotizacionModif'
+import CotizacionAlta from '../components/ventas/cotizacionAlta'
 function HandleRoutes() {
 
     const routes = [
@@ -175,7 +178,26 @@ function HandleRoutes() {
             element: <FormfacturaPDF />,
             exact: true,
             private: true,
+        },
+        {
+            path: "/cotizacion",
+            element: <Cotizacion />,
+            exact: true,
+            private: true,
+        },
+        {
+            path: "/cotizacionAlta",
+            element: <CotizacionAlta />,
+            exact: true,
+            private: true,
+        },
+        {
+            path: "/cotizacionModif",
+            element: <CotizacionModif />,
+            exact: true,
+            private: true,
         }
+        
                                 
     ]
     return routes;

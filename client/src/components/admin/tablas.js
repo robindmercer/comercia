@@ -27,7 +27,7 @@ const Tabla = () => {
     <>
       <Header />
         <div>
-            <div className="divHeader">
+            <div className="divHeader bg-white">
             <div>
                 <h2>Tabla</h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </div>

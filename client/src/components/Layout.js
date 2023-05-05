@@ -29,7 +29,9 @@ const Layout = () => {
   console.log('porciva: ', porciva);
   console.log('usuariomenu: ', usuariomenu);
   console.log('LayOut fin--------------------------------');
-  
+  if (porciva.length>0){
+   localStorage.setItem('porciva',porciva[0].valor)
+ }
   //console.log('actlogin.usr_id: ', actlogin[0].usr_id);
   if (tabla) {
     console.log('Layout Tabla: ', tabla);

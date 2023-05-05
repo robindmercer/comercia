@@ -32,7 +32,7 @@ const Materiaprima = ({data}) => {
                 <OverlayTrigger
                     overlay={
                         <Tooltip id={`tooltip-top`}>
-                            Edit
+                            Editar
                         </Tooltip>
                     }>
 
@@ -41,7 +41,7 @@ const Materiaprima = ({data}) => {
                 <OverlayTrigger
                     overlay={
                         <Tooltip id={`tooltip-top`}>
-                            Delete
+                            Eliminar
                         </Tooltip>
                     }>
                     <button onClick={() => deleteMateriaprima(data.name)}  className="btn text-danger btn-act" data-toggle="modal"><FcDeleteDatabase  style={estilo} /></button>
@@ -53,7 +53,7 @@ const Materiaprima = ({data}) => {
             <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
             <Modal.Title>
-                Edit Materiaprima
+                Editar Materiaprima
             </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -61,7 +61,7 @@ const Materiaprima = ({data}) => {
         </Modal.Body>
         <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>
-                    Close Button
+                    Cerrar
                 </Button>
         </Modal.Footer>
     </Modal>

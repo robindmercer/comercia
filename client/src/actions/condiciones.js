@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GET_CONDICION,GET_FACTCOND } from './constant'
+import { GET_CONDICION,GET_COTCOND,GET_FACTCOND } from './constant'
 
 export function getCondicionesID(id){
     //console.log('Action getCondiciones: All');
@@ -33,10 +33,11 @@ export function getCondicionesID(id){
        })
    }
 }
+// Condicion Seleccionada para Factura
 export function PostCondicionesFac(condiciones) {
-  //console.log('PostCondicionesFac: ', condiciones);
-  return function (dispatch) {
-    axios.post('condiciones/fact', condiciones)
+  //console.log('PostCondicionesCot: ', condiciones);
+  return async function (dispatch) {
+    await axios.post('condiciones/fact', condiciones)
       .then(response => {
         return response
       })
@@ -46,9 +47,23 @@ export function PostCondicionesFac(condiciones) {
   }
 }
  
+// Condicion Seleccionada para Cotizacion
+export function PostCondicionesCot(condiciones) {
+  //console.log('PostCondicionesCot: ', condiciones);
+  return async function (dispatch) {
+    await axios.post('condiciones/cot', condiciones)
+      .then(response => {
+        return response
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
+}
+
  export function AddCondiciones(condiciones) {
-    return function (dispatch) {
-      axios.post('condiciones', condiciones)
+    return async function (dispatch) {
+      await axios.post('condiciones', condiciones)
         .then(response => {
           return response
         })
@@ -59,8 +74,8 @@ export function PostCondicionesFac(condiciones) {
   }
 
   export function DelCondiciones(id) {
-    return function (dispatch) {
-      axios.delete('condiciones', id)
+    return async function (dispatch) {
+     await axios.delete('condiciones', id)
         .then(response => {
           return response
         })
@@ -71,8 +86,8 @@ export function PostCondicionesFac(condiciones) {
   }  
   
   export function UpdateCondiciones(condiciones) {
-    return function (dispatch) {
-      axios.put('condiciones', condiciones)
+    return async function (dispatch) {
+    await axios.put('condiciones', condiciones)
         .then(response => {
           return response
         })

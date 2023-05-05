@@ -42,3 +42,8 @@ export const GET_MPFAC='GET_MPFAC'
 // Condiciones Generales de facturacion 
 export const GET_CONDICION = 'GET_CONDICION'
 export const GET_FACTCOND = 'GET_FACTCOND'
+// Factura
+export const GET_COTIZACION = 'GET_COTIZACION'
+export const GET_COTCAB = 'GET_COTCAB'
+export const GET_COTIZACIONDET = 'GET_COTIZACIONDET'
+export const GET_COTCOND = 'GET_COTCOND'

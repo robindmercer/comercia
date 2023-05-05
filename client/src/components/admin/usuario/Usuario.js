@@ -27,7 +27,7 @@ const Usuario = ({ data }) => {
       <td>{data.perfil.description}</td>
       <td>{data.status.description}</td>
       <td>
-        <OverlayTrigger overlay={<Tooltip id={`tooltip-top`}>Edit</Tooltip>}>
+        <OverlayTrigger overlay={<Tooltip id={`tooltip-top`}>Editar</Tooltip>}>
           <button
             onClick={handleShow}
             className="btn text-warning btn-act"
@@ -52,14 +52,14 @@ const Usuario = ({ data }) => {
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Edit Usuario</Modal.Title>
+          <Modal.Title>Editar Usuario</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <EditForm theUsuario={data} />
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
-            Close Button
+            Cerrar
           </Button>
         </Modal.Footer>
       </Modal>

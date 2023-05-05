@@ -22,7 +22,7 @@
     width           : 90%;
     padding: 10PX;
     margin-top      : 10px;
-    height          : 70px;
+    height          : 98px;
     background-color: #d1e7dd;
     font-family     : Arial, Helvetica, sans-serif;
     font-size       : 16px;
@@ -219,11 +219,22 @@ button:focus {
     text-align-last: right;
     border-color   : 0.5px solid lightgray;
 }
+.input_text {
+    width          : 250px;
+    border-color   : 0.5px solid lightgray;
+}
 .incluido{
     text-align: center;
     font-weight: bold;
 }
 .input_fact:hover {
     border-color: lightgreen;
+
+}
+.collapsible {
+    width: 90%;
+    border-radius: 3px;
+    background-color: lightgreen;
+    box-shadow      : 13px 14px 15px 5px rgba(0, 0, 0, 0.34);
 
 }

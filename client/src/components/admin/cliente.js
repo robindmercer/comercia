@@ -47,7 +47,7 @@ const Cliente = () => {
     return (
         <>
             <Header />
-            <div className="adminHeader">
+            <div className="adminHeader  bg-white">
                 <br />
                 <div >
                     <div className="divHeader">

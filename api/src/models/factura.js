@@ -37,7 +37,15 @@ module.exports = (sequelize) => {
             type: DataTypes.DATE,
             allowNull: false,
             defaultValue: DataTypes.NOW
-        },        
+        },  
+        idioma: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
+        moneda: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },              
         cod_status: {
             type: DataTypes.INTEGER,
             allowNull: false,

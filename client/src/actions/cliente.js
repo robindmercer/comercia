@@ -35,8 +35,8 @@ export function getCliente(){
 }
 
  export function AddCliente(cliente) {
-    return function (dispatch) {
-      axios.post(`cliente`, cliente)
+    return async function (dispatch) {
+      await axios.post(`cliente`, cliente)
         .then(response => {
           return response
         })
@@ -47,8 +47,8 @@ export function getCliente(){
   }
   
   export function UpdateCliente(cliente) {
-    return function (dispatch) {
-      axios.put(`cliente`, cliente)
+    return async function (dispatch) {
+      await axios.put(`cliente`, cliente)
         .then(response => {
           return response
         })

@@ -14,8 +14,8 @@ import { GET_FACTURADET } from './constant'
 
 export function AddFacturaDet(input) {
     //console.log('AddFacturaDet input: ', input);
-    return function (dispatch) {
-      axios.post(`factdet`, input)
+    return async function (dispatch) {
+      await axios.post(`factdet`, input)
         .then(response => {
             //console.log('AddFacturaDet response: ', response);
           return response

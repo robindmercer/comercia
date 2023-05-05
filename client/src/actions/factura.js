@@ -38,8 +38,8 @@ export function postFacturaNew(factcab) {
 }
 
 export function AddFactura(factcab, factdet, inputDet) {
-  return function (dispatch) {
-    axios.post(`factura`, factcab)
+  return async function (dispatch) {
+    await axios.post(`factura`, factcab)
       .then(response => {
         var xOrden = 0;
         factdet.forEach((fact) => {
@@ -62,9 +62,8 @@ export function AddFactura(factcab, factdet, inputDet) {
 }
 
 export function UpdateFactura(factcab, factdet, inputDet) {
-  return function (dispatch) {
-    //console.log('UpdateFactura ', factcab);
-    axios.put(`factura`, factcab)
+  return async function (dispatch) {
+    await axios.put(`factura`, factcab)
       .then(response => {
         if (response.data !== 'OK') {
           //console.log('UpdateFactura - response: ', response);
@@ -101,6 +100,24 @@ export function UpdateFacturaSts(id, sts) {
       type: GET_FACTCAB,
       payload: factura.data
     })
+  }
+}
+
+export function cotiToFact(data) {
+  return async function (dispatch) {
+    await axios.post(`factura/cotifac`, data)
+      .then(response => {
+        if (response.data.message !== 'OC Creada') {
+          console.log('cotiToFact - response: ', response);
+          return "Err";
+        } else {
+          return response
+        }
+      })
+      .catch(err => {
+        console.log(err)
+        return err
+      })
   }
 }
 

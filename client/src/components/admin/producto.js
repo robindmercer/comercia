@@ -34,7 +34,7 @@ const Producto = () => {
   return (
     <>
     <Header />
-    <div className="cabprod">
+    <div className="cabprod  bg-white">
     <br/>
      
     <div className="divHeader">

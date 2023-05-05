@@ -1,7 +1,9 @@
 .adminHeader{
     height:100vh;
 }
-
+.divHeader{
+    display:flex
+}
 
 .styledTable{
     border-collapse: collapse;
