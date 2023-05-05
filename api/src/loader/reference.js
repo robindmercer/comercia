@@ -459,11 +459,11 @@ async function refLoad() {
 
    ]).then(() => console.log('Condiciones grabados'));
   
-   Factcond.bulkCreate([
-      {fac_id:1,cond_id:2,descuento:15,enganche:0,meses:0,interes:0},
-      {fac_id:2,cond_id:2,descuento:15,enganche:0,meses:0,interes:0},
-      {fac_id:3,cond_id:2,descuento:15,enganche:0,meses:0,interes:0},
-   ]).then(() => console.log('Factcond ha sido grabado'));
+   // Factcond.bulkCreate([
+   //    {fac_id:1,cond_id:2,descuento:15,enganche:0,meses:0,interes:0},
+   //    {fac_id:2,cond_id:2,descuento:15,enganche:0,meses:0,interes:0},
+   //    {fac_id:3,cond_id:2,descuento:15,enganche:0,meses:0,interes:0},
+   // ]).then(() => console.log('Factcond ha sido grabado'));
 
 
    return 'ok';

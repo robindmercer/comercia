@@ -54,7 +54,7 @@ router.get("/usr/:clave", async function (req, res, next) {
       sql = sql + ` where usrid = '${usrid}'`
       const records = await seq.query(sql,
         {
-          logging: console.log,
+          // logging: console.log,
           type: QueryTypes.SELECT
         });      
       res.send(records)    

@@ -142,6 +142,27 @@ router.post("/", async function (req, res, next) {
 });
 
 
+
+router.put("/", async (req, res) => {
+  console.log('status id: ', req.body);
+  const { id, usr_id, name, email, password,cod_perfil,cod_status } = req.body;
+  try {
+    const usuario = await Usuario.findOne({
+      where: { id : id },
+    });
+    usuario.usr_id = usr_id
+    usuario.name =name
+    usuario.email =email
+    usuario.password =password
+    usuario.cod_perfil =cod_perfil
+    usuario.cod_status =cod_status
+    await usuario.save();
+    res.status(200).send.json(usuario);
+  } catch (error) {
+    res.send('error'+error);
+  }
+});
+
 router.put("/status/:id", async (req, res) => {
   console.log('status id: ', req.params.id);
   const  id  = req.params.id;

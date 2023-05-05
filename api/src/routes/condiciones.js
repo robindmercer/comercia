@@ -20,7 +20,7 @@ const seq = new Sequelize(
 
 router.get("/", async function (req, res, next) {
   try {
-    const { id, fac_id } = req.query;
+    const { id, cot_id,fac_id } = req.query;
     console.log("get Todos: ", req.query);
     sql = "";
     if (id) {
@@ -30,20 +30,28 @@ router.get("/", async function (req, res, next) {
       sql = sql + ` where id = ` + id;
       sql = sql + ` order by id`;
     }
-    if (fac_id) {
-      sql = `select factcond.*,condiciones.nombre,'' as sel,`;
-      sql =
-        sql +
-        ` condiciones.descuento des,condiciones.enganche eng, condiciones.meses mes, condiciones.interes inte `;
-      sql = sql + ` from factcond `;
+    if (cot_id) {
+      sql = `select cotizacioncond.*,condiciones.nombre,'' as sel,`;
+      sql = sql + ` condiciones.descuento des,condiciones.enganche eng,`
+      sql = sql + ` condiciones.meses mes, condiciones.interes inte `;
+      sql = sql + ` from cotizacion `;
       sql = sql + ` join condiciones on condiciones.id  = cond_id `;
-      sql = sql + ` where fac_id = ` + fac_id;
+      sql = sql + ` where cot_id = ` + cot_id;
     }
+    if (fac_id) {
+      sql = `select factcond.*,condiciones.nombre,`;
+      sql = sql + ` condiciones.descuento des,condiciones.enganche eng,`
+      sql = sql + ` condiciones.meses mes, condiciones.interes inte `;
+      sql = sql + ` from factcond `;
+      sql = sql + ` join condiciones on condiciones.id  = factcond.cond_id `;
+      sql = sql + ` where fac_id = ` + fac_id;
+    }    
     if (!sql) {
       sql = `select *,'' as sel,`;
       sql = sql + ` descuento des,enganche eng, meses mes, interes inte `;
       sql = sql + ` from condiciones`;
     }
+    console.log("SQL Todos: ", sql);
     const records = await seq.query(sql, {
       logging: console.log,
       type: QueryTypes.SELECT,
@@ -114,7 +122,7 @@ router.post("/fact", async function (req, res, next) {
   try {
     const { id, fac_id, cond_id, descuento, enganche, meses, interes } =
       req.body;
-    console.log("POST req.body: ", req.body);
+    console.log("Update condiciones/fact: ", req.body);
     if (id !== 0) {
       sql = `update factcond set `;
       sql = sql + ` cond_id='${cond_id}',`;
@@ -139,5 +147,38 @@ router.post("/fact", async function (req, res, next) {
     console.log("Error:", error);
   }
 });
+
+// Condicion Generada para una factura
+router.post("/cot", async function (req, res, next) {
+  try {
+    const { id, cot_id, cond_id, descuento, enganche, meses, interes } =
+      req.body;
+      if (id !== 0) {
+      console.log("Update Cotizacioncond/cot: ", req.body);
+      sql = `update cotizacioncond set `;
+      sql = sql + ` cond_id='${cond_id}',`;
+      sql = sql + ` descuento='${descuento}',`;
+      sql = sql + ` enganche='${enganche}',`;
+      sql = sql + ` meses='${meses}',`;
+      sql = sql + ` interes='${interes}'`;
+      sql = sql + ` where cot_id = ${id}`;
+    } else {
+      console.log("Insert Cotizacioncond/cot: ", req.body);
+      sql = `insert into cotizacioncond (cot_id,cond_id,descuento, enganche,meses,interes) `;
+      sql =
+        sql +
+        `values ('${cot_id}','${cond_id}','${descuento}','${enganche}','${meses}','${interes}')`;
+    }
+    const records = await seq.query(sql, {
+      logging: console.log,
+      type: QueryTypes.INSERT,
+    });
+    //console.log('records: ', records);
+    res.send(records);
+  } catch (error) {
+    console.log("Error:", error);
+  }
+});
+
 
 module.exports = router;

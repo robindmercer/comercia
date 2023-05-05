@@ -14,6 +14,9 @@ import { getUsuariomenId } from "../../actions/usuariomenu";
 
 // Descuentos
 import { getDetail } from "../../actions/tabla";
+// Modal 
+import OkForm from "../modal/OkForm";
+import { Modal, Button, Alert } from "react-bootstrap";
 
 // Iconos
 import { FcAddRow, FcDeleteRow, FcLeft, FcOk } from "react-icons/fc";
@@ -59,10 +62,34 @@ const Formfactura = () => {
 
   const [saleDHL, setSaleDHL] = useState(0);
   const [total, setTotal] = useState(0);
+  const [mostrar, setMostrar] = useState(false);
 
   // Formato Numeros
   const dollarUSLocale = Intl.NumberFormat("de-DE");
+// Modal Funcitons -----------------------------------
+  const [showAlert, setShowAlert] = useState(false);
+  const [show, setShow] = useState(false);
+  const handleShow = () => setShow(true);
+  const handleClose = () => setShow(false);
+  const [rutaOk, setRutaOk] = useState("./factura");
 
+  const handleShowAlert = () => {
+    setShowAlert(true);
+    setTimeout(() => {
+      setShowAlert(false);
+    }, 2000);
+  };
+  
+  useEffect(() => {
+    handleClose();
+    
+    return () => {
+      handleShowAlert();
+    };
+  }, [showAlert]);
+  // End Modal Funcitons -----------------------------------
+  
+  
   const [input, setInput] = useState({
     cli_id: 0,
     dir_id: 0,
@@ -73,6 +100,8 @@ const Formfactura = () => {
     observ: "",
     cod_status: 1,
     dhl: 0,
+    moneda:0,
+    idioma:0,
     fecha: new Date().toLocaleDateString("en-GB"),
   });
 
@@ -105,6 +134,8 @@ const Formfactura = () => {
     total: "0",
     observ: "",
     cod_status: 1,
+    idioma:0,
+    moneda:0,
     fecha: new Date().toLocaleDateString("en-GB"),
   };
 
@@ -139,8 +170,8 @@ const Formfactura = () => {
   //console.log('factcab: ', factcab.length);
   if (factcab.length === 0) {
     factcab.push(initialHead);
+ console.log('initialHead: ', initialHead);
   }
-  // console.log('fecha: ', fecha);
 
   useEffect(() => {
     //dispatch(getDetail(1));
@@ -150,6 +181,7 @@ const Formfactura = () => {
     dispatch(getDireccion(state.idCli));
     dispatch(getDetailIva(1));
     dispatch(getUsuariomenId(id_usuario));
+    setMostrar(true)
     if (usuariomenu) {
       for (var i = 0; i < usuariomenu.length; i++) {
         if (usuariomenu[i].nivel === idProg) {
@@ -205,7 +237,7 @@ const Formfactura = () => {
         setTotal(0);
       }
     }
-  }, [onChange, factdet]);
+  }, [onChange, factdet, porciva, cliente]);
   
   useEffect(() => {
     var aux = 0;
@@ -259,7 +291,7 @@ const Formfactura = () => {
     }
   };
   const handleSubmit = () => {
-    console.log("fecha: ", fecha);
+console.log('SubMit');    
     var newDate1 = fecha.split("/");
     const newdate = newDate1[2] + newDate1[1] + newDate1[0];
     // console.log('saleTax: ', saleTax);
@@ -274,16 +306,19 @@ const Formfactura = () => {
     setInput((input.dir_id = DirCode));
     setInput((input.cli_id = factcab[0].cli_id));
     setInput((input.fecha = newdate));
+    setInput((input.idioma = cliente.idioma));
+    setInput((input.moneda = cliente.moneda));
 
-    console.log("factcab: ", factcab[0]);
+    // console.log("factcab: ", factcab[0]);
     console.log("factdet: ", factdet);
     console.log("input: ", input);
     if (subTotal === 0) {
       return alert("O/C no puede quedar en 0 (Cero)");
     }
     //console.log('i f d',input, factdet, inputDet);
-    dispatch(AddFactura(input, factdet, inputDet));
-    // window.location.href = "/factura";
+     dispatch(AddFactura(input, factdet, inputDet));
+     handleShow();
+     //window.location.href = "/factura";
   };
 
   function handleTipo(e, i) {
@@ -353,7 +388,7 @@ const Formfactura = () => {
   // console.log('factcab: ', factcab);
   // console.log('factdet: ', factdet);
   // console.log('porciva: ', porciva,porciva.length);
-  // console.log('tabla: ', tabla);
+   console.log('inp: ', input);
   //   if (porciva.length === 1){
   //     if (onIva) {
   //       setOnIva(false)
@@ -362,7 +397,7 @@ const Formfactura = () => {
   //     }
   // }
   console.log("cliente: ", cliente);
-  if (factcab.length > 0) {
+  if (mostrar && factcab.length > 0) {
     control();
     return (
       <>
@@ -509,7 +544,7 @@ const Formfactura = () => {
                   cols="80"
                   rows="5"
                   name="observ"
-                  value={input.observ}
+                  value={input ? input.observ : ""}
                   placeholder="Observaciones"
                   onChange={(e) => handleTipo(e)}
                   className="txtarea"
@@ -612,6 +647,19 @@ const Formfactura = () => {
             </div>
           </div>
         </div>
+        <Modal show={show}>
+          <Modal.Header closeButton>
+            <Modal.Title>Confirmación</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <OkForm ruta={rutaOk} />
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Cerrar
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </>
     );
   } else {

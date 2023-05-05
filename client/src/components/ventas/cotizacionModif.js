@@ -4,16 +4,15 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 // Acciones
-import { getFacturaDet } from "../../actions/factdet";
-import { getFacturaCab, UpdateFactura } from "../../actions/factura";
+import { getCotizacionCab, UpdateCotizacion } from "../../actions/cotizacion";
+import { getCotizacionDet } from "../../actions/cotizaciondet";
+
 import { getDetailIva } from "../../actions/tabla";
 import { getProducto } from "../../actions/producto";
 //import { getClienteId } from "../../actions/cliente";
-import {
-  getCondiciones,
-  getCondicionesFac,
-  PostCondicionesFac,
-} from "../../actions/condiciones";
+
+import { getCondiciones, PostCondicionesCot } from "../../actions/condiciones";
+import { getCondicionesCot } from "../../actions/cotizacioncond";
 
 import { getUsuariomenId } from "../../actions/usuariomenu";
 // Descuentos
@@ -25,8 +24,11 @@ import Header from "../Header";
 // CSS
 import "../../css/factdet.css";
 
-//const Formfactura = () => {
-function Formfactura() {
+// Modal
+import OkForm from "../modal/OkForm";
+import { Modal, Button, Alert } from "react-bootstrap";
+
+function Formcotizacion() {
   const navigate = useNavigate();
   // Manejo acceso del Usuario
   const usuariomenu = useSelector((state) => state.usuariomenu);
@@ -34,17 +36,17 @@ function Formfactura() {
   const idProg = 11;
 
   const id_usuario = localStorage.getItem("usuario");
-  const { factcab } = useSelector((state) => state);
-  const { factdet } = useSelector((state) => state);
-  const { porciva } = useSelector((state) => state);
-  // const tabla = useSelector((state) => state.tabla);
+  const { cotizacioncab } = useSelector((state) => state);
+  const { cotizaciondet } = useSelector((state) => state);
+  const { cotizacioncond } = useSelector((state) => state);
+
+  const tabla = useSelector((state) => state.tabla);
   const { producto } = useSelector((state) => state);
   const dispatch = useDispatch();
   const location = useLocation();
   const { state } = location;
   // Condiciones generales
   const { condiciones } = useSelector((state) => state);
-  const { factcond } = useSelector((state) => state);
   //const { cliente } = useSelector((state) => state);
 
   const [onChange, setOnChange] = useState(false);
@@ -59,6 +61,30 @@ function Formfactura() {
   // Estilos
   const estilo = { fontSize: "150%", transition: "font-size 0.5s" };
   const estilo2 = { fontSize: "200%" };
+
+  // For Modal Only
+  const [showAlert, setShowAlert] = useState(false);
+  const [show, setShow] = useState(false);
+  const handleShow = () => setShow(true);
+  const handleClose = () => setShow(false);
+  const [rutaOk, setRutaOk] = useState("./cotizacion");
+
+  const handleShowAlert = () => {
+    setShowAlert(true);
+    setTimeout(() => {
+      setShowAlert(false);
+    }, 2000);
+  };
+
+  useEffect(() => {
+    handleClose();
+
+    return () => {
+      handleShowAlert();
+    };
+  }, [showAlert]);
+
+  const porciva = localStorage.getItem("porciva");
 
   // eslint-disable-next-line no-unused-vars
   const [inputDet, setInputDet] = useState({
@@ -77,6 +103,9 @@ function Formfactura() {
     total: 0,
     dhl: 0,
     observ: "",
+    fecha: "",
+    nombre:"",
+    moneda:1
   });
 
   const initialProductLine = {
@@ -84,14 +113,14 @@ function Formfactura() {
     description: "",
     fac_id: 1,
     name: "",
-    orden: factcab.length,
+    orden: cotizacioncab.length,
     precio: 0,
     prod_id: "",
     total: 0,
   };
   const initialFacdet = {
     id: 0,
-    fac_id: state.idfact,
+    fac_id: state.idCotiz,
     cond_id: 0,
     descuento: 0,
     enganche: 0,
@@ -106,11 +135,12 @@ function Formfactura() {
     dispatch(getProducto());
     dispatch(getDetailIva(1));
     dispatch(getDetail(2));
-    dispatch(getFacturaCab(state.idfact));
-    dispatch(getFacturaDet(state.idfact));
+    dispatch(getCotizacionCab(state.idCotiz));
+    dispatch(getCotizacionDet(state.idCotiz));
     dispatch(getUsuariomenId(id_usuario));
     dispatch(getCondiciones());
-    dispatch(getCondicionesFac(state.idfact));
+    dispatch(getCondicionesCot(state.idCotiz));
+    dispatch(getDetail(8));
     //dispatch(getClienteId(state.idCli));
     // console.log("useeffect");
     if (usuariomenu) {
@@ -120,25 +150,31 @@ function Formfactura() {
         }
       }
     }
-    if (factcab.length>0){
-      console.log('factcab ok: ', factcab,' lenght ' , factcab.length);
-      setSaleDHL(factcab[0].dhl)
+    console.log("state.idCotiz: ", state.idCotiz);
+    if (cotizacioncab.length > 0) {
+      console.log(
+        "cotizacioncab ok: ",
+        cotizacioncab,
+        " lenght ",
+        cotizacioncab.length
+      );
+      setSaleDHL(cotizacioncab[0].dhl);
     }
   }, [dispatch, id_usuario]);
 
   useEffect(() => {
     if (onChange) {
     }
-  }, [onChange, factdet]);
+  }, [onChange, cotizaciondet]);
 
   // Calculo subtotal
   useEffect(() => {
-    console.log('useEffect: ', 1);
+    console.log("useEffect: ", 1);
     let subTotal = 0;
     let iva = 0;
     let total = 0;
-    if (factdet && porciva) {
-      factdet.forEach((fact) => {
+    if (cotizaciondet && porciva) {
+      cotizaciondet.forEach((fact) => {
         const quantityNumber = parseFloat(fact.cantidad);
         const rateNumber = parseFloat(fact.precio);
         const amount =
@@ -147,31 +183,31 @@ function Formfactura() {
       });
       setSubTotal(subTotal);
       if (subTotal > 0) {
-        if (factcab[0].moneda === 1){
-          iva = subTotal * (parseFloat(porciva[0].valor) / 100);
+        if (cotizacioncab[0].moneda === 1) {
+          iva = subTotal * (parseFloat(porciva) / 100);
           setSaleTax(iva);
-        } 
+        }
         setSaleTax(iva);
-        setSaleDHL(factcab[0].dhl);
-        total = subTotal + iva + parseInt(factcab[0].dhl);
+        setSaleDHL(cotizacioncab[0].dhl);
+        total = subTotal + iva + parseInt(cotizacioncab[0].dhl);
         setTotal(total);
       } else {
         setSaleTax(0);
         setTotal(0);
       }
     }
-    console.log('total: ', total);
-  }, [onChange, factdet]);
+    console.log("total: ", total);
+  }, [onChange, cotizaciondet]);
 
   //console.log("cliente: ", cliente);
   // console.log("state.idCli: ", state.idCli);
 
   useEffect(() => {
-    console.log('useEffect: ', 2);
+    console.log("useEffect: ", 2);
     var aux = 0;
     var iva = 0;
-    if (factdet && porciva) {
-      factdet.forEach((fact) => {
+    if (cotizaciondet && porciva) {
+      cotizaciondet.forEach((fact) => {
         const quantityNumber = parseFloat(fact.cantidad);
         const rateNumber = parseFloat(fact.precio);
         const amount =
@@ -189,21 +225,21 @@ function Formfactura() {
       //   setSubTotal(aux);
       // }
       if (aux > 0) {
-        if (factcab[0].moneda === 1){
-          iva = aux * (parseFloat(porciva[0].valor) / 100);
-        }     
-        setSubTotal(aux);   
+        if (cotizacioncab[0].moneda === 1) {
+          iva = aux * (parseFloat(porciva) / 100);
+        }
+        setSubTotal(aux);
         setSaleTax(iva);
-        if (saleDHL.length===0) setSaleDHL(0);
+        if (saleDHL.length === 0) setSaleDHL(0);
         var total = aux + iva + parseInt(saleDHL);
         setTotal(total);
-        console.log('total: ', total);
+        console.log("total: ", total);
       }
     }
   }, [onChange, saleDHL]);
 
   const handleRemove = (i) => {
-    factdet.splice(i, 1);
+    cotizaciondet.splice(i, 1);
     if (onChange) {
       setOnChange(false);
     } else {
@@ -212,8 +248,8 @@ function Formfactura() {
   };
 
   const handleAdd = () => {
-    factdet.push(initialProductLine);
-    // console.log("factdet: ", factdet);
+    cotizaciondet.push(initialProductLine);
+    // console.log("cotizaciondet: ", cotizaciondet);
     if (onChange) {
       setOnChange(false);
     } else {
@@ -224,7 +260,7 @@ function Formfactura() {
   function handleTipo(e, i) {
     e.preventDefault();
     if (e.target.name === "dhl") {
-      factcab[0].dhl = e.target.value;
+      cotizacioncab[0].dhl = e.target.value;
       setSaleDHL(e.target.value);
     }
     // console.log("i: ", i);
@@ -264,7 +300,7 @@ function Formfactura() {
       }
     }
     if (e.target.name === "observ") {
-      factcab[0].observ = e.target.value;
+      cotizacioncab[0].observ = e.target.value;
       if (onChange) {
         setOnChange(false);
       } else {
@@ -274,7 +310,7 @@ function Formfactura() {
 
     if (e.target.name === "cli_id") {
       console.log("busco", e.target.value);
-      factcab[0].cli_id = e.target.value;
+      cotizacioncab[0].cli_id = e.target.value;
       if (onChange) {
         setOnChange(false);
       } else {
@@ -282,8 +318,9 @@ function Formfactura() {
       }
     }
     if (e.target.name === "quantity") {
-      factdet[i.i].cantidad = e.target.value;
-      factdet[i.i].total = factdet[i.i].cantidad * factdet[i.i].precio;
+      cotizaciondet[i.i].cantidad = e.target.value;
+      cotizaciondet[i.i].total =
+        cotizaciondet[i.i].cantidad * cotizaciondet[i.i].precio;
       if (onChange) {
         setOnChange(false);
       } else {
@@ -296,11 +333,12 @@ function Formfactura() {
       } else {
         for (var z = 0; z < producto.length; z++) {
           if (parseInt(producto[z].id) === parseInt(e.target.value)) {
-            factdet[i.i].fac_id = state.idfact;
-            factdet[i.i].prod_id = e.target.value;
-            factdet[i.i].name = producto[z].name;
-            factdet[i.i].precio = producto[z].price;
-            factdet[i.i].total = factdet[i.i].cantidad * factdet[i.i].precio;
+            cotizaciondet[i.i].fac_id = state.idCotiz;
+            cotizaciondet[i.i].prod_id = e.target.value;
+            cotizaciondet[i.i].name = producto[z].name;
+            cotizaciondet[i.i].precio = producto[z].price;
+            cotizaciondet[i.i].total =
+              cotizaciondet[i.i].cantidad * cotizaciondet[i.i].precio;
           }
         }
       }
@@ -314,144 +352,140 @@ function Formfactura() {
 
   const handleSubmit = () => {
     // //    setInput(input.dir_id = DirCode);
-    //     setInput(input.cli_id = factcab[0].cli_id);
+    //     setInput(input.cli_id = cotizacioncab[0].cli_id);
     //console.log('DirCode: ', DirCode);
     console.log("handleSubmit--------------------------------------");
-    console.log("subTotal: ", subTotal.toFixed(0));
-    console.log("saleTax: ", saleTax.toFixed(0));
-    console.log("Total: ", total.toFixed(0));
-    factcab[0].subtotal = subTotal.toFixed(0);
-    factcab[0].iva = saleTax.toFixed(0);
-    factcab[0].total = total.toFixed(0);
-    console.log("factcab: ", factcab);
+    // console.log("subTotal: ", subTotal.toFixed(0));
+    // console.log("saleTax: ", saleTax.toFixed(0));
+    // console.log("Total: ", total.toFixed(0));
+    if (cotizacioncab[0].subtotal === 0) {
+      alert("La Orden de Compra no puede quedar en 0");
+      return;
+    }
+    cotizacioncab[0].subtotal = subTotal.toFixed(0);
+    cotizacioncab[0].iva = saleTax.toFixed(0);
+    cotizacioncab[0].total = total.toFixed(0);
+    console.log("cotizacioncab: ", cotizacioncab);
     const found = condiciones.find((element) => element.sel === "S");
     console.log("found: ", found);
 
-    setInput((input.id = factcab[0].id));
+    setInput((input.id = cotizacioncab[0].id));
     setInput((input.subtotal = subTotal.toFixed(0)));
     setInput((input.iva = saleTax.toFixed(0)));
     setInput((input.total = total.toFixed(0)));
-    setInput((input.observ = factcab[0].observ));
-    if (tieneCG === 1) {
-      initialFacdet.id = 1; // si ya tiene una C.General grabada el id es siempre 1
-    } else {
-      initialFacdet.id = 0;
-    }
-    initialFacdet.fac_id = state.idfact;
-    initialFacdet.cond_id = found.id;
-    initialFacdet.descuento = found.descuento;
-    initialFacdet.enganche = found.enganche;
-    initialFacdet.meses = found.meses;
-    initialFacdet.interes = found.interes;
+    setInput((input.observ = cotizacioncab[0].observ));
+    setInput((input.nombre = cotizacioncab[0].nombre));
+    setInput((input.moneda = cotizacioncab[0].moneda));
+    // Grabo Cabecera y detalles
+    dispatch(UpdateCotizacion(input, cotizaciondet, inputDet));
 
-    console.log("state.idfact: ", state.idfact);
-    console.log("factcab: ", factcab);
-    console.log("factdet: ", factdet);
+    if (found) {
+      if (tieneCG === 1) {
+        initialFacdet.id = 1; // si ya tiene una C.General grabada el id es siempre 1
+      } else {
+        initialFacdet.id = 0;
+      }
+      initialFacdet.fac_id = state.idCotiz;
+      initialFacdet.cond_id = found.id;
+      initialFacdet.descuento = found.descuento;
+      initialFacdet.enganche = found.enganche;
+      initialFacdet.meses = found.meses;
+      initialFacdet.interes = found.interes;
+      dispatch(PostCondicionesCot(initialFacdet));
+    }
+    console.log("state.idCotiz: ", state.idCotiz);
+    console.log("cotizacioncab: ", cotizacioncab);
+    console.log("cotizaciondet: ", cotizaciondet);
     console.log("initialFacdet: ", initialFacdet);
     console.log("input: ", input);
-    console.log("factcond: ", factcond);
+    console.log("cotizacioncond: ", cotizacioncond);
     console.log("condiciones: ", condiciones);
-    // console.log("tieneCG",tieneCG );
+    console.log("tieneCG",tieneCG );
+    console.log("handleSubmit END");
 
-    // if (factcab[0].subtotal === 0) {
-    //   alert("La Orden de Compra no puede quedar en 0");
-    //   return;
-    // }
-    dispatch(UpdateFactura(input, factdet, inputDet));
-    dispatch(PostCondicionesFac(initialFacdet));
-    window.location.href = "/factura";
+    handleShow();
+    //window.location.href = "/cotizacion";
   };
 
   // console.log("total: ", total);
   // console.log("usuariomenu: ", usuariomenu);
   // console.log("acceso: ", acceso);
-  // console.log("porciva: ", porciva);
 
-  if (factcond.length !== 0 && condiciones) {
-    console.log("factcond: ", factcond);
+  if (cotizacioncond.length !== 0 && condiciones) {
+    console.log("cotizacioncond: ", cotizacioncond);
     setTieneCG(1);
     for (var xi = 0; xi < condiciones.length; xi++) {
-      if (factcond[0].cond_id === condiciones[xi].id) {
-        condiciones[xi].descuento = factcond[0].descuento;
-        condiciones[xi].enganche = factcond[0].enganche;
-        condiciones[xi].meses = factcond[0].meses;
-        condiciones[xi].interes = factcond[0].interes;
+      if (cotizacioncond[0].cond_id === condiciones[xi].id) {
+        condiciones[xi].descuento = cotizacioncond[0].descuento;
+        condiciones[xi].enganche = cotizacioncond[0].enganche;
+        condiciones[xi].meses = cotizacioncond[0].meses;
+        condiciones[xi].interes = cotizacioncond[0].interes;
         condiciones[xi].sel = "S";
       } else {
         condiciones[xi].sel = " ";
       }
     }
-    factcond.splice(0, factcond.length);
+    cotizacioncond.splice(0, cotizacioncond.length);
     // } else {
-    //   factcond.push(initialFacdet);
+    //   cotizacioncond.push(initialFacdet);
   }
-  // console.log("factcab", factcab);
+  // console.log("cotizacioncab", cotizacioncab);
+  console.log("cotizacioncab: ", cotizacioncab);
+  console.log("cotizaciondet: ", cotizaciondet);
+  console.log("cotizacioncond: ", cotizacioncond);
 
-  if (factcab.length > 0) {
-    // if (saleDesc === 0 && factcab[0].descuento > 0) {
-    //   tabla.forEach((z) => {
-    //     if (parseInt(z.cod) === parseInt(factcab[0].desc_id)) {
-    //       setSaleDesc(z.description + " " + z.valor + "%");
-    //     }
-    //   });
-    //   //        var dscto = Math.round((factcab[0].subTotal + factcab[0].iva) * desctoporc / 100)
-    //   // console.log('desctoporc : ', desctoporc);
-    //   // console.log('Descuento: ', dscto);
-    //   setDesc_id(factcab[0].desc_id);
-    //   setTotal(parseInt(factcab[0].total));
-    //   setSaleDescto(factcab[0].descuento);
-    // }
+  if (cotizacioncab.length > 0) {
     return (
       <>
         <Header />
         <div>
-          <div className="cabecera ">
+          <div className="cabeceraAlta ">
             <div className="row gap-1">
               <div className="row">
                 <div className="col">
-                  Cliente:&nbsp;
-                  {/* <!--input className='input_fact'
-                    type="text"
-                    id="cli_id"
-                    name="cli_id"
-                    value={factcab[0].cli_id}
-                    onChange={(e) => handleTipo(e, 0)}
-                  /--> */}
-                  &nbsp;{factcab[0].nombre}
+                  Cotizacion : &nbsp;{cotizacioncab[0].id}
                 </div>
-                <div className="col">Fecha: {factcab[0].fecha}</div>
+                <div className="col">Fecha:{cotizacioncab[0].fecha}</div>
               </div>
-              <div className="row">
-                <div className="col" colSpan="2">
-                  <b>Domicilio</b>
-                </div>
-                <div className="col">
-                  Estado :<b>{factcab[0].status}</b>{" "}
-                </div>
+              <div>
+                <label htmlFor="nombre">Nombre : </label>
+                <input
+                  className="input_text"
+                  type="text"
+                  id="nombre"
+                  name="nombre"
+                  value={cotizacioncab[0].nombre}
+                  onChange={(e) => handleTipo(e, 0)}
+                ></input>
               </div>
-              <div className="row">
-                <div className="col-4 text-end">Calle</div>
-                <div className="col-8 text-start" colSpan="2">
-                  {factcab[0].calle}
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-4 text-end">Localidad CP</div>
-                <div className="col-8 text-start" colSpan="2">
-                  {factcab[0].localidad} ({factcab[0].cp})
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-4 text-end">Ciudad</div>
-                <div className="col-8 text-start" colSpan="2">
-                  {factcab[0].ciudad}
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-4 text-end">Pais</div>
-                <div className="col-8 text-start" colSpan="2">
-                  {factcab[0].pais}
-                </div>
+              <div>
+                <label
+                  htmlFor="tipocli"
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                >
+                  Seleccione Moneda:
+                </label>
+                <select
+                  name="selMoneda"
+                  id="selMoneda"
+                  value={parseInt(cotizacioncab[0].moneda)}
+                  onChange={(e) => handleTipo(e)}
+                >
+                  <option value="0">Seleccionar</option>
+                  {tabla &&
+                    tabla.map((tabla) => {
+                      if (tabla.id === 8 && tabla.cod !== 0) {
+                        return (
+                          <option
+                            value={tabla.cod}
+                            key={tabla.cod}
+                          >{`${tabla.description}`}</option>
+                        );
+                      } else {
+                        return null;
+                      }
+                    })}
+                </select>
               </div>
             </div>
           </div>
@@ -470,8 +504,8 @@ function Formfactura() {
                   </tr>
                 </thead>
                 <tbody>
-                  {factdet &&
-                    factdet.map((fact, i) => {
+                  {cotizaciondet &&
+                    cotizaciondet.map((fact, i) => {
                       return (
                         <tr key={i}>
                           <td>
@@ -554,12 +588,35 @@ function Formfactura() {
                   cols="80"
                   rows="5"
                   name="observ"
-                  value={factcab[0].observ}
+                  value={cotizacioncab[0].observ}
                   placeholder="Observaciones"
                   onChange={(e) => handleTipo(e)}
                   className="txtarea"
                 />
               </div>
+              {/* {cotizacioncab[0].moneda > 1 ? (
+                <div className="total">
+                  <table>
+                    <tbody>
+                      <tr className="totaltr">
+                        <td colSpan="3" className="totaltd1">
+                          Costo de Envio:&nbsp;
+                        </td>
+                        <td>
+                          <input
+                            className="costoEnvio"
+                            type="text"
+                            id="dhl"
+                            name="dhl"
+                            value={cotizacioncab[0].dhl}
+                            onChange={(e) => handleTipo(e, 0)}
+                          />
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              ) : null} */}
               <div className="total">
                 <table>
                   <tbody>
@@ -571,17 +628,17 @@ function Formfactura() {
                         <b>{dollarUSLocale.format(subTotal)}</b>
                       </td>
                     </tr>
-                    {(factcab[0].moneda === 1 ? (
-                    <tr className="totaltr">
-                      <td colSpan="3" className="totaltd1">
-                        IVA({porciva[0].valor}%)
-                      </td>
-                      <td className="totaltd2">
-                        <b>{dollarUSLocale.format(saleTax.toFixed(0))}</b>
-                      </td>
-                    </tr>
-                    ) : null)   }
-                    {factcab[0].moneda > 1 ? (
+                    {cotizacioncab[0].moneda === 1 ? (
+                      <tr className="totaltr">
+                        <td colSpan="3" className="totaltd1">
+                          IVA({porciva}%)
+                        </td>
+                        <td className="totaltd2">
+                          <b>{dollarUSLocale.format(saleTax.toFixed(0))}</b>
+                        </td>
+                      </tr>
+                    ) : null}
+                    {cotizacioncab[0].moneda > 1 ? (
                       <tr className="totaltr">
                         <td colSpan="3" className="totaltd1">
                           Costo de Envio:&nbsp;
@@ -592,7 +649,7 @@ function Formfactura() {
                             type="text"
                             id="dhl"
                             name="dhl"
-                            value={factcab[0].dhl}
+                            value={cotizacioncab[0].dhl}
                             onChange={(e) => handleTipo(e, 0)}
                           />
                         </td>
@@ -652,7 +709,7 @@ function Formfactura() {
                                     ></input>
                                   </td>
                                 </tr>
-                                <tr  key={i * 11}>
+                                <tr key={i * 11}>
                                   <td>&nbsp;</td>
                                   <td colSpan={3}>Total a Pagar</td>
                                   <td className="totaltr">
@@ -724,16 +781,16 @@ function Formfactura() {
                                   ></input>
                                 </td>
                               </tr>
-                              <tr  key={i * 13}>
+                              <tr>
                                 <td>&nbsp;</td>
-                                <td colSpan={3}>Total Factura</td>
+                                <td colSpan={3}>Total Cotizacion</td>
                                 <td className="totaltr">
                                   {dollarUSLocale.format(total.toFixed(0))}
                                 </td>
                               </tr>
                               {xEnganche !== 0 ? (
                                 <>
-                                  <tr key={i * 14}>
+                                  <tr>
                                     <td>&nbsp;</td>
                                     <td colSpan={3}>Enganche</td>
                                     <td className="totaltr">
@@ -742,7 +799,7 @@ function Formfactura() {
                                       )}
                                     </td>
                                   </tr>
-                                  <tr key={i * 15}>
+                                  <tr>
                                     <td>&nbsp;</td>
                                     <td colSpan={3}>Saldo a financiar</td>
                                     <td className="totaltr">
@@ -751,7 +808,7 @@ function Formfactura() {
                                       )}
                                     </td>
                                   </tr>
-                                  <tr key={i * 16}>
+                                  <tr>
                                     <td>&nbsp;</td>
                                     <td colSpan={2}>
                                       {cond.meses} Pagos Mensuales
@@ -857,7 +914,7 @@ function Formfactura() {
                           style={estilo2}
                           title="Volver"
                           onClick={() => {
-                            navigate("/factura");
+                            navigate("/cotizacion");
                           }}
                         />
                       </td>
@@ -868,24 +925,39 @@ function Formfactura() {
             </div>
           </div>
         </div>
+
+        <Modal show={show}>
+          <Modal.Header closeButton>
+            <Modal.Title>Confirmacion</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <OkForm ruta={rutaOk} />
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Cerrar
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </>
     );
   } else {
     console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
     console.log("Logeo de Errores");
-    console.log("factcab: ", factcab);
-    console.log("factdet: ", factdet);
+    console.log("state.idCotiz: ", state.idCotiz);
+    console.log("cotizacioncab: ", cotizacioncab);
+    console.log("cotizaciondet: ", cotizaciondet);
     console.log("initialFacdet: ", initialFacdet);
     console.log("input: ", input);
-    console.log("factcond: ", factcond);
+    console.log("cotizacioncond: ", cotizacioncond);
     console.log("condiciones: ", condiciones);
     console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
     return (
       <div>
-        <h1>Error</h1>
+        <h1>Cargando...</h1>
       </div>
     );
   }
 }
 
-export default Formfactura;
+export default Formcotizacion;
