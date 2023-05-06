@@ -37,9 +37,9 @@ const FormProdMp = () => {
 
     dispatch(getMPDetail(state.id));
     dispatch(getMateriaprima());
-    return (
-      dispatch(resetProd())
-    )
+    // return (
+    //   dispatch(resetProd())
+    // )
   }, [dispatch, state.id]);
 
   useEffect(() => {
@@ -61,7 +61,7 @@ const FormProdMp = () => {
     e.preventDefault();
     console.log('handleStatus: ', e.target.value);
     for (var z = 0; z < materiaprima.length; z++) {
-      if (materiaprima[z].id === e.target.value) {
+      if (materiaprima[z].description === e.target.value) {
         const newProdmp = {
           prod_id : state.id,
           name : materiaprima[z].name,
@@ -133,11 +133,12 @@ const FormProdMp = () => {
     //dispatch(AddCliente(input));
     //navigate("/cliente");
     console.log('state.id: ', state.id);
+    console.log('prodmp: ', prodmp);
     dispatch(deleteMPDetail(state.id));
     prodmp.forEach(e => {
       const send={
         prod_id : state.id,
-        mp_name : e.mp_name,
+        mp_name : e.name,
         cantidad: e.cantidad
       }
       console.log('prodmp submit: ', send);
@@ -147,14 +148,14 @@ const FormProdMp = () => {
   };
   // console.log('materiaprima: ', materiaprima);
 
-  if (!prodmp.length > 0) { prodmp.push(initialProductLine) }
+  // if (!prodmp.length > 0) { prodmp.push(initialProductLine) }
 
-  if (prodmp.length > 0) {
+  //if (prodmp.length > 0) {
     return (
       <>
         <Header />
         <div >
-          <div ><br />Producto : <b>{prodmp[0].prodname}</b><br /><br /></div>
+          <div ><br />Producto : <b>{state.name}</b><br /><br /></div>
         </div>
         <form
           onSubmit={(e) => handleSubmit(e)}
@@ -172,7 +173,7 @@ const FormProdMp = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {prodmp && prodmp.map((data, i) => {
+                  {prodmp.length > 0 && prodmp.map((data, i) => {
                     return (
                       <tr key={i} >
                         <td>{data.name}</td>
@@ -249,14 +250,14 @@ const FormProdMp = () => {
         </form>
       </>
     );
-  } else {
-    return (
-      <div>
-        <h1>no hay datos</h1>
-      </div>
-    );
+  // } else {
+  //   return (
+  //     <div>
+  //       <h1>no hay datos</h1>
+  //     </div>
+  //   );
 
-  }
+  // }
 }
 
 
