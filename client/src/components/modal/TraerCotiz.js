@@ -55,7 +55,7 @@ const OkForm = ({ ruta }) => {
             <td className="td1">Ingrese Numero del Cliente</td>
             <td>
             <input
-                  className="input_text"
+                  className="input_number"
                   type="text"
                   id="cli_id"
                   name="cli_id"
@@ -67,7 +67,7 @@ const OkForm = ({ ruta }) => {
             <td className="td1">Numero de Cotizacion</td>
             <td>
             <input
-                  className="input_text"
+                  className="input_number"
                   type="text"
                   id="cot_id"
                   name="cot_id"

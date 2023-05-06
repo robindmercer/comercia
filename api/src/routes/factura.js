@@ -184,8 +184,16 @@ router.post("/cotifac", async function (req, res, next) {
       .then(async function (facIdCreated) {
         const fac_id = facIdCreated[0][0].id;
         sql2=`insert into factdet select ${fac_id},orden ,prod_id,precio,cantidad,total from cotizaciondet where cot_id = ${cot_id};`
-        sql3=`insert into factcond select ${fac_id},1,cond_id,descuento,enganche,meses,interes from cotizacioncond where cot_id = ${cot_id};;`
-        sql4=`update cotizacion set cli_id = ${cli_id} where id=${cot_id};`
+        
+        sql3=`insert into factcond `
+        sql3=sql3 + ` (fac_id,cond_id,descuento,enganche,meses,interes)`
+        sql3=sql3 + ` select ${fac_id},cond_id,descuento,enganche,meses,interes from cotizacioncond where cot_id = ${cot_id};;`
+
+        sql4=`update cotizacion set cli_id = ${cli_id} ,nombre=razsoc `
+        sql4= sql4 + ` from clientes ` 
+        sql4= sql4 +     ` where cotizacion.id = ${cot_id}` 
+        sql4= sql4 +     ` and clientes.id = ${cli_id}`           
+        
         const records2 = await seq
         .query(sql2, {
           logging: console.log,

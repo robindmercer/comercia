@@ -882,7 +882,7 @@ function Formfactura() {
     console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
     return (
       <div>
-        <h1>Error</h1>
+        <h3>Cargando...</h3>
       </div>
     );
   }

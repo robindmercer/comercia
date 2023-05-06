@@ -333,7 +333,7 @@ const Formcotizacion = () => {
 
     const found = condiciones.find((element) => element.sel === "S");
     console.log("found: ", found);
-
+    if (found){
     condGral.id = 0;
     condGral.cot_id = 0;
     condGral.cond_id = found.id;
@@ -341,7 +341,15 @@ const Formcotizacion = () => {
     condGral.enganche = found.enganche;
     condGral.meses = found.meses;
     condGral.interes = found.interes;
-    
+  } else {
+      condGral.id = 0;
+      condGral.cot_id = 0;
+      condGral.cond_id = 1;
+      condGral.descuento = 0;
+      condGral.enganche = 0;
+      condGral.meses = 0;
+      condGral.interes = 0;
+    }
     console.log("factcab: ", factcab[0]);
     console.log("factdet: ", factdet);
     console.log("input: ", input);
@@ -404,6 +412,27 @@ const Formcotizacion = () => {
       }
       condiciones[i.i].sel = "S";
       console.log("miCheck condiciones: ", condiciones);
+      if (onChange) {
+        setOnChange(false);
+      } else {
+        setOnChange(true);
+      }
+    }
+    if (e.target.name === "CGdesc") {
+      condiciones[i.i].descuento = e.target.value;
+    }
+    if (e.target.name === "CGenganche") {
+      condiciones[i.i].enganche = e.target.value;
+    }
+    if (e.target.name === "CGmeses") {
+      condiciones[i.i].meses = e.target.value;
+    }
+    if (e.target.name === "CGinter") {
+      condiciones[i.i].interes = e.target.value;
+    }
+    if (e.target.name[0] === "C") {
+      condiciones[i.i].sel = "S";
+      console.log("C condiciones: ", condiciones);
       if (onChange) {
         setOnChange(false);
       } else {
@@ -740,7 +769,7 @@ const Formcotizacion = () => {
                                   </tr>
                                   <tr key={i + 1 * 11}>
                                     <td>&nbsp;</td>
-                                    <td colSpan={3}>Total a Pagare</td>
+                                    <td colSpan={3}>Total a Pagar</td>
                                     <td className="totaltr">
                                       {dollarUSLocale.format(xTotal.toFixed(0))}
                                     </td>
