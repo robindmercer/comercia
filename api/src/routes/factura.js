@@ -51,7 +51,7 @@ router.get("/cab", async function (req, res, next) {
   const { id } = req.query;
   if (id) {
     try {
-      sql = "select f.id,f.subtotal,f.iva,f.total,f.dhl,f.cli_id,";
+      sql = "select f.id,to_char(f.fecha,'dd/mm/yyyy') as fecha,f.subtotal,f.iva,f.total,f.dhl,f.cli_id,";
       sql = sql + " d.calle,d.localidad,d.cp,d.ciudad,d.pais, ";
       sql = sql + " c.nombre,f.cli_id,t.description as Status,f.observ, f.moneda,f.idioma";
       sql = sql + " from facturas f";

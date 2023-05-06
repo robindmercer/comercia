@@ -20,7 +20,7 @@ import { getUsuariomenId } from "../../actions/usuariomenu";
 import { getDetail } from "../../actions/tabla";
 
 // Iconos
-import { FcDeleteRow, FcAddRow, FcOk, FcLeft } from "react-icons/fc";
+import { FcDeleteRow, FcAddRow, FcOk, FcLeft,FcApproval } from "react-icons/fc";
 import Header from "../Header";
 // CSS
 import "../../css/factdet.css";
@@ -859,6 +859,16 @@ function Formfactura() {
                           onClick={() => {
                             navigate("/factura");
                           }}
+                        />
+                      </td>
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                      <td>
+                      <FcApproval
+                              style={estilo2}
+                              title="Aprobar"
+                              onClick={() => {
+                                handleSubmit();
+                              }}
                         />
                       </td>
                     </tr>
