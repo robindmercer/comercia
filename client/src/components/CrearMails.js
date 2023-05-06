@@ -1,4 +1,22 @@
 export default function crearMail(status, to, factura) {
+  if (status === 6) {
+    return {
+      subject: `Factura ${factura.id} Liberada`,
+      to,
+      html: `<table>
+              <tr>
+                <td>
+                  Se ha Liberado la Orden de Compra  : ${factura.id}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    El Total de la O/Compra : ${factura.total}
+                </td>
+              </tr>
+            </table>`,
+    };
+  }
   if (status === 4) {
     return {
       subject: `Factura ${factura.id} Completada`,
@@ -6,7 +24,7 @@ export default function crearMail(status, to, factura) {
       html: `<table>
               <tr>
                 <td>
-                  Se ha Confeccionado la Orden de Compra del cliente : ${factura.id}
+                  Se ha Confeccionado la Orden de Compra  : ${factura.id}
                 </td>
               </tr>
               <tr>

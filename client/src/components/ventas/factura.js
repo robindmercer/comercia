@@ -14,11 +14,12 @@ import { AccessCtrl } from "../../actions/index";
 //import { getUsuariomenId } from "../../actions/usuariomenu";
 // import { getDetail } from "../../actions/tabla";
 // import crearMail from "../CrearMails";
-// import { mailEnviar } from "../../actions/index";
+import { mailEnviar } from "../../actions/index";
 import { GetMails } from "../../actions/usuario";
 // Modal
 import OkForm from "../modal/TraerCotiz";
 import { Modal, Button, Alert } from "react-bootstrap";
+import crearMail from "../CrearMails";
 
 const Factura = () => {
   const idProg = 11;
@@ -156,13 +157,13 @@ const Factura = () => {
     console.log("found: ", found);
     if (accion === "-" && found.cod_status > 1) {
       newStatus = found.cod_status - 1;
-      console.log("newStatus: ", newStatus);
       paramMail = 2;
       if (newStatus < 4) {
         newStatus = 1;
         paramMail = 1;
       }
       control = "N";
+      console.log("newStatus: ", newStatus);
     }
     if (accion === "+") {
       if (found.cod_status === 1) {
@@ -212,8 +213,13 @@ const Factura = () => {
     setIdFact(id);
     setNewStatus(newStatus);
     setIdMail(paramMail);
-
-    console.log("mails: ", mails);
+    dispatch(GetMails(idMail));
+    for (var index = 0; index < mails.length; index++) {
+      console.log('enviar mail: ', mails[index].email);
+      dispatch(mailEnviar(crearMail(newStatus, mails[index].email, found)))
+    }
+  //     dispatch(UpdateFacturaSts(idFact, newStatus)); // Espera Aprobacion
+  //console.log("mails: ",idMail, mails);
   };
 
   console.log("------------------------------");
