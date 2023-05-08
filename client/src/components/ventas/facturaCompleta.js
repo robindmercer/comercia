@@ -15,7 +15,7 @@ function FacturaCompleta() {
   useEffect(() => {
    
       axios.post(`email`, {
-        subject: 'Confirmacion de compra',
+        subject: 'Confirmación de compra',
         to: 'robindmercer@yahoo.com.ar',        
         html: `<table style="margin:0 auto; width: 600px; font-family: 'Poppins', sans-serif;">
         <tr>

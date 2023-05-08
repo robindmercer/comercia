@@ -17,7 +17,7 @@ import { getCondiciones,PostCondicionesCot } from "../../actions/condiciones";
 import { getDetail } from "../../actions/tabla";
 
 // Iconos
-import { FcAddRow, FcDeleteRow, FcLeft, FcOk } from "react-icons/fc";
+import { FcAddRow, FcDeleteRow, FcLeft, FcOk,FcMinus } from "react-icons/fc";
 import Header from "../Header";
 // CSS
 import "../../css/factdet.css";
@@ -213,11 +213,12 @@ const Formcotizacion = () => {
     if (factdet && porciva) {
       factdet.forEach((fact) => {
         const quantityNumber = parseFloat(fact.cantidad);
-        const rateNumber = parseFloat(fact.precio);
-        const amount =
-          quantityNumber && rateNumber ? quantityNumber * rateNumber : 0;
-
-        subTotal += amount;
+        if (fact.precio > 0 ){
+          const rateNumber = parseFloat(fact.precio);
+          const amount =
+            quantityNumber && rateNumber ? quantityNumber * rateNumber : 0;
+          subTotal += amount;
+        }
       });
       setSubTotal(subTotal);
       if (subTotal > 0) {
@@ -279,6 +280,15 @@ const Formcotizacion = () => {
       setOnChange(true);
     }
   };
+  const handleFree = (i) => {
+    factdet[i].precio =-1;
+    factdet[i].total =-1;
+    if (onChange) {
+      setOnChange(false);
+    } else {
+      setOnChange(true);
+    }
+  };  
   const getPrice = () => {
     for (var y = 0; y < factdet.length; y++) {
       for (var z = 0; z < producto.length; z++) {
@@ -580,7 +590,7 @@ const Formcotizacion = () => {
                     <th>Precio</th>
                     <th>Cantidades</th>
                     <th>Total</th>
-                    <th>&nbsp;</th>
+                    <th colSpan={2}>Opciones</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -638,6 +648,22 @@ const Formcotizacion = () => {
                               />
                             </td>
                           ) : null}
+                          {acceso.substring(0,1) === "A" ? (
+                            <td onClick={() => handleFree(i)}>
+                              <FcMinus
+                                style={estilo}
+                                title="Precio 0"
+                                onMouseEnter={({ target }) =>
+                                  (target.style.fontSize = "200%")
+                                }
+                                onMouseLeave={({ target }) =>
+                                  (target.style.fontSize = "150%")
+                                }
+                              />
+                            </td>
+                          ) : (
+                            <td>&nbsp;</td>
+                          )}                          
                         </tr>
                       );
                     })}

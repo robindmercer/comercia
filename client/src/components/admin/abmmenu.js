@@ -8,8 +8,8 @@ import { menuItems } from '../../menuNibbot';
 import { getUsuariomenId, ChangeUsrAcceso,DeleteUsrAcceso } from "../../actions/usuariomenu";
 // Iconos
 import { FcLeft } from 'react-icons/fc'
-import '../../css/all.css'
-
+//import '../../css/all.css'
+import '../../css/usuario.css'
 
 
 function  AbmMenu() {
@@ -68,7 +68,7 @@ function  AbmMenu() {
         <>
         
         
-        <div className="divhead">
+        <div className="divheader">
             <div >
                 <table className="styled-table">
                     <thead>

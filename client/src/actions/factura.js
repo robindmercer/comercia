@@ -2,6 +2,7 @@
 import axios from "axios";
 import { GET_FACTURA, GET_FACTCAB, RESET_FAC } from './constant'
 import { AddFacturaDet } from "./factdet";
+import { PostCondicionesFac } from "./condiciones";
 
 export function getFactura() {
   console.log('Action getFactura: All');
@@ -37,7 +38,7 @@ export function postFacturaNew(factcab) {
   }
 }
 
-export function AddFactura(factcab, factdet, inputDet) {
+export function AddFactura(factcab, factdet, inputDet,initialCondGral) {
   return async function (dispatch) {
     await axios.post(`factura`, factcab)
       .then(response => {
@@ -54,6 +55,9 @@ export function AddFactura(factcab, factdet, inputDet) {
           dispatch(AddFacturaDet(inputDet))
           console.log('Detalle de Factura ');
         })
+        console.log('AddCotizacion initialCondGral: ', initialCondGral);
+        initialCondGral.cot_id=inputDet.cot_id;
+        dispatch(PostCondicionesFac(initialCondGral))
       })
       .catch(err => {
         console.log(err)

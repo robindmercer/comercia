@@ -19,7 +19,7 @@ import { getUsuariomenId } from "../../actions/usuariomenu";
 import { getDetail } from "../../actions/tabla";
 
 // Iconos
-import { FcDeleteRow, FcAddRow, FcOk, FcLeft } from "react-icons/fc";
+import { FcDeleteRow, FcAddRow, FcOk, FcLeft,FcMinus } from "react-icons/fc";
 import Header from "../Header";
 // CSS
 import "../../css/factdet.css";
@@ -161,12 +161,12 @@ function Formcotizacion() {
       setSaleDHL(cotizacioncab[0].dhl);
     }
   }, [dispatch, id_usuario]);
-
+  
   useEffect(() => {
     if (onChange) {
     }
   }, [onChange, cotizaciondet]);
-
+  
   // Calculo subtotal
   useEffect(() => {
     console.log("useEffect: ", 1);
@@ -176,10 +176,12 @@ function Formcotizacion() {
     if (cotizaciondet && porciva) {
       cotizaciondet.forEach((fact) => {
         const quantityNumber = parseFloat(fact.cantidad);
-        const rateNumber = parseFloat(fact.precio);
-        const amount =
+        if (fact.precio > 0 ) {
+          const rateNumber = parseFloat(fact.precio);
+          const amount =
           quantityNumber && rateNumber ? quantityNumber * rateNumber : 0;
-        subTotal += amount;
+          subTotal += amount;
+        }
       });
       setSubTotal(subTotal);
       if (subTotal > 0) {
@@ -198,10 +200,10 @@ function Formcotizacion() {
     }
     console.log("total: ", total);
   }, [onChange, cotizaciondet]);
-
+  
   //console.log("cliente: ", cliente);
   // console.log("state.idCli: ", state.idCli);
-
+  
   useEffect(() => {
     console.log("useEffect: ", 2);
     var aux = 0;
@@ -209,68 +211,76 @@ function Formcotizacion() {
     if (cotizaciondet && porciva) {
       cotizaciondet.forEach((fact) => {
         const quantityNumber = parseFloat(fact.cantidad);
-        const rateNumber = parseFloat(fact.precio);
-        const amount =
-          quantityNumber && rateNumber ? quantityNumber * rateNumber : 0;
-
+        if (fact.precio > 0){
+         const rateNumber = parseFloat(fact.precio);
+        const amount = quantityNumber && rateNumber ? quantityNumber * rateNumber : 0;  
         aux += amount;
+      }
       });
-
+      
       // if (saleDHL > 0) {
-      //   aux += parseInt(saleDHL);
-      //   console.log("subTotal: ", subTotal);
-      //   setSubTotal(aux);
-      //   console.log("saleDHL d: ", saleDHL, subTotal);
-      // } else {
-      //   setSubTotal(aux);
-      // }
-      if (aux > 0) {
-        if (cotizacioncab[0].moneda === 1) {
-          iva = aux * (parseFloat(porciva) / 100);
+        //   aux += parseInt(saleDHL);
+        //   console.log("subTotal: ", subTotal);
+        //   setSubTotal(aux);
+        //   console.log("saleDHL d: ", saleDHL, subTotal);
+        // } else {
+          //   setSubTotal(aux);
+          // }
+          if (aux > 0) {
+            if (cotizacioncab[0].moneda === 1) {
+              iva = aux * (parseFloat(porciva) / 100);
+            }
+            setSubTotal(aux);
+            setSaleTax(iva);
+            if (saleDHL.length === 0) setSaleDHL(0);
+            var total = aux + iva + parseInt(saleDHL);
+            setTotal(total);
+            console.log("total: ", total);
+          }
         }
-        setSubTotal(aux);
-        setSaleTax(iva);
-        if (saleDHL.length === 0) setSaleDHL(0);
-        var total = aux + iva + parseInt(saleDHL);
-        setTotal(total);
-        console.log("total: ", total);
-      }
-    }
-  }, [onChange, saleDHL]);
-
-  const handleRemove = (i) => {
-    cotizaciondet.splice(i, 1);
-    if (onChange) {
-      setOnChange(false);
-    } else {
-      setOnChange(true);
-    }
-  };
-
-  const handleAdd = () => {
-    cotizaciondet.push(initialProductLine);
-    // console.log("cotizaciondet: ", cotizaciondet);
-    if (onChange) {
-      setOnChange(false);
-    } else {
-      setOnChange(true);
-    }
-  };
-
-  function handleTipo(e, i) {
-    e.preventDefault();
-    if (e.target.name === "dhl") {
-      cotizacioncab[0].dhl = e.target.value;
-      setSaleDHL(e.target.value);
-    }
-    // console.log("i: ", i);
-    // console.log("e.target.name: ", e.target.name);
-    // console.log("e.target.value: ", e.target.value);
-    if (e.target.name === "miCheck") {
-      for (var xcond = 0; xcond < condiciones.length; xcond++) {
-        condiciones[xcond].sel = " ";
-      }
-      condiciones[i.i].sel = "S";
+      }, [onChange, saleDHL]);
+      
+      const handleRemove = (i) => {
+        cotizaciondet.splice(i, 1);
+        if (onChange) {
+          setOnChange(false);
+        } else {
+          setOnChange(true);
+        }
+      };
+      const handleFree = (i) => {
+        cotizaciondet[i].precio =-1;
+        cotizaciondet[i].total =-1;
+        if (onChange) {
+          setOnChange(false);
+        } else {
+          setOnChange(true);
+        }
+      };
+      const handleAdd = () => {
+        cotizaciondet.push(initialProductLine);
+        // console.log("cotizaciondet: ", cotizaciondet);
+        if (onChange) {
+          setOnChange(false);
+        } else {
+          setOnChange(true);
+        }
+      };
+      
+      function handleTipo(e, i) {
+        e.preventDefault();
+        if (e.target.name === "dhl") {
+          cotizacioncab[0].dhl = e.target.value;
+          setSaleDHL(e.target.value);
+        }
+        // console.log("i: ", i);
+        // console.log("e.target.name: ", e.target.name);
+        // console.log("e.target.value: ", e.target.value);
+        if (e.target.name === "miCheck") {
+          for (var xcond = 0; xcond < condiciones.length; xcond++) {
+            condiciones[xcond].sel = " ";
+          }
+          condiciones[i.i].sel = "S";
       console.log("miCheck condiciones: ", condiciones);
       if (onChange) {
         setOnChange(false);
@@ -320,7 +330,7 @@ function Formcotizacion() {
     if (e.target.name === "quantity") {
       cotizaciondet[i.i].cantidad = e.target.value;
       cotizaciondet[i.i].total =
-        cotizaciondet[i.i].cantidad * cotizaciondet[i.i].precio;
+      cotizaciondet[i.i].cantidad * cotizaciondet[i.i].precio;
       if (onChange) {
         setOnChange(false);
       } else {
@@ -338,7 +348,7 @@ function Formcotizacion() {
             cotizaciondet[i.i].name = producto[z].name;
             cotizaciondet[i.i].precio = producto[z].price;
             cotizaciondet[i.i].total =
-              cotizaciondet[i.i].cantidad * cotizaciondet[i.i].precio;
+            cotizaciondet[i.i].cantidad * cotizaciondet[i.i].precio;
           }
         }
       }
@@ -349,7 +359,7 @@ function Formcotizacion() {
       }
     }
   }
-
+  
   const handleSubmit = () => {
     // //    setInput(input.dir_id = DirCode);
     //     setInput(input.cli_id = cotizacioncab[0].cli_id);
@@ -368,7 +378,7 @@ function Formcotizacion() {
     console.log("cotizacioncab: ", cotizacioncab);
     const found = condiciones.find((element) => element.sel === "S");
     console.log("found: ", found);
-
+    
     setInput((input.id = cotizacioncab[0].id));
     setInput((input.subtotal = subTotal.toFixed(0)));
     setInput((input.iva = saleTax.toFixed(0)));
@@ -378,7 +388,7 @@ function Formcotizacion() {
     setInput((input.moneda = cotizacioncab[0].moneda));
     // Grabo Cabecera y detalles
     dispatch(UpdateCotizacion(input, cotizaciondet, inputDet));
-
+    
     if (found) {
       if (tieneCG === 1) {
         initialFacdet.id = 1; // si ya tiene una C.General grabada el id es siempre 1
@@ -402,15 +412,15 @@ function Formcotizacion() {
     console.log("condiciones: ", condiciones);
     console.log("tieneCG",tieneCG );
     console.log("handleSubmit END");
-
+    
     handleShow();
     //window.location.href = "/cotizacion";
   };
-
+  
   // console.log("total: ", total);
   // console.log("usuariomenu: ", usuariomenu);
   // console.log("acceso: ", acceso);
-
+  
   if (cotizacioncond.length !== 0 && condiciones) {
     console.log("cotizacioncond: ", cotizacioncond);
     setTieneCG(1);
@@ -427,16 +437,20 @@ function Formcotizacion() {
     }
     cotizacioncond.splice(0, cotizacioncond.length);
     // } else {
-    //   cotizacioncond.push(initialFacdet);
-  }
-  // console.log("cotizacioncab", cotizacioncab);
-  console.log("cotizacioncab: ", cotizacioncab);
-  console.log("cotizaciondet: ", cotizaciondet);
-  console.log("cotizacioncond: ", cotizacioncond);
-
-  if (cotizacioncab.length > 0) {
-    return (
-      <>
+      //   cotizacioncond.push(initialFacdet);
+    }
+    // console.log("cotizacioncab", cotizacioncab);
+    // console.log("cotizacioncab: ", cotizacioncab);
+    // console.log("cotizaciondet: ", cotizaciondet);
+    // console.log("cotizacioncond: ", cotizacioncond);
+    // console.log("use efect")
+    // console.log('id_usuario: ', id_usuario);
+    // console.log('cotizaciondet: ', cotizaciondet);
+    // console.log('cotizaciondet: ', cotizaciondet);
+    
+    if (cotizacioncab.length > 0) {
+      return (
+        <>
         <Header />
         <div>
           <div className="cabeceraAlta ">
@@ -472,7 +486,9 @@ function Formcotizacion() {
                   onChange={(e) => handleTipo(e)}
                 >
                   <option value="0">Seleccionar</option>
-                  {tabla &&
+                  <option value="1">Peso Mex.</option>
+                  <option value="2">Dolar</option>                  
+                  {/* {tabla &&
                     tabla.map((tabla) => {
                       if (tabla.id === 8 && tabla.cod !== 0) {
                         return (
@@ -484,7 +500,7 @@ function Formcotizacion() {
                       } else {
                         return null;
                       }
-                    })}
+                    })} */}
                 </select>
               </div>
             </div>
@@ -500,7 +516,7 @@ function Formcotizacion() {
                     <th>Precio</th>
                     <th>Cantidades</th>
                     <th>Total</th>
-                    <th>&nbsp;</th>
+                    <th colSpan={2}>Opciones</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -549,6 +565,23 @@ function Formcotizacion() {
                             <td onClick={() => handleRemove(i)}>
                               <FcDeleteRow
                                 style={estilo}
+                                title="Eliminar Producto"
+                                onMouseEnter={({ target }) =>
+                                  (target.style.fontSize = "200%")
+                                }
+                                onMouseLeave={({ target }) =>
+                                  (target.style.fontSize = "150%")
+                                }
+                              />
+                            </td>
+                          ) : (
+                            <td>&nbsp;</td>
+                          )}
+                          {acceso === "A" ? (
+                            <td onClick={() => handleFree(i)}>
+                              <FcMinus
+                                style={estilo}
+                                title="Precio 0"
                                 onMouseEnter={({ target }) =>
                                   (target.style.fontSize = "200%")
                                 }
@@ -686,8 +719,7 @@ function Formcotizacion() {
                           var xEnganche = (total * cond.enganche) / 100;
                           var xFinanciar = total - xEnganche;
                           var xAnos = cond.meses / 12;
-                          var xPorMes =
-                            xFinanciar * (cond.interes / 100) * xAnos;
+                          var xPorMes = xFinanciar * (cond.interes / 100) * xAnos;
                           var xPagoMens = (xFinanciar + xPorMes) / cond.meses;
                           var xTotal = xPagoMens * cond.meses;
                           if (cond.id === 1) {
@@ -781,7 +813,7 @@ function Formcotizacion() {
                                   ></input>
                                 </td>
                               </tr>
-                              <tr>
+                              <tr key={i * 13}>
                                 <td>&nbsp;</td>
                                 <td colSpan={3}>Total Cotizacion</td>
                                 <td className="totaltr">
@@ -790,7 +822,7 @@ function Formcotizacion() {
                               </tr>
                               {xEnganche !== 0 ? (
                                 <>
-                                  <tr>
+                                  <tr key={i * 14}>
                                     <td>&nbsp;</td>
                                     <td colSpan={3}>Enganche</td>
                                     <td className="totaltr">
@@ -799,7 +831,7 @@ function Formcotizacion() {
                                       )}
                                     </td>
                                   </tr>
-                                  <tr>
+                                  <tr key={i * 15}>
                                     <td>&nbsp;</td>
                                     <td colSpan={3}>Saldo a financiar</td>
                                     <td className="totaltr">
@@ -808,7 +840,7 @@ function Formcotizacion() {
                                       )}
                                     </td>
                                   </tr>
-                                  <tr>
+                                  <tr key={i * 16}>
                                     <td>&nbsp;</td>
                                     <td colSpan={2}>
                                       {cond.meses} Pagos Mensuales
@@ -822,7 +854,7 @@ function Formcotizacion() {
                                   </tr>
                                 </>
                               ) : null}
-                              <tr>
+                              <tr key={i * 17}>
                                 <td>&nbsp;</td>
                                 <td colSpan={3}>Total a Pagar</td>
                                 <td className="totaltr">
@@ -928,7 +960,7 @@ function Formcotizacion() {
 
         <Modal show={show}>
           <Modal.Header closeButton>
-            <Modal.Title>Confirmacion</Modal.Title>
+            <Modal.Title>Confirmación</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <OkForm ruta={rutaOk} />

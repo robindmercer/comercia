@@ -33,6 +33,7 @@ const Cotizacion = () => {
   const dollarUSLocale = Intl.NumberFormat("de-DE");
   const estilo = { fontSize: "200%", transition: "font-size 0.5s" };
   const [acceso, setAcceso] = useState("");
+  const [cotid, setCotId] = useState(0);
   const [idCotiz, setIdCotiz] = useState(0);
   const [newStatus, setNewStatus] = useState(0);
   const [idMail, setIdMail] = useState(0);
@@ -46,6 +47,10 @@ const Cotizacion = () => {
   var muestroRegistro = false;
 
   // Control Botones a mostrar
+  const asignarCli = (data) => {
+    setCotId(data)
+    handleShow()
+  }
   const control = (data) => {
     btnAddDatabase = false;
     btnApproval = false;
@@ -95,7 +100,7 @@ const Cotizacion = () => {
     // console.log("verStatus: ", verStatus, acceso.substring(0, 1));
     // console.log("Muestro", data.id, data.cod_status, muestroRegistro);
   };
-
+ 
   useEffect(() => {
     console.log("Use Efect 1");
     dispatch(AccessCtrl(id_usuario));
@@ -279,7 +284,7 @@ const Cotizacion = () => {
                               style={estilo}
                               title="Asignar a un Cliente"
                               onClick={() => {
-                                handleShow();
+                                asignarCli(data.id);
                               }}
                               onMouseEnter={({ target }) =>
                                 (target.style.fontSize = "280%")
@@ -307,7 +312,7 @@ const Cotizacion = () => {
             </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            <AsignCli />
+            <AsignCli  cotid={cotid} />
         </Modal.Body>
         <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>

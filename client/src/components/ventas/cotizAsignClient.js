@@ -1,26 +1,47 @@
 import { Form, Button } from "react-bootstrap";
+import { useDispatch } from "react-redux";
 
-import { useContext, useState } from "react";
+import { cotiToFact } from "../../actions/factura";
+import { useState } from "react";
 import "../admin/condiciones/add.css"
 
-const AsignCli = () => {
+const AsignCli = (cotid) => {
   // const { addCondicion } = useContext(CondicionContext);
+  const [cliid, setCliid] = useState(0);
+  const [onChange, setOnChange] = useState(false);
+  const [ver,setVer] = useState(false)
+  const dispatch = useDispatch();
 
-  const [newCondicion, setNewCondicion] = useState({
-    numero: "",
+  const [input, setInput] = useState({
+    cli_id: 0,
+    cot_id: 0,
   });
 
-  const onInputChange = (e) => {
-    setNewCondicion({ ...newCondicion, [e.target.name]: e.target.value });
-  };
+  function handleTipo(e, i) {
+    e.preventDefault();
+    if (e.target.name === "cli_id") {
+      setCliid(e.target.value);
+    }
+      if (onChange) {
+        setOnChange(false);
+      } else {
+        setOnChange(true);
+      }
+  }
 
-  const { numero } = newCondicion;
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('newCondicion: ', newCondicion);
-    //addCondicion(nombre, descuento, meses, enganche);
-    // addCondicion(newCondicion);
+    setVer(false)
+    if (cliid === 0 || cotid===0){
+      setVer(true)
+    } else {
+    setInput(input.cli_id = cliid)
+    setInput(input.cot_id = cotid.cotid)
+    dispatch(cotiToFact(input));
+    console.log('input: ', input);
+    window.location.href = '/factura';
+    }
   };
 
   return (
@@ -32,10 +53,10 @@ const AsignCli = () => {
             <input
               className="td2Des"
               type="text"
-              placeholder="Numero de Cliente *"
-              name="numero"
-              value={numero}
-              onChange={(e) => onInputChange(e)}
+              placeholder="Codigo de Cliente *"
+              name="cli_id"
+              value={cliid}
+              onChange={(e) => handleTipo(e)}
               required
             />
           </td>

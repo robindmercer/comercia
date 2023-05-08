@@ -83,20 +83,19 @@ export function AddCotizacion2(cotizCab) {
 
 export function UpdateCotizacion(cotizCab, cotizaciondet, inputDet) {
   return async function (dispatch) {
-    console.log('actions/cotizacion/UpdateCotizacion ');
-    console.log(cotizCab);
-  await axios.put(`cotizacion`, cotizCab)
-      .then(response => {
-        if (response.data !== 'OK') {
-          console.log('UpdateCotizacion Error ', response);
-          alert(response.data);
-          return "Err";
-        } else {
-          console.log('UpdateCotizacion response: ', response);
+    await axios.put(`cotizacion`, cotizCab)
+    .then(response => {
+      if (response.data.message !== 'Cotizacion OK') {
+        console.log('UpdateCotizacion Error ', response);
+        alert("Error UpdateCotizacion");
+        return response;
+      } else {
+        console.log('UpdateCotizacion response: ', cotizaciondet);
+        console.log('cotizCab: ', cotizCab.id);
           var xOrden = 0;
           cotizaciondet.forEach((fact) => {
             xOrden += 1
-            inputDet.cot_id = fact.cot_id
+            inputDet.cot_id = cotizCab.id
             inputDet.orden = xOrden
             inputDet.prod_id = fact.prod_id
             inputDet.precio = fact.precio
