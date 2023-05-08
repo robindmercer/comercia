@@ -550,7 +550,9 @@ const Formcotizacion = () => {
                   onChange={(e) => handleTipo(e)}
                 >
                   <option value="0">Seleccionar</option>
-                  {tabla &&
+                  <option value="1">Peso Mex.</option>
+                  <option value="2">Dolar</option>
+                  {/* {tabla &&
                     tabla.map((tabla) => {
                       if (tabla.id === 8 && tabla.cod !== 0) {
                         return (
@@ -562,7 +564,7 @@ const Formcotizacion = () => {
                       } else {
                         return null;
                       }
-                    })}
+                    })} */}
                 </select>
               </div>
             </div>
@@ -985,7 +987,7 @@ const Formcotizacion = () => {
 
         <Modal show={show}>
           <Modal.Header closeButton>
-            <Modal.Title>Confirmacion</Modal.Title>
+            <Modal.Title>Confirmación</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <OkForm ruta={rutaOk} />
