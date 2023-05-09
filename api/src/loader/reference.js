@@ -61,6 +61,7 @@ async function refLoad() {
       { usrid: "RDM", nivel: 17,accion:"A"},      
       { usrid: "RDM", nivel: 10,accion:"A"},      
       { usrid: "RDM", nivel: 11,accion:"A"},      
+      { usrid: "RDM", nivel: 12,accion:"A"},      
       { usrid: "YG", nivel: 0,accion:"A"},      
       { usrid: "YG", nivel: 1,accion:"A"},      
       { usrid: "YG", nivel: 5,accion:"A"},      
@@ -156,10 +157,10 @@ async function refLoad() {
    ]).then(() => console.log('Tablas ha sido grabado'));
 
    Cliente.bulkCreate([
-      { razsoc:"RAZON",nombre: "JAVIER CEBALLOS"  ,apellido:"MEDINA", email: "cliente@gmail.com", movil: '123456789', fijo: '46661234', rfc_cod: 'rfc-1', idioma:1, moneda:1,cod_cliente: 1, cod_status: 1 },
-      { razsoc:"RAZON",nombre: "DRA. MARIA TERESA",apellido:"RAZO SOLIS", email: "cliente@gmail.com", movil: '123456789', fijo: '46661234', rfc_cod: 'rfc-2', idioma:1, moneda:1,cod_cliente: 2, cod_status: 1 },
-      { razsoc:"RAZON",nombre: "ING. JAVIER"      ,apellido:"VELA", email: "cliente@gmail.com", movil: '123456789', fijo: '46661234', rfc_cod: 'rfc-3', idioma:2, moneda:2,cod_cliente: 2, cod_status: 1 },
-      { razsoc:"RAZON",nombre: "YPF"              ,apellido:"", email: "YPF@gmail.com", movil: '123456789', fijo: '46661234', rfc_cod: 'rfc-4', idioma:2, moneda:2, cod_cliente: 1, cod_status: 1 },
+      { razsoc:"MEDINA",nombre: "JAVIER CEBALLOS"  ,apellido:"MEDINA", email: "cliente@gmail.com", movil: '123456789', fijo: '46661234', rfc_cod: 'rfc-1', idioma:1, moneda:1,cod_cliente: 1, cod_status: 1 },
+      { razsoc:"RAZO SOLIS",nombre: "DRA. MARIA TERESA",apellido:"RAZO SOLIS", email: "cliente@gmail.com", movil: '123456789', fijo: '46661234', rfc_cod: 'rfc-2', idioma:1, moneda:1,cod_cliente: 2, cod_status: 1 },
+      { razsoc:"VELA",nombre: "ING. JAVIER"      ,apellido:"VELA", email: "cliente@gmail.com", movil: '123456789', fijo: '46661234', rfc_cod: 'rfc-3', idioma:2, moneda:2,cod_cliente: 2, cod_status: 1 },
+      { razsoc:"YPF",nombre: "YPF"              ,apellido:"", email: "YPF@gmail.com", movil: '123456789', fijo: '46661234', rfc_cod: 'rfc-4', idioma:2, moneda:2, cod_cliente: 1, cod_status: 1 },
    ]).then(() => console.log('Clientes grabados'));
   
    Direccion.bulkCreate([

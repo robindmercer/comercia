@@ -51,7 +51,7 @@ router.get("/cab", async function (req, res, next) {
   const { id } = req.query;
   if (id) {
     try {
-      sql = "select f.id,to_char(f.fecha,'dd/mm/yyyy') as fecha,f.subtotal,f.iva,f.total,f.dhl,f.cli_id,";
+      sql = "select f.id,to_char(f.fecha,'dd/mm/yyyy') as fecha,f.subtotal,f.iva,f.total,f.dhl,f.cli_id,f.cod_status, ";
       sql = sql + " d.calle,d.localidad,d.cp,d.ciudad,d.pais, ";
       sql = sql + " c.nombre,f.cli_id,t.description as Status,f.observ, f.moneda,f.idioma";
       sql = sql + " from facturas f";
@@ -225,7 +225,7 @@ router.post("/cotifac", async function (req, res, next) {
 
 router.put("/", async function (req, res, next) {
   try {
-    const { id, subtotal, iva, total, observ } = req.body;
+    const { id, dhl, subtotal, iva, total, observ } = req.body;
 
     console.log("Put Factura: ", req.body);
 
@@ -265,7 +265,7 @@ router.put("/", async function (req, res, next) {
     });
     console.log("sqlDel: ", sqlDel);
     console.log("sqlfac: ", sqlfac);
-    res.status(200).json({ message: "FACTURAS OK" });
+    res.status(200).json({ message: "OK" });
   } catch (error) {
     res.status(400).json({ message: "Error put FACTURAS" + error });
   }

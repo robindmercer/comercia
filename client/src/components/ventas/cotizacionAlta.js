@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import Collapsible from 'react-collapsible';
+import Collapsible from "react-collapsible";
 // Acciones
 // import { getCotizacionDet } from '../../actions/factdet';
 import { getClienteId } from "../../actions/cliente";
@@ -11,18 +11,18 @@ import { AddCotizacion, AddCotizacion2 } from "../../actions/cotizacion";
 import { getProducto } from "../../actions/producto";
 import { getDetailIva, getTabla } from "../../actions/tabla";
 import { getUsuariomenId } from "../../actions/usuariomenu";
-import { getCondiciones,PostCondicionesCot } from "../../actions/condiciones";
+import { getCondiciones, PostCondicionesCot } from "../../actions/condiciones";
 
 // Descuentos
 import { getDetail } from "../../actions/tabla";
 
 // Iconos
-import { FcAddRow, FcDeleteRow, FcLeft, FcOk,FcMinus } from "react-icons/fc";
+import { FcAddRow, FcDeleteRow, FcLeft, FcOk, FcMinus } from "react-icons/fc";
 import Header from "../Header";
 // CSS
 import "../../css/factdet.css";
 //import { AddCotizacionDet } from "../../actions/cotizaciondet";
-// Modal 
+// Modal
 import OkForm from "../modal/OkForm";
 import { Modal, Button, Alert } from "react-bootstrap";
 //import { getCondicionesCot } from "../../actions/cotizacioncond";
@@ -213,7 +213,7 @@ const Formcotizacion = () => {
     if (factdet && porciva) {
       factdet.forEach((fact) => {
         const quantityNumber = parseFloat(fact.cantidad);
-        if (fact.precio > 0 ){
+        if (fact.precio > 0) {
           const rateNumber = parseFloat(fact.precio);
           const amount =
             quantityNumber && rateNumber ? quantityNumber * rateNumber : 0;
@@ -281,14 +281,14 @@ const Formcotizacion = () => {
     }
   };
   const handleFree = (i) => {
-    factdet[i].precio =-1;
-    factdet[i].total =-1;
+    factdet[i].precio = -1;
+    factdet[i].total = -1;
     if (onChange) {
       setOnChange(false);
     } else {
       setOnChange(true);
     }
-  };  
+  };
   const getPrice = () => {
     for (var y = 0; y < factdet.length; y++) {
       for (var z = 0; z < producto.length; z++) {
@@ -343,15 +343,15 @@ const Formcotizacion = () => {
 
     const found = condiciones.find((element) => element.sel === "S");
     console.log("found: ", found);
-    if (found){
-    condGral.id = 0;
-    condGral.cot_id = 0;
-    condGral.cond_id = found.id;
-    condGral.descuento = found.descuento;
-    condGral.enganche = found.enganche;
-    condGral.meses = found.meses;
-    condGral.interes = found.interes;
-  } else {
+    if (found) {
+      condGral.id = 0;
+      condGral.cot_id = 0;
+      condGral.cond_id = found.id;
+      condGral.descuento = found.descuento;
+      condGral.enganche = found.enganche;
+      condGral.meses = found.meses;
+      condGral.interes = found.interes;
+    } else {
       condGral.id = 0;
       condGral.cot_id = 0;
       condGral.cond_id = 1;
@@ -364,13 +364,13 @@ const Formcotizacion = () => {
     console.log("factdet: ", factdet);
     console.log("input: ", input);
     console.log("found: ", found);
-    console.log('condGral: ', condGral);
+    console.log("condGral: ", condGral);
 
     if (subTotal === 0) {
       return alert("O/C no puede quedar en 0 (Cero)");
     }
     //console.log('i f d',input, factdet, inputDet);
-    dispatch(AddCotizacion(input, factdet, inputDet,condGral));
+    dispatch(AddCotizacion(input, factdet, inputDet, condGral));
     handleShow();
     // setMostrar(false);
     //window.location.href = "/cotizacion";
@@ -408,8 +408,8 @@ const Formcotizacion = () => {
         setOnChange(false);
       } else {
         setOnChange(true);
-      }      
-//      console.log('input.nombre: ', input.nombre);
+      }
+      //      console.log('input.nombre: ', input.nombre);
     }
     if (e.target.name === "dhl") {
       input.dhl = e.target.value;
@@ -580,177 +580,178 @@ const Formcotizacion = () => {
             </div>
           </div>
           <br />
-          <div className="detalleCab">
-            <div className="detalle">
-              <table className="table table-striped bg-white">
-                <thead>
-                  <tr className="table-success">
-                    <th>Id</th>
-                    <th>Descripcion</th>
-                    <th>Precio</th>
-                    <th>Cantidades</th>
-                    <th>Total</th>
-                    <th colSpan={2}>Opciones</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {factdet &&
-                    factdet.map((fact, i) => {
-                      return (
-                        <tr key={i}>
-                          <td>
-                            <input
-                              className="input_fact"
-                              type="text"
-                              id="prod_id"
-                              name="prod_id"
-                              value={fact.prod_id}
-                              onChange={(e) => handleTipo(e, { i })}
-                            />
-                          </td>
-                          <td>{fact.name}</td>
-                          {fact.precio > 0 ? (
-                            <td className="totaltr">
-                              {dollarUSLocale.format(fact.precio)}
-                            </td>
-                          ) : (
-                            <td className="incluido" colSpan={3}>
-                              Incluido
-                            </td>
-                          )}
-                          {fact.precio > 0 ? (
+          <div>
+            <div className="detalleCab divProd">
+              <div className="detalle">
+                <table className="table table-striped bg-white">
+                  <thead>
+                    <tr className="table-success">
+                      <th>Id</th>
+                      <th>Descripcion</th>
+                      <th>Precio</th>
+                      <th>Cantidades</th>
+                      <th>Total</th>
+                      <th colSpan={2}>Opciones</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {factdet &&
+                      factdet.map((fact, i) => {
+                        return (
+                          <tr key={i}>
                             <td>
                               <input
                                 className="input_fact"
                                 type="text"
-                                id="quantity"
-                                name="quantity"
-                                value={fact.cantidad}
+                                id="prod_id"
+                                name="prod_id"
+                                value={fact.prod_id}
                                 onChange={(e) => handleTipo(e, { i })}
-                              ></input>
-                            </td>
-                          ) : null}
-                          {fact.precio > 0 ? (
-                            <td className="totaltr">
-                              {dollarUSLocale.format(fact.total)}
-                            </td>
-                          ) : null}
-                          {btnEliminarReg ? (
-                            <td onClick={() => handleRemove(i)}>
-                              <FcDeleteRow
-                                style={estilo}
-                                onMouseEnter={({ target }) =>
-                                  (target.style.fontSize = "200%")
-                                }
-                                onMouseLeave={({ target }) =>
-                                  (target.style.fontSize = "150%")
-                                }
                               />
                             </td>
-                          ) : null}
-                          {acceso.substring(0,1) === "A" ? (
-                            <td onClick={() => handleFree(i)}>
-                              <FcMinus
-                                style={estilo}
-                                title="Precio 0"
-                                onMouseEnter={({ target }) =>
-                                  (target.style.fontSize = "200%")
-                                }
-                                onMouseLeave={({ target }) =>
-                                  (target.style.fontSize = "150%")
-                                }
-                              />
-                            </td>
-                          ) : (
-                            <td>&nbsp;</td>
-                          )}                          
-                        </tr>
-                      );
-                    })}
-                </tbody>
-              </table>
-              <div className="addprod">
-                <p onClick={() => handleAdd()}>
-                  <FcAddRow
-                    style={estilo}
-                    onMouseEnter={({ target }) =>
-                      (target.style.fontSize = "200%")
-                    }
-                    onMouseLeave={({ target }) =>
-                      (target.style.fontSize = "150%")
-                    }
-                  />
-                  Agregar Producto
-                </p>
-              </div>
-              <div className="addprod addprod2">
-                <textarea
-                  type="text"
-                  id="observ"
-                  cols="80"
-                  rows="5"
-                  name="observ"
-                  value={input.observ}
-                  placeholder="Observaciones"
-                  onChange={(e) => handleTipo(e)}
-                  className="txtarea"
-                />
-              </div>
-              <div className="total">
-                <table>
-                  <tbody>
-                    <tr className="totaltr">
-                      <td colSpan="3" className="totaltd1">
-                        Subtotal:
-                      </td>
-                      <td className="totaltd2">
-                        {dollarUSLocale.format(subTotal)}
-                      </td>
-                    </tr>
-                    {xMoneda === "2" ? (
-                      <tr className="totaltr">
-                        <td colSpan="3" className="totaltd1">
-                          Costo de Envio:&nbsp;
-                        </td>
-                        <td>
-                          <input
-                            className="costoEnvio"
-                            type="text"
-                            id="dhl"
-                            name="dhl"
-                            value={factcab[0].dhl}
-                            onChange={(e) => handleTipo(e, 0)}
-                          />
-                        </td>
-                      </tr>
-                    ) : (
-                      <tr className="totaltr">
-                        <td colSpan="3" className="totaltd1">
-                          IVA({porciva}%)
-                        </td>
-                        <td className="totaltd2">
-                          {dollarUSLocale.format(saleTax.toFixed(0))}
-                        </td>
-                      </tr>
-                    )}
-                    <tr className="totaltr">
-                      <td colSpan="3">
-                        {xMoneda === 2 ? (
-                          <b>TOTAL A PAGAR USD.</b>
-                        ) : (
-                          <b>TOTAL A PAGAR</b>
-                        )}
-                      </td>
-                      <td className="totaltd2">
-                        {dollarUSLocale.format(total.toFixed(0))}
-                      </td>
-                    </tr>
+                            <td>{fact.name}</td>
+                            {fact.precio > 0 ? (
+                              <td className="totaltr">
+                                {dollarUSLocale.format(fact.precio)}
+                              </td>
+                            ) : (
+                              <td className="incluido" colSpan={3}>
+                                Incluido
+                              </td>
+                            )}
+                            {fact.precio > 0 ? (
+                              <td>
+                                <input
+                                  className="input_fact"
+                                  type="text"
+                                  id="quantity"
+                                  name="quantity"
+                                  value={fact.cantidad}
+                                  onChange={(e) => handleTipo(e, { i })}
+                                ></input>
+                              </td>
+                            ) : null}
+                            {fact.precio > 0 ? (
+                              <td className="totaltr">
+                                {dollarUSLocale.format(fact.total)}
+                              </td>
+                            ) : null}
+                            {btnEliminarReg ? (
+                              <td onClick={() => handleRemove(i)}>
+                                <FcDeleteRow
+                                  style={estilo}
+                                  onMouseEnter={({ target }) =>
+                                    (target.style.fontSize = "200%")
+                                  }
+                                  onMouseLeave={({ target }) =>
+                                    (target.style.fontSize = "150%")
+                                  }
+                                />
+                              </td>
+                            ) : null}
+                            {acceso.substring(0, 1) === "A" ? (
+                              <td onClick={() => handleFree(i)}>
+                                <FcMinus
+                                  style={estilo}
+                                  title="Precio 0"
+                                  onMouseEnter={({ target }) =>
+                                    (target.style.fontSize = "200%")
+                                  }
+                                  onMouseLeave={({ target }) =>
+                                    (target.style.fontSize = "150%")
+                                  }
+                                />
+                              </td>
+                            ) : (
+                              <td>&nbsp;</td>
+                            )}
+                          </tr>
+                        );
+                      })}
                   </tbody>
                 </table>
+                <div className="addprod">
+                  <p onClick={() => handleAdd()}>
+                    <FcAddRow
+                      style={estilo}
+                      onMouseEnter={({ target }) =>
+                        (target.style.fontSize = "200%")
+                      }
+                      onMouseLeave={({ target }) =>
+                        (target.style.fontSize = "150%")
+                      }
+                    />
+                    Agregar Producto
+                  </p>
+                </div>
+                <div className="addprod addprod2">
+                  <textarea
+                    type="text"
+                    id="observ"
+                    cols="80"
+                    rows="5"
+                    name="observ"
+                    value={input.observ}
+                    placeholder="Observaciones"
+                    onChange={(e) => handleTipo(e)}
+                    className="txtarea"
+                  />
+                </div>
+                <div className="total">
+                  <table>
+                    <tbody>
+                      <tr className="totaltr">
+                        <td colSpan="3" className="totaltd1">
+                          Subtotal:
+                        </td>
+                        <td className="totaltd2">
+                          {dollarUSLocale.format(subTotal)}
+                        </td>
+                      </tr>
+                      {xMoneda === "2" ? (
+                        <tr className="totaltr">
+                          <td colSpan="3" className="totaltd1">
+                            Costo de Envio:&nbsp;
+                          </td>
+                          <td>
+                            <input
+                              className="costoEnvio"
+                              type="text"
+                              id="dhl"
+                              name="dhl"
+                              value={factcab[0].dhl}
+                              onChange={(e) => handleTipo(e, 0)}
+                            />
+                          </td>
+                        </tr>
+                      ) : (
+                        <tr className="totaltr">
+                          <td colSpan="3" className="totaltd1">
+                            IVA({porciva}%)
+                          </td>
+                          <td className="totaltd2">
+                            {dollarUSLocale.format(saleTax.toFixed(0))}
+                          </td>
+                        </tr>
+                      )}
+                      <tr className="totaltr">
+                        <td colSpan="3">
+                          {xMoneda === 2 ? (
+                            <b>TOTAL A PAGAR USD.</b>
+                          ) : (
+                            <b>TOTAL A PAGAR</b>
+                          )}
+                        </td>
+                        <td className="totaltd2">
+                          {dollarUSLocale.format(total.toFixed(0))}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
-              {/* Condiciones Generales  */}
-              <div>                
-                <Collapsible trigger="Condiciones Generales" className="collapsible">
+              <div>
+                {/* Condiciones Generales  */}
                 <div className="addprod addprod2">
                   <table className="table table-striped bg-white">
                     <thead>
@@ -979,34 +980,34 @@ const Formcotizacion = () => {
                     </tbody>
                   </table>
                 </div>
-                </Collapsible>
               </div>
-              <div>
-                <table>
-                  <tbody>
-                    <tr className="totaltr">
-                      {btnGrabar ? (
-                        <td colSpan="3">
-                          <FcOk
-                            style={estilo2}
-                            title="Grabar OC"
-                            onClick={handleSubmit}
-                          />
-                        </td>
-                      ) : null}
-                      <td>
-                        <FcLeft
+            </div>
+            <br />
+            <div  className="footer">
+              <table>
+                <tbody>
+                  <tr className="totaltr">
+                    {btnGrabar ? (
+                      <td colSpan="3">
+                        <FcOk
                           style={estilo2}
-                          title="Volver"
-                          onClick={() => {
-                            navigate("/cotizacion");
-                          }}
+                          title="Grabar OC"
+                          onClick={handleSubmit}
                         />
                       </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+                    ) : null}
+                    <td>
+                      <FcLeft
+                        style={estilo2}
+                        title="Volver"
+                        onClick={() => {
+                          navigate("/cotizacion");
+                        }}
+                      />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>

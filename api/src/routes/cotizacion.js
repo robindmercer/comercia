@@ -186,7 +186,7 @@ router.put('/', async function (req, res, next) {
           });        
         console.log('sqlDel: ', sqlDel);
         console.log('sqlfac: ', sqlfac);
-        res.status(200).json({message:'Cotizacion OK'});
+        res.status(200).json({message:'OK'});
       } catch (error) {
         res.status(400).json({message:'Error put Cotizacion' + error});
   }

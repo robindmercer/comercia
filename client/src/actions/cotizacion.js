@@ -85,7 +85,7 @@ export function UpdateCotizacion(cotizCab, cotizaciondet, inputDet) {
   return async function (dispatch) {
     await axios.put(`cotizacion`, cotizCab)
     .then(response => {
-      if (response.data.message !== 'Cotizacion OK') {
+      if (response.data.message !== 'OK') {
         console.log('UpdateCotizacion Error ', response);
         alert("Error UpdateCotizacion");
         return response;
