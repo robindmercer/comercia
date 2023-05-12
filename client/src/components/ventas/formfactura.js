@@ -840,7 +840,7 @@ function Formfactura() {
                 <table>
                   <tbody>
                     <tr className="totaltr">
-                      {acceso === "A" ? (
+                      {acceso === "A" && factcab[0].cod_status < 6 ? (
                         <td>
                           <FcOk
                             style={estilo2}
@@ -859,16 +859,6 @@ function Formfactura() {
                           onClick={() => {
                             navigate("/factura");
                           }}
-                        />
-                      </td>
-                        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                      <td>
-                      <FcApproval
-                              style={estilo2}
-                              title="Aprobar"
-                              onClick={() => {
-                                handleSubmit();
-                              }}
                         />
                       </td>
                     </tr>

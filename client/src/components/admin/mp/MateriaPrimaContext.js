@@ -16,19 +16,7 @@ useEffect(() => {
 
 console.log('materiaprima: ', materiaprima);
 
-// useEffect(()=> {
-//     setMateriaprima(JSON.parse(localStorage.getItem('materiaprima')))
-// },[])
-
-// useEffect(() => {
-//     localStorage.setItem('materiaprima', JSON.stringify(materiaprima));
-// })
-
-
-
 const sortedMateriaprima = materiaprima.sort((a,b)=>(a.name < b.name ? -1 : 1));
-
-
 
 const addMateriaprima = (data) => {
     console.log('addMateriaprima: ',data);

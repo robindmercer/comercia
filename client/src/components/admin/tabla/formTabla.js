@@ -2,12 +2,12 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useLocation } from "react-router-dom";
-import { getTabla, UpdateTabla } from "../../actions/tabla";
-import Header from '../Header';
-import '../../css/all.css'
+import { getTabla, UpdateTabla } from "../../../actions/tabla";
+import Header from '../../Header';
+import '../../../css/all.css'
 
 // Acciones
-import { getStatus } from '../../actions/status';
+import { getStatus } from '../../../actions/status';
 
 export function validate(input) {
   let errors = {};

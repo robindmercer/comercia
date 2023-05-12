@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getCliente, getClienteByName } from "../../actions/cliente";
-import { getUsuariomenId } from "../../actions/usuariomenu";
-import { getDetailIva  } from "../../actions/tabla";
+import { getCliente, getClienteByName } from "../../../actions/cliente";
+import { getUsuariomenId } from "../../../actions/usuariomenu";
+import { getDetailIva  } from "../../../actions/tabla";
 import { Link } from "react-router-dom";
-import '../../css/all.css'
-import Header from '../Header';
+import '../../../css/all.css'
+import Header from '../../Header';
 import { FcHome, FcBusinessman,FcCurrencyExchange } from 'react-icons/fc'
-import { resetFact } from "../../actions/factura";
+import { resetFact } from "../../../actions/factura";
 // import Modal from "../../components/modal"
 const Cliente = () => {
     const { cliente } = useSelector((state) => state);
@@ -43,7 +43,7 @@ const Cliente = () => {
             setName('');
         }
     }
-    // console.log('cliente: ', cliente);
+    console.log('cliente: ', cliente);
     return (
         <>
             <Header />
@@ -102,6 +102,7 @@ const Cliente = () => {
                     <thead>
                         <tr>
                             <th>Id</th>
+                            <th>Razon Social</th>
                             <th>Nombre</th>
                             <th>Email</th>
                             <th>Movil</th>
@@ -118,6 +119,7 @@ const Cliente = () => {
                             return (
                                 <tr key={data.id} >
                                     <td>{data.id}</td>
+                                    <td>{data.razsoc}</td>
                                     <td>{data.nombre}</td>
                                     <td>{data.email}</td>
                                     <td>{data.movil}</td>

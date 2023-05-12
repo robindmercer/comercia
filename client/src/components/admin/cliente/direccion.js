@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getDireccion } from "../../actions/direccion";
+import { getDireccion } from "../../../actions/direccion";
 import { Link } from "react-router-dom";
-import '../../css/all.css'
-import Header from '../Header';
+import '../../../css/all.css'
+import Header from '../../Header';
 
 const Direccion = () => {
     const location = useLocation();
@@ -21,7 +21,7 @@ const Direccion = () => {
     return (
         <>
             <Header />
-            <div className="adminHeader">
+            <div className="adminHeader bg-white">
                 <br />
                 <div >
                     <div className="divHeader">
@@ -51,7 +51,7 @@ const Direccion = () => {
                         </div>
                     </div>
                 </div>
-                <div className="divlbldir">
+                <div className="adminHeader divlbldir">
                     <label>Cliente : <b>{direccion[0].nombre}</b></label>
                 </div>
                 <table className="styled-table">

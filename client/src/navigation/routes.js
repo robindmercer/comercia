@@ -3,22 +3,21 @@ import React from 'react'
 import Layout from '../components/Layout'
 // Admin Menu
 import AbmMenu from '../components/admin/abmmenu.js'
-import Cliente from '../components/admin/cliente'
-import Direccion from '../components/admin/direccion'
-import FormCliente from '../components/admin/formCliente'
-import FormDireccion from '../components/admin/formdireccion'
+import Cliente from '../components/admin/cliente/cliente'
+import Direccion from '../components/admin/cliente/direccion'
+import FormCliente from '../components/admin/cliente/formCliente'
+import FormDireccion from '../components/admin/cliente/formdireccion'
 import FormProdmp from '../components/admin/prodMp'
-import FormProducto from '../components/admin/formProducto'
+import FormProducto from '../components/admin/producto/formProducto'
 import Condiciones from '../components/admin/condiciones/CondicionMain'
 // import Condiciones from '../components/admin/condiciones'
-import FormTabla from '../components/admin/formTabla'
+import FormTabla from '../components/admin/tabla/formTabla'
 import FormUsuario from '../components/admin/formUsuario'
 import Landing from '../components/Landing/Landing'
-// import MateriaPrima from '../components/admin/materiaprima'
 import MateriaPrima from '../components/admin/mp/MateriaPrimaMain'
-import Producto from '../components/admin/producto';
-import ProductoLang from '../components/admin/productoLang' // '../components/admin/productolang';
-import Tablas from '../components/admin/tablas'
+import Producto from '../components/admin/producto/producto';
+import ProductoLang from '../components/admin/producto/productoLang' // '../components/admin/productolang';
+import Tablas from '../components/admin/tabla/tablas'
 import Usuarios from '../components/admin/usuario/UsuarioMain';
 import Factura from '../components/ventas/factura'
 import Formfactura from '../components/ventas/formfactura'
@@ -196,8 +195,7 @@ function HandleRoutes() {
             element: <CotizacionModif />,
             exact: true,
             private: true,
-        }
-        
+        }       
                                 
     ]
     return routes;

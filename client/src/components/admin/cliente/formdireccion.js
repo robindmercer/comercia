@@ -2,12 +2,12 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useLocation } from "react-router-dom";
-import { AddDireccion, getDireccion } from "../../actions/direccion";
-import Header from '../Header';
-import '../../css/formdireccion.css'
+import { AddDireccion, getDireccion } from "../../../actions/direccion";
+import Header from '../../Header';
+import '../../../css/formdireccion.css'
 
-import { getStatus } from '../../actions/status';
-import { getDetail } from '../../actions/tabla';
+import { getStatus } from '../../../actions/status';
+import { getDetail } from '../../../actions/tabla';
 
 export function validate(input) {
   let errors = {};

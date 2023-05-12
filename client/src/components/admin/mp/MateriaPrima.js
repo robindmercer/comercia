@@ -27,7 +27,8 @@ const Materiaprima = ({data}) => {
             <td>{data.description}</td>
             <td>{data.udm}</td>
             <td>{data.stockmin}</td>
-            <td>{data.stock}</td>
+            <td>{data.stock}
+            </td>
             <td>
                 <OverlayTrigger
                     overlay={

@@ -1,11 +1,11 @@
 //robin
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getProducto } from "../../actions/producto";
+import { getProducto } from "../../../actions/producto";
 import { Link } from "react-router-dom";
-import '../../css/producto.css'
-import Header from '../Header';
-import imagen from "../../images/great-britain.png"
+import '../../../css/producto.css'
+import Header from '../../Header';
+import imagen from "../../../images/great-britain.png"
 //Iccons 
 import { FcEngineering, FcAcceptDatabase } from 'react-icons/fc'
 

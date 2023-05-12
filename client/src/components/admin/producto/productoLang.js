@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getProductoLang } from "../../actions/productoLang";
+import { getProductoLang } from "../../../actions/productoLang";
 import { Link } from "react-router-dom";
-import "../../css/producto.css";
-import Header from "../Header";
+import "../../../css/producto.css";
+import Header from "../../Header";
 const Productolang = () => {
   const { productolang } = useSelector((state) => state);
   const dispatch = useDispatch();

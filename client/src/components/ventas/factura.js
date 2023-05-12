@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getFactura, UpdateFacturaSts } from "../../actions/factura";
+import { getFactura, resetFact, UpdateFacturaSts } from "../../actions/factura";
 import { Link } from "react-router-dom";
+
 import Header from "../Header";
 import {
   FcAddDatabase,
   FcApproval,
   FcDiploma2,
   FcCancel,
+  FcStatistics,
 } from "react-icons/fc";
 import style from "../../css/factura.module.css";
 import { AccessCtrl } from "../../actions/index";
@@ -20,6 +22,7 @@ import { GetMails } from "../../actions/usuario";
 import OkForm from "../modal/TraerCotiz";
 import { Modal, Button, Alert } from "react-bootstrap";
 import crearMail from "../CrearMails";
+import { AddLogs } from "../../actions/logs";
 
 const Factura = () => {
   const idProg = 11;
@@ -46,12 +49,19 @@ const Factura = () => {
   var btnCancel = false;
   var verStatus = [];
   var muestroRegistro = false;
-// For Modal Only ------------------------------------------------------
+  // For Modal Only ------------------------------------------------------
   const [showAlert, setShowAlert] = useState(false);
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
   const [rutaOk, setRutaOk] = useState("./factura");
+
+  // const [log, setLog] = useState({
+  //   doc_id: 0,
+  //   tipo_id: "FAC",
+  //   usr_id: id_usuario,
+  //   cod_status: 0,
+  // });
 
   const handleShowAlert = () => {
     setShowAlert(true);
@@ -67,7 +77,7 @@ const Factura = () => {
       handleShowAlert();
     };
   }, [showAlert]);
-// End Modal ---------------------------------------------------- 
+  // End Modal ----------------------------------------------------
 
   // Control Botones a mostrar
   const control = (data) => {
@@ -121,6 +131,13 @@ const Factura = () => {
       toLink = "/formfacturaPDF";
       verStatus.push(1, 2, 3, 4, 5, 6, 7, 8, 9);
     }
+    if (data.cod_status > 6) {
+      btnApproval = false;
+      btnAddDatabase = true;
+      btnDiploma2 = true;
+      verStatus.push(1, 2, 3, 4, 5, 6);
+    }
+
     if (verStatus.find((element) => element === data.cod_status)) {
       muestroRegistro = true;
     }
@@ -135,18 +152,20 @@ const Factura = () => {
     //  dispatch(getUsuariomenId(id_usuario));
   }, [dispatch, id_usuario, onChange]);
 
-  useEffect(() => {
-    console.log("Use Efect 2", onChange);
-    if (idFact > 0) {
-      dispatch(UpdateFacturaSts(idFact, newStatus)); // Espera Aprobacion
-      dispatch(GetMails(idMail));
-      if (onChange) {
-        setOnChange(false);
-      } else {
-        setOnChange(true);
-      }
-    }
-  }, [idFact, idMail, newStatus]);
+  // useEffect(() => {
+  //   console.log("Use Efect 2", onChange);
+  //   if (idFact > 0) {
+  //     setLog(log.cod_status=newStatus)
+  //     setLog(log.doc_id=idFact)
+  //     dispatch(UpdateFacturaSts(idFact, newStatus)); // Espera Aprobacion
+  //     dispatch(AddLogs(log))
+  //     if (onChange) {
+  //       setOnChange(false);
+  //     } else {
+  //       setOnChange(true);
+  //     }
+  //   }
+  // }, [idFact, idMail, newStatus]);
 
   const handleSubmit = (id, accion) => {
     var control = "x";
@@ -213,13 +232,29 @@ const Factura = () => {
     setIdFact(id);
     setNewStatus(newStatus);
     setIdMail(paramMail);
+
+    // setLog((log.cod_status = newStatus));
+    // setLog((log.doc_id = found.id));
+
+    var newLog = 
+      {
+        doc_id: found.id,
+        tipo_id: "FAC",
+        usr_id: id_usuario,
+        cod_status: newStatus,
+      };
+
+    console.log("log: ", newLog);
+    dispatch(UpdateFacturaSts(found.id, newStatus)); // Espera Aprobacion
+    dispatch(AddLogs(newLog));
+
     dispatch(GetMails(idMail));
+    console.log("mails: ", mails);
     for (var index = 0; index < mails.length; index++) {
       console.log('enviar mail: ', mails[index].email);
       dispatch(mailEnviar(crearMail(newStatus, mails[index].email, found)))
     }
-  //     dispatch(UpdateFacturaSts(idFact, newStatus)); // Espera Aprobacion
-  //console.log("mails: ",idMail, mails);
+    //console.log("mails: ",idMail, mails);
   };
 
   console.log("------------------------------");
@@ -231,7 +266,7 @@ const Factura = () => {
       }
     }
   }
-  console.log("factura: ", factura);
+  console.log("factura: ", acceso);
   return (
     <>
       <Header />
@@ -242,7 +277,9 @@ const Factura = () => {
             <h2>Ordenes de Compra</h2>
           </div>
           <div>
-          <button className='btn btn-success' onClick={() => handleShow()}>Traer Cotización</button>
+            <button className="btn btn-success" onClick={() => handleShow()}>
+              Traer Cotización
+            </button>
           </div>
         </div>
         <table className={style.styledTable}>
@@ -358,6 +395,28 @@ const Factura = () => {
                             />
                           </>
                         ) : null}
+                        {btnDiploma2 ? (
+                          <Link
+                            to="/logs"
+                            className="dLink"
+                            state={{
+                              idfact: data.id,
+                              idtipo: 'FAC'
+                            }}
+                          >
+                            <FcStatistics
+                              style={estilo}
+                              title="Ver Logs"
+                              onMouseEnter={({ target }) =>
+                                (target.style.fontSize = "280%")
+                              }
+                              onMouseLeave={({ target }) =>
+                                (target.style.fontSize = "200%")
+                              }
+                            />
+                          </Link>
+                        ) : null}
+                        &nbsp;&nbsp;
                       </td>
                     </tr>
                   );
@@ -369,18 +428,18 @@ const Factura = () => {
         </table>
       </div>
       <Modal show={show}>
-          <Modal.Header closeButton onClick={handleClose}>
-            <Modal.Title>Trear Cotización</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <OkForm ruta={rutaOk} />
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Cerrar
-            </Button>
-          </Modal.Footer>
-        </Modal>
+        <Modal.Header closeButton onClick={handleClose}>
+          <Modal.Title>Trear Cotización</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <OkForm ruta={rutaOk} />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Cerrar
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 };

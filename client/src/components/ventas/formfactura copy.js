@@ -1,80 +1,89 @@
 // eslint-disable-next-line
-import React, { useEffect, useState } from "react";
+import { Button } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
-import { getCondiciones, PostCondicionesCot } from "../../actions/condiciones";
+import { mailEnviar } from "../../actions/index";
+import { GetMails } from "../../actions/usuario";
 
 // Acciones
-// import { getFacturaDet } from '../../actions/factdet';
-import { getClienteId } from "../../actions/cliente";
-import { getDireccion } from "../../actions/direccion";
-import { AddFactura } from "../../actions/factura";
-import { getProducto } from "../../actions/producto";
+import { getFacturaDet } from "../../actions/factdet";
+import { getFacturaCab, UpdateFactura,UpdateFacturaSts } from "../../actions/factura";
 import { getDetailIva } from "../../actions/tabla";
-import { getUsuariomenId } from "../../actions/usuariomenu";
+import { getProducto } from "../../actions/producto";
+//import { getClienteId } from "../../actions/cliente";
+import {
+  getCondiciones,
+  getCondicionesFac,
+  PostCondicionesFac,
+} from "../../actions/condiciones";
 
+import crearMail from "../CrearMails";
+import { getUsuariomenId } from "../../actions/usuariomenu";
 // Descuentos
 import { getDetail } from "../../actions/tabla";
-// Modal
-import OkForm from "../modal/OkForm";
-import { Modal, Button, Alert } from "react-bootstrap";
 
 // Iconos
-import { FcAddRow, FcDeleteRow, FcLeft, FcOk } from "react-icons/fc";
+import { FcDeleteRow, FcAddRow, FcMinus } from "react-icons/fc";
 import Header from "../Header";
 // CSS
 import "../../css/factdet.css";
 
-var btnGrabar = false;
-var btnAgregar = false;
-var btnEliminarReg = false;
+// Modal
+import OkForm from "../modal/OkForm";
+import { Modal } from "react-bootstrap";
 
-const Formfactura = () => {
-  let fecha = new Date().toLocaleDateString("en-GB");
-
+//const Formfactura = () => {
+function Formfactura() {
+  const navigate = useNavigate();
   // Manejo acceso del Usuario
   const usuariomenu = useSelector((state) => state.usuariomenu);
-  const [acceso, setAcceso] = useState("A");
+  const [acceso, setAcceso] = useState("");
   const idProg = 11;
 
   const id_usuario = localStorage.getItem("usuario");
-  const navigate = useNavigate();
-  const { cliente } = useSelector((state) => state);
-  const { direccion } = useSelector((state) => state);
   const { factcab } = useSelector((state) => state);
   const { factdet } = useSelector((state) => state);
   const { porciva } = useSelector((state) => state);
+  // const tabla = useSelector((state) => state.tabla);
   const { producto } = useSelector((state) => state);
-  // const { tabla } = useSelector((state) => state);
-  // const { idfact } = useSelector((state) => state)
-
   const dispatch = useDispatch();
   const location = useLocation();
   const { state } = location;
-  const estilo = { fontSize: "150%", transition: "font-size 0.5s" };
-  const estilo2 = { fontSize: "200%" };
+  // const [idFact, setIdFact] = useState(0);
+  // const [newStatus, setNewStatus] = useState(0);
+  const [idMail, setIdMail] = useState(0);
+  // Condiciones generales
+  const { condiciones } = useSelector((state) => state);
+  const { factcond } = useSelector((state) => state);
+  //const { cliente } = useSelector((state) => state);
 
   const [onChange, setOnChange] = useState(false);
-  // const [onIva, setOnIva] = useState(false)
+  const [onChangeDet, setOnChangeDet] = useState(false);
 
   const [subTotal, setSubTotal] = useState(0);
-  const [DirCode, setDirCode] = useState(0);
   const [saleTax, setSaleTax] = useState(0);
-
-  const [saleDHL, setSaleDHL] = useState(0);
+  const [tieneCG, setTieneCG] = useState(0);
   const [total, setTotal] = useState(0);
-  const [mostrar, setMostrar] = useState(false);
+  const [saleDHL, setSaleDHL] = useState(0);
+  const [btnAprobar, setBtnAprobar] = useState(true);
+  const [btnGrabar, setbtnGrabar] = useState(true);
+  const { mails } = useSelector((state) => state);
 
   // Formato Numeros
   const dollarUSLocale = Intl.NumberFormat("de-DE");
-  // Modal Funcitons -----------------------------------
+
+  // Estilos
+  const estilo = { fontSize: "150%", transition: "font-size 0.5s" };
+  
+
+  // For Modal Only
   const [showAlert, setShowAlert] = useState(false);
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
   const [rutaOk, setRutaOk] = useState("./factura");
-  const { condiciones } = useSelector((state) => state);
 
   const handleShowAlert = () => {
     setShowAlert(true);
@@ -84,29 +93,16 @@ const Formfactura = () => {
   };
 
   useEffect(() => {
+    console.log('useEffect: ', 99);
     handleClose();
 
     return () => {
       handleShowAlert();
     };
-  }, [showAlert]);
-  // End Modal Funcitons -----------------------------------
+  }, [dispatch,showAlert]);
+  // End Modal ------------------------------------------------
 
-  const [input, setInput] = useState({
-    cli_id: 0,
-    dir_id: 0,
-    fac_id: 0,
-    subtotal: 0,
-    iva: 0,
-    total: 0,
-    observ: "",
-    cod_status: 1,
-    dhl: 0,
-    moneda: 0,
-    idioma: 0,
-    fecha: new Date().toLocaleDateString("en-GB"),
-  });
-
+  // eslint-disable-next-line no-unused-vars
   const [inputDet, setInputDet] = useState({
     fac_id: 0,
     orden: 0,
@@ -116,113 +112,74 @@ const Formfactura = () => {
     total: 0,
   });
 
+  const [input, setInput] = useState({
+    id: 0,
+    subtotal: 0,
+    iva: 0,
+    total: 0,
+    dhl: 0,
+    observ: "",
+  });
+
   const initialProductLine = {
-    prod_id: "",
     cantidad: 1,
     description: "",
-    fac_id: 0,
+    fac_id: 1,
+    name: "",
     orden: factcab.length,
     precio: 0,
+    prod_id: "",
     total: 0,
   };
-
-  const condGral = {
+  const initialFacdet = {
     id: 0,
-    cot_id: 0,
+    fac_id: state.idfact,
     cond_id: 0,
     descuento: 0,
     enganche: 0,
     meses: 0,
     interes: 0,
   };
-  const initialHead = {
-    cli_id: state.idCli,
-    dir_id: 0,
-    fac_id: 0,
-    subtotal: "0",
-    iva: "0",
-    descuento: "0",
-    total: "0",
-    observ: "",
-    cod_status: 1,
-    idioma: 0,
-    moneda: 0,
-    fecha: new Date().toLocaleDateString("en-GB"),
-  };
-
-  // Manejo de Botones a ver
-
-  const control = () => {
-    // btnGrabar = false;
-    // console.log(
-    //   "control1: ",
-    //   btnGrabar,
-    //   btnAgregar,
-    //   btnEliminarReg,
-    //   acceso.substring(0, 1)
-    // );
-    btnAgregar = false;
-    btnEliminarReg = false;
-    if (acceso.substring(0, 1) === "A") {
-      // Gerencia All
-      btnAgregar = true;
-      btnEliminarReg = true;
-    }
-    if (acceso.substring(0, 1) === "C") {
-      // Consulta
-      btnGrabar = false;
-      btnAgregar = false;
-      btnEliminarReg = false;
-    }
-    // console.log("control2: ", btnGrabar, btnAgregar, btnEliminarReg);
-  };
 
   // var cantidad = []
-  //console.log('factcab: ', factcab.length);
-  if (factcab.length === 0) {
-    factcab.push(initialHead);
-    console.log("initialHead: ", initialHead);
-  }
 
   useEffect(() => {
-    dispatch(getCondiciones());
-    dispatch(getDetail(2));
+    console.log("useEffect: 0");
+ 
+    //dispatch(getDetail(1));
     dispatch(getProducto());
-    dispatch(getClienteId(state.idCli));
-    dispatch(getDireccion(state.idCli));
     dispatch(getDetailIva(1));
+    dispatch(getDetail(2));
+    dispatch(getFacturaCab(state.idfact));
+    dispatch(getFacturaDet(state.idfact));
     dispatch(getUsuariomenId(id_usuario));
-    setMostrar(true);
+    dispatch(getCondiciones());
+    dispatch(getCondicionesFac(state.idfact));
+    //dispatch(getClienteId(state.idCli));
+    // console.log("useeffect");
     if (usuariomenu) {
       for (var i = 0; i < usuariomenu.length; i++) {
         if (usuariomenu[i].nivel === idProg) {
-          setAcceso(usuariomenu[i].accion + usuariomenu[i].cod_perfil);
+          setAcceso(usuariomenu[i].accion);
         }
       }
     }
-    // return (
-    //   dispatch(resetFact())
-    //   )
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch]);
+    if (factcab.length > 0) {
+      console.log("factcab ok: ", factcab, " lenght ", factcab.length);
+      setSaleDHL(factcab[0].dhl);
+    }
+  }, [dispatch, id_usuario]);
 
   // useEffect(() => {
+  //   console.log("useEffect: change");
+
   //   if (onChange) {
   //   }
-  // }, [onChange, factdet])
-
-  // useEffect(() => {
-  //   if (input.dir_id != 0) {
-  //     console.log('AddFactura input ', input);
-  //     dispatch(AddFactura(input))
-  //     factdet.forEach((fact) => {
-  //       console.log('fact.precio: ', fact.precio);
-  //     })
-  //   }
-  // }, [onChange, input])
+  // }, [onChange, factdet]);
 
   // Calculo subtotal
   useEffect(() => {
+    console.log("useEffect: ", 1);
     let subTotal = 0;
     let iva = 0;
     let total = 0;
@@ -232,25 +189,31 @@ const Formfactura = () => {
         const rateNumber = parseFloat(fact.precio);
         const amount =
           quantityNumber && rateNumber ? quantityNumber * rateNumber : 0;
-
         subTotal += amount;
       });
       setSubTotal(subTotal);
       if (subTotal > 0) {
-        if (cliente[0].moneda === 1) {
+        if (factcab[0].moneda === 1) {
           iva = subTotal * (parseFloat(porciva[0].valor) / 100);
           setSaleTax(iva);
         }
-        total = subTotal + iva;
+        setSaleTax(iva);
+        setSaleDHL(factcab[0].dhl);
+        total = subTotal + iva + parseInt(factcab[0].dhl);
         setTotal(total);
       } else {
         setSaleTax(0);
         setTotal(0);
       }
     }
-  }, [onChange, factdet, porciva, cliente]);
+    console.log("total: ", total);
+  }, [onChangeDet]);
+
+  //console.log("cliente: ", cliente);
+  // console.log("state.idCli: ", state.idCli);
 
   useEffect(() => {
+    console.log("useEffect: ", 2);
     var aux = 0;
     var iva = 0;
     if (factdet && porciva) {
@@ -271,99 +234,67 @@ const Formfactura = () => {
       // } else {
       //   setSubTotal(aux);
       // }
-      if (subTotal > 0) {
-        if (cliente[0].moneda === 1) {
+      if (aux > 0) {
+        if (factcab[0].moneda === 1) {
           iva = aux * (parseFloat(porciva[0].valor) / 100);
         }
+        setSubTotal(aux);
         setSaleTax(iva);
         if (saleDHL.length === 0) setSaleDHL(0);
         var total = aux + iva + parseInt(saleDHL);
         setTotal(total);
+        console.log("total: ", total);
       }
     }
-  }, [onChange, saleDHL]);
+  }, [saleDHL]);
 
   const handleRemove = (i) => {
+    setBtnAprobar(false);
+    console.log("handleRemove: ", btnAprobar);
     factdet.splice(i, 1);
-    if (onChange) {
-      setOnChange(false);
+    if (onChangeDet) {
+      setOnChangeDet(false);
     } else {
-      setOnChange(true);
+      setOnChangeDet(true);
     }
   };
 
   const handleAdd = () => {
+    setBtnAprobar(false);
+    console.log("handleAdd: ", btnAprobar);
     factdet.push(initialProductLine);
-    //    console.log('factdet: ', factdet);
-    if (onChange) {
-      setOnChange(false);
+    // console.log("factdet: ", factdet);
+    if (onChangeDet) {
+      setOnChangeDet(false);
     } else {
-      setOnChange(true);
+      setOnChangeDet(true);
     }
   };
-  const handleSubmit = () => {
-    console.log("SubMit");
-    var newDate1 = fecha.split("/");
-    const newdate = newDate1[2] + newDate1[1] + newDate1[0];
-    // console.log('saleTax: ', saleTax);
-    // console.log('Total: ', total);
-    factcab[0].subtotal = subTotal;
-    factcab[0].iva = saleTax;
-    factcab[0].total = total;
-    factcab[0].dir_id = parseInt(DirCode);
-    setInput((input.subtotal = subTotal));
-    setInput((input.iva = saleTax));
-    setInput((input.total = total));
-    setInput((input.dir_id = DirCode));
-    setInput((input.cli_id = factcab[0].cli_id));
-    setInput((input.fecha = newdate));
-    setInput((input.idioma = cliente[0].idioma));
-    setInput((input.moneda = cliente[0].moneda));
-    //Condiciones Generales de Pago
-    const found = condiciones.find((element) => element.sel === "S");
-    console.log("found: ", found);
-    if (found) {
-      condGral.id = 0;
-      condGral.cot_id = 0;
-      condGral.cond_id = found.id;
-      condGral.descuento = found.descuento;
-      condGral.enganche = found.enganche;
-      condGral.meses = found.meses;
-      condGral.interes = found.interes;
+
+  const handleFree = (i) => {
+    setBtnAprobar(false);
+    console.log("handleFree: ", btnAprobar);
+
+    factdet[i].precio = -1;
+    factdet[i].total = -1;
+    if (onChangeDet) {
+      setOnChangeDet(false);
     } else {
-      condGral.id = 0;
-      condGral.cot_id = 0;
-      condGral.cond_id = 1;
-      condGral.descuento = 0;
-      condGral.enganche = 0;
-      condGral.meses = 0;
-      condGral.interes = 0;
+      setOnChangeDet(true);
     }
-    // console.log("factcab: ", factcab[0]);
-    // console.log("factdet: ", factdet);
-    // console.log('cliente: ', cliente);
-    // console.log("input: ", input);
-    if (subTotal === 0) {
-      return alert("O/C no puede quedar en 0 (Cero)");
-    }
-    //console.log('i f d',input, factdet, inputDet);
-    dispatch(AddFactura(input, factdet, inputDet, condGral));
-    handleShow();
-    //window.location.href = "/factura";
   };
 
   function handleTipo(e, i) {
+    setBtnAprobar(false);
+    console.log("handleTipo: ", btnAprobar);
     e.preventDefault();
     if (e.target.name === "dhl") {
-      input.dhl = e.target.value;
-      console.log("e.target.name: ", e.target.name, e.target.value, input);
+      factcab[0].dhl = e.target.value;
       setSaleDHL(e.target.value);
     }
-    if (e.target.name === "dhl") {
-      input.dhl = e.target.value;
-      console.log("e.target.name: ", e.target.name, e.target.value, input);
-      setSaleDHL(e.target.value);
-    }
+    // console.log("i: ", i);
+    // console.log("e.target.name: ", e.target.name);
+    // console.log("e.target.value: ", e.target.value);
     if (e.target.name === "miCheck") {
       for (var xcond = 0; xcond < condiciones.length; xcond++) {
         condiciones[xcond].sel = " ";
@@ -397,18 +328,18 @@ const Formfactura = () => {
         setOnChange(true);
       }
     }
-
     if (e.target.name === "observ") {
-      input.observ = e.target.value;
+      factcab[0].observ = e.target.value;
       if (onChange) {
         setOnChange(false);
       } else {
         setOnChange(true);
       }
     }
-    if (e.target.name === "domi") {
-      setDirCode(e.target.value);
-      if (e.target.value > 0) btnGrabar = true;
+
+    if (e.target.name === "cli_id") {
+      console.log("busco", e.target.value);
+      factcab[0].cli_id = e.target.value;
       if (onChange) {
         setOnChange(false);
       } else {
@@ -425,19 +356,15 @@ const Formfactura = () => {
       }
     }
     if (e.target.name === "prod_id") {
-      console.log("e.target.name: ", e.target.name, e.target.value, producto);
       if (e.target.value === "0") {
         handleRemove(i.i);
       } else {
         for (var z = 0; z < producto.length; z++) {
           if (parseInt(producto[z].id) === parseInt(e.target.value)) {
+            factdet[i.i].fac_id = state.idfact;
             factdet[i.i].prod_id = e.target.value;
             factdet[i.i].name = producto[z].name;
-            if (cliente[0].moneda === 2) {
-              factdet[i.i].precio = producto[z].dolar;
-            } else {
-              factdet[i.i].precio = producto[z].price;
-            }
+            factdet[i.i].precio = producto[z].price;
             factdet[i.i].total = factdet[i.i].cantidad * factdet[i.i].precio;
           }
         }
@@ -450,30 +377,169 @@ const Formfactura = () => {
     }
   }
 
-  // console.log("Cliente_1: ", cliente, state.idCli);
-  console.log("acceso: ", acceso);
-  console.log("total: ", total);
-  console.log("saleDHL: ", saleDHL);
+  const handleSubmit = () => {
+    // //    setInput(input.dir_id = DirCode);
+    //     setInput(input.cli_id = factcab[0].cli_id);
+    //console.log('DirCode: ', DirCode);
+    console.log("handleSubmit--------------------------------------");
+    console.log("subTotal: ", subTotal.toFixed(0));
+    console.log("saleTax: ", saleTax.toFixed(0));
+    console.log("Total: ", total.toFixed(0));
+    factcab[0].subtotal = subTotal.toFixed(0);
+    factcab[0].iva = saleTax.toFixed(0);
+    factcab[0].total = total.toFixed(0);
+    console.log("factcab: ", factcab);
+    const found = condiciones.find((element) => element.sel === "S");
+    console.log("found: ", found);
 
-  // console.log('factcab: ', factcab);
-  // console.log('factdet: ', factdet);
-  // console.log('porciva: ', porciva,porciva.length);
-  console.log("inp: ", input);
-  //   if (porciva.length === 1){
-  //     if (onIva) {
-  //       setOnIva(false)
-  //     } else {
-  //       setOnIva(true)
+    setInput((input.id = factcab[0].id));
+    setInput((input.subtotal = subTotal.toFixed(0)));
+    setInput((input.iva = saleTax.toFixed(0)));
+    setInput((input.total = total.toFixed(0)));
+    setInput((input.observ = factcab[0].observ));
+    if (tieneCG === 1) {
+      initialFacdet.id = 1; // si ya tiene una C.General grabada el id es siempre 1
+    } else {
+      initialFacdet.id = 0;
+    }
+    initialFacdet.fac_id = state.idfact;
+    initialFacdet.cond_id = found.id;
+    initialFacdet.descuento = found.descuento;
+    initialFacdet.enganche = found.enganche;
+    initialFacdet.meses = found.meses;
+    initialFacdet.interes = found.interes;
+
+    // console.log("state.idfact: ", state.idfact);
+    // console.log("factcab: ", factcab);
+    // console.log("factdet: ", factdet);
+    // console.log("initialFacdet: ", initialFacdet);
+    // console.log("input: ", input);
+    // console.log("factcond: ", factcond);
+    // console.log("condiciones: ", condiciones);
+    // console.log("tieneCG",tieneCG );
+
+    // if (factcab[0].subtotal === 0) {
+    //   alert("La Orden de Compra no puede quedar en 0");
+    //   return;
+    // }
+    dispatch(UpdateFactura(input, factdet, inputDet));
+    dispatch(PostCondicionesFac(initialFacdet));
+    handleShow();
+    //window.location.href = "/factura";
+  };
+
+  // const handleApprove = () => {
+  //   var control = "x";
+  //   var newStatus = 0;
+  //   var paramMail = 1;
+  //   // // //setOnChange(false);
+  //    const found = condiciones.find((element) => element.sel === "S");
+  //    console.log("found: ", found);
+  //    console.log('factcab: ', factcab);
+  //    console.log('factdet: ', factdet);
+
+  //   if (factcab[0].cod_status === 1) {
+  //     for (var idx = 0; idx < factdet.length; idx++) {
+  //       if (parseInt(factdet[idx].precio) === -1) {
+  //         control = "S";
+  //         newStatus = 2; // Espera Aprobacion
+  //         paramMail = 1;
+  //       }
   //     }
-  // }
-  console.log("cliente: ", cliente);
-  if (mostrar && factcab.length > 0) {
-    control();
+  //     if (
+  //       found.des !== found.descuento ||
+  //       found.eng !== found.enganche ||
+  //       found.mes !== found.meses ||
+  //       found.inte !== found.interes
+  //     ) {
+  //       control = "S";
+  //       newStatus = 2; // Espera Aprobacion
+  //       paramMail = 1;
+  //     } else {
+  //       if (control === "x") {
+  //         control = "N";
+  //         newStatus = 4; // Pendiente Admin
+  //         paramMail = 3;
+  //       }
+  //     }
+  //   }
+
+  //   if (factcab[0].cod_status === 2 && control !== "S") {
+  //     control = "N";
+  //     newStatus = 4; // Pendiente Admin
+  //     paramMail = 3;
+  //   }
+  //   if (factcab[0].cod_status === 4 && control !== "S") {
+  //     control = "N";
+  //     newStatus = 5; // Pendiente de pago
+  //     paramMail = 3;
+  //   }
+  //   if (factcab[0].cod_status === 5 && control !== "S") {
+  //     control = "N";
+  //     newStatus = 6; // Liberado
+  //     paramMail = 4; // Planeacion
+  //   }
+  //   // Gerencia no se controla
+  //   if (acceso === "A" && factcab[0].cod_status < 4 && control !== "S") {
+  //     control = "N";
+  //     newStatus = 4; // Pendiente Admin
+  //     paramMail = 2; // Administracion
+  //   }
+
+  //   // //setNewStatus(newStatus);
+  //   dispatch(GetMails(paramMail));
+
+  //   // console.log("Log Data");
+  //   // console.log("usuario:", id_usuario);
+  //   // console.log("Factura:", found.id, "Status", factcab[0].cod_status);
+  //   // console.log("Control:", control);
+  //   console.log("newStatus: ", newStatus);
+  //   console.log("paramMail: ", paramMail);
+  //   console.log("mails: ",mails);
+  //   // //setIdFact(factcab[0].id);
+  //   // setIdMail(paramMail);
+  //   // dispatch(UpdateFacturaSts(factcab[0].id, newStatus)); // Espera Aprobacion
+
+  //   for (var indxMail = 0; indxMail < mails.length; indxMail++) {
+  //     console.log("enviar mail: ", mails[indxMail].email);
+  //     dispatch(mailEnviar(crearMail(newStatus, mails[indxMail].email, found)));
+  //   }
+  //   dispatch(UpdateFacturaSts(factcab[0].id, newStatus)); // Espera Aprobacion
+  //   handleShow();
+  //   //window.location.href = "/factura";
+  // };
+
+  // console.log("total: ", total);
+  // console.log("usuariomenu: ", usuariomenu);
+  // console.log("acceso: ", acceso);
+  console.log("condiciones: ", condiciones);
+
+  if (factcond.length !== 0 && condiciones) {
+    console.log("factcond: ", factcond);
+    setTieneCG(1);
+    for (var xi = 0; xi < condiciones.length; xi++) {
+      if (factcond[0].cond_id === condiciones[xi].id) {
+        condiciones[xi].descuento = factcond[0].descuento;
+        condiciones[xi].enganche = factcond[0].enganche;
+        condiciones[xi].meses = factcond[0].meses;
+        condiciones[xi].interes = factcond[0].interes;
+        condiciones[xi].sel = "S";
+      } else {
+        condiciones[xi].sel = " ";
+      }
+    }
+    factcond.splice(0, factcond.length);
+  }
+
+  if (factcab.length > 0) {
+    if (factcab[0].cod_status !== 1) {
+      setbtnGrabar(false);
+    }
     return (
       <>
         <Header />
         <div>
-          <div className="cabeceraAlta">
+          <div className="cabecera ">
             <div className="row gap-1">
               <div className="row">
                 <div className="col">
@@ -485,37 +551,41 @@ const Formfactura = () => {
                     value={factcab[0].cli_id}
                     onChange={(e) => handleTipo(e, 0)}
                   /--> */}
-                  &nbsp;{cliente[0].nombre}
+                  &nbsp;{factcab[0].nombre}
                 </div>
-                {/* <div className='col'>Cliente:&nbsp;
-                  <input className='input_fact'
-                    type="text"
-                    id="cli_id"
-                    name="cli_id"
-                    value={factcab[0].cli_id}
-                    onChange={(e) => handleTipo(e, 0)}
-                    />
-                  &nbsp;{factcab[0].nombre}</div> */}
-                <div className="col">Fecha: {fecha}</div>
+                <div className="col">Fecha: {factcab[0].fecha}</div>
               </div>
-              <div>
-                <label
-                  htmlFor="tipocli"
-                  className="block text-gray-700 text-sm font-bold mb-2"
-                >
-                  Seleccione Domicilio:
-                </label>
-                <select name="domi" id="domi" onChange={(e) => handleTipo(e)}>
-                  <option value="0">Seleccionar</option>
-                  {direccion &&
-                    direccion.map((direc) => {
-                      return (
-                        <option value={direc.orden} key={direc.orden}>{`${
-                          direc.calle + " - " + direc.localidad
-                        }`}</option>
-                      );
-                    })}
-                </select>
+              <div className="row">
+                <div className="col" colSpan="2">
+                  <b>Domicilio</b>
+                </div>
+                <div className="col">
+                  Estado :<b>{factcab[0].status}</b>{" "}
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-4 text-end">Calle</div>
+                <div className="col-8 text-start" colSpan="2">
+                  {factcab[0].calle}
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-4 text-end">Localidad CP</div>
+                <div className="col-8 text-start" colSpan="2">
+                  {factcab[0].localidad} ({factcab[0].cp})
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-4 text-end">Ciudad</div>
+                <div className="col-8 text-start" colSpan="2">
+                  {factcab[0].ciudad}
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-4 text-end">Pais</div>
+                <div className="col-8 text-start" colSpan="2">
+                  {factcab[0].pais}
+                </div>
               </div>
             </div>
           </div>
@@ -531,7 +601,7 @@ const Formfactura = () => {
                       <th>Precio</th>
                       <th>Cantidades</th>
                       <th>Total</th>
-                      <th>&nbsp;</th>
+                      <th colSpan={2}>Opciones</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -576,7 +646,7 @@ const Formfactura = () => {
                                 {dollarUSLocale.format(fact.total)}
                               </td>
                             ) : null}
-                            {btnEliminarReg ? (
+                            {acceso === "A" ? (
                               <td onClick={() => handleRemove(i)}>
                                 <FcDeleteRow
                                   style={estilo}
@@ -588,26 +658,46 @@ const Formfactura = () => {
                                   }
                                 />
                               </td>
-                            ) : null}
+                            ) : (
+                              <td>&nbsp;</td>
+                            )}
+                            {acceso === "A" ? (
+                              <td onClick={() => handleFree(i)}>
+                                <FcMinus
+                                  style={estilo}
+                                  title="Precio 0"
+                                  onMouseEnter={({ target }) =>
+                                    (target.style.fontSize = "200%")
+                                  }
+                                  onMouseLeave={({ target }) =>
+                                    (target.style.fontSize = "150%")
+                                  }
+                                />
+                              </td>
+                            ) : (
+                              <td>&nbsp;</td>
+                            )}
                           </tr>
                         );
                       })}
                   </tbody>
                 </table>
-                <div className="addprod">
-                  <p onClick={() => handleAdd()}>
-                    <FcAddRow
-                      style={estilo}
-                      onMouseEnter={({ target }) =>
-                        (target.style.fontSize = "200%")
-                      }
-                      onMouseLeave={({ target }) =>
-                        (target.style.fontSize = "150%")
-                      }
-                    />
-                    Agregar Producto
-                  </p>
-                </div>
+                {acceso === "A" ? (
+                  <div className="addprod">
+                    <p onClick={() => handleAdd()}>
+                      <FcAddRow
+                        style={estilo}
+                        onMouseEnter={({ target }) =>
+                          (target.style.fontSize = "200%")
+                        }
+                        onMouseLeave={({ target }) =>
+                          (target.style.fontSize = "150%")
+                        }
+                      />
+                      Agregar Producto
+                    </p>
+                  </div>
+                ) : null}
                 <div className="addprod addprod2">
                   <textarea
                     type="text"
@@ -615,7 +705,7 @@ const Formfactura = () => {
                     cols="80"
                     rows="5"
                     name="observ"
-                    value={input ? input.observ : ""}
+                    value={factcab[0].observ}
                     placeholder="Observaciones"
                     onChange={(e) => handleTipo(e)}
                     className="txtarea"
@@ -629,20 +719,20 @@ const Formfactura = () => {
                           Subtotal:
                         </td>
                         <td className="totaltd2">
-                          {dollarUSLocale.format(subTotal)}
+                          <b>{dollarUSLocale.format(subTotal)}</b>
                         </td>
                       </tr>
-                      {cliente[0].moneda === 1 ? (
+                      {factcab[0].moneda === 1 ? (
                         <tr className="totaltr">
                           <td colSpan="3" className="totaltd1">
                             IVA({porciva[0].valor}%)
                           </td>
                           <td className="totaltd2">
-                            {dollarUSLocale.format(saleTax.toFixed(0))}
+                            <b>{dollarUSLocale.format(saleTax.toFixed(0))}</b>
                           </td>
                         </tr>
                       ) : null}
-                      {cliente[0].moneda > 1 ? (
+                      {factcab[0].moneda > 1 ? (
                         <tr className="totaltr">
                           <td colSpan="3" className="totaltd1">
                             Costo de Envio:&nbsp;
@@ -660,15 +750,11 @@ const Formfactura = () => {
                         </tr>
                       ) : null}
                       <tr className="totaltr">
-                        <td colSpan="3">
-                          {cliente[0].moneda === 2 ? (
-                            <b>TOTAL A PAGAR USD.</b>
-                          ) : (
-                            <b>TOTAL A PAGAR</b>
-                          )}
+                        <td colSpan="3" className="totaltd1">
+                          <b>TOTAL A PAGAR</b>
                         </td>
                         <td className="totaltd2">
-                          {dollarUSLocale.format(total.toFixed(0))}
+                          <b>{dollarUSLocale.format(total.toFixed(0))}</b>
                         </td>
                       </tr>
                     </tbody>
@@ -706,10 +792,8 @@ const Formfactura = () => {
                               xTotal = total;
                               return (
                                 <>
-                                  <tr key={i + 1}>
-                                    <td>
-                                      {cond.nombre} {i}
-                                    </td>
+                                  <tr key={i * 10}>
+                                    <td>{cond.nombre}</td>
                                     <td colSpan={4}>&nbsp;</td>
                                     <td>
                                       <input
@@ -721,7 +805,7 @@ const Formfactura = () => {
                                       ></input>
                                     </td>
                                   </tr>
-                                  <tr key={i * 11}>
+                                  <tr key={121}>
                                     <td>&nbsp;</td>
                                     <td colSpan={3}>Total a Pagar</td>
                                     <td className="totaltr">
@@ -795,7 +879,7 @@ const Formfactura = () => {
                                 </tr>
                                 <tr key={i * 13}>
                                   <td>&nbsp;</td>
-                                  <td colSpan={3}>Total Cotizacion</td>
+                                  <td colSpan={3}>Total Factura</td>
                                   <td className="totaltr">
                                     {dollarUSLocale.format(total.toFixed(0))}
                                   </td>
@@ -912,24 +996,48 @@ const Formfactura = () => {
               <table>
                 <tbody>
                   <tr className="totaltr">
-                    {btnGrabar ? (
-                      <td colSpan="3">
-                        <FcOk
-                          style={estilo2}
-                          title="Grabar OC"
+                    {acceso === "A" && btnGrabar ? (
+                      <td>
+                        <Button
+                          variant="success"
+                          type="submit"
+                          block
                           onClick={handleSubmit}
-                        />
+                        >
+                          Grabar
+                        </Button>
                       </td>
-                    ) : null}
+                    ) : (
+                      <td>&nbsp;</td>
+                    )}
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                     <td>
-                      <FcLeft
-                        style={estilo2}
-                        title="Volver"
+                      <Button
+                        variant="primary"
+                        type="submit"
+                        block
                         onClick={() => {
-                          navigate("/cliente");
+                          navigate("/factura");
                         }}
-                      />
+                      >
+                        Volver
+                      </Button>
                     </td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    {/* {btnAprobar ? (
+                      <td>
+                        <Button
+                          variant="success"
+                          type="submit"
+                          block
+                          onClick={() => {
+                            handleApprove();
+                          }}
+                        >
+                          Aprobar
+                        </Button>
+                      </td>
+                    ) : null} */}
                   </tr>
                 </tbody>
               </table>
@@ -952,12 +1060,21 @@ const Formfactura = () => {
       </>
     );
   } else {
+    // console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+    // console.log("Logeo de Errores");
+    // console.log("factcab: ", factcab);
+    // console.log("factdet: ", factdet);
+    // console.log("initialFacdet: ", initialFacdet);
+    // console.log("input: ", input);
+    // console.log("factcond: ", factcond);
+    // console.log("condiciones: ", condiciones);
+    // console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
     return (
       <div>
-        <h1>Error</h1>
+        <h3>Cargando...</h3>
       </div>
     );
   }
-};
+}
 
 export default Formfactura;

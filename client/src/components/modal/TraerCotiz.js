@@ -14,7 +14,7 @@ const OkForm = ({ ruta }) => {
   const dispatch = useDispatch();
 
   const [input, setInput] = useState({
-    cli_id: 0,
+    cli_id: "",
     cot_id: 0,
   });
   

@@ -17,7 +17,7 @@ export default function crearMail(status, to, factura) {
             </table>`,
     };
   }
-  if (status === 4) {
+  if (status === 4 && status === 5) {
     return {
       subject: `Factura ${factura.id} Completada`,
       to,

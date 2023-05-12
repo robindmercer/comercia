@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getFacturaMP } from "../../actions/facturaMP";
+import { getFacturaMP} from "../../actions/facturaMP";
 import { Link } from "react-router-dom";
 import Header from "../Header";
 import { FcAddDatabase} from "react-icons/fc";
@@ -80,7 +80,6 @@ console.log('facturaMP: ', facturaMP);
               <th>Nombre</th>
               <th>Subtotal</th>
               <th>IVA</th>
-              <th>Descuentos</th>
               <th>Total</th>
               <th>Estado</th>
               <th>Acciones</th>
@@ -88,7 +87,6 @@ console.log('facturaMP: ', facturaMP);
           </thead>
           <tbody>
             {facturaMP &&
-              facturaMP.message === undefined &&
               facturaMP.map((data) => {
                 return (
                   <tr key={data.id} className="style.row">
@@ -97,7 +95,6 @@ console.log('facturaMP: ', facturaMP);
                     <td>{data.nombre}</td>
                     <td>{dollarUSLocale.format(data.subtotal)}</td>
                     <td>{dollarUSLocale.format(data.iva)}</td>
-                    <td>{dollarUSLocale.format(data.descuento)}</td>
                     <td>{dollarUSLocale.format(data.total)}</td>
                     <td>{data.stsdes}</td>
                     <td>

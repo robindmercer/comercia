@@ -4,13 +4,13 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { FcHome, FcOk, FcLeft } from "react-icons/fc";
 import { Link } from "react-router-dom";
 
-import { AddCliente, getCliente } from "../../actions/cliente";
-import { getTablaAll } from "../../actions/tabla";
-import { getStatus } from "../../actions/status";
-import { getDetailIva } from "../../actions/tabla";
+import { AddCliente, getCliente } from "../../../actions/cliente";
+import { getTablaAll } from "../../../actions/tabla";
+import { getStatus } from "../../../actions/status";
+import { getDetailIva } from "../../../actions/tabla";
 
-import Header from "../Header";
-import style from "../../css/cliente.css";
+import Header from "../../Header";
+import style from "../../../css/cliente.css";
 // Acciones
 
 export function validate(input) {

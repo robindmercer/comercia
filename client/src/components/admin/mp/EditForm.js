@@ -5,7 +5,7 @@ import { useContext, useState } from "react";
 import "./add.css"
 
 const EditForm = ({ theMateriaprima }) => {
-  const id = theMateriaprima.id;
+  // const id = theMateriaprima.id;
 
   const [name, setName] = useState(theMateriaprima.name);
   const [description, setDescription] = useState(theMateriaprima.description);
@@ -15,7 +15,7 @@ const EditForm = ({ theMateriaprima }) => {
 
   const { updateMateriaprima } = useContext(MateriaprimaContext);
 
-  const updatedMateriaprima = { id, name, description, udm, stockmin, stock };
+  const updatedMateriaprima = { name, description, udm, stockmin, stock };
 
   const handleSubmit = (e) => {
     e.preventDefault();

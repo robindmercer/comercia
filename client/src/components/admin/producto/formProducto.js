@@ -2,13 +2,13 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useLocation } from "react-router-dom";
-import { AddProducto, getProducto } from "../../actions/producto";
-import Header from '../Header';
-import '../../css/all.css'
-import '../../css/formProducto.css'
+import { AddProducto, getProducto } from "../../../actions/producto";
+import Header from '../../Header';
+import '../../../css/all.css'
+import '../../../css/formProducto.css'
 // Acciones
-//import { AccessCtrl } from '../../actions/index'
-import { getStatus } from '../../actions/status';
+//import { AccessCtrl } from '../../../actions/index'
+import { getStatus } from '../../../actions/status';
 
 export function validate(input) {
   let errors = {};

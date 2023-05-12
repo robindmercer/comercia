@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getMPFactura } from "../../actions/facturaMP";
+import { getFacturaMP } from "../../actions/facturaMP";
 import { Link } from "react-router-dom";
 import Header from "../Header";
 import { FcAddDatabase } from "react-icons/fc";
@@ -31,7 +31,7 @@ const Factura = () => {
   useEffect(() => {
     console.log("Factura Use Efect");
     dispatch(AccessCtrl(id_usuario));
-    dispatch(getMPFactura(state.idfact));
+    dispatch(getFacturaMP(state.idfact));
     dispatch(getUsuariomenId(id_usuario));
     if (usuariomenu) {
       for (var i = 0; i < usuariomenu.length; i++) {
