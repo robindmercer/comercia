@@ -8,6 +8,8 @@ import {
   GET_USUARIOSMENU,
   GET_MAILS,
   GET_FACTURAMP,
+  GET_LOGSID,
+  GET_LANG,
 } from "../actions/constant.js";
 import {
   GET_TABLA,
@@ -31,6 +33,7 @@ import {
   GET_MPDEFAC,
   GET_CONDICION,
   GET_FACTCOND,
+  GET_FACTSTS,
 } from "../actions/constant.js";
 import {
   GET_COTIZACION,
@@ -41,6 +44,7 @@ import {
 const initialState = {
   lang: "",
   mails: [],
+  logs:[],
   actlogin: [], // quien se logeo
   menu: [],
   usuario: [],
@@ -53,14 +57,15 @@ const initialState = {
   cliente: [],
   direccion: [],
   condiciones: [], // Condiciones Generales
+  facsts:[],
   factura: [],
+  facturaMP:[],
   factcab: [],
   factcond: [], // Condiciones Generales elegidas en una factura
   factdet: [],
   porciva: [],
   materiaprima: [],
   facturaMP: [],
-  mpfactura: [],
   prodmp: [], // materia prima por producto
   cotizacion: [],
   cotizacioncab: [],
@@ -217,6 +222,13 @@ const rootReducer = (state = initialState, action) => {
     };
   }
 
+  if (action.type === GET_FACTSTS) {
+    return {
+      ...state,
+      factsts: action.payload,
+    };
+  }
+  
   if (action.type === GET_FACTURADET) {
     // console.log('Reducer  GET_FACTURADET');
     return {
@@ -228,8 +240,7 @@ const rootReducer = (state = initialState, action) => {
   if (action.type === RESET_FAC) {
     return {
       ...state,
-      factdet: [],
-      factcab: [],
+      factura: action.payload,
     };
   }
   ///////////////////////////////////////////
@@ -244,7 +255,7 @@ const rootReducer = (state = initialState, action) => {
   if (action.type === GET_MPDEFAC) {
     return {
       ...state,
-      mpfactura: action.payload,
+      facturaMP: action.payload,
     };
   }
   ///////////////////////////////////////////
@@ -308,6 +319,19 @@ const rootReducer = (state = initialState, action) => {
     return {
       ...state,
       cotizacioncond: action.payload,
+    };
+  }
+  if (action.type === GET_LOGSID) {
+    return {
+      ...state,
+      logs: action.payload,
+    };
+  }
+
+  if (action.type === GET_LANG) {
+    return {
+      ...state,
+      lang: action.payload,
     };
   }
 

@@ -15,6 +15,7 @@ const sendMail = async (msg) => {
 
 router.post('/', function (req, res, next) {
     const {to, html, subject} = req.body
+    console.log('Post Email ', req.body);
     try{
         sendMail({
             to,

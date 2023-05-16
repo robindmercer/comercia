@@ -984,31 +984,36 @@ const Formcotizacion = () => {
             </div>
             <br />
             <div  className="footer">
-              <table>
+            <table>
                 <tbody>
                   <tr className="totaltr">
-                    {btnGrabar ? (
-                      <td colSpan="3">
-                        <FcOk
-                          style={estilo2}
-                          title="Grabar OC"
-                          onClick={handleSubmit}
-                        />
+                    {acceso.substring(0,1) === "A" ? (
+                      <td>
+                        <Button
+                          variant="success"
+                          type="submit"
+                          block
+                          onClick={handleSubmit}>
+                          Grabar
+                        </Button>
                       </td>
-                    ) : null}
+                    ) : (
+                      <td>&nbsp;</td>
+                    )}
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                     <td>
-                      <FcLeft
-                        style={estilo2}
-                        title="Volver"
+                    <Button
+                        variant="primary"
+                        type="submit"
+                        block
                         onClick={() => {
-                          navigate("/cotizacion");
-                        }}
-                      />
+                          navigate("/cotizacion");}}>
+                        Volver
+                      </Button>                      
                     </td>
                   </tr>
                 </tbody>
-              </table>
-            </div>
+              </table>            </div>
           </div>
         </div>
 

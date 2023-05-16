@@ -12,13 +12,24 @@ export function getFacturaMP() {
   }
 }
 
-export function getMPFactura(id) {
+export function getFacturaMPId(id) {
   // console.log('Action getFacturaMP: All');
   return async function (dispatch) {
-    var mpfactura = await axios.get(`mpfactura/fac?id=${id}`);
+    var facturaMP = await axios.get(`facturaMP/fac?id=${id}`);
     return dispatch({
       type: GET_MPDEFAC, // MateriaPrima DE FACtura 
-      payload: mpfactura.data
+      payload: facturaMP.data
+    })
+  }
+}
+
+export function putFacturaMP(id) {
+  // console.log('Action getFacturaMP: All');
+  return async function (dispatch) {
+    var facturaMP = await axios.put(`facturaMP/fac?id=${id}`);
+    return dispatch({
+      type: GET_MPDEFAC, // MateriaPrima DE FACtura 
+      payload: facturaMP.data
     })
   }
 }

@@ -59,17 +59,6 @@ export const menuItems = [
     ],
   },
   {
-    title: 'Compras',
-    nivel: 16,
-    submenu: [
-      {
-        title: 'Stock',
-        nivel: 17,
-        url: '/factura',
-      },
-    ]
-  },
-  {
     title: 'Planeación',
     nivel: 18,
     submenu: [
@@ -80,6 +69,18 @@ export const menuItems = [
       },
     ]
   },  
+  {
+    title: 'Manufactura',
+    nivel: 20,
+    submenu: [
+      {
+        title: 'Pendientes',
+        nivel: 21,
+        url: '/facturaMP',
+      },
+    ]
+  },  
+
   {
     title: 'About',
     nivel: 0,

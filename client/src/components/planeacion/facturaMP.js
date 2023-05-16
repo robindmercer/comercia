@@ -3,19 +3,30 @@ import { useDispatch, useSelector } from "react-redux";
 import { getFacturaMP} from "../../actions/facturaMP";
 import { Link } from "react-router-dom";
 import Header from "../Header";
-import { FcAddDatabase} from "react-icons/fc";
+import { FcAddDatabase,FcCancel} from "react-icons/fc";
 import style from "../../css/factura.module.css";
 import { AccessCtrl } from "../../actions/index";
 import { getUsuariomenId } from "../../actions/usuariomenu";
+import DeleteConfirmation from "../DeleteConfirmation";
+import { UpdateFacturaSts } from "../../actions/factura";
+import { AddLogs } from "../../actions/logs";
+import { GetMails } from "../../actions/usuario";
+import crearMail from "../CrearMails";
+import { mailEnviar } from "../../actions/index";
+
 // import { getDetail } from "../../actions/tabla";
-// import crearMail from "../CrearMails";
-// import { mailEnviar } from "../../actions/index";
-// import { GetMails } from "../../actions/usuario";
+
+
+
+
 
 const Factura = () => {
-  const idProg = 11;
+  const idProg = 20;
   const id_usuario = localStorage.getItem("usuario");
   const { facturaMP } = useSelector((state) => state);
+  const [idFact,setIdFact]=useState(0)
+  const [newStatus, setNewStatus] = useState(0);
+  const [idMail, setIdMail] = useState(0);
   //const { mails } = useSelector((state) => state);
   // const actlogin = useSelector((state) => state.actlogin)
   const usuariomenu = useSelector((state) => state.usuariomenu);
@@ -24,6 +35,68 @@ const Factura = () => {
   const estilo = { fontSize: "200%", transition: "font-size 0.5s" };
   const [acceso, setAcceso] = useState("A");
   // const { tabla } = useSelector((state) => state);
+  
+  // Status Change Confirmation 
+  const [displayConfirmationModal, setDisplayConfirmationModal] = useState(false);
+  const [deleteMessage, setDeleteMessage] = useState(null);
+  const [id, setId] = useState(null);
+  const { mails } = useSelector((state) => state);
+
+  const hideConfirmationModal = () => {setDisplayConfirmationModal(false);};
+  // Handle the displaying of the modal based on type and id
+  const showDeleteModal = (id) => {
+    setId(id);
+    setDeleteMessage(`Esta seguro/a de cambiar el status a la O.C.?`);
+    setDisplayConfirmationModal(true);
+  };
+
+  const handleSubmit = (id) => {
+    var control = "x";
+    var newStatus = 0;
+    var paramMail = 1;
+    const found = facturaMP.find((element) => element.id === id);
+    console.log("found: ", found);
+    if (found.cod_status > 1) {
+      newStatus = found.cod_status - 1;
+      paramMail = 2;
+      if (newStatus < 4) {
+        newStatus = 1;
+        paramMail = 1;
+      }
+      control = "N";
+      console.log("newStatus: ", newStatus);
+    }
+
+    setIdFact(id);
+    setNewStatus(newStatus);
+    setIdMail(paramMail);
+
+
+    // setLog((log.cod_status = newStatus));
+    // setLog((log.doc_id = found.id));
+
+    var newLog = {
+      doc_id: found.id,
+      tipo_id: "FAC",
+      usr_id: id_usuario,
+      cod_status: newStatus,
+      observ:'',
+    };
+
+    console.log("log: ", newLog);
+    dispatch(UpdateFacturaSts(found.id, newStatus)); // Espera Aprobacion
+    dispatch(AddLogs(newLog));
+
+    dispatch(GetMails(idMail));
+    console.log("mails: ", mails);
+    for (var index = 0; index < mails.length; index++) {
+      console.log("enviar mail: ", mails[index].email);
+      dispatch(mailEnviar(crearMail(newStatus, mails[index].email, found)));
+    }
+    //handleShow();
+    //console.log("mails: ",idMail, mails);
+    window.location.href = '/facturaMP';
+  };
 
   useEffect(() => {
     console.log("Factura Use Efect");
@@ -31,9 +104,10 @@ const Factura = () => {
     dispatch(getFacturaMP());
     dispatch(getUsuariomenId(id_usuario));
     if (usuariomenu) {
+      console.log('usuariomenu: ', usuariomenu);
       for (var i = 0; i < usuariomenu.length; i++) {
         if (usuariomenu[i].nivel === idProg) {
-          setAcceso(usuariomenu[i].accion);
+          setAcceso(usuariomenu[i].accion + usuariomenu[i].cod_perfil);
         }
       }
     }
@@ -65,7 +139,7 @@ const Factura = () => {
   // };
 
 console.log('facturaMP: ', facturaMP);
-
+console.log("acceso: ", acceso);
   return (
     <>
       <Header />
@@ -116,6 +190,24 @@ console.log('facturaMP: ', facturaMP);
                           }
                         />
                       </Link>
+                     &nbsp;
+                      <>
+                            <FcCancel
+                              style={estilo}
+                              title="Cancelar Ultimo Estado"
+                              // onClick={() => {
+                              //   handleSubmit(data.id, "-");
+                              onClick={() => {showDeleteModal(data.id,'-');
+                              }}
+                              onMouseEnter={({ target }) =>
+                                (target.style.fontSize = "280%")
+                              }
+                              onMouseLeave={({ target }) =>
+                                (target.style.fontSize = "200%")
+                              }
+                            />
+                          </>
+
                     </td>
                   </tr>
                 );
@@ -123,6 +215,12 @@ console.log('facturaMP: ', facturaMP);
           </tbody>
         </table>
       </div>
+      <DeleteConfirmation 
+         showModal={displayConfirmationModal} 
+         confirmModal={() => {handleSubmit(id)}} 
+         hideModal={hideConfirmationModal} 
+         id={id} message={deleteMessage}
+      />
     </>
   );
 };

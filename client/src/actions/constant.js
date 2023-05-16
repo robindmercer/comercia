@@ -29,6 +29,7 @@ export const GET_FACTCAB = 'GET_FACTCAB'
 export const GET_FACTURADET = 'GET_FACTURADET'
 export const GET_FACTURAID = 'GET_FACTURAID'
 export const RESET_FAC = 'RESET_FAC' // LO SACO DE MEMORIA
+export const GET_FACTSTS = 'GET_FACTSTS'
 // Facturas Confeccionadas
 export const GET_FACTURAMP = 'GET_FACTURAMP'  // Facturas Confeccionadas busca Materias Primas sdfc
 export const GET_MPDEFAC = 'GET_MPDEFAC'      // Materias primas de una factura
@@ -47,3 +48,6 @@ export const GET_COTIZACION = 'GET_COTIZACION'
 export const GET_COTCAB = 'GET_COTCAB'
 export const GET_COTIZACIONDET = 'GET_COTIZACIONDET'
 export const GET_COTCOND = 'GET_COTCOND'
+// Logs
+export const GET_LOGSID = 'GET_LOGSID'
+export const GET_LANG = 'GET_LANG'

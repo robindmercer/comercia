@@ -423,7 +423,8 @@ function Formcotizacion() {
   // console.log("acceso: ", acceso);
 
   if (cotizacioncond.length !== 0 && condiciones) {
-    console.log("cotizacioncond: ", cotizacioncond);
+    console.log("cotizacioncond: ", cotizacioncond,cotizacioncond.length);
+    console.log("condiciones: ", condiciones);
     setTieneCG(1);
     for (var xi = 0; xi < condiciones.length; xi++) {
       if (cotizacioncond[0].cond_id === condiciones[xi].id) {
@@ -710,7 +711,7 @@ function Formcotizacion() {
                               xTotal = total;
                               return (
                                 <>
-                                  <tr key={i * 10}>
+                                  <tr key={i + 100}>
                                     <td>{cond.nombre}</td>
                                     <td colSpan={4}>&nbsp;</td>
                                     <td>
@@ -723,7 +724,7 @@ function Formcotizacion() {
                                       ></input>
                                     </td>
                                   </tr>
-                                  <tr key={i * 11}>
+                                  <tr key={i + 200}>
                                     <td>&nbsp;</td>
                                     <td colSpan={3}>Total a Pagar</td>
                                     <td className="totaltr">
@@ -740,7 +741,7 @@ function Formcotizacion() {
                             }
                             return (
                               <>
-                                <tr key={i * 12}>
+                                <tr key={i + 300}>
                                   <td>{cond.nombre}</td>
                                   <td>
                                     <input
@@ -795,7 +796,7 @@ function Formcotizacion() {
                                     ></input>
                                   </td>
                                 </tr>
-                                <tr key={i * 13}>
+                                <tr key={i + 400}>
                                   <td>&nbsp;</td>
                                   <td colSpan={3}>Total Cotizacion</td>
                                   <td className="totaltr">
@@ -804,7 +805,7 @@ function Formcotizacion() {
                                 </tr>
                                 {xEnganche !== 0 ? (
                                   <>
-                                    <tr key={i * 14}>
+                                    <tr key={i + 500}>
                                       <td>&nbsp;</td>
                                       <td colSpan={3}>Enganche</td>
                                       <td className="totaltr">
@@ -813,7 +814,7 @@ function Formcotizacion() {
                                         )}
                                       </td>
                                     </tr>
-                                    <tr key={i * 15}>
+                                    <tr key={i + 600}>
                                       <td>&nbsp;</td>
                                       <td colSpan={3}>Saldo a financiar</td>
                                       <td className="totaltr">
@@ -822,7 +823,7 @@ function Formcotizacion() {
                                         )}
                                       </td>
                                     </tr>
-                                    <tr key={i * 16}>
+                                    <tr key={i + 700}>
                                       <td>&nbsp;</td>
                                       <td colSpan={2}>
                                         {cond.meses} Pagos Mensuales
@@ -836,7 +837,7 @@ function Formcotizacion() {
                                     </tr>
                                   </>
                                 ) : null}
-                                <tr key={i * 17}>
+                                <tr key={i +800}>
                                   <td>&nbsp;</td>
                                   <td colSpan={3}>Total a Pagar</td>
                                   <td className="totaltr">
@@ -847,7 +848,7 @@ function Formcotizacion() {
                             );
                           } else {
                             return (
-                              <tr key={i}>
+                              <tr key={i+900}>
                                 <td>{cond.nombre}</td>
                                 <td>
                                   <input

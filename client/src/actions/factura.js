@@ -1,6 +1,6 @@
 // Reemplar FACTURA Factura factura por la tabla a crear 
 import axios from "axios";
-import { GET_FACTURA, GET_FACTCAB, RESET_FAC } from './constant'
+import { GET_FACTURA, GET_FACTCAB, RESET_FAC,GET_FACTSTS } from './constant'
 import { AddFacturaDet } from "./factdet";
 import { PostCondicionesFac } from "./condiciones";
 
@@ -69,10 +69,10 @@ export function UpdateFactura(factcab, factdet, inputDet) {
   return async function (dispatch) {
     await axios.put(`factura`, factcab)
       .then(response => {
-        if (response.data !== 'OK') {
-          //console.log('UpdateFactura - response: ', response);
-          alert(response.data);
-          return "Err";
+        if (response.data.message !== 'OK') {
+          console.log('UpdateFactura - response: ', response);
+          alert('Error UpdateFactura');
+          return response;
         } else {
           //console.log('UpdateFactura response: ', response);
           var xOrden = 0;
@@ -99,10 +99,10 @@ export function UpdateFacturaSts(id, sts) {
   console.log('UpdateFacturaSTS');
   return async function (dispatch) {
 
-    var factura = await axios.put(`factura/stat?id=${id}&sts=${sts}`);
+    var factsts = await axios.put(`factura/stat?id=${id}&sts=${sts}`);
     return dispatch({
-      type: GET_FACTCAB,
-      payload: factura.data
+      type: GET_FACTSTS,
+      payload: factsts.data
     })
   }
 }
@@ -126,7 +126,10 @@ export function cotiToFact(data) {
 }
 
 export function resetFact() {
+  console.log('resetFact: ');
+  var factura=[]
   return {
-    type: RESET_FAC
+    type: RESET_FAC,
+    payload: factura
   }
 }

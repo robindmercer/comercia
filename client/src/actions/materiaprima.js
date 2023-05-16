@@ -36,7 +36,7 @@ export function getMPDetail(id) {
 }
 export function UpdateMateriaprima(materiaprima) {
   return function (dispatch) {
-    axios.post('/materiaprima', materiaprima)
+    axios.put('/materiaprima', materiaprima)
       .then(response => {
         return response
       })

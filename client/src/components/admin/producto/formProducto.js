@@ -34,17 +34,39 @@ export function validate(input) {
 }
 
 function ABMProducto() {
+  const idProg = 3;
+  var btnGrabar = false;
   const location = useLocation();
   const { state } = location;
+
+  
   const navigate = useNavigate();
   const dispatch = useDispatch();
   //const producto = useSelector((state) => state.producto)
   const status = useSelector((state) => state.status)
 
+  // Accesos 
+  const usuariomenu = useSelector((state) => state.usuariomenu);
+  const [acceso, setAcceso] = useState("");
+
+  if (usuariomenu && acceso === "") {
+    // console.log("usuariomenu: ", usuariomenu);
+    for (var i = 0; i < usuariomenu.length; i++) {
+      if (usuariomenu[i].nivel === idProg) {
+        setAcceso(usuariomenu[i].accion + usuariomenu[i].cod_perfil);
+      }
+    }
+  }
+  if (acceso.substring(0,1)==='A'){
+    btnGrabar = true
+  }
+  // Fin control Accesos 
   useEffect(() => {
     dispatch(getStatus());
     dispatch(getProducto(state.id));
   }, [dispatch, state.id]);
+
+
 
   const [input, setInput] = useState({
     id: state ? state.id : 0,
@@ -222,12 +244,15 @@ function ABMProducto() {
                 )}
               </li>
               <li>
-                <button
+                {btnGrabar ? (
+                  <button
                   className="nibbotBtn"
                   type="submit"
-                >
+                  >
                   {state ? "GRABAR" : "AGREGAR"}
-                </button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </button>
+                ) : null}
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <button className="nibbotBtn" onClick={() => {navigate("/producto"); }}
                 >
                   VOLVER

@@ -1,16 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getFactura, resetFact, UpdateFacturaSts } from "../../actions/factura";
+import { getFactura, UpdateFacturaSts } from "../../actions/factura";
 import { Link } from "react-router-dom";
 
 import Header from "../Header";
-import {
-  FcAddDatabase,
-  FcApproval,
-  FcDiploma2,
-  FcCancel,
-  FcStatistics,
-} from "react-icons/fc";
+import { FcAddDatabase, FcApproval, FcDiploma2, FcCancel, FcAbout} from "react-icons/fc";
 import style from "../../css/factura.module.css";
 import { AccessCtrl } from "../../actions/index";
 //import { getUsuariomenId } from "../../actions/usuariomenu";
@@ -19,17 +13,33 @@ import { AccessCtrl } from "../../actions/index";
 import { mailEnviar } from "../../actions/index";
 import { GetMails } from "../../actions/usuario";
 // Modal
-import OkForm from "../modal/TraerCotiz";
-import { Modal, Button, Alert } from "react-bootstrap";
+// import OkForm from "../modal/TraerCotiz";
+// import { Modal, Button, Alert } from "react-bootstrap";
 import crearMail from "../CrearMails";
 import { AddLogs } from "../../actions/logs";
+import DeleteConfirmation from "../DeleteConfirmation";
 
 const Factura = () => {
   const idProg = 11;
+  const [idFact,setIdFact]=useState(0)
+  // Delete Confirmation 
+  const [displayConfirmationModal, setDisplayConfirmationModal] = useState(false);
+  const [deleteMessage, setDeleteMessage] = useState(null);
+  const [id, setId] = useState(null);
+  const { lang } = useSelector((state) => state);
+
+  const hideConfirmationModal = () => {setDisplayConfirmationModal(false);};
+  // Handle the displaying of the modal based on type and id
+  const showDeleteModal = (id,accion) => {
+    setSigno(accion)
+    setId(id);
+    setDeleteMessage(`Esta seguro/a de cambiar el status a la O.C.?`);
+    setDisplayConfirmationModal(true);
+  };
   const id_usuario = localStorage.getItem("usuario");
   const { factura } = useSelector((state) => state);
   const { mails } = useSelector((state) => state);
-
+  
   const [onChange, setOnChange] = useState(false);
   // const actlogin = useSelector((state) => state.actlogin)
   const usuariomenu = useSelector((state) => state.usuariomenu);
@@ -37,7 +47,7 @@ const Factura = () => {
   const dollarUSLocale = Intl.NumberFormat("de-DE");
   const estilo = { fontSize: "200%", transition: "font-size 0.5s" };
   const [acceso, setAcceso] = useState("");
-  const [idFact, setIdFact] = useState(0);
+  const [signo, setSigno] = useState('+');
   const [newStatus, setNewStatus] = useState(0);
   const [idMail, setIdMail] = useState(0);
   // const { tabla } = useSelector((state) => state);
@@ -50,33 +60,33 @@ const Factura = () => {
   var verStatus = [];
   var muestroRegistro = false;
   // For Modal Only ------------------------------------------------------
-  const [showAlert, setShowAlert] = useState(false);
-  const [show, setShow] = useState(false);
-  const handleShow = () => setShow(true);
-  const handleClose = () => setShow(false);
-  const [rutaOk, setRutaOk] = useState("./factura");
+  // const [showAlert, setShowAlert] = useState(false);
+  // const [show, setShow] = useState(false);
+  // const handleShow = () => setShow(true);
+  // const handleClose = () => setShow(false);
+  // const [rutaOk, setRutaOk] = useState("./factura");
 
-  // const [log, setLog] = useState({
-  //   doc_id: 0,
-  //   tipo_id: "FAC",
-  //   usr_id: id_usuario,
-  //   cod_status: 0,
-  // });
+  // // const [log, setLog] = useState({
+  // //   doc_id: 0,
+  // //   tipo_id: "FAC",
+  // //   usr_id: id_usuario,
+  // //   cod_status: 0,
+  // // });
 
-  const handleShowAlert = () => {
-    setShowAlert(true);
-    setTimeout(() => {
-      setShowAlert(false);
-    }, 2000);
-  };
+  // const handleShowAlert = () => {
+  //   setShowAlert(true);
+  //   setTimeout(() => {
+  //     setShowAlert(false);
+  //   }, 2000);
+  // };
 
-  useEffect(() => {
-    handleClose();
+  // useEffect(() => {
+  //   handleClose();
 
-    return () => {
-      handleShowAlert();
-    };
-  }, [showAlert]);
+  //   return () => {
+  //     handleShowAlert();
+  //   };
+  // }, [showAlert]);
   // End Modal ----------------------------------------------------
 
   // Control Botones a mostrar
@@ -131,7 +141,7 @@ const Factura = () => {
       toLink = "/formfacturaPDF";
       verStatus.push(1, 2, 3, 4, 5, 6, 7, 8, 9);
     }
-    if (data.cod_status > 6) {
+    if (data.cod_status > 5) {
       btnApproval = false;
       btnAddDatabase = true;
       btnDiploma2 = true;
@@ -141,7 +151,6 @@ const Factura = () => {
     if (verStatus.find((element) => element === data.cod_status)) {
       muestroRegistro = true;
     }
-    // console.log("verStatus: ", verStatus, acceso.substring(0, 1));
     // console.log("Muestro", data.id, data.cod_status, muestroRegistro);
   };
 
@@ -151,6 +160,16 @@ const Factura = () => {
     dispatch(getFactura());
     //  dispatch(getUsuariomenId(id_usuario));
   }, [dispatch, id_usuario, onChange]);
+
+
+  if (usuariomenu && acceso === "") {
+    // console.log("usuariomenu: ", usuariomenu);
+    for (var i = 0; i < usuariomenu.length; i++) {
+      if (usuariomenu[i].nivel === idProg) {
+        setAcceso(usuariomenu[i].accion + usuariomenu[i].cod_perfil);
+      }
+    }
+  }
 
   // useEffect(() => {
   //   console.log("Use Efect 2", onChange);
@@ -166,15 +185,16 @@ const Factura = () => {
   //     }
   //   }
   // }, [idFact, idMail, newStatus]);
-
-  const handleSubmit = (id, accion) => {
+  
+  const handleSubmit = (id, signo) => {
+    console.log('handleSubmit: ',id,signo,lang);
     var control = "x";
     var newStatus = 0;
     var paramMail = 1;
     setOnChange(false);
     const found = factura.find((element) => element.id === id);
     console.log("found: ", found);
-    if (accion === "-" && found.cod_status > 1) {
+    if (signo === "-" && found.cod_status > 1) {
       newStatus = found.cod_status - 1;
       paramMail = 2;
       if (newStatus < 4) {
@@ -184,7 +204,7 @@ const Factura = () => {
       control = "N";
       console.log("newStatus: ", newStatus);
     }
-    if (accion === "+") {
+    if (signo === "+") {
       if (found.cod_status === 1) {
         if (
           found.fde !== found.de ||
@@ -236,13 +256,13 @@ const Factura = () => {
     // setLog((log.cod_status = newStatus));
     // setLog((log.doc_id = found.id));
 
-    var newLog = 
-      {
-        doc_id: found.id,
-        tipo_id: "FAC",
-        usr_id: id_usuario,
-        cod_status: newStatus,
-      };
+    var newLog = {
+      doc_id: found.id,
+      tipo_id: "FAC",
+      usr_id: id_usuario,
+      cod_status: newStatus,
+      observ: lang,
+    };
 
     console.log("log: ", newLog);
     dispatch(UpdateFacturaSts(found.id, newStatus)); // Espera Aprobacion
@@ -251,22 +271,14 @@ const Factura = () => {
     dispatch(GetMails(idMail));
     console.log("mails: ", mails);
     for (var index = 0; index < mails.length; index++) {
-      console.log('enviar mail: ', mails[index].email);
-      dispatch(mailEnviar(crearMail(newStatus, mails[index].email, found)))
+      console.log("enviar mail: ", mails[index].email);
+      dispatch(mailEnviar(crearMail(newStatus, mails[index].email, found)));
     }
+    //handleShow();
     //console.log("mails: ",idMail, mails);
+    window.location.href = '/factura';
   };
 
-  console.log("------------------------------");
-  if (usuariomenu && acceso === "") {
-    // console.log("usuariomenu: ", usuariomenu);
-    for (var i = 0; i < usuariomenu.length; i++) {
-      if (usuariomenu[i].nivel === idProg) {
-        setAcceso(usuariomenu[i].accion + usuariomenu[i].cod_perfil);
-      }
-    }
-  }
-  console.log("factura: ", acceso);
   return (
     <>
       <Header />
@@ -276,11 +288,11 @@ const Factura = () => {
           <div>
             <h2>Ordenes de Compra</h2>
           </div>
-          <div>
+          {/* <div>
             <button className="btn btn-success" onClick={() => handleShow()}>
               Traer Cotización
             </button>
-          </div>
+          </div> */}
         </div>
         <table className={style.styledTable}>
           <thead>
@@ -344,10 +356,9 @@ const Factura = () => {
                             <FcApproval
                               style={estilo}
                               title="Aprobar"
-                              onClick={() => {
-                                handleSubmit(data.id, "+");
-                              }}
-                              onMouseEnter={({ target }) =>
+                              // onClick={() => {handleSubmit(data.id, "+");}}
+                              onClick={() => {showDeleteModal(data.id,'+');}}
+                                onMouseEnter={({ target }) =>
                                 (target.style.fontSize = "280%")
                               }
                               onMouseLeave={({ target }) =>
@@ -383,8 +394,9 @@ const Factura = () => {
                             <FcCancel
                               style={estilo}
                               title="Cancelar Ultimo Estado"
-                              onClick={() => {
-                                handleSubmit(data.id, "-");
+                              // onClick={() => {
+                              //   handleSubmit(data.id, "-");
+                              onClick={() => {showDeleteModal(data.id,'-');
                               }}
                               onMouseEnter={({ target }) =>
                                 (target.style.fontSize = "280%")
@@ -400,11 +412,10 @@ const Factura = () => {
                             to="/logs"
                             className="dLink"
                             state={{
-                              idfact: data.id,
-                              idtipo: 'FAC'
+                              idfact: data.id
                             }}
                           >
-                            <FcStatistics
+                            <FcAbout
                               style={estilo}
                               title="Ver Logs"
                               onMouseEnter={({ target }) =>
@@ -427,7 +438,15 @@ const Factura = () => {
           </tbody>
         </table>
       </div>
-      <Modal show={show}>
+      <DeleteConfirmation 
+         animationType="slide"
+         showModal={displayConfirmationModal} 
+         confirmModal={(e) => {handleSubmit(id, signo)}} 
+         hideModal={hideConfirmationModal} 
+         id={id} message={deleteMessage}
+         signo={signo}/>
+      
+      {/* <Modal show={show}>
         <Modal.Header closeButton onClick={handleClose}>
           <Modal.Title>Trear Cotización</Modal.Title>
         </Modal.Header>
@@ -439,7 +458,7 @@ const Factura = () => {
             Cerrar
           </Button>
         </Modal.Footer>
-      </Modal>
+      </Modal> */}
     </>
   );
 };

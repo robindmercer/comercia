@@ -30,7 +30,13 @@
     justify-content : space-around;
     box-shadow      : 13px 14px 15px 5px rgba(0, 0, 0, 0.34);
 }
-
+.footer{
+    background-color: white;
+    width: 90%;
+    border: 1px solid lightgrey;
+    box-shadow: 13px 14px 15px 5px rgba(0, 0, 0, 0.34);
+    height: 46px;
+}
 
 .addprod2 {
     margin: 6px;
@@ -237,4 +243,8 @@ button:focus {
     background-color: lightgreen;
     box-shadow      : 13px 14px 15px 5px rgba(0, 0, 0, 0.34);
 
+}
+
+.divProd{
+    display:flex;
 }

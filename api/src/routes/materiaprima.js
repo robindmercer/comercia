@@ -69,7 +69,6 @@ router.put("/", async function (req, res, next) {
   if (!name || !description || !udm) {
     return res.send("Falta información para poder darte de alta la Materia Prima");
   }
-  if (id > 0){
     sql = `update materiaprima set description='${description}', udm='${udm}', stock=${stock},stockmin=${stockmin} where name= '${name}'`
     try {
       const records = await seq.query(sql,
@@ -82,7 +81,7 @@ router.put("/", async function (req, res, next) {
   } catch (error) {
     console.log('Error:',error)
   }
-}
+
 });
 
 

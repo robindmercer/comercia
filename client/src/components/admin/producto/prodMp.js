@@ -6,13 +6,15 @@ import { useNavigate, useLocation } from "react-router-dom";
 // Iconos 
 import { FcDeleteRow, FcOk, FcLeft } from 'react-icons/fc'
 
-import Header from '../Header';
+import Header from '../../Header';
 // CSS
 //import '../../css/factdet.css'
 // Acciones 
-import { deleteMPDetail, getMateriaprima, getMPDetail,AddMPDetail, resetProd } from '../../actions/materiaprima';
+import { deleteMPDetail, getMateriaprima, getMPDetail,AddMPDetail, resetProd } from '../../../actions/materiaprima';
 
 const FormProdMp = () => {
+  const idProg = 3;
+  var btnGrabar = false;
   const { materiaprima } = useSelector((state) => state)
   const { prodmp } = useSelector((state) => state)
   const navigate = useNavigate();
@@ -24,7 +26,22 @@ const FormProdMp = () => {
 
   const [onChange, setOnChange] = useState(false)
 
+  // Accesos 
+  const usuariomenu = useSelector((state) => state.usuariomenu);
+  const [acceso, setAcceso] = useState("");
 
+  if (usuariomenu && acceso === "") {
+    // console.log("usuariomenu: ", usuariomenu);
+    for (var i = 0; i < usuariomenu.length; i++) {
+      if (usuariomenu[i].nivel === idProg) {
+        setAcceso(usuariomenu[i].accion + usuariomenu[i].cod_perfil);
+      }
+    }
+  }
+  if (acceso.substring(0,1)==='A'){
+    btnGrabar = true
+  }
+  // Fin control Accesos 
   const initialProductLine = {
     prod_id: state.id,
     mp_name: '',
@@ -198,6 +215,7 @@ const FormProdMp = () => {
                   })}
                 </tbody>
               </table>
+                { btnGrabar ? (
               <div>
                 <label
                   htmlFor="mp"
@@ -222,15 +240,9 @@ const FormProdMp = () => {
                     )}
                     </select>
               </div>
-
-              {/* <div className="addprod">
-                <p onClick={() => handleAdd()}>
-                  <FcAddRow style={estilo}
-                    onMouseEnter={({ target }) => target.style.fontSize = "200%"}
-                    onMouseLeave={({ target }) => target.style.fontSize = "150%"} />Agregar Producto
-                </p>
-              </div> */}
+                ):null }
               <div>
+                { btnGrabar ? (
                 <button className="botButton"
                   type="submit"
                 >
@@ -238,6 +250,7 @@ const FormProdMp = () => {
                     onMouseEnter={({ target }) => target.style.fontSize = "280%"}
                     onMouseLeave={({ target }) => target.style.fontSize = "200%"} />
                 </button>
+                ):null }
                 &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp;
                 <FcLeft style={estilo}
                   onMouseEnter={({ target }) => target.style.fontSize = "280%"}

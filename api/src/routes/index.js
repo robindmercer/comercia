@@ -15,9 +15,8 @@ const tabla =require("./tablas")
 const materiaprima = require("./materiaprima")
 const factura =require("./factura")
 const factdet =require("./factdet")
-const facturaMP =require("./facturaMP")
 const email = require('./send_mail')
-const mpFactura =require("./mpFactura") // Materias primas utilizadas en una factura 
+const facturaMP =require("./facturaMP") // Materias primas utilizadas en una factura 
 const condiciones = require("./condiciones") // condiciones generales de fecturacion 
 const cotizacion =require("./cotizacion")
 const cotizaciondet =require("./cotizaciondet")
@@ -59,7 +58,6 @@ router.use('/factura', factura);
 router.use('/factdet', factdet);
 
 router.use('/facturaMP',facturaMP);             //facturaMP
-router.use('/mpfactura',mpFactura);             //mpFactura
 router.use('/condiciones',condiciones);         //condiciones
 router.use('/cotizacion',cotizacion)            // Cotizaciones 
 router.use('/cotizaciondet',cotizaciondet)      // CotizacionesDet

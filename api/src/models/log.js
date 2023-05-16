@@ -2,8 +2,12 @@ const { DataTypes, Sequelize } = require('sequelize');
 
 module.exports = (sequelize) => {
     sequelize.define('log', {
-        fac_id: {
+        doc_id: {
             type: DataTypes.INTEGER,
+            allowNull: false,
+        },
+        tipo_id: {
+            type: DataTypes.STRING,
             allowNull: false,
         },
         usr_id: {
@@ -14,7 +18,16 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             allowNull: false,
         },
-    }
-    );
-};
+        fecha: {
+            type: DataTypes.DATE,
+            allowNull: false,
+        },
+        observ: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
 
+    },
+    { timestamps: false }
+);
+}

@@ -1,5 +1,5 @@
 import React from 'react'
-
+import Logs from '../components/logs/logs'
 import Layout from '../components/Layout'
 // Admin Menu
 import AbmMenu from '../components/admin/abmmenu.js'
@@ -7,7 +7,7 @@ import Cliente from '../components/admin/cliente/cliente'
 import Direccion from '../components/admin/cliente/direccion'
 import FormCliente from '../components/admin/cliente/formCliente'
 import FormDireccion from '../components/admin/cliente/formdireccion'
-import FormProdmp from '../components/admin/prodMp'
+import FormProdmp from '../components/admin/producto/prodMp'
 import FormProducto from '../components/admin/producto/formProducto'
 import Condiciones from '../components/admin/condiciones/CondicionMain'
 // import Condiciones from '../components/admin/condiciones'
@@ -195,7 +195,14 @@ function HandleRoutes() {
             element: <CotizacionModif />,
             exact: true,
             private: true,
-        }       
+        },
+        {
+            path: "/logs",
+            element: <Logs />,
+            exact: true,
+            private: true,
+        }          
+        
                                 
     ]
     return routes;

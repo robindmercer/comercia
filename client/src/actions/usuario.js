@@ -49,6 +49,7 @@ export function getUsuario(){
   }  
  
   export function GetMails(perfil) {
+    console.log('GetMails perfil: ', perfil);
     //console.log('Action getUsuario: All');
     return async function (dispatch) {
         var mails = await axios.get(`/usuario/perfil/${perfil}`);
