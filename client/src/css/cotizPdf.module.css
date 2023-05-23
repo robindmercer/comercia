@@ -1,0 +1,170 @@
+.Post {
+    max-width: 800px;
+    width    : 100%;
+    display  : table;
+    /* margin: 0 auto; */
+    padding  : 20px 10px;
+}
+
+.cabecera {
+    width              : 90%;
+    padding            : 10PX;
+    margin-top         : 10px;
+    height             : 80px;
+    /* background-color: #a3d7f8; */
+    font-family        : Arial, Helvetica, sans-serif;
+    font-size          : 14px;
+    justify-content    : space-around;
+    /* box-shadow      : 13px 14px 15px 5px rgba(0, 0, 0, 0.34); */
+}
+
+.cabeceraAlta {
+    width              : 90%;
+    padding            : 10PX;
+    margin-top         : 10px;
+    height             : 70px;
+    background-color   : #d1e7dd;
+    font-family        : Arial, Helvetica, sans-serif;
+    font-size          : 12px;
+    display            : flex;
+    justify-content    : space-around;
+    /* box-shadow      : 13px 14px 15px 5px rgba(0, 0, 0, 0.34); */
+}
+
+
+.addprod2 {
+    margin : 6px;
+    padding: 5px;
+}
+
+.addprod2p {
+    text-align: left;
+}
+
+.addprod {
+    width           : 90%;
+    height          : auto;
+    background-color: #d1e7dd;
+    ;
+    font-family    : Arial, Helvetica, sans-serif;
+    font-size      : 12px;
+    display        : flex;
+    justify-content: left;
+    align-items    : left;
+}
+
+.detalleCab {
+    width              : 90%;
+    background-color   : white;
+    /* box-shadow      : 13px 14px 15px 5px rgba(0, 0, 0, 0.34); */
+}
+
+.detalle {
+    margin : 7px;
+    display: inline-block;
+}
+
+.total {
+    background-color: white;
+}
+
+.totaltr {
+    height         : 30px;
+    text-align-last: right;
+}
+
+.totaltd1 {
+    width: 800px;
+}
+
+.totaltd2 {
+    width: 200px;
+}
+
+.row {
+    height         : 40px;
+    font-size      : 16px;
+    display        : flex;
+    justify-content: space-around;
+    padding        : 5px;
+}
+
+.colCab1 {
+    width       : 25%;
+    text-align  : -webkit-right;
+    margin-right: 10px;
+}
+
+.colCab2 {
+    width     : 75%;
+    text-align: -webkit-left;
+}
+
+.colCab0 {
+    width      : 90%;
+    text-align : -webkit-left;
+    padding-top: 5px;
+}
+
+.colCab3 {
+    width          : 90%;
+    display        : flex;
+    justify-content: space-between;
+}
+
+.bg-red {
+    background-color: red;
+}
+
+.row__remove {
+    display   : flex;
+    padding   : 0;
+    position  : absolute;
+    top       : 10px;
+    right     : -20px;
+    opacity   : 0;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.row:hover .row:focus-within {
+    opacity: 1;
+}
+
+.row:hover #delete {
+    background-color: crimson;
+}
+
+
+.incluido {
+    text-align : center;
+    font-weight: bold;
+}
+
+.hr {
+    width           : 75%;
+    background-color: #3002d7;
+    height          : 5px;
+}
+
+.unidades {
+    border-bottom: 1px solid #3002d7;
+    height       : 12px;
+}
+
+.terminos {
+    border: 2px solid grey;
+    margin: 5px;
+    font-size          : 12px;
+    width : 90%
+}
+
+.nibbot {
+    background-color: lightgray;
+    color           : white;
+    width           : 90%;
+    font-size       : 14px;
+}
+
+.titNumber {
+    font-size: 24px;
+}

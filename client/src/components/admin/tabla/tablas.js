@@ -20,8 +20,8 @@ const Tabla = () => {
     dispatch(getDetail(id));
     Setdetail(true);
   };
-
-  console.log("id: : ", tabla.id);
+  // const found = tabla.find((element) => element.cod ===0);
+  // console.log("id: : ", found);
 
   return (
     <>

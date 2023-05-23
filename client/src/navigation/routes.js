@@ -31,6 +31,9 @@ import FormfacturaMP from '../components/planeacion/formfacturaMP'
 import Cotizacion from '../components/ventas/cotizacion'
 import CotizacionModif from '../components/ventas/cotizacionModif'
 import CotizacionAlta from '../components/ventas/cotizacionAlta'
+import CotizacionPDF from '../components/ventas/cotizacionPDF'
+import UploadFile from '../Upload'
+import VerPdf from '../verPdf'
 function HandleRoutes() {
 
     const routes = [
@@ -201,9 +204,27 @@ function HandleRoutes() {
             element: <Logs />,
             exact: true,
             private: true,
-        }          
+        },
+        {
+            path: "/cotizacionPDF",
+            element: <CotizacionPDF />,
+            exact: true,
+            private: true,
+        },
         
-                                
+        {
+            path: "/upload",
+            element: <UploadFile />,
+            exact: true,
+            private: true,
+        },
+        {
+            path: "/verPdf",
+            element: <VerPdf />,
+            exact: true,
+            private: true,
+        }  
+
     ]
     return routes;
 };

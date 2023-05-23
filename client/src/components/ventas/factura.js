@@ -107,14 +107,17 @@ const Factura = () => {
       verStatus.push(1, 2, 3, 4, 5, 6, 7, 8, 9);
     }
     if (acceso === "A2") {
-      // Adminsitracion All
+      // Administracion All
       btnAddDatabase = true;
       btnApproval = true;
       btnCancel = true;
       if (data.cod_status > 2) {
         btnDiploma2 = true;
       }
-      verStatus.push(3, 4, 5, 6);
+      if (data.cod_status > 5) {
+        btnCancel = false;
+      }
+      verStatus.push(3, 4, 5, 6,7,8);
     }
     if (acceso === "A3") {
       // Ventas all
@@ -126,10 +129,10 @@ const Factura = () => {
         btnAddDatabase = false;
         btnDiploma2 = false;
       }
-      if (data.cod_status > 2 && data.cod_status < 7) {
+      if (data.cod_status > 2 ) {
         btnApproval = false;
-        btnAddDatabase = false;
         btnDiploma2 = true;
+        btnCancel = false;
       }
       verStatus.push(1, 2, 3, 4, 5, 6, 7, 8, 9);
     }
@@ -312,6 +315,7 @@ const Factura = () => {
               factura.message === undefined &&
               factura.map((data) => {
                 // Manejo Botones
+                console.log('data: ', data);
                 control(data);
                 if (muestroRegistro) {
                   return (

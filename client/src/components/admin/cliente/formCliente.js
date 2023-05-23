@@ -153,6 +153,7 @@ function ABMCliente() {
               COMPLETE LOS SIGUIENTES CAMPOS:
               </td>
             </tr>
+            {input.id!==0? (
               <tr>
                 <td className="tdTitulo">Id: </td>
                 <td className="tdSmall">
@@ -163,10 +164,11 @@ function ABMCliente() {
                     value={input.id}
                     onChange={handleChange}
                     placeholder="Ingrese ID del Cliente"
-                  />
+                    />
                   {errors.id && <p className="text-red-500">{errors.id}</p>}
                 </td>
               </tr>
+              ):null}
 
               <tr>
                 <td className="tdTitulo">Razon Social: </td>

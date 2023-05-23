@@ -50,6 +50,23 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING,
             allowNull: false,
         },
+        telefono:{
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        direccion:{
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        email:{
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        vendedor:{
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+
 
     },
         { freezeTableName: true,timestamps: false }

@@ -20,6 +20,7 @@ router.get('/', async function (req, res, next) {
   try {
       sql="select f.id,to_char(f.fecha,'dd/mm/yyyy') as fecha,f.subtotal,f.iva,f.total,f.cli_id,t.description as stsdes,"
       sql = sql + " f.cod_status,f.observ, f.moneda,f.idioma,f.nombre,"
+      sql = sql + " f.telefono,f.direccion,f.email,f.vendedor,"
       sql = sql + " coalesce(fc.descuento,0)  fde,coalesce(fc.enganche,0) fen,coalesce(fc.meses,0) fme,coalesce(fc.interes,0) finter,"
       sql = sql + " coalesce(con.descuento,0) de, coalesce(con.enganche,0) en,coalesce(con.meses,0) me,coalesce(con.interes,0) inter"
       sql = sql + " from cotizacion f" 
@@ -44,7 +45,8 @@ router.get('/cab', async function (req, res, next) {
   if(id) {
       try {
       sql="select f.id,to_char(f.fecha,'dd/mm/yyyy') as fecha,f.subtotal,f.iva,f.total,f.dhl,f.cli_id,"
-      sql = sql + " f.cli_id,t.description as Status,f.observ, f.moneda,f.idioma,f.nombre"
+      sql = sql + " f.cli_id,t.description as Status,f.observ, f.moneda,f.idioma,f.nombre,"
+      sql = sql + " f.telefono,f.direccion,f.email,f.vendedor"
       sql = sql + " from cotizacion f"
       sql = sql + " join tabla   t            on t.id = 6 and t.cod= f.cod_status" 
       sql = sql + "  where f.id =  " + id
@@ -68,7 +70,8 @@ router.get('/mail', async function (req, res, next) {
       try {
         sql="select fd.cot_id,fd.prod_id,fd.cantidad,pr.name,to_char(f.fecha,'dd/mm/yyyy') as fecha, "
         sql = sql + " mp.name Id, "
-        sql = sql + " mp.description,fd.cantidad*pm.cantidad total_Mp " 
+        sql = sql + " mp.description,fd.cantidad*pm.cantidad total_Mp, " 
+        sql = sql + " f.telefono,f.direccion,f.email,f.vendedor"
         sql = sql + " from cotizacion f "
         sql = sql + " join cotizaciondet fd on fd.cot_id = f.id "
         sql = sql + " join productos pr on pr.id = fd.prod_id "
@@ -112,7 +115,7 @@ router.put('/stat', async function (req, res, next) {
 
 router.post('/', async function (req, res, next) {
   try {
-    const { cli_id, dir_id, cot_id, subtotal, iva,total,cod_status,observ,fecha,dhl,idioma,moneda,nombre } = req.body;
+    const { cli_id, dir_id, cot_id, subtotal, iva,total,cod_status,observ,fecha,dhl,idioma,moneda,nombre,telefono,direccion,email,vendedor } = req.body;
     console.log('Post Cotizacion: ', req.body);
   
    if (!subtotal || !total || !cod_status  ) {
@@ -127,8 +130,9 @@ router.post('/', async function (req, res, next) {
     if (cot_id !== 0){
       res.status(400).json({message:"Error en la información recibida"})
     } else {
-      sql=`insert into cotizacion (cli_id,dhl,subtotal,iva,total,cod_status,observ,fecha,idioma,moneda,nombre) `
-      sql= sql + `values (${0},${dhl},${subtotal},${iva},${total},${cod_status},'${observ}','${fecha}','${idioma}','${moneda}','${nombre}') RETURNING id`
+      sql=`insert into cotizacion (cli_id,dhl,subtotal,iva,total,cod_status,observ,fecha,idioma,moneda,nombre,telefono,direccion,email,vendedor ) `
+      sql= sql + `values (${0},${dhl},${subtotal},${iva},${total},${cod_status},'${observ}','${fecha}','${idioma}','${moneda}','${nombre}',`
+      sql= sql + `'${telefono}','${direccion}','${email}','${vendedor}' ) RETURNING id`
     }
     const records = await seq.query(sql,
       {
@@ -146,7 +150,7 @@ router.post('/', async function (req, res, next) {
 
 router.put('/', async function (req, res, next) {
   try {
-    const { id,dhl,nombre, subtotal, iva,total,observ,moneda } = req.body;
+    const { id,dhl,nombre, subtotal, iva,total,observ,moneda,telefono,direccion,email,vendedor } = req.body;
 
     console.log('Update Cotizacion con delete del cotizaciondet: ', req.body);
   
@@ -168,7 +172,11 @@ router.put('/', async function (req, res, next) {
       sqlfac= sqlfac + ` total=${total},`
       sqlfac= sqlfac + ` moneda=${moneda},`
       sqlfac= sqlfac + ` cod_status=1,` 
-      sqlfac= sqlfac + ` observ='${observ}'`
+      sqlfac= sqlfac + ` observ='${observ}',`
+      sqlfac= sqlfac + ` telefono='${telefono}',`
+      sqlfac= sqlfac + ` direccion='${direccion}',`
+      sqlfac= sqlfac + ` email='${email}',`
+      sqlfac= sqlfac + ` vendedor='${vendedor}'`
       sqlfac= sqlfac + ` where id = ${id}`
     } else {
       return res.status(400).json("Falta información numero de Cotizacion poder darte de alta el Documento")

@@ -22,8 +22,8 @@ const cotizacion =require("./cotizacion")
 const cotizaciondet =require("./cotizaciondet")
 const cotizacioncond =require("./cotizacioncond")
 const log = require ("./log")
+const upload = require("./upload")
 const router = Router();
-
 // Send Email
 //router.use('/email', email)
 // perfil
@@ -63,4 +63,5 @@ router.use('/cotizacion',cotizacion)            // Cotizaciones
 router.use('/cotizaciondet',cotizaciondet)      // CotizacionesDet
 router.use('/cotizacioncond',cotizacioncond)      // CotizacionesDet
 router.use('/log',log)                          //Log 
+router.use('/upload',upload)
 module.exports = router;

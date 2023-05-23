@@ -103,6 +103,10 @@ const Formcotizacion = () => {
     dhl: 0,
     moneda: 0,
     idioma: 0,
+    telefono:'',
+    direccion:'',
+    email:'',
+    vendedor:localStorage.getItem("usuario"),
     fecha: new Date().toLocaleDateString("en-GB"),
   });
 
@@ -402,6 +406,31 @@ const Formcotizacion = () => {
   // }
   function handleTipo(e, i) {
     e.preventDefault();
+    if (e.target.name === "telefono") {
+      input.telefono = e.target.value;
+      if (onChange) {
+        setOnChange(false);
+      } else {
+        setOnChange(true);
+      }
+    }
+    if (e.target.name === "direccion") {
+      input.direccion = e.target.value;
+      if (onChange) {
+        setOnChange(false);
+      } else {
+        setOnChange(true);
+      }
+    }
+    if (e.target.name === "email") {
+      input.email = e.target.value;
+      if (onChange) {
+        setOnChange(false);
+      } else {
+        setOnChange(true);
+      }
+    }
+
     if (e.target.name === "nombre") {
       input.nombre = e.target.value;
       if (onChange) {
@@ -544,6 +573,33 @@ const Formcotizacion = () => {
                   id="nombre"
                   name="nombre"
                   value={input.nombre}
+                  onChange={(e) => handleTipo(e, 0)}
+                ></input>&nbsp;
+                <label htmlFor="nombre">Direccion : </label>
+                <input
+                  className="input_text"
+                  type="text"
+                  id="direccion"
+                  name="direccion"
+                  value={input.direccion}
+                  onChange={(e) => handleTipo(e, 0)}
+                ></input>&nbsp;
+                <label htmlFor="nombre">Telefono : </label>
+                <input
+                  className="input_text"
+                  type="text"
+                  id="telefono"
+                  name="telefono"
+                  value={input.telefono}
+                  onChange={(e) => handleTipo(e, 0)}
+                ></input>&nbsp;
+                <label htmlFor="nombre">Email : </label>
+                <input
+                  className="input_text"
+                  type="text"
+                  id="email"
+                  name="email"
+                  value={input.email}
                   onChange={(e) => handleTipo(e, 0)}
                 ></input>
               </div>
@@ -781,7 +837,7 @@ const Formcotizacion = () => {
                               xTotal = total;
                               return (
                                 <>
-                                  <tr key={i + 1}>
+                                  <tr key={i + 100}>
                                     <td>
                                       {cond.nombre} {i}
                                     </td>
@@ -796,7 +852,7 @@ const Formcotizacion = () => {
                                       ></input>
                                     </td>
                                   </tr>
-                                  <tr key={i + 1 * 11}>
+                                  <tr key={i + 120 }>
                                     <td>&nbsp;</td>
                                     <td colSpan={3}>Total a Pagar</td>
                                     <td className="totaltr">
@@ -813,7 +869,7 @@ const Formcotizacion = () => {
                             }
                             return (
                               <>
-                                <tr key={i * 12}>
+                                <tr key={i + 130}>
                                   <td>{cond.nombre}</td>
                                   <td>
                                     <input
@@ -868,7 +924,7 @@ const Formcotizacion = () => {
                                     ></input>
                                   </td>
                                 </tr>
-                                <tr key={i * 13}>
+                                <tr key={i + 140}>
                                   <td>&nbsp;</td>
                                   <td colSpan={3}>Total Cotizacion</td>
                                   <td className="totaltr">
@@ -877,7 +933,7 @@ const Formcotizacion = () => {
                                 </tr>
                                 {xEnganche !== 0 ? (
                                   <>
-                                    <tr key={i * 14}>
+                                    <tr key={i + 150}>
                                       <td>&nbsp;</td>
                                       <td colSpan={3}>Enganche</td>
                                       <td className="totaltr">
@@ -886,7 +942,7 @@ const Formcotizacion = () => {
                                         )}
                                       </td>
                                     </tr>
-                                    <tr key={i * 15}>
+                                    <tr key={i + 160}>
                                       <td>&nbsp;</td>
                                       <td colSpan={3}>Saldo a financiar</td>
                                       <td className="totaltr">
@@ -895,7 +951,7 @@ const Formcotizacion = () => {
                                         )}
                                       </td>
                                     </tr>
-                                    <tr key={i * 16}>
+                                    <tr key={i + 170}>
                                       <td>&nbsp;</td>
                                       <td colSpan={2}>
                                         {cond.meses} Pagos Mensuales
@@ -909,7 +965,7 @@ const Formcotizacion = () => {
                                     </tr>
                                   </>
                                 ) : null}
-                                <tr key={i * 17}>
+                                <tr key={i + 180}>
                                   <td>&nbsp;</td>
                                   <td colSpan={3}>Total a Pagar</td>
                                   <td className="totaltr">

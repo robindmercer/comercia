@@ -177,6 +177,9 @@ async function refLoad() {
       { id: 11, cod: 2, description: "* Shipping by DHL EXPRESS.", valor: 0, control : 'N', cod_status: 1 },
       { id: 11, cod: 3, description: "* Training included", valor: 0, control : 'N', cod_status: 1 },
       { id: 11, cod: 4, description: "* Certifications up to 3 places included", valor: 0, control : 'N', cod_status: 1 },
+      { id: 12, cod: 0, description: "Pie de PDF", valor: 0, control : 'N', cod_status: 1 },
+      { id: 12, cod: 1, description: "NIBBOT INTERNATIONAL - RFC NIN180922KJ2 - San Luis, S.L.P. info@nibbot.com.mx (55) 8842 7884", valor: 0, control : 'N', cod_status: 1 },
+
    ]).then(() => console.log('Tablas ha sido grabado'));
 
    Cliente.bulkCreate([

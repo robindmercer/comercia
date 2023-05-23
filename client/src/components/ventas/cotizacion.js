@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getCotizacion, UpdateCotizacionSts } from "../../actions/cotizacion";
 import { Link } from "react-router-dom";
 import Header from "../Header";
-import { FcAddDatabase, FcBusinessman} from "react-icons/fc";
+import { FcAddDatabase, FcBusinessman, FcDiploma2} from "react-icons/fc";
 import style from "../../css/factura.module.css";
 import { AccessCtrl } from "../../actions/index";
 
@@ -43,6 +43,7 @@ const Cotizacion = () => {
   var btnAddDatabase = false;
   var btnApproval = false;
   var btnCancel = false;
+  var btnDiploma2 = false
   var verStatus = [];
   var muestroRegistro = false;
 
@@ -55,6 +56,7 @@ const Cotizacion = () => {
     btnAddDatabase = false;
     btnApproval = false;
     verStatus = [];
+    btnDiploma2 = true;
     muestroRegistro = false;
     if (acceso === "A1") {
       // Gerencia All
@@ -90,7 +92,10 @@ const Cotizacion = () => {
     if (acceso.substring(0, 1) === "C") {
       btnCancel = false;
       btnApproval = false;
+      
       btnAddDatabase = true;
+
+
       toLink = "/formcotizacionPDF";
       verStatus.push(1, 2, 3, 4, 5, 6, 7, 8, 9);
     }
@@ -276,6 +281,29 @@ const Cotizacion = () => {
                             />
                           </Link>
                         ) : null}
+                        {btnDiploma2 ? (
+                          <>
+                            <Link
+                              to={"/cotizacionPDF"}
+                              className="dLink"
+                              state={{
+                                idfact: data.id,
+                              }}
+                            >
+                              <FcDiploma2
+                                style={estilo}
+                                title="PDF"
+                                onMouseEnter={({ target }) =>
+                                  (target.style.fontSize = "280%")
+                                }
+                                onMouseLeave={({ target }) =>
+                                  (target.style.fontSize = "200%")
+                                }
+                              />
+                            </Link>
+                          </>
+                        ) : null}
+
                         &nbsp;&nbsp;
                         {/* // si sos administrador o de ventas con status = 1 */}
                         {btnApproval ? ( //

@@ -106,6 +106,11 @@ function Formcotizacion() {
     fecha: "",
     nombre: "",
     moneda: 1,
+    telefono:'',
+    direccion:'',
+    email:'',
+    vendedor:localStorage.getItem("usuario"),
+
   });
 
   const initialProductLine = {
@@ -389,7 +394,7 @@ function Formcotizacion() {
     setInput((input.moneda = cotizacioncab[0].moneda));
     // Grabo Cabecera y detalles
     dispatch(UpdateCotizacion(input, cotizaciondet, inputDet));
-
+    
     if (found) {
       if (tieneCG === 1) {
         initialFacdet.id = 1; // si ya tiene una C.General grabada el id es siempre 1
@@ -405,10 +410,12 @@ function Formcotizacion() {
       dispatch(PostCondicionesCot(initialFacdet));
     }
     console.log("state.idCotiz: ", state.idCotiz);
-    console.log("cotizacioncab: ", cotizacioncab);
-    console.log("cotizaciondet: ", cotizaciondet);
-    console.log("initialFacdet: ", initialFacdet);
     console.log("input: ", input);
+    console.log("cotizaciondet: ", cotizaciondet);
+    console.log('inputDet: ', inputDet);
+    
+    console.log("cotizacioncab: ", cotizacioncab);
+    console.log("initialFacdet: ", initialFacdet);
     console.log("cotizacioncond: ", cotizacioncond);
     console.log("condiciones: ", condiciones);
     console.log("tieneCG", tieneCG);
@@ -471,6 +478,33 @@ function Formcotizacion() {
                   id="nombre"
                   name="nombre"
                   value={cotizacioncab[0].nombre}
+                  onChange={(e) => handleTipo(e, 0)}
+                ></input>
+                <label htmlFor="nombre">Direccion : </label>
+                <input
+                  className="input_text"
+                  type="text"
+                  id="direccion"
+                  name="direccion"
+                  value={cotizacioncab[0].direccion}
+                  onChange={(e) => handleTipo(e, 0)}
+                ></input>&nbsp;
+                <label htmlFor="nombre">Telefono : </label>
+                <input
+                  className="input_text"
+                  type="text"
+                  id="telefono"
+                  name="telefono"
+                  value={cotizacioncab[0].telefono}
+                  onChange={(e) => handleTipo(e, 0)}
+                ></input>&nbsp;
+                <label htmlFor="nombre">Email : </label>
+                <input
+                  className="input_text"
+                  type="text"
+                  id="email"
+                  name="email"
+                  value={cotizacioncab[0].email}
                   onChange={(e) => handleTipo(e, 0)}
                 ></input>
               </div>
