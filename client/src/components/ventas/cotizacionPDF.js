@@ -1,9 +1,14 @@
+// https://rawgit.com/MrRio/jsPDF/master/docs/index.html
+// https://gaam-akhar.ir/assets/jspdf/docs/jsPDF.html
+// Colores
+// https://www.rapidtables.com/web/color/RGB_Color.html
+
+import { jsPDF } from "jspdf";
+import Imagen from "../../images/logos.png";
+import ImagenWait from "../../images/Spinner-5.gif";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useLocation } from "react-router-dom";
-import Pdf from "react-to-pdf";
-// Iconos
-import { FcLeft } from "react-icons/fc";
+import { useLocation } from "react-router-dom";
 
 // Acciones
 import { getCotizacionDet } from "../../actions/cotizaciondet";
@@ -13,23 +18,22 @@ import { getUsuariomenId } from "../../actions/usuariomenu";
 import { getCondicionesCot } from "../../actions/cotizacioncond";
 import { getTablaAll } from "../../actions/tabla";
 // Descuentos
-import { getDetail } from "../../actions/tabla";
+//import { getDetail } from "../../actions/tabla";
 
 // CSS
-import style from "../../css/Pdf.module.css";
 
-import imagen from "../../images/LogoNibbot.png";
-
-const ref = React.createRef();
+//const ref = React.createRef();
 // var campos del PDF
+var maxhor = 253
 var xCliente = "Cliente";
 var xFecha = "Fecha";
 var xUnidad = "Unidad";
 var xDescripcion = "Descripción";
 var xPrecio = "Precio";
 var xCant = "Cant";
-var xTotal = "Total";
+// var xTotal = "Total";
 var xIncluido = "Incluido";
+var xTotOC = "TOTAL O.C.";
 var xTotPag = "TOTAL A PAGAR";
 var xCond = "Condiciones Generales";
 var xImporte = "Importe";
@@ -44,22 +48,23 @@ var xTablaId = 9;
 var xTerminos = "Terminos y Condiciones";
 var xDHL = "Costos de Envio";
 var pdfFilename = "cotizacion_";
+var xDescDescrip = "Descuento";
 var xMoneda = "$";
-var xCotizacion="COTIZACION"
-var xDireccion="Direccion"
-var xTelefono="Telefono:"
-var xEmail = "E-Mail";
+var xCotizacion = "COTIZACION";
+var xDireccion = "Direccion";
+var xTelefono = "Telefono:";
+// var xEmail = "E-Mail";
 var xVendedor = "Vendedor";
-
+var xFooter = ""
 const FormcotizPDF = () => {
    // Manejo acceso del Usuario
-   const navigate = useNavigate();
+   // const navigate = useNavigate();
    const id_usuario = localStorage.getItem("usuario");
    const { cotizacioncab } = useSelector((state) => state);
    const { cotizaciondet } = useSelector((state) => state);
    const { cotizacioncond } = useSelector((state) => state);
-   const { porciva } = useSelector((state) => state);
-   const estilo2 = { fontSize: "200%" };
+   // const { porciva } = useSelector((state) => state);
+   // const estilo2 = { fontSize: "200%" };
    const tabla = useSelector((state) => state.tabla);
    const actlogin = useSelector((state) => state.actlogin);
    const dispatch = useDispatch();
@@ -85,43 +90,16 @@ const FormcotizPDF = () => {
    });
 
    useEffect(() => {
+      dispatch(getTablaAll());
       dispatch(getDetailIva(1));
-      dispatch(getDetail(2));
+      //dispatch(getDetail(2));
       dispatch(getCotizacionCab(state.idfact));
       dispatch(getCotizacionDet(state.idfact));
       dispatch(getCondicionesCot(state.idfact));
       dispatch(getUsuariomenId(id_usuario));
-      dispatch(getTablaAll());
-      //setInput(input.fac_id=1)
-      // return (
-      //   dispatch(resetFact())
-      // )
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-   }, [dispatch, id_usuario]);
+   }, [dispatch, id_usuario, state.idfact]);
 
-   function imprimir(){
-         document.querySelector("#left").style.display='none';
-         document.querySelector("#imprimir").style.display='none';
-         window.print()
-         document.querySelector("#left").style.display='';
-         document.querySelector("#imprimir").style.display='';
-   }
-
-
-
-   console.log(
-      "formFactura---------------------------------------------------"
-   );
-   console.log("state.idfact ", state.idfact);
-   console.log("tabla: ", tabla);
-   // console.log("usuariomenu: ", usuariomenu);
-   console.log("actlogin: ", actlogin);
-   console.log("cotizacioncab: ", cotizacioncab);
-   console.log("cotizaciondet: ", cotizaciondet);
-   console.log(
-      "formFactura---------------------------------------------------"
-   );
-
+   // console.log("actlogin: ", actlogin);
    if (cotizacioncab.length > 0) {
       if (cotizacioncab[0].moneda === 2) {
          xCliente = "Client";
@@ -129,10 +107,11 @@ const FormcotizPDF = () => {
          xUnidad = "Units";
          xDescripcion = "Description";
          xPrecio = "Price";
-         xCant = "Amount";
+         xCant = "Quantity";
          xTotPag = "Total Payment USD";
+         xTotOC = "Total PURCHASE ORDER";
          xCond = "General Conditions";
-         xImporte = "Amount";
+         xImporte = "Subtotal";
          xIncluido = "Included";
          xIva = "Tax";
          xEngancheTit = "First Payment";
@@ -140,419 +119,303 @@ const FormcotizPDF = () => {
          xPagosMens = "Monthy Payments";
          xInteres = "Interes Rate";
          xTablaId = 2;
-         xTerminos = "Conditions";
+         xTerminos = "Terms and Conditions";
          xDHL = "Shipping Costs";
-         xMoneda = "USD";
-         xCotizacion="QUOTATION"
+         xMoneda = "USD ";
+         xCotizacion = "QUOTATION";
+         xDescDescrip = "Discount";
       }
       if (cotizacioncab[0].moneda === 2) {
          xTablaId = 11;
       }
       if (cotizacioncab[0].moneda === 2 && cotizacioncab[0].idioma === 1) {
-         xTablaId = 10;
+         xTablaId = 10;      
+      }
+      if (pdfFilename === "cotizacion_"){
+          pdfFilename = pdfFilename + state.idfact
       }
    }
 
-   // console.log("xTablaId: ", xTablaId);
-   console.log('cotizacioncond: ', cotizacioncond);
-   if (cotizacioncab.length > 0) {
-      if (pdfFilename === "cotizacion_") {
-         pdfFilename = pdfFilename + cotizacioncab[0].id;
-      }
-      return (
-         <>
-            <div ref={ref} className={style.Post}>
-               <div className={style.hr}>
-                  &nbsp;
-               </div>
-               <div>
-                  <div className={style.row}>
-                     <div>
-                        <img height="49px" width="200px" src={imagen} alt="" />
-                     </div>
-                     <div>
+   // Default export is a4 paper, portrait, using millimeters for units
+   const downloadFileDocument = () => {
+      const leftMargin = 5;
+      const leftInput = 30;
+      var xhor = 38;
+      var xhorNew = 0;
+      var xleft = 0;
+      const doc = new jsPDF();
 
-                     <div className={style.titNumber}>&nbsp;<b>{xCotizacion} N°: {cotizacioncab[0].id}</b></div>
-                     </div>
-                  </div>
-               </div>
-               <div className={style.cabecera}>
-                  <div>
-                     <div className={style.colCab3}>
-                        <div>
-                           {xCliente} : &nbsp;<b>{cotizacioncab[0].nombre}</b>
-                        </div>
-                        <div>
-                           <div>
-                              {xFecha}: <b>{cotizacioncab[0].fecha}</b>
-                           </div>
-                        </div>
-                     </div>
-                     {cotizacioncab[0].direccion !==''  ? (
-                        <div className={style.colCab0}>
-                           <div>
-                              {xDireccion}: <b>{cotizacioncab[0].direccion}</b>
-                           </div>
-                        </div>
-                     ):null}
-                     <div className={style.colCab3}>
-                        {cotizacioncab[0].telefono !==''  ? (
-                              <div>
-                                 {xTelefono}: <b>{cotizacioncab[0].telefono}</b>
-                              </div>
-                        ):null}
-                        {cotizacioncab[0].email !==''  ? (
-                              <div>
-                                 {xEmail}: <b>{cotizacioncab[0].email}</b>
-                           </div>
-                        ):null}
-                     </div>
-                     <div className={style.colCab3}>
-                        <div>
-                                 {xVendedor}: <b>{actlogin[0].name}</b>
-                        </div>
-                        <div>
-                                 Email: <b>{actlogin[0].email}</b>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <br />
-               <div className={style.detalleCab}>
-                  <div className={style.detalle}>
-                     <table className="table table-striped bg-white">
-                        <thead>
-                           <tr className={style.unidades}>
-                              <th>{xUnidad}</th>
-                              <th>{xDescripcion}</th>
-                              <th>{xCant}</th>
-                              <th>{xPrecio}</th>
-                              <th>{xTotal}</th>
-                           </tr>
-                        </thead>
-                        <tbody>
-                           {cotizaciondet &&
-                              cotizaciondet.map((fact, i) => {
-                                 xProdName = fact.name;
-                                 xProdDescrip = fact.description;
-                                 if (cotizacioncab[0].moneda === 2)
-                                    xProdName = fact.nameext;
-                                 if (cotizacioncab[0].moneda === 2)
-                                    xProdDescrip = fact.descripext;
-                                 return (
-                                    <tr key={i}>
-                                       <td>{xProdName}</td>
-                                       <td>{xProdDescrip}</td>
-                                       {fact.precio > 0 ? (
-                                          <td>{fact.cantidad}</td>
-                                       ) : null}
-                                       {fact.precio > 0 ? (
-                                          <td className="totaltr">{xMoneda}
-                                             {dollarUSLocale.format(
-                                                fact.precio
-                                             )}
-                                          </td>
-                                       ) : (
-                                          <td
-                                             className={style.incluido}
-                                             colSpan={3}
-                                          >
-                                             {xIncluido}
-                                          </td>
-                                       )}
-                                       {fact.precio > 0 ? (
-                                          <td className="totaltr">{xMoneda}
-                                             {dollarUSLocale.format(fact.total)}
-                                          </td>
-                                       ) : null}
-                                    </tr>
-                                 );
-                              })}
-                        </tbody>
-                     </table>
-                     <div className="total">
-                        <table>
-                           <tbody>
-                              <tr className="totaltr">
-                                 <td colSpan="3" className="totaltd1">
-                                    Subtotal:
-                                 </td>
-                                 <td className="totaltd2">{xMoneda}
-                                    {dollarUSLocale.format(
-                                       cotizacioncab[0].subtotal
-                                    )}
-                                 </td>
-                              </tr>
-                              {cotizacioncab[0].moneda !== 2 ? (
-                                 <tr className="totaltr">
-                                    <td colSpan="3" className="totaltd1">
-                                       {xIva}({porciva[0].valor}%)
-                                    </td>
-                                    <td className="totaltd2">{xMoneda}
-                                       {dollarUSLocale.format(
-                                          cotizacioncab[0].iva
-                                       )}
-                                    </td>
-                                 </tr>
-                              ) : null}
-                              {cotizacioncab[0].dhl > 0 ? (
-                                 <tr className="totaltr">
-                                    <td colSpan="3" className="totaltd1">
-                                       {xDHL}
-                                    </td>
-                                    <td className="totaltd2">{xMoneda}
-                                       {dollarUSLocale.format(
-                                          cotizacioncab[0].dhl
-                                       )}
-                                    </td>
-                                 </tr>
-                              ) : null}
-                              <tr className="totaltr">
-                                 <td colSpan="3">
-                                    <b>{xTotPag}</b>
-                                 </td>
-                                 <td className="totaltd2">{xMoneda}
-                                    {dollarUSLocale.format(
-                                       cotizacioncab[0].total
-                                    )}
-                                 </td>
-                              </tr>
-                           </tbody>
-                        </table>
-                     </div>
-                     {cotizacioncab[0].observ !== "" ? (
-                        <div className={style.cabecera}>
-                           <p className={style.addprod2p}>
-                              {cotizacioncab[0].observ}
-                           </p>
-                        </div>
-                     ) : null}
-                  </div>
-               </div>
-               {/* Condiciones Generales  */}
-               {cotizacioncond.length > 0 &&
-                  parseInt(cotizacioncond[0].cond_id) > 1 ? (
-                  <div  className={style.cabeceraCondGral}>
-                     <table>
-                        <thead>
-                           <tr >
-                              <th colSpan={3}>{xCond}</th>
-                           </tr>
-                           <tr >
-                              <th>{xDescripcion}</th>
-                              <th>&nbsp;</th>
-                              <th>{xImporte}</th>
-                           </tr>
-                        </thead>
-                        <tbody>
-                           {cotizacioncond &&
-                              cotizacioncond.map((cond, i) => {
-                                 console.log("cond: ", cond);
-                                 console.log('cond.cond_id: ', cond.cond_id);
-                                 var xEnganche = (cotizacioncab[0].total * cond.enganche) /100;
-                                 var xFinanciar = cotizacioncab[0].total - xEnganche;
-                                 var xAnos = cond.meses / 12;
-                                 var xPorMes =xFinanciar * (cond.interes / 100) * xAnos;
-                                 var xPagoMens =(xFinanciar + xPorMes) / cond.meses;
-                                 var xTotal = xPagoMens * cond.meses;
-                                 if (cond.cond_id === 1) {
-                                    xEnganche = 0;
-                                    xFinanciar = 0;
-                                    xTotal = cotizacioncab[0].total;
-                                    return (
-                                       <>
-                                          <tr key={i * 10}>
-                                             <td>{cond.nombre}</td>
-                                             <td colSpan={2}>&nbsp;</td>
-                                          </tr>
-                                          <tr>
-                                             <td>{xTotPag}</td>
-                                             <td className="totaltr">
-                                                {dollarUSLocale.format(xTotal)}
-                                             </td>
-                                          </tr>
-                                       </>
-                                    );
-                                 }
-                                 if (cond.cond_id === 2) {
-                                    xEnganche = 0;
-                                    xFinanciar = 0;
-                                    var xDescuento =
-                                       (cotizacioncab[0].total *
-                                          cond.descuento) /
-                                       100;
-                                    xTotal =
-                                       cotizacioncab[0].total -
-                                       (cotizacioncab[0].total *
-                                          cond.descuento) /
-                                          100;
-                                    return (
-                                       <>
-                                          <tr>
-                                             <td colSpan={2}>Total Factura</td>
-                                             <td className="totaltr">
-                                                {dollarUSLocale.format(
-                                                   cotizacioncab[0].total
-                                                )}
-                                             </td>
-                                          </tr>
-                                          <tr>
-                                             <td colSpan={2}>
-                                                Descuento{" "}
-                                                {dollarUSLocale.format(
-                                                   cond.descuento.toFixed(0)
-                                                )}
-                                                %
-                                             </td>
-                                             <td className="totaltr">
-                                                {dollarUSLocale.format(
-                                                   xDescuento.toFixed(0)
-                                                )}
-                                             </td>
-                                          </tr>
-                                          <tr>
-                                             <td colSpan={2}>{xTotPag}</td>
-                                             <td className="totaltr">
-                                                {dollarUSLocale.format(
-                                                   xTotal.toFixed(0)
-                                                )}
-                                             </td>
-                                          </tr>
-                                       </>
-                                    );
-                                 }
-                                 if (parseInt(cond.cond_id) > 2) {
-                                    console.log('mayor a 3');
-                                    return (
-                                       <>
-                                          <tr>
-                                             <td colSpan={2}>Total</td>
-                                             <td className="totaltr">
-                                                {dollarUSLocale.format(
-                                                   cotizacioncab[0].total
-                                                )}
-                                             </td>
-                                          </tr>
-                                          {xEnganche !== 0 ? (
-                                             <>
-                                                <tr>
-                                                   <td colSpan={2}>
-                                                      {xEngancheTit}
-                                                   </td>
-                                                   <td className="totaltr">
-                                                      {dollarUSLocale.format(
-                                                         xEnganche.toFixed(0)
-                                                      )}
-                                                   </td>
-                                                </tr>
-                                                <tr>
-                                                   <td colSpan={2}>{xSaldo}</td>
-                                                   <td className="totaltr">
-                                                      {dollarUSLocale.format(
-                                                         xFinanciar.toFixed(0)
-                                                      )}
-                                                   </td>
-                                                </tr>
-                                                <tr>
-                                                   <td>
-                                                      {cond.meses} {xPagosMens}
-                                                   </td>
-                                                   <td>
-                                                      {xInteres} {cond.interes}{" "}
-                                                      %
-                                                   </td>
-                                                   <td className="totaltr">
-                                                      {dollarUSLocale.format(
-                                                         xPagoMens.toFixed(0)
-                                                      )}
-                                                   </td>
-                                                </tr>
-                                             </>
-                                          ) : null}
-                                          <tr>
-                                             <td colSpan={2}>{xTotPag}</td>
-                                             <td className="totaltr">
-                                                {dollarUSLocale.format(
-                                                   xTotal.toFixed(0)
-                                                )}
-                                             </td>
-                                          </tr>
-                                       </>
-                                    );
-                                 }
-                              })}
-                        </tbody>
-                     </table>
-                  </div>
-               ) : null}
-               <div className={style.terminos}>
-                  <table >
-                     <thead>
-                        <th>{xTerminos}</th>
-                     </thead>
-                     {tabla &&
-                        tabla.map((tabla) => {
-                           if (tabla.id === xTablaId && tabla.cod !== 0) {
-                              return (
-                                 <tr>
-                                    <td>{`${tabla.description}`}</td>
-                                 </tr>
-                              );
-                           } else {
-                              return null;
-                           }
-                        })}
-                  </table>
-               </div>
-               <div className={style.nibbot}>
-                  {/* <p>
-                     NIBBOT INTERNATIONAL - RFC NIN180922KJ2 - San Luis, S.L.P.
-                     info@nibbot.com.mx (55) 8842 7884
-                  </p> */}
-                  {tabla &&
-                        tabla.map((tabla) => {
-                           if (tabla.id === 12 && tabla.cod === 1) {
-                              return (
-                                    <p>{`${tabla.description}`}</p>
-                              );
-                           } else {
-                              return null;
-                           }
-                        })}                  
-               </div>
-            <div className={style.hr}>&nbsp;</div>
-            </div>
-            <div id="left">
-               <FcLeft
-                  style={estilo2}
-                  title="Volver"
-                  onClick={() => {
-                     navigate("/cotizacion");
-                  }}
-               />
-            </div>
-            {/* <Pdf targetRef={ref} filename={pdfFilename}>
-               {({ toPdf }) => <button onClick={toPdf}>Crear PDF</button>}
-            </Pdf> */}
-            <div id="imprimir">
-            {/* <button className="dontPrint" onClick={() => window.print()}> Capture as PDF </button> */}
-            <button className="dontPrint" onClick={() => imprimir()}> Capture as PDF </button>
-            </div>
-         </>
-      );
-   } else {
-      console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-      console.log("Logeo de Errores");
-      console.log("cotizacioncab: ", cotizacioncab);
-      console.log("cotizaciondet: ", cotizaciondet);
-      console.log("cotizacioncond: ", cotizacioncond);
-      console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-      return (
-         <div>
-            <h3>Cargando...</h3>
-         </div>
-      );
+      header(doc, leftInput, leftMargin);
+// Only First Header
+      if (cotizacioncab[0].direccion !== "") {
+         doc.setFont("Times", "normal");
+         doc.text(`${xDireccion}`, leftMargin, xhor);
+         doc.setFont("Times", "bold");
+         doc.text(`${cotizacioncab[0].direccion}`, leftInput, xhor);
+         xhor += 8;
+      }
+      if (cotizacioncab[0].telefono !== "") {
+         doc.setFont("Times", "normal");
+         doc.text(`${xTelefono}`, leftMargin, xhor);
+         doc.setFont("Times", "bold");
+         doc.text(`${cotizacioncab[0].telefono}`, leftInput, xhor);
+         xleft = 100;
+         xhorNew = 8;
+      }
+      if (cotizacioncab[0].email !== "") {
+         doc.setFont("Times", "normal");
+         doc.text(`E-Mail :`, leftMargin + xleft, xhor);
+         doc.setFont("Times", "bold");
+         doc.text(`${cotizacioncab[0].email}`, leftInput + xleft, xhor);
+         xhorNew = 8;
+         xleft = 0;
+      }
+      xhor += xhorNew;
+      doc.setFont("Times", "normal");
+      doc.text(`${xVendedor} :`, leftMargin, xhor);
+      doc.setFont("Times", "bold");
+      doc.text(`${actlogin[0].name}`, leftInput, xhor);
+      doc.setFont("Times", "normal");
+      doc.text("E-Mail :", leftMargin + 100, xhor);
+      doc.setFont("Times", "bold");
+      doc.text(`${actlogin[0].email}`, leftInput + 95, xhor);
+      xhor += 8;
+// end Only First Header
+      unidades(doc, leftInput, leftMargin,xhor);
+      xhor += 8;
+//   Productos
+      console.log('cotizaciondet: ', cotizaciondet);
+      for (let prodIndx = 0; prodIndx < cotizaciondet.length; prodIndx++) {
+         xProdName = cotizaciondet[prodIndx].name.replace("″", "'");
+         xProdDescrip = cotizaciondet[prodIndx].description.replace("″", "'");
+         if (cotizacioncab[0].moneda === 2) {
+            xProdName = cotizaciondet[prodIndx].nameext.replace("″", "'");
+         }
+         if (cotizacioncab[0].moneda === 2) {
+            xProdDescrip = cotizaciondet[prodIndx].descripext.replace("″", "'");
+         }
+         xhorNew = producto(doc, xProdName, xhor, leftMargin , 18);
+         xhorNew = producto(doc, xProdDescrip, xhor, leftMargin + 43, 49);
+         if (cotizaciondet[prodIndx].precio > 0) {
+            doc.text(`${cotizaciondet[prodIndx].cantidad}`,leftMargin + 150,xhor,"right");
+            doc.text(`${xMoneda}${dollarUSLocale.format(cotizaciondet[prodIndx].precio)}`,leftMargin + 175,xhor,"right");
+            doc.text(`${xMoneda}${dollarUSLocale.format(cotizaciondet[prodIndx].total)}`,leftMargin + 200,xhor,"right");
+         } else {
+            doc.setFont("Times", "bold");
+            doc.text(`${xIncluido}`, leftMargin + 160, xhor);
+            doc.setFont("Times", "normal");
+         }
+         xhor = xhorNew + 5;
+         if (xhor>maxhor){
+            doc.addPage()
+            header(doc, leftInput, leftMargin);
+            xhor = 38;
+            unidades(doc, leftInput, leftMargin,xhor);
+            xhor += 8;
+         }
+      
+      };
+      doc.setDrawColor(243, 243, 243);
+      doc.setLineWidth(0.5);
+      doc.line(leftMargin, xhor + 2, 210, xhor + 2);
+// Fin Productos
+      xhor +=8
+      doc.text(`Subtotal:`, 140, xhor);
+      var xSub2 = cotizacioncab[0].subtotal
+      var xIva2 = cotizacioncab[0].iva 
+      var xDhl2 = cotizacioncab[0].dhl
+      var xTot = cotizacioncab[0].total 
+      doc.text(`${xMoneda}${dollarUSLocale.format(xSub2)}`,200,xhor,"right");
+      xhor += 8;
+      if (cotizacioncab[0].moneda !== 2) { 
+         doc.text(`${xIva}`, 140, xhor);
+         doc.text(`${xMoneda}${dollarUSLocale.format(xIva2)}`,200,xhor,"right");
+         xhor += 8;
+      }
+      if (cotizacioncab[0].dhl > 0) {
+         doc.text(`${xDHL}`, 140, xhor);
+         doc.text(`${xMoneda}${dollarUSLocale.format(xDhl2)}`,200,xhor,"right" );
+         xhor += 8;
+      }
+      doc.text(`${xTotPag}`, 140, xhor);
+      doc.text(`${xMoneda}${dollarUSLocale.format(xTot)}`,200,xhor,"right");
+      xhor += 8;
+
+      if (cotizacioncab[0].observ !== "") {
+         doc.text(`${cotizacioncab[0].observ}`, leftMargin, xhor);
+         xhor += 8;
+      }
+      //   }
+      doc.line(leftMargin, xhor + 2, 210, xhor + 2);
+      xhor += 7;
+      // Condiciones Generales
+      if (
+         cotizacioncond.length > 0 &&
+         parseInt(cotizacioncond[0].cond_id) > 1
+      ) {
+         doc.setFont("Times", "bold");
+         doc.text(`${xCond}`, leftMargin, xhor);
+         doc.setFont("Times", "normal");
+         xhor += 8;
+         doc.text(`${xDescripcion}`, leftMargin+25, xhor);
+         doc.text(`${xImporte}`, 200, xhor, "right");
+         xhor += 8;
+         for (let cotiInd = 0; cotiInd < cotizacioncond.length; cotiInd++) {
+            var xEnganche = (cotizacioncab[0].total * cotizacioncond[cotiInd].enganche) / 100;
+            var xFinanciar = cotizacioncab[0].total - xEnganche;
+            var xAnos = cotizacioncond[cotiInd].meses / 12;
+            var xPorMes = xFinanciar * (cotizacioncond[cotiInd].interes / 100) * xAnos;
+            var xPagoMens = (xFinanciar + xPorMes) / cotizacioncond[cotiInd].meses;
+            var xTotal = xPagoMens * cotizacioncond[cotiInd].meses;
+            if (parseInt(cotizacioncond[cotiInd].cond_id) === 1) {
+               doc.text(`${cotizacioncond[cotiInd].nombre}`, leftInput, xhor);
+               doc.text(`${xTotPag}`, leftInput + 100, xhor);
+               doc.text(`${dollarUSLocale.format(xTotal.toFixed())}`, 175, xhor);
+               xhor += 6;
+            }
+            if (parseInt(cotizacioncond[cotiInd].cond_id) === 2) {
+               xEnganche = 0;
+               xFinanciar = 0;
+               var xDescuento = (cotizacioncab[0].total * cotizacioncond[cotiInd].descuento) / 100;
+               xTotal = cotizacioncab[0].total -
+                       (cotizacioncab[0].total * cotizacioncond[cotiInd].descuento) / 100;
+
+               doc.text(`${xTotOC}`, leftInput, xhor);
+               doc.text(`${xMoneda}${dollarUSLocale.format(cotizacioncab[0].total)}`,200,xhor,"right");
+               xhor += 6;
+               doc.text(`${xDescDescrip} ${dollarUSLocale.format(cotizacioncond[cotiInd].descuento.toFixed())}`,leftInput,xhor);
+               doc.text(`${xMoneda}${dollarUSLocale.format(xDescuento.toFixed())}`,200,xhor,"right");
+               xhor += 6;
+               doc.text(`${xTotPag}`, leftInput, xhor);
+               doc.text(`${xMoneda}${dollarUSLocale.format(xTotal.toFixed())}`,200,xhor,"right");
+            }
+            if (parseInt(cotizacioncond[cotiInd].cond_id) > 2) {
+               doc.text(`${xTotOC}`, leftInput, xhor);
+               doc.text(`${xMoneda}${dollarUSLocale.format(xTot)}`,200,xhor,"right");
+               xhor += 6;
+               if (xEnganche !== 0) {
+                  doc.text(`${xEngancheTit}`, leftInput, xhor);
+                  doc.text(`${xMoneda}${dollarUSLocale.format(xEnganche.toFixed(0))}`,200,xhor,"right");
+                  xhor += 6;
+                  doc.text(`${xSaldo}`, leftInput, xhor);
+                  doc.text(`${xMoneda}${dollarUSLocale.format(xFinanciar.toFixed(0))}`,200,xhor,"right");
+                  xhor += 6;
+                  doc.text(`${cotizacioncond[cotiInd].meses} ${xPagosMens}    ${xInteres} ${cotizacioncond[cotiInd].interes}% `, leftInput, xhor);
+                  doc.text(`${xMoneda}${dollarUSLocale.format(xPagoMens.toFixed(0))}`,200,xhor,"right");
+                  xhor += 6;
+                  doc.text(`${xTotPag}`, leftInput, xhor);
+                  doc.text(`${xMoneda}${dollarUSLocale.format(xTotal.toFixed(0))}`,200,xhor,"right");
+                  xhor += 6;
+               }
+            }
+         };
+      }
+      //* Terminos y condiciones
+
+      if (xhor>maxhor){
+         doc.addPage()
+         header(doc, leftInput, leftMargin);
+         doc.setFontSize(12);
+         xhor = 38;
+      } else {
+         xhor += 3;
+      }
+
+      doc.setFont("Times", "bold");
+      doc.text(`${xTerminos}`, leftMargin, xhor);
+      doc.setFont("Times", "normal");
+      xhor += 8;
+      for (var i = 0; i < tabla.length; i++) {
+        if (tabla[i].id === xTablaId && tabla[i].cod !== 0) {
+            doc.text(`${tabla[i].description}`, leftMargin, xhor);
+            xhor += 5;
+         }
+         if (tabla[i].id === 12 && tabla[i].cod === 1) {
+            xFooter = tabla[i].description
+         }
+      }
+      xhor += 5;
+      doc.setDrawColor(0, 0, 193);
+      doc.setLineWidth(0.5);
+      doc.line(3, xhor, 200, xhor);
+      xhor += 8;
+      doc.text(`${xFooter}`, leftMargin, xhor);
+      xhor +=5
+      doc.line(3, xhor, 200, xhor);
+      // Linea final
+      doc.save(`${pdfFilename}.pdf`);
+      window.location.href = "/cotizacion";
+   };
+
+   function producto (doc, texto, xHor, leftMargin, cantCaracteres) {
+      var words = texto.split(" ");
+      var muestro = "";
+      for (var i = 0; i < words.length; i++) {
+         if (muestro.length + words[i].length >= cantCaracteres) {
+            doc.text(muestro, leftMargin, xHor);
+            xHor = xHor + 5;
+            muestro = words[i] + " ";
+         } else {
+            muestro = muestro + words[i] + " ";
+         }
+      }
+      if (muestro !== " ") {
+         doc.text(muestro, leftMargin, xHor);
+         xHor += 5;
+      }
+      console.log("out: ", xHor);
+      return xHor;
+   };
+
+   function unidades (doc, leftInput, leftMargin,xhor) {
+      doc.setFontSize(12);
+      doc.text(xUnidad, leftMargin, xhor);
+      doc.text(xDescripcion, leftMargin + 43, xhor);
+      doc.text(xCant, leftMargin + 140, xhor);
+      doc.text(xPrecio, leftMargin + 175, xhor, "right");
+      doc.text(xImporte, leftMargin + 195, xhor, "right");
+      doc.setLineWidth(0.5);
+      doc.line(leftMargin, xhor + 2, 205, xhor + 2);
+      doc.setFont("Times", "normal");
    }
+   function header (doc, leftInput, leftMargin) {
+      doc.setDrawColor(0, 0, 193);
+      doc.setLineWidth(1);
+      doc.line(5, 3, 200, 3);
+      doc.addImage(Imagen, "PNG", 5, 2, 50, 25);
+      doc.setFont("Times", "bold");
+      doc.setFontSize(24);
+      doc.text(`${xCotizacion} N°: ${cotizacioncab[0].id}`, 100, 15);
+      doc.setFontSize(14);
+      doc.setFont("Times", "normal");
+      doc.text(`${xCliente} : `, leftMargin, 30);
+      doc.setFont("Times", "bold");
+      doc.text(`${cotizacioncab[0].nombre}`, leftInput, 30);
+      doc.setFont("Times", "normal");
+      doc.text(`${xFecha} : `, leftMargin + 150, 30);
+      doc.setFont("Times", "bold");
+      doc.text(`${cotizacioncab[0].fecha}`, leftInput + 145, 30);
+
+      doc.setFontSize(14);
+   };
+
+   if (
+      cotizaciondet.length > 0 &&
+      cotizacioncond.length > 0 &&
+      cotizacioncab.length > 0 &&
+      tabla.length > 0
+   ) {
+      downloadFileDocument();
+   }
+   return (
+      <div id="element-to-hide" data-html2canvas-ignore="true">
+         <div>&nbsp;</div>
+         <div>&nbsp;</div>
+         <h3>Generando PDF</h3>
+         <p>Por Favor Espere... </p>
+         <img src={ImagenWait} alt="waiting" />
+      </div>
+   );
 };
 
 export default FormcotizPDF;

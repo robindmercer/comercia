@@ -7,13 +7,16 @@ import { FcAddDatabase, FcBusinessman, FcDiploma2} from "react-icons/fc";
 import style from "../../css/factura.module.css";
 import { AccessCtrl } from "../../actions/index";
 
-import { Modal, Button, Alert} from 'react-bootstrap';
+import { Modal, Button} from 'react-bootstrap';
 import AsignCli from './cotizAsignClient';
 //import { getUsuariomenId } from "../../actions/usuariomenu";
 // import { getDetail } from "../../actions/tabla";
 // import crearMail from "../CrearMails";
 // import { mailEnviar } from "../../actions/index";
 import { GetMails } from "../../actions/usuario";
+// import { PDFDownloadLink } from "@react-pdf/renderer";
+
+
 
 const Cotizacion = () => {
   // Modal 
@@ -331,7 +334,11 @@ const Cotizacion = () => {
                 }
               })}
           </tbody>
+
         </table>
+        <div className="App">
+
+    </div>
       </div>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
-import Pdf from "react-to-pdf";
+//import Pdf from "react-to-pdf";
+// import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
 // Iconos
 import { FcLeft } from "react-icons/fc";
 
@@ -519,9 +520,6 @@ const FormfacturaPDF = () => {
                   }}
                />
             </div>
-            <Pdf targetRef={ref} filename={pdfFilename}>
-               {({ toPdf }) => <button onClick={toPdf}>Crear PDF</button>}
-            </Pdf>
          </>
       );
    } else {

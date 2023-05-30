@@ -208,13 +208,13 @@ async function refLoad() {
          id: 2,
          lang: "ENG",
          name: "COIL VCPRO® Figure 8 Main Treatment Coil",
-         description: "Main treatment coil in the form of an eight COIL VCPRO® Coil with a diameter of 3.7″ each spiral– Induced magnetic field: Inverted cone– Weight: 1.5 Kg– Length: 9.6″– CM depth: 3.9″– Material: High-quality plastic resistance – Var. temperature: + 5.5 °C / +/- 5%– Application : Cranial"
+         description: "Main treatment coil in the form of an eight COIL VCPRO® Coil with a diameter of 3.7` each spiral. Induced magnetic field: Inverted cone. Weight: 1.5 Kg. Length: 9.6`. CM depth: 3.9`. Material: High-quality plastic resistance . Var. temperature: + 5.5 °C / +/- 5%. Application : Cranial"
       },
       {
          id: 3,
          lang: "ENG",
          name: "COIL VCPRO® Circular Treatment Main Coil",
-         description: "Main treatment coil in the form of an eight COIL VCPRO® Coil with a diameter of 3.7″ each spiral– Induced magnetic field: Inverted cone– Weight: 1.5 Kg– Length: 9.6″– CM depth: 3.9″– Material: High-quality plastic resistance – Var. temperature: + 5.5 °C / +/- 5%– Application : Cranial"
+         description: "Main treatment coil in the form of an eight COIL VCPRO® Coil with a diameter of 3.7` each spiral. Induced magnetic field: Inverted cone. Weight: 1.5 Kg. Length: 9.6`. CM depth: 3.9`. Material: High-quality plastic resistance . Var. temperature: + 5.5 °C / +/- 5%. Application : Cranial"
       },
       {
          id: 4,
@@ -263,13 +263,13 @@ async function refLoad() {
       },
       {
          name: "Bobina principal de tratamiento en forma de ocho COIL  VCPRO®",
-         description: "Bobina principal de tratamiento en forma de ocho COIL VCPRO® Bobina de 3.7″ de diámetro cada espiral– Campo magnético inducido: Cono invertido– Peso: 1.5 Kg– Longitud: 9.6″– Profundidad del CM: 3.9″– Material: Plástico de alta resistencia– Var. temperatura: + 5.5 °C / +/- 5%– Aplicación : Craneal",
+         description: "Bobina principal de tratamiento en forma de ocho COIL VCPRO® Bobina de 3.7` de diámetro cada espiral. Campo magnético inducido: Cono invertido. Peso: 1.5 Kg. Longitud: 9.6`. Profundidad del CM: 3.9`. Material: Plástico de alta resistencia. Var. temperatura: + 5.5 °C / +/- 5% Aplicación : Craneal",
          price: "14900",dolar:"1490",
          cod_status: '1'
       },
       {
          name: "Bobina principal de tratamiento circular COIL VCPRO®",
-         description: "Bobina principal de tratamiento circular COIL VCPRO®Bobina de 6.5″ de diámetro– Campo magnético inducido: Conoidal– Peso: 1.9 Kg– Longitud: 12″– Profundidad del CM: 2.3″– Material: Plástico de alta resistencia– Var. temperatura: + 4 °C / +/- 5%– Aplicación : Craneal / Corporal",
+         description: "Bobina principal de tratamiento circular COIL VCPRO®Bobina de 6.5` de diámetro. Campo magnético inducido: Conoidal. Peso: 1.9 Kg. Longitud: 12`. Profundidad del CM: 2.3`. Material: Plástico de alta resistencia. Var. temperatura: + 4 °C / +/- 5%. Aplicación : Craneal / Corporal",
          price: "14900",dolar:"1490",
          cod_status: '1'
       },
@@ -292,7 +292,7 @@ async function refLoad() {
          cod_status: '1'
       },
       {
-         name: "Programa de capaciitación y certificación profesional como Especialista en Estimulación Magnetica Transcraneal",
+         name: "Capacitación",
          description: "Programa de capacitación y certificación profesional. Modalidad digital asicrinico para 3 personas. Incluye material de studio, clases en formato video y exámenes 3",
          price: "0",dolar:"0",
          cod_status: '1'
@@ -304,7 +304,7 @@ async function refLoad() {
          cod_status: '1'
       },
       {
-         name: "Software V20 (actualización remota)",
+         name: "Software V20",
          description: "Sistema de monitoreo SOFTWARE V20 - con actualización remota sin cargo",
          price: "0",dolar:"0",
          cod_status: '1'

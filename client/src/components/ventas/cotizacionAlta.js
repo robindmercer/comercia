@@ -333,8 +333,8 @@ const Formcotizacion = () => {
     // console.log('saleTax: ', saleTax);
     // console.log('Total: ', total);
     factcab[0].subtotal = subTotal;
-    factcab[0].iva = saleTax;
-    factcab[0].total = total;
+    factcab[0].iva = saleTax.toFixed(0);
+    factcab[0].total = total.toFixed(0);
     factcab[0].dir_id = parseInt(xMoneda);
     setInput((input.subtotal = subTotal));
     setInput((input.iva = saleTax));
@@ -1043,7 +1043,7 @@ const Formcotizacion = () => {
             <table>
                 <tbody>
                   <tr className="totaltr">
-                    {acceso.substring(0,1) === "A" ? (
+                    {acceso.substring(0,1) === "A" && btnGrabar ? (
                       <td>
                         <Button
                           variant="success"
