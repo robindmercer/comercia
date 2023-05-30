@@ -382,7 +382,7 @@ const FormcotizPDF = () => {
       doc.setDrawColor(0, 0, 193);
       doc.setLineWidth(1);
       doc.line(5, 3, 200, 3);
-      doc.addImage(Imagen, "PNG", 5, 2, 50, 25);
+      doc.addImage(Imagen, "PNG", 5, 2, 50, 20);
       doc.setFont("Times", "bold");
       doc.setFontSize(20);
       doc.text(`${xCotizacion} N°: ${cotizacioncab[0].id}`, 100, 15);
