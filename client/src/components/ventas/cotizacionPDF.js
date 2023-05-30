@@ -315,7 +315,7 @@ const FormcotizPDF = () => {
       if (xhor>maxhor){
          doc.addPage()
          header(doc, leftInput, leftMargin);
-         doc.setFontSize(12);
+         doc.setFontSize(10);
          xhor = 38;
       } else {
          xhor += 3;
@@ -368,7 +368,7 @@ const FormcotizPDF = () => {
    };
 
    function unidades (doc, leftInput, leftMargin,xhor) {
-      doc.setFontSize(12);
+      doc.setFontSize(10);
       doc.text(xUnidad, leftMargin, xhor);
       doc.text(xDescripcion, leftMargin + 43, xhor);
       doc.text(xCant, leftMargin + 140, xhor);
@@ -384,9 +384,9 @@ const FormcotizPDF = () => {
       doc.line(5, 3, 200, 3);
       doc.addImage(Imagen, "PNG", 5, 2, 50, 25);
       doc.setFont("Times", "bold");
-      doc.setFontSize(24);
+      doc.setFontSize(20);
       doc.text(`${xCotizacion} N°: ${cotizacioncab[0].id}`, 100, 15);
-      doc.setFontSize(14);
+      doc.setFontSize(12);
       doc.setFont("Times", "normal");
       doc.text(`${xCliente} : `, leftMargin, 30);
       doc.setFont("Times", "bold");
@@ -396,7 +396,7 @@ const FormcotizPDF = () => {
       doc.setFont("Times", "bold");
       doc.text(`${cotizacioncab[0].fecha}`, leftInput + 145, 30);
 
-      doc.setFontSize(14);
+      doc.setFontSize(10);
    };
 
    if (
