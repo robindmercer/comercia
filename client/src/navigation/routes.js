@@ -17,6 +17,7 @@ import Landing from '../components/Landing/Landing'
 import MateriaPrima from '../components/admin/mp/MateriaPrimaMain'
 import Producto from '../components/admin/producto/producto';
 import ProductoLang from '../components/admin/producto/productoLang' // '../components/admin/productolang';
+import FormProductoLang from '../components/admin/producto/formProductoLang' // '../components/admin/productolang';
 import Tablas from '../components/admin/tabla/tablas'
 import Usuarios from '../components/admin/usuario/UsuarioMain';
 import Factura from '../components/ventas/factura'
@@ -34,6 +35,7 @@ import CotizacionAlta from '../components/ventas/cotizacionAlta'
 import CotizacionPDF from '../components/ventas/cotizacionPDF'
 import UploadFile from '../Upload'
 import VerPdf from '../verPdf'
+import Contrato from '../components/ventas/contrato'
 function HandleRoutes() {
 
     const routes = [
@@ -223,8 +225,19 @@ function HandleRoutes() {
             element: <VerPdf />,
             exact: true,
             private: true,
-        }  
-
+        },
+        {
+            path: "/contrato",
+            element: <Contrato />,
+            exact: true,
+            private: true,
+        },
+        {
+            path: "/formProductoLang",
+            element: <FormProductoLang/>,
+            exact: true,
+            private: true,
+        },
     ]
     return routes;
 };

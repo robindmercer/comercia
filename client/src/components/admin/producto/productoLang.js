@@ -60,10 +60,10 @@ const Productolang = () => {
                         to={"/formProductolang"}
                         state={{
                           id: prod.id,
-                          name: prod.name,
-                          description: prod.description,
-                          lang: prod.lang,
-                          cod_status: prod.cod_status,
+                          name: "",
+                          description: "",
+                          lang: "",
+                          cod_status: 1,
                         }}
                       >
                         🖋️

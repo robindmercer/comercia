@@ -49,30 +49,32 @@ router.get("/:id", function (req, res, next) {
 
 router.post("/", async function (req, res, next) {
   const { id,name, description, lang  } = req.body;
+  console.log('POST PRODUCTOLANG req.body: ', req.body);
   if (!name || !description || !lang ) {
     return res.send("Falta información para poder darte de alta el Productoo")
   }
-  const producto = await Productolang.findOne({
+  const productolang = await Productolang.findOne({
     where: { id: id },
   });
 
-  if (!producto) {
+  if (!productolang) {
     try {
       const newProducto = await Productolang.create({
+        id,
+        lang,
         name,
         description,
-        lang
       });
-      res.status(200).send("Producto Creado");
+      res.status(200).send("Producto Lang Creado");
     } catch (error) {
-      res.status(200).send("Producto ya creado");
+      res.status(200).send(error);
       //      next(error)
     }
   }
    else {
     producto.name = name;
-    producto.description = description;
     producto.lang = lang;
+    producto.description = description;
     if (producto.id) await producto.save();
       res.json(producto);
   }
