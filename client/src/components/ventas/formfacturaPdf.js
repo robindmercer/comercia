@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 
 import { jsPDF } from "jspdf";
-import Imagen from "../../images/logos.png";
+import Imagen from "../../images/LogoNibbot.png";
 import ImagenWait from "../../images/Spinner-5.gif";
 
 // Acciones
@@ -105,9 +105,10 @@ const FormfacturaPDF = () => {
    console.log("state.idfact ", state.idfact);
    console.log("tabla: ", tabla);
    // console.log("usuariomenu: ", usuariomenu);
-   // console.log("acceso: ", acceso);
+   // console.log("console.log('factcond: ', factcond);: ", acceso);
    console.log("factcab: ", factcab);
    console.log("factdet: ", factdet);
+   console.log('factcond: ', factcond);
    console.log(
       "formFactura---------------------------------------------------"
    );
@@ -218,9 +219,9 @@ const FormfacturaPDF = () => {
          xhor = xhorNew + 5;
          if (xhor>maxhor){
             doc.addPage()
-            xhor = header(doc, leftInput, leftMargin);
+            header(doc, leftInput, leftMargin);
             unidades(doc, leftInput, leftMargin,xhor);
-            xhor += 8;
+            xhor = 40;
          }
       
       };
@@ -264,6 +265,11 @@ const FormfacturaPDF = () => {
       ) {
          doc.setFont("Times", "bold");
          doc.text(`${xCond}`, leftMargin, xhor);
+         
+         console.log('xCond: ', xCond);
+         console.log('xDescripcion: ', xDescripcion);
+         console.log('xImporte: ', xImporte);
+
          doc.setFont("Times", "normal");
          xhor += 8;
          doc.text(`${xDescripcion}`, leftMargin+25, xhor);
@@ -299,6 +305,21 @@ const FormfacturaPDF = () => {
                doc.text(`${xMoneda}${dollarUSLocale.format(xTotal.toFixed())}`,200,xhor,"right");
             }
             if (parseInt(factcond[cotiInd].cond_id) > 2) {
+               
+               console.log('xTotOC: ', xTotOC);
+               console.log('xMoneda: ', xMoneda);
+               console.log('xTot: ', xTot);
+               console.log('xEngancheTit: ', xEngancheTit);
+               console.log('xEnganche: ', xEnganche);
+               console.log('xSaldo: ', xSaldo);
+               console.log('xFinanciar: ', xFinanciar);
+               console.log('factcond[cotiInd].meses: ', factcond[cotiInd].meses);
+               console.log('factcond[cotiInd].interes: ', factcond[cotiInd].interes);
+               console.log('xPagoMens: ', xPagoMens);
+               console.log('xTotPag: ', xTotPag);
+               console.log('xTotal: ', xTotal.toFixed(0));
+               console.log('leftInput: ', leftInput);
+               
                doc.text(`${xTotOC}`, leftInput, xhor);
                doc.text(`${xMoneda}${dollarUSLocale.format(xTot)}`,200,xhor,"right");
                xhor += 6;
@@ -312,6 +333,7 @@ const FormfacturaPDF = () => {
                   doc.text(`${factcond[cotiInd].meses} ${xPagosMens}    ${xInteres} ${factcond[cotiInd].interes}% `, leftInput, xhor);
                   doc.text(`${xMoneda}${dollarUSLocale.format(xPagoMens.toFixed(0))}`,200,xhor,"right");
                   xhor += 6;
+                  // console.log('xhor: ', xhor);
                   doc.text(`${xTotPag}`, leftInput, xhor);
                   doc.text(`${xMoneda}${dollarUSLocale.format(xTotal.toFixed(0))}`,200,xhor,"right");
                   xhor += 6;
@@ -322,10 +344,13 @@ const FormfacturaPDF = () => {
       //* Terminos y condiciones
 
       if (xhor>maxhor){
+         console.log("new page")
          doc.addPage()
-         xhor = header(doc, leftInput, leftMargin);
+         
+         console.log('factcab: ', factcab);
+         header(doc, leftInput, leftMargin);
          doc.setFontSize(10);
-         xhor += 5;
+         xhor = 38;
       } else {
          xhor += 3;
       }
@@ -372,7 +397,7 @@ const FormfacturaPDF = () => {
          doc.text(muestro, leftMargin, xHor);
          xHor += 5;
       }
-      console.log("out: ", xHor);
+      //console.log("out: ", xHor);
       return xHor;
    };
 
@@ -388,10 +413,15 @@ const FormfacturaPDF = () => {
       doc.setFont("Times", "normal");
    }
    function header (doc, leftInput, leftMargin) {
+      console.log('leftMargin: ', leftMargin);
+      console.log('leftInput: ', leftInput);
+      console.log('xOrden: ', xOrden);
+      console.log('xCliente: ', xCliente);
+      console.log('xFecha: ', xFecha);
       doc.setDrawColor(0, 0, 193);
       doc.setLineWidth(1);
       doc.line(5, 3, 200, 3);
-      doc.addImage(Imagen, "PNG", 5, 2, 50, 25);
+      doc.addImage(Imagen, "PNG", 5, 2, 60, 20);
       doc.setFont("Times", "bold");
       doc.setFontSize(20);
       doc.text(`${xOrden} N°: ${factcab[0].id}`, 100, 15);
@@ -411,6 +441,7 @@ const FormfacturaPDF = () => {
    if (
       factdet.length > 0 &&
       factcab.length > 0 &&
+      factcond.length > 0 &&
       tabla.length > 0
       ) {
          downloadFileDocument();
