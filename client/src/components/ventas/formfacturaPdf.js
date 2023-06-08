@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 import { jsPDF } from "jspdf";
 import Imagen from "../../images/LogoNibbot.png";
@@ -29,7 +29,7 @@ var xUnidad = "Unidad";
 var xDescripcion = "Descripción";
 var xPrecio = "Precio";
 var xCant = "Cant";
-var xTotal = "Total";
+
 var xIncluido = "Incluido";
 var xTotPag = "TOTAL A PAGAR";
 var xCond = "Condiciones Generales";
@@ -52,11 +52,11 @@ var xTotOC = "TOTAL O.C.";
 var xDescDescrip = "Descuento";
 const FormfacturaPDF = () => {
    // Manejo acceso del Usuario
-   const navigate = useNavigate();
+   // const navigate = useNavigate();
    const id_usuario = localStorage.getItem("usuario");
    const { factcab } = useSelector((state) => state);
    const { factdet } = useSelector((state) => state);
-   const { porciva } = useSelector((state) => state);
+   // const { porciva } = useSelector((state) => state);
    const { factcond } = useSelector((state) => state);
    
    const tabla = useSelector((state) => state.tabla);
@@ -97,7 +97,7 @@ const FormfacturaPDF = () => {
       //   dispatch(resetFact())
       // )
       // eslint-disable-next-line react-hooks/exhaustive-deps
-   }, [dispatch, id_usuario]);
+   }, []);
 
    console.log(
       "formFactura---------------------------------------------------"
@@ -158,7 +158,7 @@ const FormfacturaPDF = () => {
       const leftInput = 30;
       var xhor = 38;
       var xhorNew = 0;
-      var xleft = 0;
+      // var xleft = 0;
       const doc = new jsPDF();
 
       header(doc, leftInput, leftMargin);
@@ -455,6 +455,11 @@ const FormfacturaPDF = () => {
          <div>&nbsp;</div>
          <div>&nbsp;</div>
          <h3>Generando PDF</h3>
+         {factcab.length  > 0 ? (<p>Cabecera ok</p>) : (<p>Buscando Cabecera</p>)}
+         {factdet.length  > 0 ? (<p>Productos ok</p>) : (<p>Buscando Productos</p>)}
+         {factcond.length > 0 ? (<p>C.pago ok</p>) : (<p>Buscando C.Pago</p>)  }
+         {tabla.length    > 0 ? (<p>Tablas ok</p>) : (<p>Busando Tablas</p>)}
+      
          <p>Por Favor Espere... </p>
          <img src={ImagenWait} alt="waiting" />
       </div>
