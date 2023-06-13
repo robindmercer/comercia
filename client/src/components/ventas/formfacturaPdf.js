@@ -220,8 +220,9 @@ const FormfacturaPDF = () => {
          if (xhor>maxhor){
             doc.addPage()
             header(doc, leftInput, leftMargin);
-            unidades(doc, leftInput, leftMargin,xhor);
             xhor = 40;
+            unidades(doc, leftInput, leftMargin,xhor);
+            xhor += 8;
          }
       
       };
