@@ -4,6 +4,7 @@ const producto = require("./producto")
 const productolang = require("./productoLang")
 const cliente = require("./cliente")
 const direccion =  require("./direccion")
+const contrato =  require("./contrato")
 
 const admin = require("./admin");
 const perfil = require("./perfil");
@@ -64,4 +65,5 @@ router.use('/cotizaciondet',cotizaciondet)      // CotizacionesDet
 router.use('/cotizacioncond',cotizacioncond)      // CotizacionesDet
 router.use('/log',log)                          //Log 
 router.use('/upload',upload)
+router.use('/contrato',contrato)
 module.exports = router;

@@ -8,6 +8,17 @@
         A4 = All       5 = Manufactura
         A5 = All       6 = Compras
 ````
+# Status 
+````
+  1 = Ingreso 
+  2 = Espera Aprobación	
+	3 = Aprobado GC.	
+	4 = Pendiente ADMIN.	
+	5 = Pendiente Pago	
+	6 = Liberado	
+	7 = Almacen	
+	8 = Manufactura	
+````  
 # Prog Id 
 1 = Admin
   6 = Clientes      /cliente
@@ -23,3 +34,5 @@
   17 = Stock
 18 Planeacion 
   19 = Pendientes   /FacturasMP  
+
+

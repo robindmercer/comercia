@@ -1,0 +1,50 @@
+.cuerpo {
+    display:flex;
+    justify-content: center;    
+}
+
+.divLeft{
+   padding:8px;
+}
+.divRight{
+    padding:8px;
+    
+}
+.docum{
+    background: rgb(232, 232, 233);
+}
+.txtarea{
+    border: 0px;
+}
+.inputAncho{
+    width: 100%;
+}
+
+.inputImp{
+    width: 25%;
+    text-align: right;
+}
+div.editable {
+    padding:8px;
+    width: 750px;
+    height: 700px;
+    border: 1px solid #ccc;
+    padding: 5px;
+    text-align: -webkit-left;
+    background: ghostwhite;
+}
+
+div.editable2 {
+    padding:8px;
+    width: 300px;
+    height: 200px;
+    border: 1px solid #ccc;
+    padding: 5px;
+    text-align: -webkit-left;
+    background: ghostwhite;
+}
+
+
+strong {
+  font-weight: bold;
+}

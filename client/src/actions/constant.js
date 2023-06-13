@@ -51,3 +51,5 @@ export const GET_COTCOND = 'GET_COTCOND'
 // Logs
 export const GET_LOGSID = 'GET_LOGSID'
 export const GET_LANG = 'GET_LANG'
+// Contrato
+export const GET_CONTRATOID='GET_CONTRATOID'

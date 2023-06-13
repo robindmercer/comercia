@@ -4,7 +4,7 @@ import { getFactura, UpdateFacturaSts } from "../../actions/factura";
 import { Link } from "react-router-dom";
 
 import Header from "../Header";
-import { FcAddDatabase, FcApproval, FcDiploma2, FcCancel, FcAbout} from "react-icons/fc";
+import { FcAddDatabase, FcApproval, FcDiploma2, FcCancel, FcAbout,FcCopyright} from "react-icons/fc";
 import style from "../../css/factura.module.css";
 import { AccessCtrl } from "../../actions/index";
 //import { getUsuariomenId } from "../../actions/usuariomenu";
@@ -56,6 +56,7 @@ const Factura = () => {
   var btnAddDatabase = false;
   var btnApproval = false;
   var btnDiploma2 = false;
+  var btnContrato = false 
   var btnCancel = false;
   var verStatus = [];
   var muestroRegistro = false;
@@ -94,6 +95,7 @@ const Factura = () => {
     btnAddDatabase = false;
     btnApproval = false;
     btnDiploma2 = false;
+    btnContrato = false;
     verStatus = [];
     muestroRegistro = false;
     if (acceso === "A1") {
@@ -104,6 +106,9 @@ const Factura = () => {
         btnDiploma2 = true;
         btnCancel = true;
       }
+      if (data.cod_status > 3) {
+        btnContrato = true;
+      }
       verStatus.push(1, 2, 3, 4, 5, 6, 7, 8, 9);
     }
     if (acceso === "A2") {
@@ -113,6 +118,9 @@ const Factura = () => {
       btnCancel = true;
       if (data.cod_status > 2) {
         btnDiploma2 = true;
+      }
+      if (data.cod_status > 3) {
+        btnContrato = true;
       }
       if (data.cod_status > 5) {
         btnCancel = false;
@@ -133,6 +141,9 @@ const Factura = () => {
         btnApproval = false;
         btnDiploma2 = true;
         btnCancel = false;
+      }
+      if (data.cod_status > 3) {
+        btnContrato = true;
       }
       verStatus.push(1, 2, 3, 4, 5, 6, 7, 8, 9);
     }
@@ -158,7 +169,7 @@ const Factura = () => {
   };
 
   useEffect(() => {
-    console.log("Use Efect 1");
+    //console.log("Use Efect 1");
     dispatch(AccessCtrl(id_usuario));
     dispatch(getFactura());
     //  dispatch(getUsuariomenId(id_usuario));
@@ -190,13 +201,13 @@ const Factura = () => {
   // }, [idFact, idMail, newStatus]);
   
   const handleSubmit = (id, signo) => {
-    console.log('handleSubmit: ',id,signo,lang);
+    //console.log('handleSubmit: ',id,signo,lang);
     var control = "x";
     var newStatus = 0;
     var paramMail = 1;
     setOnChange(false);
     const found = factura.find((element) => element.id === id);
-    console.log("found: ", found);
+    //console.log("found: ", found);
     if (signo === "-" && found.cod_status > 1) {
       newStatus = found.cod_status - 1;
       paramMail = 2;
@@ -205,7 +216,7 @@ const Factura = () => {
         paramMail = 1;
       }
       control = "N";
-      console.log("newStatus: ", newStatus);
+      //console.log("newStatus: ", newStatus);
     }
     if (signo === "+") {
       if (found.cod_status === 1) {
@@ -246,12 +257,12 @@ const Factura = () => {
         paramMail = 2; // Administracion
       }
     }
-    console.log("Log Data");
-    console.log("usuario:", id_usuario);
-    console.log("Factura:", found.id, "Status", found.cod_status);
-    console.log("Control:", control);
-    console.log("newStatus: ", newStatus);
-    console.log("paramMail: ", paramMail);
+    // console.log("Log Data");
+    // console.log("usuario:", id_usuario);
+    // console.log("Factura:", found.id, "Status", found.cod_status);
+    // console.log("Control:", control);
+    // console.log("newStatus: ", newStatus);
+    // console.log("paramMail: ", paramMail);
     setIdFact(id);
     setNewStatus(newStatus);
     setIdMail(paramMail);
@@ -267,11 +278,11 @@ const Factura = () => {
       observ: lang,
     };
 
-    console.log("log: ", newLog);
+    // console.log("log: ", newLog);
     dispatch(UpdateFacturaSts(found.id, newStatus)); // Espera Aprobacion
     dispatch(AddLogs(newLog));
 
-    dispatch(GetMails(idMail));
+    // dispatch(GetMails(idMail));
     console.log("mails: ", mails);
     for (var index = 0; index < mails.length; index++) {
       console.log("enviar mail: ", mails[index].email);
@@ -315,7 +326,7 @@ const Factura = () => {
               factura.message === undefined &&
               factura.map((data) => {
                 // Manejo Botones
-                console.log('data: ', data);
+                //console.log('data: ', data);
                 control(data);
                 if (muestroRegistro) {
                   return (
@@ -430,6 +441,28 @@ const Factura = () => {
                               }
                             />
                           </Link>
+                        ) : null}
+                        {btnContrato ? (
+                          <>
+                            <Link
+                              to={"/contrato"}
+                              className="dLink"
+                              state={{
+                                idfact: data.id,
+                              }}
+                            >
+                              <FcCopyright
+                                style={estilo}
+                                title="Contrato"
+                                onMouseEnter={({ target }) =>
+                                  (target.style.fontSize = "280%")
+                                }
+                                onMouseLeave={({ target }) =>
+                                  (target.style.fontSize = "200%")
+                                }
+                              />
+                            </Link>
+                          </>
                         ) : null}
                         &nbsp;&nbsp;
                       </td>

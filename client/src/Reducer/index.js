@@ -34,6 +34,7 @@ import {
   GET_CONDICION,
   GET_FACTCOND,
   GET_FACTSTS,
+  GET_CONTRATOID,
 } from "../actions/constant.js";
 import {
   GET_COTIZACION,
@@ -73,6 +74,7 @@ const initialState = {
   cotizacioncond: [], // Condiciones Generales
   idfact: 0,
   idcli: 0,
+  contrato:[],
 };
 
 // Reducer to get foods ordered by alphabet
@@ -290,7 +292,17 @@ const rootReducer = (state = initialState, action) => {
       factcond: action.payload,
     };
   }
-   
+     
+  ///////////////////////////////////////////
+  // Contrato
+  ///////////////////////////////////////////
+  if (action.type === GET_CONTRATOID) {
+    return {
+      ...state,
+      contrato: action.payload,
+    };
+  }
+
   ///////////////////////////////////////////
   // Cotizaciones
   ///////////////////////////////////////////

@@ -35,7 +35,7 @@ import CotizacionAlta from '../components/ventas/cotizacionAlta'
 import CotizacionPDF from '../components/ventas/cotizacionPDF'
 import UploadFile from '../Upload'
 import VerPdf from '../verPdf'
-
+import Contrato from '../components/ventas/contrato'
 function HandleRoutes() {
 
     const routes = [
@@ -223,6 +223,12 @@ function HandleRoutes() {
         {
             path: "/verPdf",
             element: <VerPdf />,
+            exact: true,
+            private: true,
+        },
+        {
+            path: "/contrato",
+            element: <Contrato />,
             exact: true,
             private: true,
         },
