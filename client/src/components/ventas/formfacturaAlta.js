@@ -302,7 +302,7 @@ const Formfactura = () => {
     }
   };
   const handleSubmit = () => {
-    console.log("SubMit");
+    // console.log("SubMit");
     var newDate1 = fecha.split("/");
     const newdate = newDate1[2] + newDate1[1] + newDate1[0];
     // console.log('saleTax: ', saleTax);
@@ -332,7 +332,7 @@ const Formfactura = () => {
       condGral.interes = found.interes;
     } else {
       condGral.id = 0;
-      condGral.cot_id = 0;
+      condGral.fac_id = 0;
       condGral.cond_id = 1;
       condGral.descuento = 0;
       condGral.enganche = 0;
@@ -449,24 +449,25 @@ const Formfactura = () => {
       }
     }
   }
-
+  
   // console.log("Cliente_1: ", cliente, state.idCli);
   console.log("acceso: ", acceso);
   console.log("total: ", total);
   console.log("saleDHL: ", saleDHL);
-
+  
   // console.log('factcab: ', factcab);
   // console.log('factdet: ', factdet);
   // console.log('porciva: ', porciva,porciva.length);
   console.log("inp: ", input);
   //   if (porciva.length === 1){
-  //     if (onIva) {
-  //       setOnIva(false)
-  //     } else {
-  //       setOnIva(true)
-  //     }
-  // }
-  console.log("cliente: ", cliente);
+    //     if (onIva) {
+      //       setOnIva(false)
+      //     } else {
+        //       setOnIva(true)
+        //     }
+        // }
+        console.log("cliente: ", cliente);
+        console.log('condiciones: ', condiciones);
   if (mostrar && factcab.length > 0) {
     control();
     return (

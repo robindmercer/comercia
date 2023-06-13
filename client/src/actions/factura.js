@@ -40,11 +40,13 @@ export function postFacturaNew(factcab) {
 
 export function AddFactura(factcab, factdet, inputDet,initialCondGral) {
   return async function (dispatch) {
+    var facid = 0
     await axios.post(`factura`, factcab)
       .then(response => {
         var xOrden = 0;
         factdet.forEach((fact) => {
           xOrden += 1
+          facid = response.data[0][0].id
           inputDet.fac_id = response.data[0][0].id
           inputDet.orden = xOrden
           inputDet.prod_id = fact.prod_id
@@ -56,7 +58,8 @@ export function AddFactura(factcab, factdet, inputDet,initialCondGral) {
           console.log('Detalle de Factura ');
         })
         console.log('AddCotizacion initialCondGral: ', initialCondGral);
-        initialCondGral.cot_id=inputDet.cot_id;
+        initialCondGral.fac_id = facid;
+        //initialCondGral.cot_id=inputDet.cot_id;
         dispatch(PostCondicionesFac(initialCondGral))
       })
       .catch(err => {
