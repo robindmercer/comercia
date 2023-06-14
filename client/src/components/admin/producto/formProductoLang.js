@@ -107,7 +107,7 @@ function ABMProductoLang() {
       e.preventDefault();
       dispatch(AddProductoLang(productolang));
       console.log("AddProductoLang: ", productolang);
-      //window.location.href = "/producto";
+      window.location.href = "/producto";
    };
    return (
       <>
