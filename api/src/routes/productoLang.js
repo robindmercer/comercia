@@ -72,11 +72,16 @@ router.post("/", async function (req, res, next) {
     }
   }
    else {
-    producto.name = name;
-    producto.lang = lang;
-    producto.description = description;
-    if (producto.id) await producto.save();
-      res.json(producto);
+    try {
+      productolang.name = name;
+      productolang.lang = lang;
+      productolang.description = description;
+      console.log('Productolang: ', productolang);
+      if (productolang.id) await productolang.save();
+      res.status(200).send("Producto Lang Updated");     
+    } catch (error) {
+      res.json(error);      
+    }
   }
 });
 

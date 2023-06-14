@@ -9,20 +9,20 @@ import Header from "../../Header";
 import "../../../css/all.css";
 import "../../../css/formProducto.css";
 
-export function validate(entrada) {
+export function validate(input) {
    let errors = {};
-   if (entrada.id === "") {
+   if (input.id === "") {
       errors.id = "Debe indicar Id!";
    }
 
-   if (entrada.name === "") {
+   if (input.name === "") {
       errors.name = "Debe Ingresar un nombre ";
    }
 
-   if (entrada.description === "") {
+   if (input.description === "") {
       errors.description = "Debe Ingresar una Descripcion";
    }
-   if (entrada.lang === "") {
+   if (input.lang === "") {
       errors.lang = "Debe Ingresar el Lenguaje";
    }
    return errors;
@@ -33,10 +33,11 @@ function ABMProductoLang() {
    const { state } = location;
    const navigate = useNavigate();
    const dispatch = useDispatch();
-   //const { producto } = useSelector((state) => state);
+   const [onChange, setOnChange] = useState(false)
+      //const { producto } = useSelector((state) => state);
    var { productolang } = useSelector((state) => state);
    
-   const [entrada, setEntrada] = useState({
+   const [input, setInput] = useState({
      id: state ? state.id : 0,
      name:  "",
      description: "",
@@ -48,11 +49,15 @@ function ABMProductoLang() {
    useEffect(() => {
       dispatch(getProductoLangId(state.id));
     }, [dispatch, state.id]);
-    
+
+    useEffect(() => {
+      if (onChange) {
+      }
+    }, [onChange])
 
    const limpio = () =>{
-    //  setEntrada({name:""});
-    //  setEntrada({description:""});
+    //  setInput({name:""});
+    //  setInput({description:""});
      window.location.href = "/producto";
    }
 
@@ -60,45 +65,48 @@ function ABMProductoLang() {
    const [errors, setErrors] = useState({});
 
    if (productolang) {
-    console.log(' ENTRE ');
-      entrada.id = productolang.id;
-      entrada.name = productolang.name;
-      entrada.description = productolang.description;
-      entrada.lang = productolang.lang;
+   //  console.log(' ENTRE ');
+      // input.id = productolang.id;
+      // input.name = productolang.name;
+      // input.description = productolang.description;
+      // input.lang = productolang.lang;
    } else {
-      entrada.id = state.id;
+       //input.id = state.id;
    }
-   console.log("entrada: ", entrada,state.id);
-   console.log("productolang: ", productolang);
+   // console.log("input: ", input,state.id);
+   // console.log("productolang: ", productolang);
 
    function handleChange(e) {
       e.preventDefault();
-      // if (e.target.name === "lang" ) productolang.lang = e.target.value
-      // if (e.target.name === "description" ) productolang.description = e.target.value
-      // if (e.target.name === "name" ) productolang.name = e.target.value
-
-      setEntrada({
-         ...entrada,
-         [e.target.name]: e.target.value,
-      });
-      setErrors(
-         validate({
-            ...entrada,
-            [e.target.name]: e.target.value,
-         })
-      );
-      console.log(
-         "e.target.name: ",
-         e.target.name,
-         e.target.value,
-         productolang
-      );
+      if (e.target.name === "lang" ) productolang.lang = e.target.value
+      if (e.target.name === "description" ) productolang.description = e.target.value
+      if (e.target.name === "name" ) productolang.name = e.target.value
+      if (onChange) {
+         setOnChange(false)
+     } else {
+         setOnChange(true)
+     }
+      console.log('e.target.value: ',e.target.name, e.target.value,productolang);
+      // setInput({
+      //    ...input,
+      //    [e.target.name]: e.target.value,
+      // });
+      // setErrors(
+      //    validate({
+      //       ...input,
+      //       [e.target.name]: e.target.value,
+      //    })
+      // );
+      // console.log("e.target.name: ",e.target.name)
+      // console.log("e.target.value: ",e.target.value)
+      // console.log("input: ",input)
+      
    }
 
    const handleSubmit = (e) => {
       e.preventDefault();
-      dispatch(AddProductoLang(entrada));
-      console.log("AddProductoLang: ", entrada);
+      dispatch(AddProductoLang(productolang));
+      console.log("AddProductoLang: ", productolang);
       //window.location.href = "/producto";
    };
    return (
@@ -117,7 +125,7 @@ function ABMProductoLang() {
                   <ul>
                      <li className="lblId">
                         <label htmlFor="id">Id: </label>
-                        <p>{entrada.id}</p>
+                        <p>{productolang.id}</p>
                      </li>
 
                      <li>
@@ -126,7 +134,7 @@ function ABMProductoLang() {
                            type="text"
                            id="name"
                            name="name"
-                           value={entrada.name}
+                           value={productolang.name}
                            onChange={handleChange}
                         />
                         <span>Ingrese Nombre</span>
@@ -148,7 +156,7 @@ function ABMProductoLang() {
                            cols="30"
                            rows="5"
                            name="description"
-                           value={entrada.description}
+                           value={productolang.description}
                            onChange={handleChange}
                            className="txtarea"
                         />
@@ -163,7 +171,7 @@ function ABMProductoLang() {
                            type="text"
                            id="lang"
                            name="lang"
-                           value={entrada.lang}
+                           value={productolang.lang}
                            onChange={handleChange}
                         />
                         <span>Ingrese Lenguaje (ENG / GER / FRA)</span>
