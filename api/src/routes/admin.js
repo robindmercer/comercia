@@ -48,5 +48,60 @@ router.get('/', async function (req, res, next) {
   }
 
 })
+// Ejemplo de Uso 
+// { "sql1":"insert into condiciones (nombre,descuento,enganche,meses,interes) values ",
+//   "sql2":"('nom1',1,2,3,4);('nom2',1,2,3,4)"
+//  }
+
+router.post('/insert', async function (req, res, next) {
+  const { sql1,sql2 } = req.body;
+  // console.log('sql: ', sql);
+  // console.log('sql2:0 ', sql2[0]);
+  // console.log('sql2:1 ', sql2[1]);
+  // console.log('sql2.length: ', sql2.length);
+  var sql3= sql2.split(";")
+  for (var i = 0; i < sql3.length-1; i++) {
+    var element = sql1 + sql3[i];
+    console.log('element: ', element);
+    try {
+      const [records] = await seq.query(element,
+        {
+          logging: console.log,
+          type: QueryTypes.INSERT
+        });
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    res.send("OK")
+    
+  })
+
+router.post('/update', async function (req, res, next) {
+  const { sql1,sql2,sql3,sql4 } = req.body;
+  console.log('Admin Update ', req.body);
+  console.log('sql: ', sql1);
+  
+    try {
+      const [records] = await seq.query(sql1,
+        {
+          logging: console.log,
+          type: QueryTypes.SELECT
+        });
+        if (sql1) {
+          const [records2] = await seq.query(sql2,
+            {
+              logging: console.log,
+              type: QueryTypes.SELECT
+            });    
+            return res.send("OK")
+        }
+        res.send("OK")
+      } catch (error) {
+        console.log(error)
+      }
+    }
+)
+
 
 module.exports = router;

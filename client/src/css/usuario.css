@@ -44,3 +44,19 @@
 .dLink{
 	text-decoration: unset;
 }
+.newTable{
+    background-color: white;
+}
+
+.xinput{
+    width: 17px;
+}
+.textok{
+    background-color: lightgreen;
+}
+.textnormal{
+    background-color: white;
+}
+thead{
+    background-color: #009879;
+}

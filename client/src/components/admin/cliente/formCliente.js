@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
-import { FcHome, FcOk, FcLeft } from "react-icons/fc";
+import { FcHome, FcOk, FcLeft,FcCancel } from "react-icons/fc";
 import { Link } from "react-router-dom";
 
 import { AddCliente, getCliente } from "../../../actions/cliente";
 import { getTablaAll } from "../../../actions/tabla";
 import { getStatus } from "../../../actions/status";
 import { getDetailIva } from "../../../actions/tabla";
+import { RunSql } from "../../../actions/admin"
+
 
 import Header from "../../Header";
 import style from "../../../css/cliente.css";
@@ -50,7 +52,9 @@ function ABMCliente() {
   const tabla = useSelector((state) => state.tabla);
 
   const estilo = { fontSize: "200%", transition: "font-size 0.5s" };
-
+  const [data, setData] = useState({
+    sql1:""
+ });   
   useEffect(() => {
     dispatch(getTablaAll());
     dispatch(getStatus());
@@ -75,6 +79,13 @@ function ABMCliente() {
 
   const [errors, setErrors] = useState({});
   console.log("tabla: ", input);
+
+  function cancelo(id){
+    console.log('cancelo: ');
+    setData(data.sql1=`update clientes set cod_status = 0 where  id = ${id}`)
+    dispatch(RunSql(data))
+    window.location.href = "/cliente";
+  }
 
   function handleChange(e) {
     e.preventDefault();
@@ -456,6 +467,16 @@ function ABMCliente() {
                   onClick={() => {
                     navigate("/cliente");
                   }}
+                />
+                <FcCancel
+                    style={estilo}
+                    onMouseEnter={({ target }) =>
+                      (target.style.fontSize = "280%")
+                    }
+                    onMouseLeave={({ target }) =>
+                      (target.style.fontSize = "200%")
+                    }
+                    onClick={()=> cancelo(input.id)}
                 />
                   </td>
               </tr>

@@ -79,23 +79,5 @@ export const menuItems = [
         url: '/facturaMP',
       },
     ]
-  },  
-
-  {
-    title: 'About',
-    nivel: 0,
-    url: '/about',
-    submenu: [
-      {
-        title: 'Who we are',
-        nivel: 0,
-        url: 'who-we-are',
-      },
-      {
-        title: 'Our values',
-        nivel: 0,
-        url: 'our-values',
-      },
-    ],
-  },
+  }  
 ];

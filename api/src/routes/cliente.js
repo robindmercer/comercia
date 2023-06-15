@@ -44,7 +44,7 @@ router.get('/', async function (req, res, next) {
   try {
     const {busco} = req.body;
     const {nombre} = req.query;
-    
+    var xand=" where "
     sql='select clientes.*,tabla.description as Actividad,status.description as StsDesc, '
     sql = sql + '(select count(*) from direccion where cli_id = clientes.id) as CantDir,'
     sql = sql + ' t1.description as IdiomaDes,'
@@ -54,13 +54,15 @@ router.get('/', async function (req, res, next) {
     sql = sql + ' join status on status.id_status = clientes.cod_status'
     sql = sql + ' join tabla t1 on t1.id = 7 and t1.cod = idioma'
     sql = sql + ' join tabla t2 on t2.id = 8 and t2.cod = moneda'
-    
     if(busco) {
       sql = sql + ' where clientes.id = '+   busco 
+      xand = ' and '
     }
     if(nombre) {
       sql = sql + ` where upper(clientes.nombre) like upper('%${nombre}%')`
+      xand = ' and '
     }
+    sql = sql + xand + ' clientes.cod_status > 0 '
     const records = await seq.query(sql,
       {
         logging: console.log,
