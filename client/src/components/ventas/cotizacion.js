@@ -3,9 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { getCotizacion, UpdateCotizacionSts } from "../../actions/cotizacion";
 import { Link } from "react-router-dom";
 import Header from "../Header";
-import { FcAddDatabase, FcBusinessman, FcDiploma2} from "react-icons/fc";
+import { FcAddDatabase, FcBusinessman, FcDiploma2,FcCancel} from "react-icons/fc";
 import style from "../../css/factura.module.css";
 import { AccessCtrl } from "../../actions/index";
+import DeleteConfirmation from "../DeleteConfirmation";
+
 
 import { Modal, Button} from 'react-bootstrap';
 import AsignCli from './cotizAsignClient';
@@ -40,12 +42,28 @@ const Cotizacion = () => {
   const [idCotiz, setIdCotiz] = useState(0);
   const [newStatus, setNewStatus] = useState(0);
   const [idMail, setIdMail] = useState(0);
+  const [signo, setSigno] = useState('+');
+  const [id, setId] = useState(null);
+  // Delete Confirmation 
+  const [displayConfirmationModal, setDisplayConfirmationModal] = useState(false);
+  const [deleteMessage, setDeleteMessage] = useState(null);
+  const hideConfirmationModal = () => {setDisplayConfirmationModal(false);};
+  
+  // Handle the displaying of the modal based on type and id
+  const showDeleteModal = (id,accion) => {
+    setSigno(accion)
+    setId(id);
+    setDeleteMessage(`Esta seguro/a de anular la Cotizacion?`);
+    setDisplayConfirmationModal(true);
+  };
+
+
   // const { tabla } = useSelector((state) => state);
   // Manejo de Botones a ver
   var toLink = "/cotizacionModif";
   var btnAddDatabase = false;
   var btnApproval = false;
-  var btnCancel = false;
+  var btnCancel = true;
   var btnDiploma2 = false
   var verStatus = [];
   var muestroRegistro = false;
@@ -94,11 +112,8 @@ const Cotizacion = () => {
     }
     if (acceso.substring(0, 1) === "C") {
       btnCancel = false;
-      btnApproval = false;
-      
+      btnApproval = false;      
       btnAddDatabase = true;
-
-
       toLink = "/formcotizacionPDF";
       verStatus.push(1, 2, 3, 4, 5, 6, 7, 8, 9);
     }
@@ -136,14 +151,10 @@ const Cotizacion = () => {
     setOnChange(false);
     const found = cotizacion.find((element) => element.id === id);
     console.log("found: ", found);
-    if (accion === "-" && found.cod_status > 1) {
+    if (accion === "-" ) {
       newStatus = found.cod_status - 1;
       console.log("newStatus: ", newStatus);
       paramMail = 2;
-      if (newStatus < 4) {
-        newStatus = 1;
-        paramMail = 1;
-      }
       control = "N";
     }
     if (accion === "+") {
@@ -196,6 +207,7 @@ const Cotizacion = () => {
     setIdMail(paramMail);
 
     console.log("mails: ", mails);
+    window.location.href = '/cotizacion';
   };
 
   console.log("------------------------------",acceso);
@@ -308,6 +320,26 @@ const Cotizacion = () => {
                         ) : null}
 
                         &nbsp;&nbsp;
+                        {btnCancel ? (
+                          <>
+                            <FcCancel
+                              style={estilo}
+                              title="Eliminar Cotizacion"
+                              // onClick={() => {
+                              //   handleSubmit(data.id, "-");
+                              onClick={() => {showDeleteModal(data.id,'-');
+                              }}
+                              onMouseEnter={({ target }) =>
+                                (target.style.fontSize = "280%")
+                              }
+                              onMouseLeave={({ target }) =>
+                                (target.style.fontSize = "200%")
+                              }
+                            />
+                          </>
+                        ) : null}
+
+                        &nbsp;&nbsp;
                         {/* // si sos administrador o de ventas con status = 1 */}
                         {btnApproval ? ( //
                           <>
@@ -340,6 +372,13 @@ const Cotizacion = () => {
 
     </div>
       </div>
+      <DeleteConfirmation 
+         animationType="slide"
+         showModal={displayConfirmationModal} 
+         confirmModal={(e) => {handleSubmit(id, signo)}} 
+         hideModal={hideConfirmationModal} 
+         id={id} message={deleteMessage}
+         signo={signo}/>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
             <Modal.Title>
