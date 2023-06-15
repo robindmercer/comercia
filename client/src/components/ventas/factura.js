@@ -12,6 +12,7 @@ import { AccessCtrl } from "../../actions/index";
 // import crearMail from "../CrearMails";
 import { mailEnviar } from "../../actions/index";
 import { GetMails } from "../../actions/usuario";
+
 // Modal
 // import OkForm from "../modal/TraerCotiz";
 // import { Modal, Button, Alert } from "react-bootstrap";
@@ -404,7 +405,7 @@ const Factura = () => {
                             </Link>
                           </>
                         ) : null}
-                        {btnCancel && data.cod_status > 1 ? (
+                        {btnCancel ? (
                           <>
                             <FcCancel
                               style={estilo}
