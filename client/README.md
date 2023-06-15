@@ -12,15 +12,16 @@
 ````
   1 = Ingreso 
   2 = Espera Aprobación	
-	3 = Aprobado GC.	
-	4 = Pendiente ADMIN.	
-	5 = Pendiente Pago	
-	6 = Liberado	
-	7 = Almacen	
-	8 = Manufactura	
+  3 = Aprobado GC.	
+  4 = Pendiente ADMIN.	
+  5 = Pendiente Pago	
+  6 = Liberado	
+  7 = Almacen	
+  8 = Manufactura	
 ````  
 # Prog Id 
-1 = Admin
+````  
+  1 = Admin
   6 = Clientes      /cliente
   3 = Productos     /producto
   4 = Traducciones  /productolang
@@ -34,5 +35,14 @@
   17 = Stock
 18 Planeacion 
   19 = Pendientes   /FacturasMP  
+````
 
-
+# Versiones
+````
+14/06/2023
+    Modificar Manejo Perfiles  
+15/06/2023
+    Crear Baja de Clientes
+    Crear Baja de Cotizaciones
+    Crear Baja de Ordenes de compra
+````  
