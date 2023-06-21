@@ -91,14 +91,15 @@ function AbmMenu() {
       }
       //xSql3 = xSql2 + xSql3.substring(0,xSql3.length-1)
       var sql=`delete from usuariomenus where usrid = '${usuariomenu[0].usrid}'` 
-      dispatch(RunSql(sql))
+      setData(data.sql1=sql)
+      dispatch(RunSql(data))
       setData(data.sql1=xSql2)
       setData(data.sql2=xSql3)
       console.log('sql: ', sql);
       console.log('xSql3: ', xSql3);
       console.log('data: ', data);
       dispatch(InsertData(data))
-      
+      window.location.href = '/usuarios';
    };
 
    console.log("usuariomenu: ", usuariomenu);
