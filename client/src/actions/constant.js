@@ -53,3 +53,5 @@ export const GET_LOGSID = 'GET_LOGSID'
 export const GET_LANG = 'GET_LANG'
 // Contrato
 export const GET_CONTRATOID='GET_CONTRATOID'
+// ADMIN SQL especiales
+export const GET_ADMIN='GET_ADMIN'

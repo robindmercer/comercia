@@ -4,7 +4,7 @@ import {UsuarioContext} from './UsuarioContext';
 import Usuario from './Usuario';
 import AddForm from './AddForm';
 import Pagination from './Pagination';
-
+import "../../../css/usuario.css"
 const UsuarioList = () => {
 
     const {sortedUsuarios} = useContext(UsuarioContext);
@@ -65,9 +65,9 @@ const UsuarioList = () => {
             <tr>
                 <th>Nombre</th>
                 <th>Usr_id</th>
-                <th>Email</th>
-                <th>Perfil</th>
-                <th>Status</th>
+                <th className="onlyScreen">Email</th>
+                <th className="onlyScreen">Perfil</th>
+                <th className="onlyScreen">Status</th>
                 <th>Actions</th>
             </tr>
         </thead>

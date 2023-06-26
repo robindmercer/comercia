@@ -1,4 +1,5 @@
 import axios from "axios";
+import { GET_ADMIN } from "./constant";
 
 // Ejemplo de Uso 
 // { "sql":"insert into condiciones (nombre,descuento,enganche,meses,interes) values ",
@@ -16,7 +17,7 @@ export function InsertData(data) {
     }
   }
   
-  export function RunSql(data) {
+  export function RunSqlPost(data) {
     return async function (dispatch) {
       await axios.post(`admin/update`, data)
         .then(response => {
@@ -28,3 +29,25 @@ export function InsertData(data) {
     }
   }
   
+  export function RunSqlDel(data) {
+    return async function (dispatch) {
+      await axios.post(`admin/delete`, data)
+        .then(response => {
+          return response
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    }
+  }
+
+
+  export function RunSql(id) {
+    return async function (dispatch) {
+      var admin = await axios.get(`admin/count?id=${id}`);
+      return dispatch({
+        type: GET_ADMIN,
+        payload: admin.data
+      })
+    }
+  }

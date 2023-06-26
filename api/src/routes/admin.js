@@ -48,6 +48,23 @@ router.get('/', async function (req, res, next) {
   }
 
 })
+
+router.get('/sql', async function (req, res, next) {
+  try {
+    const { sql,nada } = req.body;
+      console.log('/sql sql',sql)
+      console.log('/sql nada',nada)
+      const records = await seq.query(sql,
+        {
+          logging: console.log,
+          type: QueryTypes.SELECT
+        });
+        res.send(records)
+      } catch (error) {
+        console.log(error)
+      }
+    })
+    
 // Ejemplo de Uso 
 // { "sql1":"insert into condiciones (nombre,descuento,enganche,meses,interes) values ",
 //   "sql2":"('nom1',1,2,3,4);('nom2',1,2,3,4)"
@@ -86,13 +103,13 @@ router.post('/update', async function (req, res, next) {
       const [records] = await seq.query(sql1,
         {
           logging: console.log,
-          type: QueryTypes.SELECT
+          type: QueryTypes.UPDATE
         });
         if (sql1) {
           const [records2] = await seq.query(sql2,
             {
               logging: console.log,
-              type: QueryTypes.SELECT
+              type: QueryTypes.UPDATE
             });    
             return res.send("OK")
         }
@@ -103,5 +120,42 @@ router.post('/update', async function (req, res, next) {
     }
 )
 
+router.post('/delete', async function (req, res, next) {
+  const { sql1 } = req.body;
+  console.log('Admin Delete ', req.body);
+  console.log('sql: ', sql1);
+  
+    try {
+      const [records] = await seq.query(sql1,
+        {
+          logging: console.log,
+          type: QueryTypes.DELETE
+        });
+        res.send("OK")
+      } catch (error) {
+        console.log(error)
+      }
+    }
+)
+
+router.get("/count", async function (req, res, next) {
+  const { id } = req.query;
+  if (id) {
+    xid= id.split("|")
+    console.log('xid: ', xid);
+    try {
+      sql="select 0 tipo,count(*) from cotizacion where cod_status in(" + xid[0] + ") union select 1 tipo,count(*) from facturas where cod_status in (" + xid[1] + ")"
+
+      const records = await seq.query(sql, {
+        logging: console.log,
+        type: QueryTypes.SELECT,
+      });
+      //console.log('records: ', records);
+      res.send(records);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+});
 
 module.exports = router;

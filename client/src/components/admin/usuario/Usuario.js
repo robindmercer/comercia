@@ -4,6 +4,8 @@ import { Modal, Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import EditForm from "./EditForm";
 import { FcAcceptDatabase, FcSurvey } from "react-icons/fc";
+import "../../../css/usuario.css"
+
 
 const Usuario = ({ data }) => {
   const { deleteUsuario } = useContext(UsuarioContext);
@@ -23,9 +25,9 @@ const Usuario = ({ data }) => {
     <>
       <td>{data.usr_id}</td>
       <td>{data.name}</td>
-      <td>{data.email}</td>
-      <td>{data.perfil.description}</td>
-      <td>{data.status.description}</td>
+      <td className="onlyScreen">{data.email}</td>
+      <td className="onlyScreen">{data.perfil.description}</td>
+      <td className="onlyScreen">{data.status.description}</td>
       <td>
         <OverlayTrigger overlay={<Tooltip id={`tooltip-top`}>Editar</Tooltip>}>
           <button

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import { menuItems } from "../../menuNibbot";
-import { InsertData, RunSql } from "../../actions/admin";
+import { InsertData, RunSqlDel } from "../../actions/admin";
 //import Header from '../Header';
 
 import { getUsuariomenId } from "../../actions/usuariomenu";
@@ -92,7 +92,7 @@ function AbmMenu() {
       //xSql3 = xSql2 + xSql3.substring(0,xSql3.length-1)
       var sql=`delete from usuariomenus where usrid = '${usuariomenu[0].usrid}'` 
       setData(data.sql1=sql)
-      dispatch(RunSql(data))
+      dispatch(RunSqlDel(data))
       setData(data.sql1=xSql2)
       setData(data.sql2=xSql3)
       console.log('sql: ', sql);

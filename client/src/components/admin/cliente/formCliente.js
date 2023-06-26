@@ -8,7 +8,7 @@ import { AddCliente, getCliente } from "../../../actions/cliente";
 import { getTablaAll } from "../../../actions/tabla";
 import { getStatus } from "../../../actions/status";
 import { getDetailIva } from "../../../actions/tabla";
-import { RunSql } from "../../../actions/admin"
+import { RunSqlPost } from "../../../actions/admin"
 
 
 import Header from "../../Header";
@@ -83,7 +83,7 @@ function ABMCliente() {
   function cancelo(id){
     console.log('cancelo: ');
     setData(data.sql1=`update clientes set cod_status = 0 where  id = ${id}`)
-    dispatch(RunSql(data))
+    dispatch(RunSqlPost(data))
     window.location.href = "/cliente";
   }
 
