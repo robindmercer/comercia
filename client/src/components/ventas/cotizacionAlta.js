@@ -327,7 +327,6 @@ const Formcotizacion = () => {
     }
   };
   const handleSubmit = () => {
-    console.log("SubMit");
     var newDate1 = fecha.split("/");
     const newdate = newDate1[2] + newDate1[1] + newDate1[0];
     // console.log('saleTax: ', saleTax);
@@ -347,6 +346,7 @@ const Formcotizacion = () => {
 
     const found = condiciones.find((element) => element.sel === "S");
     console.log("found: ", found);
+
     if (found) {
       condGral.id = 0;
       condGral.cot_id = 0;
@@ -355,7 +355,15 @@ const Formcotizacion = () => {
       condGral.enganche = found.enganche;
       condGral.meses = found.meses;
       condGral.interes = found.interes;
-    } else {
+      if (
+        found.des  !== found.descuento ||
+        found.eng  !== found.enganche ||
+        found.mes  !== found.meses ||
+        found.inte !== found.interes
+      ) {
+        input.cod_status = 2
+      }
+  } else {
       condGral.id = 0;
       condGral.cot_id = 0;
       condGral.cond_id = 1;
@@ -369,7 +377,6 @@ const Formcotizacion = () => {
     console.log("input: ", input);
     console.log("found: ", found);
     console.log("condGral: ", condGral);
-
     if (subTotal === 0) {
       return alert("O/C no puede quedar en 0 (Cero)");
     }

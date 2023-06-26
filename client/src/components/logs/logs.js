@@ -16,7 +16,7 @@ function LogsDetail() {
   const { logs } = useSelector((state) => state);
 
   useEffect(() => {
-    dispatch(getLogs(state.idfact));
+    dispatch(getLogs(state.idfact,state.tipo));
   }, [dispatch, state.idfact]);
 
   return (

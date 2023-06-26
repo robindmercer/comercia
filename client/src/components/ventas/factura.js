@@ -230,6 +230,7 @@ const Factura = () => {
           control = "S";
           newStatus = 2; // Espera Aprobacion
           paramMail = 1;
+          //console.log("Espera Aprobacion");
         } else {
           control = "N";
           newStatus = 4; // Pendiente Admin
@@ -258,12 +259,12 @@ const Factura = () => {
         paramMail = 2; // Administracion
       }
     }
-    // console.log("Log Data");
-    // console.log("usuario:", id_usuario);
-    // console.log("Factura:", found.id, "Status", found.cod_status);
-    // console.log("Control:", control);
-    // console.log("newStatus: ", newStatus);
-    // console.log("paramMail: ", paramMail);
+    //console.log("Log Data");
+    //console.log("usuario:", id_usuario);
+    //console.log("Factura:", found.id, "Status", found.cod_status);
+    //console.log("Control:", control);
+    //console.log("newStatus: ", newStatus);
+    //console.log("paramMail: ", paramMail);
     setIdFact(id);
     setNewStatus(newStatus);
     setIdMail(paramMail);
@@ -284,14 +285,14 @@ const Factura = () => {
     dispatch(AddLogs(newLog));
 
     // dispatch(GetMails(idMail));
-    console.log("mails: ", mails);
+    //console.log("mails: ", mails);
     for (var index = 0; index < mails.length; index++) {
       console.log("enviar mail: ", mails[index].email);
       dispatch(mailEnviar(crearMail(newStatus, mails[index].email, found)));
     }
     //handleShow();
     //console.log("mails: ",idMail, mails);
-    window.location.href = '/factura';
+    //window.location.href = '/factura';
   };
 
   return (
@@ -428,7 +429,8 @@ const Factura = () => {
                             to="/logs"
                             className="dLink"
                             state={{
-                              idfact: data.id
+                              idfact: data.id,
+                              tipo:'FAC'
                             }}
                           >
                             <FcAbout

@@ -10,6 +10,7 @@ import {
   GET_FACTURAMP,
   GET_LOGSID,
   GET_LANG,
+  GET_ADMIN
 } from "../actions/constant.js";
 import {
   GET_TABLA,
@@ -75,6 +76,7 @@ const initialState = {
   idfact: 0,
   idcli: 0,
   contrato:[],
+  admin:[],// Cualquier SQL 
 };
 
 // Reducer to get foods ordered by alphabet
@@ -346,7 +348,12 @@ const rootReducer = (state = initialState, action) => {
       lang: action.payload,
     };
   }
-
+  if (action.type === GET_ADMIN) {
+    return {
+      ...state,
+      admin: action.payload,
+    };
+  }
   return state;
 };
 

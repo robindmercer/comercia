@@ -15,7 +15,7 @@ import { GET_LOGSID } from "./constant";
     }
   }
  // trae todos los registros de in ID 
- export function getLogs(id){
+ export function getLogs(id,tipo){
   //console.log('Action Tabla getDetail: ',id);
    return async function (dispatch) {
        var logs = await axios.get(`/log/fac/${id}`);

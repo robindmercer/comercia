@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getCotizacion, UpdateCotizacionSts } from "../../actions/cotizacion";
 import { Link } from "react-router-dom";
 import Header from "../Header";
-import { FcAddDatabase, FcBusinessman, FcDiploma2,FcCancel} from "react-icons/fc";
+import { FcAddDatabase, FcBusinessman, FcDiploma2,FcCancel,FcApproval,FcAbout} from "react-icons/fc";
 import style from "../../css/factura.module.css";
 import { AccessCtrl } from "../../actions/index";
 import DeleteConfirmation from "../DeleteConfirmation";
@@ -16,11 +16,13 @@ import AsignCli from './cotizAsignClient';
 // import crearMail from "../CrearMails";
 // import { mailEnviar } from "../../actions/index";
 import { GetMails } from "../../actions/usuario";
+import { AddLogs } from "../../actions/logs";
 // import { PDFDownloadLink } from "@react-pdf/renderer";
 
 
 
 const Cotizacion = () => {
+
   // Modal 
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
@@ -47,13 +49,15 @@ const Cotizacion = () => {
   // Delete Confirmation 
   const [displayConfirmationModal, setDisplayConfirmationModal] = useState(false);
   const [deleteMessage, setDeleteMessage] = useState(null);
+  
+  const { lang } = useSelector((state) => state);
   const hideConfirmationModal = () => {setDisplayConfirmationModal(false);};
   
   // Handle the displaying of the modal based on type and id
-  const showDeleteModal = (id,accion) => {
+  const showDeleteModal = (id,accion,msg) => {
     setSigno(accion)
     setId(id);
-    setDeleteMessage(`Esta seguro/a de anular la Cotizacion?`);
+    setDeleteMessage(msg);
     setDisplayConfirmationModal(true);
   };
 
@@ -62,9 +66,11 @@ const Cotizacion = () => {
   // Manejo de Botones a ver
   var toLink = "/cotizacionModif";
   var btnAddDatabase = false;
-  var btnApproval = false;
+  var btnAsignarCli = false;
+  var btnApproval = false 
   var btnCancel = true;
   var btnDiploma2 = false
+  var btnLog = false 
   var verStatus = [];
   var muestroRegistro = false;
 
@@ -75,50 +81,59 @@ const Cotizacion = () => {
   }
   const control = (data) => {
     btnAddDatabase = false;
-    btnApproval = false;
+    btnAsignarCli = false;
+    btnApproval=false
     verStatus = [];
     btnDiploma2 = true;
     muestroRegistro = false;
     if (acceso === "A1") {
       // Gerencia All
       btnAddDatabase = true;
-      btnApproval = true;
+      btnAsignarCli = true;
       if (data.cod_status > 2) {
         btnCancel = true;
+      }
+      if (data.cod_status === 2) {
+        btnApproval=true
       }
       verStatus.push(1, 2, 3, 4, 5, 6, 7, 8, 9);
     }
     if (acceso === "A2") {
       // Adminsitracion All
       btnAddDatabase = true;
-      btnApproval = true;
+      btnAsignarCli = true;
       btnCancel = true;
       verStatus.push(3, 4, 5, 6);
     }
     if (acceso === "A3") {
       // Ventas all
       btnAddDatabase = true;
-      btnApproval = true;
+      btnAsignarCli = true;
       btnCancel = true;
       if (data.cod_status === 2) {
-        btnApproval = false;
+        btnAsignarCli = false;
         btnAddDatabase = false;
       }
-      if (data.cod_status > 2 && data.cod_status < 7) {
-        btnApproval = false;
-        btnAddDatabase = false;
+      if (data.cod_status === 3) {
+        btnAsignarCli = true;
+        btnAddDatabase = true;
       }
       verStatus.push(1, 2, 3, 4, 5, 6, 7, 8, 9);
     }
     if (acceso.substring(0, 1) === "C") {
       btnCancel = false;
-      btnApproval = false;      
+      btnAsignarCli = false;      
       btnAddDatabase = true;
       toLink = "/formcotizacionPDF";
       verStatus.push(1, 2, 3, 4, 5, 6, 7, 8, 9);
     }
     if (verStatus.find((element) => element === data.cod_status)) {
       muestroRegistro = true;
+    }
+    if (data.logsts !== 0){
+      btnLog = true
+    } else {
+      btnLog = false 
     }
     // console.log("verStatus: ", verStatus, acceso.substring(0, 1));
     // console.log("Muestro", data.id, data.cod_status, muestroRegistro);
@@ -149,8 +164,11 @@ const Cotizacion = () => {
     var newStatus = 0;
     var paramMail = 1;
     setOnChange(false);
+
+
     const found = cotizacion.find((element) => element.id === id);
     console.log("found: ", found);
+
     if (accion === "-" ) {
       newStatus = found.cod_status - 1;
       console.log("newStatus: ", newStatus);
@@ -176,23 +194,13 @@ const Cotizacion = () => {
       }
       if (found.cod_status === 2) {
         control = "N";
-        newStatus = 4; // Pendiente Admin
+        newStatus = 3; // Aprobado Gerencia
         paramMail = 3;
-      }
-      if (found.cod_status === 4) {
-        control = "N";
-        newStatus = 5; // Pendiente de pago
-        paramMail = 3;
-      }
-      if (found.cod_status === 5) {
-        control = "N";
-        newStatus = 6; // Liberado
-        paramMail = 4; // Planeacion
       }
       // Gerencia no se controla
       if (acceso === "A1" && found.cod_status < 4) {
         control = "N";
-        newStatus = 4; // Pendiente Admin
+        newStatus = 3; // Aprobado Gerencia
         paramMail = 2; // Administracion
       }
     }
@@ -202,10 +210,19 @@ const Cotizacion = () => {
     console.log("Control:", control);
     console.log("newStatus: ", newStatus);
     console.log("paramMail: ", paramMail);
+    if (found){
+      var newLog = {
+        doc_id: found.id,
+        tipo_id: "COT",
+        usr_id: id_usuario,
+        cod_status: newStatus,
+        observ: lang,
+      };
+    }
     setIdCotiz(id);
     setNewStatus(newStatus);
     setIdMail(paramMail);
-
+    dispatch(AddLogs(newLog));    
     console.log("mails: ", mails);
     window.location.href = '/cotizacion';
   };
@@ -327,7 +344,7 @@ const Cotizacion = () => {
                               title="Eliminar Cotizacion"
                               // onClick={() => {
                               //   handleSubmit(data.id, "-");
-                              onClick={() => {showDeleteModal(data.id,'-');
+                              onClick={() => {showDeleteModal(data.id,'-','Esta seguro/a de querer eliminar la Cotización?');
                               }}
                               onMouseEnter={({ target }) =>
                                 (target.style.fontSize = "280%")
@@ -341,7 +358,7 @@ const Cotizacion = () => {
 
                         &nbsp;&nbsp;
                         {/* // si sos administrador o de ventas con status = 1 */}
-                        {btnApproval ? ( //
+                        {btnAsignarCli && data.cod_status !== 2 ? ( //
                           <>
                             <FcBusinessman
                               style={estilo}
@@ -357,6 +374,44 @@ const Cotizacion = () => {
                               }
                             />
                           </>
+                        ) : null}
+                        {/* // si sos administrador o de ventas con status = 1 */}
+                        {btnApproval ? ( //
+                          <>
+                            <FcApproval
+                              style={estilo}
+                              title="Aprobar"
+                              // onClick={() => {handleSubmit(data.id, "+");}}
+                              onClick={() => {showDeleteModal(data.id,'+','Esta seguro/a de autorizar la Cotizacion?');}}
+                                onMouseEnter={({ target }) =>
+                                (target.style.fontSize = "280%")
+                              }
+                              onMouseLeave={({ target }) =>
+                                (target.style.fontSize = "200%")
+                              }
+                            />
+                          </>
+                        ) : null}                        
+                        {btnLog ? (
+                          <Link
+                            to="/logs"
+                            className="dLink"
+                            state={{
+                              idfact: data.id,
+                              tipo:'COT'
+                            }}
+                          >
+                            <FcAbout
+                              style={estilo}
+                              title="Ver Logs"
+                              onMouseEnter={({ target }) =>
+                                (target.style.fontSize = "280%")
+                              }
+                              onMouseLeave={({ target }) =>
+                                (target.style.fontSize = "200%")
+                              }
+                            />
+                          </Link>
                         ) : null}
                       </td>
                     </tr>

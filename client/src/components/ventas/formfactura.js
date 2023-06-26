@@ -406,7 +406,7 @@ function Formfactura() {
          btnElimProd = false;
          btnGrabar = false;
       }
-      if (factcab[0].cod_status > 6 && acceso === "A2") { // administracion 
+      if (factcab[0].cod_status >= 6 && acceso === "A2") { // administracion 
         btnAgregar = false;
         btnElimProd = false;
         btnGrabar = false;
