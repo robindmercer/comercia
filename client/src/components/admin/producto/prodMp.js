@@ -161,7 +161,7 @@ const FormProdMp = () => {
       console.log('prodmp submit: ', send);
       dispatch(AddMPDetail(send));
     });
-    //window.location.href = '/cliente';
+    window.location.href = '/producto';
   };
   // console.log('materiaprima: ', materiaprima);
 
