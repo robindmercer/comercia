@@ -114,8 +114,8 @@ router.delete('/prod', async function (req, res, next) {
   const { id } = req.query;
   if (id) {
     try {
-      sql = `delete from prodmp where prodmp.mp_name = '${id}' `
-      sql2 = `delete from materiaprima  where name = '${id}' `
+      sql = `delete from prodmp where prodmp.prod_id = '${id}' `
+//      sql2 = `delete from materiaprima  where name = '${id}' `
 
       const records = await seq.query(sql,
         {
@@ -123,12 +123,12 @@ router.delete('/prod', async function (req, res, next) {
           type: QueryTypes.SELECT
         });
 
-        const records2 = await seq.query(sql2,
-          {
-            logging: console.log,
-            type: QueryTypes.SELECT
-          });
-          res.send(records2)
+        // const records2 = await seq.query(sql2,
+        //   {
+        //     logging: console.log,
+        //     type: QueryTypes.SELECT
+        //   });
+          res.send(records)
         } catch (error) {
         console.log(error)
     }
