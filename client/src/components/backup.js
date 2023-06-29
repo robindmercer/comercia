@@ -33,7 +33,7 @@ const Backup = () => {
 
       //Productos Materias Primas
       const libroPMP = XLSX.utils.book_new();
-      const hojaPMP = XLSX.utils.json_to_sheet(materiaprima);
+      const hojaPMP = XLSX.utils.json_to_sheet(prodmp);
       XLSX.utils.book_append_sheet(libroPMP, hojaPMP, "Backups");
       XLSX.writeFile(libroPMP, "ProdMateriaPrima.xlsx");
    };
