@@ -159,7 +159,7 @@ const FormfacturaPDF = () => {
       var xhor = 38;
       var xhorNew = 0;
       // var xleft = 0;
-      const doc = new jsPDF();
+      const doc = new jsPDF({compress : true});
 
       header(doc, leftInput, leftMargin);
 

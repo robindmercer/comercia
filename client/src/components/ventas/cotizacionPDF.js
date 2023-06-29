@@ -143,7 +143,7 @@ const FormcotizPDF = () => {
       var xhor = 38;
       var xhorNew = 0;
       var xleft = 0;
-      const doc = new jsPDF();
+      const doc = new jsPDF({compress : true});
 
       header(doc, leftInput, leftMargin);
 // Only First Header
@@ -382,11 +382,11 @@ const FormcotizPDF = () => {
       doc.setDrawColor(0, 0, 193);
       doc.setLineWidth(1);
       doc.line(5, 3, 200, 3);
-      doc.addImage(Imagen, "PNG", 5, 2, 50, 20);
+      doc.addImage(Imagen, "PNG", 5, 2, 40, 15);
       doc.setFont("Times", "bold");
-      doc.setFontSize(20);
+      doc.setFontSize(15);
       doc.text(`${xCotizacion} N°: ${cotizacioncab[0].id}`, 100, 15);
-      doc.setFontSize(12);
+      doc.setFontSize(10);
       doc.setFont("Times", "normal");
       doc.text(`${xCliente} : `, leftMargin, 30);
       doc.setFont("Times", "bold");
