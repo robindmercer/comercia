@@ -34,8 +34,10 @@ import CotizacionModif from '../components/ventas/cotizacionModif'
 import CotizacionAlta from '../components/ventas/cotizacionAlta'
 import CotizacionPDF from '../components/ventas/cotizacionPDF'
 import UploadFile from '../Upload'
-import VerPdf from '../verPdf'
+// import VerPdf from '../verPdf'
 import Contrato from '../components/ventas/contrato'
+import Game from '../game'
+import Backups from '../components/backup'
 function HandleRoutes() {
 
     const routes = [
@@ -221,12 +223,6 @@ function HandleRoutes() {
             private: true,
         },
         {
-            path: "/verPdf",
-            element: <VerPdf />,
-            exact: true,
-            private: true,
-        },
-        {
             path: "/contrato",
             element: <Contrato />,
             exact: true,
@@ -235,6 +231,18 @@ function HandleRoutes() {
         {
             path: "/formProductoLang",
             element: <FormProductoLang/>,
+            exact: true,
+            private: true,
+        },
+        {
+            path: "/game",
+            element: <Game/>,
+            exact: true,
+            private: true,
+        },
+        {
+            path: "/backups",
+            element: <Backups/>,
             exact: true,
             private: true,
         },

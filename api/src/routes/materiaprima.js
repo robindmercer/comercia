@@ -38,6 +38,24 @@ router.get('/', async function (req, res, next) {
 
 })
 
+router.get('/prodmp', async function (req, res, next) {
+  try {
+    const {nombre} = req.query;
+    console.log('get: ');
+
+    sql = "select * from prodmp order by id"
+    const records = await seq.query(sql,
+      {
+        logging: console.log,
+        type: QueryTypes.SELECT
+      });
+    res.send(records)
+  } catch (error) {
+    console.log(error)
+  }
+
+})
+
 router.post("/", async function (req, res, next) {
   const { name, description, udm,stock,stockmin } = req.body;
   console.log('Post Tabla: ', req.body);
