@@ -34,6 +34,18 @@ export function getMPDetail(id) {
     })
   }
 }
+
+export function getProdmp() {
+  //console.log('Action getMPDetail: ', id);
+  return async function (dispatch) {
+    var prodmp = await axios.get(`/materiaprima/prodmp`);
+    return dispatch({
+      type: GET_MATERIAPRIMAPROD,
+      payload: prodmp.data
+    })
+  }
+}
+
 export function UpdateMateriaprima(materiaprima) {
   return function (dispatch) {
     axios.put('/materiaprima', materiaprima)
