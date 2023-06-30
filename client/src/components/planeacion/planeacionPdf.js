@@ -23,7 +23,6 @@ var xFecha = "Fecha";
 var xOrden = "ORDEN DE PRODUCCIÓN";
 var xVendedor = "Vendedor";
 var prodAnt = "";
-var xProdName = "";
 // var xMoneda = "$";
 
 const FormfacturaPDF = () => {
@@ -102,7 +101,6 @@ const FormfacturaPDF = () => {
       xhor += 8;
       //   Productos
       for (let prodIndx = 0; prodIndx < facturaMP.length; prodIndx++) {
-         xProdName = facturaMP[prodIndx].prodname;
          // Nombre del Producto
          if (prodAnt !== facturaMP[prodIndx].prodname){
             unidades(doc, leftInput, leftMargin,xhor);
