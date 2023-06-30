@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getFacturaMP} from "../../actions/facturaMP";
 import { Link } from "react-router-dom";
 import Header from "../Header";
-import { FcAddDatabase,FcCancel} from "react-icons/fc";
+import { FcAddDatabase,FcCancel,FcDiploma2} from "react-icons/fc";
 import style from "../../css/factura.module.css";
 import { AccessCtrl } from "../../actions/index";
 import { getUsuariomenId } from "../../actions/usuariomenu";
@@ -41,7 +41,8 @@ const Factura = () => {
   const [deleteMessage, setDeleteMessage] = useState(null);
   const [id, setId] = useState(null);
   const { mails } = useSelector((state) => state);
-
+  const btnDiploma2 = true;
+  
   const hideConfirmationModal = () => {setDisplayConfirmationModal(false);};
   // Handle the displaying of the modal based on type and id
   const showDeleteModal = (id) => {
@@ -181,7 +182,7 @@ console.log("acceso: ", acceso);
                       >
                         <FcAddDatabase
                           style={estilo}
-                          title="Modificar"
+                          title="Ver MP."
                           onMouseEnter={({ target }) =>
                             (target.style.fontSize = "280%")
                           }
@@ -190,7 +191,29 @@ console.log("acceso: ", acceso);
                           }
                         />
                       </Link>
-                     &nbsp;
+                      {btnDiploma2 ? (
+                          <>
+                            <Link
+                              to={"/planeacionPdf"}
+                              className="dLink"
+                              state={{
+                                idfact: data.id,
+                              }}
+                            >
+                              <FcDiploma2
+                                style={estilo}
+                                title="PDF"
+                                onMouseEnter={({ target }) =>
+                                  (target.style.fontSize = "280%")
+                                }
+                                onMouseLeave={({ target }) =>
+                                  (target.style.fontSize = "200%")
+                                }
+                              />
+                            </Link>
+                          </>
+                        ) : null}
+                      &nbsp;
                       <>
                             <FcCancel
                               style={estilo}

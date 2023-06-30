@@ -36,8 +36,9 @@ import CotizacionPDF from '../components/ventas/cotizacionPDF'
 import UploadFile from '../Upload'
 // import VerPdf from '../verPdf'
 import Contrato from '../components/ventas/contrato'
-import Game from '../game'
 import Backups from '../components/backup'
+import PlaneacionPdf from '../components/planeacion/planeacionPdf'
+
 function HandleRoutes() {
 
     const routes = [
@@ -235,14 +236,14 @@ function HandleRoutes() {
             private: true,
         },
         {
-            path: "/game",
-            element: <Game/>,
+            path: "/backups",
+            element: <Backups/>,
             exact: true,
             private: true,
         },
         {
-            path: "/backups",
-            element: <Backups/>,
+            path: "planeacionPdf",
+            element: <PlaneacionPdf/>,
             exact: true,
             private: true,
         },
