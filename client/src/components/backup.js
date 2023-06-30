@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProducto } from "../actions/producto";
 import { getMateriaprima, getProdmp } from "../actions/materiaprima";
+import { getFactura } from "../actions/factura";
 
 import * as XLSX from "xlsx";
 
@@ -10,12 +11,14 @@ const Backup = () => {
    const { producto } = useSelector((state) => state);
    const { materiaprima } = useSelector((state) => state);
    const { prodmp } = useSelector((state) => state);
+   const { factura } = useSelector((state) => state);
    const dispatch = useDispatch();
 
    useEffect(() => {
       dispatch(getProducto());
       dispatch(getMateriaprima());
       dispatch(getProdmp());
+      dispatch(getFactura());
    }, [dispatch]);
 
    const downloadBackup = () => {
@@ -36,12 +39,18 @@ const Backup = () => {
       const hojaPMP = XLSX.utils.json_to_sheet(prodmp);
       XLSX.utils.book_append_sheet(libroPMP, hojaPMP, "Backups");
       XLSX.writeFile(libroPMP, "ProdMateriaPrima.xlsx");
+      //factura
+      const libroFactura = XLSX.utils.book_new();
+      const hojaFactura = XLSX.utils.json_to_sheet(factura);
+      XLSX.utils.book_append_sheet(libroFactura, hojaFactura, "Backups");
+      XLSX.writeFile(libroFactura, "Factura.xlsx");
    };
 
    if (
       producto.length > 0 &&
       materiaprima.length > 0 &&
-      prodmp.length > 0
+      prodmp.length > 0 && 
+      factura.length > 0
       // &&
       // factcab.length > 0 &&
       // factcond.length > 0 &&
@@ -55,16 +64,9 @@ const Backup = () => {
          <div>&nbsp;</div>
          <h3>Generando Backup</h3>
          {producto.length > 0 ? <p>Productos ok</p> : <p>Buscando Productos</p>}
-         {materiaprima.length > 0 ? (
-            <p>Materia Prima ok</p>
-         ) : (
-            <p>Buscando Materia Prima</p>
-         )}
-         {prodmp.length > 0 ? (
-            <p>Productos Materia Prima ok</p>
-         ) : (
-            <p>Buscando Productos Materia Prima</p>
-         )}
+         {materiaprima.length > 0 ? (<p>Materia Prima ok</p>) : (<p>Buscando Materia Prima</p>)}
+         {prodmp.length > 0 ? (<p>Productos Materia Prima ok</p>) : (<p>Buscando Productos Materia Prima</p>)}
+         {factura.length > 0 ? (<p>Factura ok</p>) : (<p>Buscando Facturas</p>)}
          <p>Por Favor Espere... </p>
       </div>
    );
