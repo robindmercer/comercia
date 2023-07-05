@@ -25,6 +25,7 @@ import "../../css/factdet.css";
 // Modal
 import OkForm from "../modal/OkForm";
 import { Modal, Button, Alert } from "react-bootstrap";
+import Cookies from 'universal-cookie'
 //import { getCondicionesCot } from "../../actions/cotizacioncond";
 
 var xMoneda = "1";
@@ -33,6 +34,7 @@ var btnAgregar = false;
 var btnEliminarReg = false;
 
 const Formcotizacion = () => {
+  const cookies = new Cookies();
   let fecha = new Date().toLocaleDateString("en-GB");
   const { condiciones } = useSelector((state) => state);
   const [showAlert, setShowAlert] = useState(false);
@@ -55,13 +57,13 @@ const Formcotizacion = () => {
     };
   }, [showAlert]);
 
-  const porciva = localStorage.getItem("porciva");
+  const porciva = cookies.get("porciva");
 
   // Manejo acceso del Usuario
-  const usuariomenu = useSelector((state) => state.usuariomenu);
+  // const usuariomenu = useSelector((state) => state.usuariomenu);
   const [acceso, setAcceso] = useState("A");
   const idProg = 11;
-  const id_usuario = localStorage.getItem("usuario");
+  const id_usuario = cookies.get("usuario");
   const navigate = useNavigate();
   const { cliente } = useSelector((state) => state);
   const { factcab } = useSelector((state) => state);
@@ -106,7 +108,7 @@ const Formcotizacion = () => {
     telefono:'',
     direccion:'',
     email:'',
-    vendedor:localStorage.getItem("usuario"),
+    vendedor:cookies.get("usuario"),
     fecha: new Date().toLocaleDateString("en-GB"),
   });
 
@@ -193,16 +195,10 @@ const Formcotizacion = () => {
     dispatch(getCondiciones());
     // dispatch(getClienteId(state.idCli));
     // dispatch(getDetailIva(1));
-    dispatch(getUsuariomenId(id_usuario));
+//    dispatch(getUsuariomenId(id_usuario));
     dispatch(getDetail(8));
     setMostrar(true);
-    if (usuariomenu) {
-      for (var i = 0; i < usuariomenu.length; i++) {
-        if (usuariomenu[i].nivel === idProg) {
-          setAcceso(usuariomenu[i].accion + usuariomenu[i].cod_perfil);
-        }
-      }
-    }
+    setAcceso(cookies.get("acceso"))
     // return (
     //   dispatch(resetFact())
     //   )

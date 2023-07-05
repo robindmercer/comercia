@@ -11,9 +11,10 @@ import Header from '../../Header';
 //import '../../css/factdet.css'
 // Acciones 
 import { deleteMPDetail, getMateriaprima, getMPDetail,AddMPDetail, resetProd } from '../../../actions/materiaprima';
-
+import Cookies from 'universal-cookie'
 const FormProdMp = () => {
   const idProg = 3;
+  const cookies = new Cookies();
   var btnGrabar = false;
   const { materiaprima } = useSelector((state) => state)
   const { prodmp } = useSelector((state) => state)
@@ -27,20 +28,9 @@ const FormProdMp = () => {
   const [onChange, setOnChange] = useState(false)
 
   // Accesos 
-  const usuariomenu = useSelector((state) => state.usuariomenu);
+  // const usuariomenu = useSelector((state) => state.usuariomenu);
   const [acceso, setAcceso] = useState("");
-
-  if (usuariomenu && acceso === "") {
-    // console.log("usuariomenu: ", usuariomenu);
-    for (var i = 0; i < usuariomenu.length; i++) {
-      if (usuariomenu[i].nivel === idProg) {
-        setAcceso(usuariomenu[i].accion + usuariomenu[i].cod_perfil);
-      }
-    }
-  }
-  if (acceso.substring(0,1)==='A'){
-    btnGrabar = true
-  }
+  
   // Fin control Accesos 
   const initialProductLine = {
     prod_id: state.id,
@@ -49,14 +39,15 @@ const FormProdMp = () => {
     udm: 'Pieza',
     cantidad: 1,
   }
-
+  
   useEffect(() => {
-
+    
     dispatch(getMPDetail(state.id));
     dispatch(getMateriaprima());
+    setAcceso(cookies.get("acceso"))
     // return (
-    //   dispatch(resetProd())
-    // )
+      //   dispatch(resetProd())
+      // )
   }, [dispatch, state.id]);
 
   useEffect(() => {
@@ -73,7 +64,7 @@ const FormProdMp = () => {
       setOnChange(true)
     }
   }
-
+  
   const handleStatus = (e) => {
     e.preventDefault();
     console.log('handleStatus: ', e.target.value);
@@ -95,29 +86,29 @@ const FormProdMp = () => {
     }
   }    
   
-
+  
   //   const handleAdd = () => {
-  //   prodmp.push(initialProductLine)
-  //   console.log('prodmp: ', prodmp);
-  //   if (onChange) {
-  //     setOnChange(false)
-  //   } else {
-  //     setOnChange(true)
-  //   }
-  // }
-  // function handleChange(e) {
-  //       e.preventDefault();
-  //   console.log('e.target.value: ', e.target.value);
-  // }
-
-  function handleTipo(e, i) {
-    e.preventDefault();
-    console.log('e.target.value: ', e.target.value);
-    console.log('e.target.name: ', e.target.name);
-    console.log('e.target.id: ', i.i);
-
-    if (e.target.name === 'mp_name') {
-      if (e.target.value === '0') {
+    //   prodmp.push(initialProductLine)
+    //   console.log('prodmp: ', prodmp);
+    //   if (onChange) {
+      //     setOnChange(false)
+      //   } else {
+        //     setOnChange(true)
+        //   }
+        // }
+        // function handleChange(e) {
+          //       e.preventDefault();
+          //   console.log('e.target.value: ', e.target.value);
+          // }
+          
+          function handleTipo(e, i) {
+            e.preventDefault();
+            console.log('e.target.value: ', e.target.value);
+            console.log('e.target.name: ', e.target.name);
+            console.log('e.target.id: ', i.i);
+            
+            if (e.target.name === 'mp_name') {
+              if (e.target.value === '0') {
         handleRemove(i.i)
       } else {
         for (var z = 0; z < materiaprima.length; z++) {
@@ -163,10 +154,13 @@ const FormProdMp = () => {
     });
     window.location.href = '/producto';
   };
-  // console.log('materiaprima: ', materiaprima);
-
+  console.log('materiaprima: ', materiaprima);
+  if (acceso.substring(0,1)==='A'){
+    btnGrabar = true
+  }
+  
   // if (!prodmp.length > 0) { prodmp.push(initialProductLine) }
-
+  
   //if (prodmp.length > 0) {
     return (
       <>

@@ -15,7 +15,7 @@ import { getCondicionesFac } from "../../actions/condiciones";
 import { getTablaAll } from "../../actions/tabla";
 // Descuentos
 import { getDetail } from "../../actions/tabla";
-
+import Cookies from 'universal-cookie'
 // var campos del PDF
 var maxhor = 253
 var pdfFilename = "Orden de Compra_"
@@ -51,9 +51,10 @@ var xFooter = ""
 var xTotOC = "TOTAL O.C.";
 var xDescDescrip = "Descuento";
 const FormfacturaPDF = () => {
+   const cookies = new Cookies();
    // Manejo acceso del Usuario
    // const navigate = useNavigate();
-   const id_usuario = localStorage.getItem("usuario");
+   const id_usuario = cookies.get("usuario");
    const { factcab } = useSelector((state) => state);
    const { factdet } = useSelector((state) => state);
    // const { porciva } = useSelector((state) => state);
@@ -63,7 +64,7 @@ const FormfacturaPDF = () => {
    const actlogin = useSelector((state) => state.actlogin);
 
    const dispatch = useDispatch();
-
+   
    // const [subTotal, setSubTotal] = useState(0);
    // const [saleTax, setSaleTax] = useState(0);
    // const [saleDesc, setSaleDesc] = useState(0);

@@ -14,7 +14,7 @@ import { getTablaAll } from "../../actions/tabla";
 import { getFacturaMPId } from "../../actions/facturaMP";
 // Descuentos
 import { getDetail } from "../../actions/tabla";
-
+import Cookies from 'universal-cookie'
 // var campos del PDF
 var maxhor = 263
 var pdfFilename = "Orden de Producción_"
@@ -26,9 +26,10 @@ var prodAnt = "";
 // var xMoneda = "$";
 
 const FormfacturaPDF = () => {
+   const cookies = new Cookies();
    // Manejo acceso del Usuario
    // const navigate = useNavigate();
-   const id_usuario = localStorage.getItem("usuario");
+   const id_usuario = cookies.get("usuario");
    const { factcab } = useSelector((state) => state);
 
    // const { porciva } = useSelector((state) => state);

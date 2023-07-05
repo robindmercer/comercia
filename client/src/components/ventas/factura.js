@@ -19,8 +19,10 @@ import { GetMails } from "../../actions/usuario";
 import crearMail from "../CrearMails";
 import { AddLogs } from "../../actions/logs";
 import DeleteConfirmation from "../DeleteConfirmation";
+import Cookies from 'universal-cookie'
 
 const Factura = () => {
+  const cookies = new Cookies();
   const idProg = 11;
   const [idFact,setIdFact]=useState(0)
   // Delete Confirmation 
@@ -37,13 +39,13 @@ const Factura = () => {
     setDeleteMessage(`Esta seguro/a de cambiar el status a la O.C.?`);
     setDisplayConfirmationModal(true);
   };
-  const id_usuario = localStorage.getItem("usuario");
+  const id_usuario = cookies.get("usuario");
   const { factura } = useSelector((state) => state);
   const { mails } = useSelector((state) => state);
   
   const [onChange, setOnChange] = useState(false);
   // const actlogin = useSelector((state) => state.actlogin)
-  const usuariomenu = useSelector((state) => state.usuariomenu);
+  // const usuariomenu = useSelector((state) => state.usuariomenu);
   const dispatch = useDispatch();
   const dollarUSLocale = Intl.NumberFormat("de-DE");
   const estilo = { fontSize: "200%", transition: "font-size 0.5s" };
@@ -110,7 +112,7 @@ const Factura = () => {
       if (data.cod_status > 3) {
         btnContrato = true;
       }
-      verStatus.push(1, 2, 3, 4, 5, 6, 7, 8, 9);
+      verStatus.push(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14);
     }
     if (acceso === "A2") {
       // Administracion All
@@ -146,7 +148,7 @@ const Factura = () => {
       if (data.cod_status > 3) {
         btnContrato = true;
       }
-      verStatus.push(1, 2, 3, 4, 5, 6, 7, 8, 9);
+      verStatus.push(1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14);
     }
     if (acceso.substring(0, 1) === "C") {
       btnCancel = false;
@@ -173,33 +175,10 @@ const Factura = () => {
     //console.log("Use Efect 1");
     dispatch(AccessCtrl(id_usuario));
     dispatch(getFactura());
+    setAcceso(cookies.get("acceso"))
     //  dispatch(getUsuariomenId(id_usuario));
   }, [dispatch, id_usuario, onChange]);
 
-
-  if (usuariomenu && acceso === "") {
-    // console.log("usuariomenu: ", usuariomenu);
-    for (var i = 0; i < usuariomenu.length; i++) {
-      if (usuariomenu[i].nivel === idProg) {
-        setAcceso(usuariomenu[i].accion + usuariomenu[i].cod_perfil);
-      }
-    }
-  }
-
-  // useEffect(() => {
-  //   console.log("Use Efect 2", onChange);
-  //   if (idFact > 0) {
-  //     setLog(log.cod_status=newStatus)
-  //     setLog(log.doc_id=idFact)
-  //     dispatch(UpdateFacturaSts(idFact, newStatus)); // Espera Aprobacion
-  //     dispatch(AddLogs(log))
-  //     if (onChange) {
-  //       setOnChange(false);
-  //     } else {
-  //       setOnChange(true);
-  //     }
-  //   }
-  // }, [idFact, idMail, newStatus]);
   
   const handleSubmit = (id, signo) => {
     //console.log('handleSubmit: ',id,signo,lang);
@@ -283,7 +262,7 @@ const Factura = () => {
     // console.log("log: ", newLog);
     dispatch(UpdateFacturaSts(found.id, newStatus)); // Espera Aprobacion
     dispatch(AddLogs(newLog));
-
+    
     // dispatch(GetMails(idMail));
     //console.log("mails: ", mails);
     for (var index = 0; index < mails.length; index++) {
@@ -292,9 +271,10 @@ const Factura = () => {
     }
     //handleShow();
     //console.log("mails: ",idMail, mails);
-    //window.location.href = '/factura';
+    window.location.href = '/factura';
   };
-
+  console.log('factura: ', factura);
+  
   return (
     <>
       <Header />

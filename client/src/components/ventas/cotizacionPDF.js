@@ -17,7 +17,7 @@ import { getDetailIva } from "../../actions/tabla";
 import { getUsuariomenId } from "../../actions/usuariomenu";
 import { getCondicionesCot } from "../../actions/cotizacioncond";
 import { getTablaAll } from "../../actions/tabla";
-// Descuentos
+import Cookies from 'universal-cookie'
 //import { getDetail } from "../../actions/tabla";
 
 // CSS
@@ -59,7 +59,8 @@ var xFooter = ""
 const FormcotizPDF = () => {
    // Manejo acceso del Usuario
    // const navigate = useNavigate();
-   const id_usuario = localStorage.getItem("usuario");
+   const cookies = new Cookies();// Descuentos
+   const id_usuario = cookies.get("usuario");
    const { cotizacioncab } = useSelector((state) => state);
    const { cotizaciondet } = useSelector((state) => state);
    const { cotizacioncond } = useSelector((state) => state);
@@ -68,7 +69,7 @@ const FormcotizPDF = () => {
    const tabla = useSelector((state) => state.tabla);
    const actlogin = useSelector((state) => state.actlogin);
    const dispatch = useDispatch();
-
+   
    // const [subTotal, setSubTotal] = useState(0);
    // const [saleTax, setSaleTax] = useState(0);
    // const [saleDesc, setSaleDesc] = useState(0);

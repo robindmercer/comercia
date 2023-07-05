@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate, Link } from "react-router-dom";
-
+import { useLocation, useNavigate } from "react-router-dom";
+import DeleteConfirmation from "../DeleteConfirmation";
 import Header from "../Header";
 import { getFacturaMPId } from "../../actions/facturaMP";
-import style from "../../css/factura.module.css";
 import { AccessCtrl } from "../../actions/index";
 import { getUsuariomenId } from "../../actions/usuariomenu";
 import crearMail from "../CrearMails";
@@ -12,81 +11,98 @@ import { mailEnviar } from "../../actions/index";
 import { GetMails } from "../../actions/usuario";
 import { UpdateFacturaSts } from "../../actions/factura";
 import { AddLogs } from "../../actions/logs";
-
 // Iconos
 import { FcLeft, FcOk } from "react-icons/fc";
 // CSS
 import "../../css/factdet.css";
+import style from "../../css/factura.module.css";
+import Cookies from 'universal-cookie'
+import { RunSqlPost }  from '../../../src/actions/admin'
 
 const Factura = () => {
     const idProg = 11;
-    const id_usuario = localStorage.getItem("usuario");
+    const cookies = new Cookies();
+    const id_usuario = cookies.get("usuario");
     const { facturaMP } = useSelector((state) => state);
     const { mails } = useSelector((state) => state);
     // const actlogin = useSelector((state) => state.actlogin)
-    const usuariomenu = useSelector((state) => state.usuariomenu);
+    // const usuariomenu = useSelector((state) => state.usuariomenu);
     const dispatch = useDispatch();
     const dollarUSLocale = Intl.NumberFormat("de-DE");
-    const estilo = { fontSize: "200%", transition: "font-size 0.5s" };
+    // const estilo = { fontSize: "200%", transition: "font-size 0.5s" };
     const estilo2 = { fontSize: "200%" };
     const [acceso, setAcceso] = useState("");
     const location = useLocation();
     const { state } = location;
     const navigate = useNavigate();
     // const { tabla } = useSelector((state) => state);
-
+    // Modal 
+    const [displayConfirmationModal, setDisplayConfirmationModal] = useState(false);
+    const [deleteMessage, setDeleteMessage] = useState(null);
+    const hideConfirmationModal = () => {setDisplayConfirmationModal(false);};
+    const [id, setId] = useState(null);
+    const { lang } = useSelector((state) => state);
+    // End Modal 
     useEffect(() => {
         console.log("Factura Use Efect");
         dispatch(AccessCtrl(id_usuario));
-        dispatch(UpdateFacturaSts(state.idfact, 7, ""));
-        var newLog = {
-            doc_id: state.idfact,
-            tipo_id: "FAC",
-            usr_id: id_usuario,
-            cod_status: 7,
-        };
-
-        dispatch(AddLogs(newLog));
         dispatch(getFacturaMPId(state.idfact));
         dispatch(getUsuariomenId(id_usuario));
-        if (usuariomenu) {
-            for (var i = 0; i < usuariomenu.length; i++) {
-                if (usuariomenu[i].nivel === idProg) {
-                    setAcceso(
-                        usuariomenu[i].accion + usuariomenu[i].cod_perfil
-                    );
-                }
-            }
-        }
+        setAcceso(cookies.get("acceso"))
+
     }, [dispatch, id_usuario]);
 
+
+    const showDeleteModal = (id) => {
+        setId(id);
+        setDeleteMessage(`Esta seguro/a de cambiar el status a la O.C.?`);
+        setDisplayConfirmationModal(true);
+      };
+
+
     const handleSubmit = (id) => {
-        dispatch(UpdateFacturaSts(id, 8, "")); // Envio a Almacen
         var newLog = {
             doc_id: state.idfact,
             tipo_id: "FAC",
             usr_id: id_usuario,
-            cod_status: 8,
+            cod_status: 0,
+            observ:lang,
         };
 
+        if (state.sts === 6)  newLog.cod_status = 7   // Manufactura
+        if (state.sts === 7)  newLog.cod_status = 8   // Manufactura
+        if (state.sts === 9)  newLog.cod_status = 8   // Manufactura
+        if (state.sts === 8)  newLog.cod_status = 10   // En Produccion FALTA actualizar el stock 
+        if (state.sts === 10) newLog.cod_status = 11 // Revision Calidad
+        if (state.sts === 11) newLog.cod_status = 13 // Liberado pendiente de envío
+        if (state.sts === 12) newLog.cod_status = 11 // Revision Calidad
+        if (state.sts === 13) newLog.cod_status = 14 // Revision Calidad
+// Actualizo Stock 
+        if (newLog.cod_status === 10){
+            var sql = "update materiaprima set stock = stock - t1.pedido  "
+            sql &= " from ("
+            sql &= "  select materiaprima.name MPID, "
+            sql &= "    sum(prodmp.cantidad * factdet.cantidad) as Pedido "
+            sql &= "    from productos  "
+            sql &= "    join prodmp on prodmp.prod_id = productos.id "
+            sql &= "    join materiaprima on materiaprima.name = prodmp.mp_name "
+            sql &= "    join factdet on fac_id = " & state.idfact6
+            sql &= "    where productos.id =  factdet.prod_id "
+            sql &= "    group by fac_id,materiaprima.name, "
+            sql &= "    materiaprima.description,materiaprima.udm,materiaprima.stock"
+            sql &= "  ) t1"
+            sql &= " where name = t1.MPID";
+            dispatch(RunSqlPost(sql))
+        }
+        dispatch(UpdateFacturaSts(id, newLog.cod_status)); // Envio a Manufactura
         dispatch(AddLogs(newLog));
         dispatch(GetMails(5));
         for (var x = 0; x < mails.length; x++) {
             dispatch(mailEnviar(crearMail(8, mails[x].email, "")));
         }
-        // } else {
-        //   // dispatch(UpdateFacturaSts(id,3))
-        //   // Perfil Planeacion
-        //   dispatch(GetMails(3));
-        //   console.log("mails 2: ", mails);
-        //   for (var x1 = 0; x1 < mails.length; x1++) {
-        //     dispatch(
-        //       mailEnviar(crearMail("Confeccionado", mails[x1].email, found))
-        //     );
-        //   }
-        // }
         window.location.href = "/facturaMP";
     };
+
     var fac_id = ""; // ID de la OC
     var prod_ant = ""; // Corte de control de productos
     if (facturaMP.length > 0) {
@@ -193,9 +209,8 @@ const Factura = () => {
                                     <FcOk
                                         style={estilo2}
                                         title="Enviar Manufactura"
-                                        onClick={() => {
-                                            handleSubmit(state.idfact);
-                                        }}
+                                        // onClick={() => {handleSubmit(state.idfact);}}
+                                        onClick={() => {showDeleteModal(state.idfact,'-');}}
                                     />
                                 </td>
                                 <td>&nbsp;&nbsp;&nbsp;</td>
@@ -213,6 +228,12 @@ const Factura = () => {
                     </table>
                 </div>
             </div>
+            <DeleteConfirmation 
+         showModal={displayConfirmationModal} 
+         confirmModal={() => {handleSubmit(id)}} 
+         hideModal={hideConfirmationModal} 
+         id={id} message={deleteMessage}
+      />
         </>
     );
 };

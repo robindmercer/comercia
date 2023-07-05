@@ -27,15 +27,17 @@ import "../../css/factdet.css";
 // Modal
 import OkForm from "../modal/OkForm";
 import { Modal, Button, Alert } from "react-bootstrap";
+import Cookies from 'universal-cookie'
 
 function Formcotizacion() {
+  const cookies = new Cookies();
   const navigate = useNavigate();
   // Manejo acceso del Usuario
-  const usuariomenu = useSelector((state) => state.usuariomenu);
+  // const usuariomenu = useSelector((state) => state.usuariomenu);
   const [acceso, setAcceso] = useState("A");
   const idProg = 11;
 
-  const id_usuario = localStorage.getItem("usuario");
+  const id_usuario = cookies.get("usuario");
   const { cotizacioncab } = useSelector((state) => state);
   const { cotizaciondet } = useSelector((state) => state);
   const { cotizacioncond } = useSelector((state) => state);
@@ -84,7 +86,7 @@ function Formcotizacion() {
     };
   }, [showAlert]);
 
-  const porciva = localStorage.getItem("porciva");
+  const porciva = cookies.get("porciva");
 
   // eslint-disable-next-line no-unused-vars
   const [inputDet, setInputDet] = useState({
@@ -109,7 +111,7 @@ function Formcotizacion() {
     telefono:'',
     direccion:'',
     email:'',
-    vendedor:localStorage.getItem("usuario"),
+    vendedor:cookies.get("usuario"),
 
   });
 
@@ -148,13 +150,7 @@ function Formcotizacion() {
     dispatch(getDetail(8));
     //dispatch(getClienteId(state.idCli));
     // console.log("useeffect");
-    if (usuariomenu) {
-      for (var i = 0; i < usuariomenu.length; i++) {
-        if (usuariomenu[i].nivel === idProg) {
-          setAcceso(usuariomenu[i].accion);
-        }
-      }
-    }
+    setAcceso(cookies.get("acceso"))
     console.log("state.idCotiz: ", state.idCotiz);
     if (cotizacioncab.length > 0) {
       console.log(

@@ -9,6 +9,7 @@ import '../../../css/formProducto.css'
 // Acciones
 //import { AccessCtrl } from '../../../actions/index'
 import { getStatus } from '../../../actions/status';
+import Cookies from 'universal-cookie'
 
 export function validate(input) {
   let errors = {};
@@ -35,6 +36,7 @@ export function validate(input) {
 
 function ABMProducto() {
   const idProg = 3;
+  const cookies = new Cookies();
   var btnGrabar = false;
   const location = useLocation();
   const { state } = location;
@@ -46,17 +48,11 @@ function ABMProducto() {
   const status = useSelector((state) => state.status)
 
   // Accesos 
-  const usuariomenu = useSelector((state) => state.usuariomenu);
+  // const usuariomenu = useSelector((state) => state.usuariomenu);
   const [acceso, setAcceso] = useState("");
 
-  if (usuariomenu && acceso === "") {
-    // console.log("usuariomenu: ", usuariomenu);
-    for (var i = 0; i < usuariomenu.length; i++) {
-      if (usuariomenu[i].nivel === idProg) {
-        setAcceso(usuariomenu[i].accion + usuariomenu[i].cod_perfil);
-      }
-    }
-  }
+  setAcceso(cookies.get("acceso"));
+
   if (acceso.substring(0,1)==='A'){
     btnGrabar = true
   }

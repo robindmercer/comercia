@@ -30,16 +30,17 @@ import {
 import Header from "../Header";
 // CSS
 import "../../css/factdet.css";
-
+import Cookies from 'universal-cookie'
 //const Formfactura = () => {
-function Formfactura() {
+   function Formfactura() {
+   const cookies = new Cookies();
    const navigate = useNavigate();
    // Manejo acceso del Usuario
-   const usuariomenu = useSelector((state) => state.usuariomenu);
+   //const usuariomenu = useSelector((state) => state.usuariomenu);
    const [acceso, setAcceso] = useState("A");
    const idProg = 11;
 
-   const id_usuario = localStorage.getItem("usuario");
+   const id_usuario = cookies.get("usuario");
    const { factcab } = useSelector((state) => state);
    const { factdet } = useSelector((state) => state);
    const { porciva } = useSelector((state) => state);
@@ -122,15 +123,7 @@ function Formfactura() {
       dispatch(getUsuariomenId(id_usuario));
       dispatch(getCondiciones());
       dispatch(getCondicionesFac(state.idfact));
-      //dispatch(getClienteId(state.idCli));
-      // console.log("useeffect");
-      if (usuariomenu) {
-         for (var i = 0; i < usuariomenu.length; i++) {
-            if (usuariomenu[i].nivel === idProg) {
-               setAcceso(usuariomenu[i].accion + usuariomenu[i].cod_perfil);
-            }
-         }
-      }
+      setAcceso(cookies.get("acceso"))
       if (factcab.length > 0) {
          console.log("factcab ok: ", factcab, " lenght ", factcab.length);
          setSaleDHL(factcab[0].dhl);

@@ -43,7 +43,7 @@ router.get("/fac/:id",async function (req, res, next) {
       sql = sql +" join usuarios u on u.usr_id = l.usr_id"
       sql = sql +" join perfils  p on p.id_perfil = u.cod_perfil"
       sql = sql +" where doc_id =" + id.id ;
-      sql = sql +" order by fecha "
+      sql = sql +" order by fecha desc "
       const records = await seq.query(sql, {
         logging: console.log,
         type: QueryTypes.SELECT,

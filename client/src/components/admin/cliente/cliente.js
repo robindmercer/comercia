@@ -8,14 +8,16 @@ import '../../../css/all.css'
 import Header from '../../Header';
 import { FcHome, FcBusinessman,FcCurrencyExchange } from 'react-icons/fc'
 import { resetFact } from "../../../actions/factura";
+import Cookies from 'universal-cookie'
 // import Modal from "../../components/modal"
 const Cliente = () => {
+    const cookies = new Cookies();
     const { cliente } = useSelector((state) => state);
     const dispatch = useDispatch();
     const estilo = { fontSize: "200%", transition: 'font-size 0.5s' };
-    const [acceso, setAcceso] = useState("A");
-    const id_usuario = localStorage.getItem("usuario");
-    const usuariomenu = useSelector((state) => state.usuariomenu);
+    const [acceso, setAcceso] = useState("A"); 
+    const id_usuario = cookies.get("usuario");
+    // const usuariomenu = useSelector((state) => state.usuariomenu);
     const { porciva } = useSelector((state) => state);
     const idProg = 6; // es el nivel 
     // const [openModal, SetOpenModal]=useState(false);
@@ -25,13 +27,7 @@ const Cliente = () => {
         dispatch(getDetailIva(1));
         dispatch(getCliente());
         dispatch(getUsuariomenId(id_usuario));
-        if (usuariomenu) {
-          for (var i = 0; i < usuariomenu.length; i++) {
-            if (usuariomenu[i].nivel === idProg) {
-              setAcceso(usuariomenu[i].accion);
-            }
-          }
-        }    
+        setAcceso(cookies.get("acceso"));
     }, [dispatch]);
 
     const [nombre, setName] = useState("");
@@ -70,7 +66,7 @@ const Cliente = () => {
                             />
                         </div>
                         <div>
-                        {acceso === "A" ? (
+                        {acceso.substring(0,1) === "A" ? (
                             <Link
                                 to={'/formCliente'}
                                 className="dLink"
@@ -167,7 +163,7 @@ const Cliente = () => {
                                             onMouseEnter={({ target }) => target.style.fontSize = "280%"}
                                             onMouseLeave={({ target }) => target.style.fontSize = "200%"} />
                                         </Link>&nbsp;&nbsp;
-                                        { parseInt(data.cantdir) > 0  && acceso === "A" ? (
+                                        { parseInt(data.cantdir) > 0  && acceso.substring(0,1) === "A" ? (
                                         <Link
                                             title="Crear Venta"
                                             to={'/formfacturaAlta'}

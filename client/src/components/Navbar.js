@@ -4,12 +4,13 @@ import ShowBell from "./bell";
 import { menuItems } from "../menuNibbot";
 import MenuItems from "./MenuItems";
 import { getUsuariomenId } from "../actions/usuariomenu";
-
+import Cookies from 'universal-cookie'
 import "../css/all.css";
-
+ 
 const Navbar = () => {
+   const cookies = new Cookies();
    const { usuariomenu } = useSelector((state) => state);
-   const id_usuario = localStorage.getItem("usuario");
+   const id_usuario = cookies.get("usuario");
    const dispatch = useDispatch();
 
    useEffect(() => {

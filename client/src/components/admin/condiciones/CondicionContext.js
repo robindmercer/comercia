@@ -19,7 +19,7 @@ useEffect(() => {
 console.log('condiciones: ', condiciones);
 
 // useEffect(()=> {
-//     setCondiciones(JSON.parse(localStorage.getItem('condiciones')))
+//     setCondiciones(JSON.parse(cookies.get('condiciones')))
 // },[])
 
 // useEffect(() => {

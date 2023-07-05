@@ -6,11 +6,13 @@ import { AccessCtrl } from '../actions/index'
 import { getDetailIva } from '../actions/tabla';
 import { getUsuariomenId } from "../actions/usuariomenu";
 import { RunSql } from "../actions/admin";
+import Cookies from 'universal-cookie'
 import '../App.css'
 
 const Layout = () => {
-  const id_usuario = localStorage.getItem("usuario");
-  const id_pass = localStorage.getItem("pass");
+  const cookies = new Cookies();
+  const id_usuario = cookies.get("usuario");
+  const id_pass = cookies.get("pass");
   const actlogin = useSelector((state) => state.actlogin)
   // const { tabla } = useSelector((state) => state)
   const porciva = useSelector((state) => state.porciva)
@@ -20,6 +22,7 @@ const Layout = () => {
   const usuariomenu = useSelector((state) => state.usuariomenu);
   const dispatch = useDispatch()
   const [xstatus,setXstatus] = useState(0);
+  
   useEffect(() => {
     dispatch(getDetailIva(1));
     dispatch(AccessCtrl(id_usuario));
@@ -33,28 +36,29 @@ const Layout = () => {
     var xAcceso=""
     var sts = 0
     // for (var i = 0; i < usuariomenu.length; i++) {
-    //   console.log("usuariomenu: ", usuariomenu[i].nivel,usuariomenu[i].accion);
-    //   if (usuariomenu[i].nivel === 12 && usuariomenu[i].accion === 'A') {
-    //     console.log('doce');
-    //     xAcceso = usuariomenu[i].accion + usuariomenu[i].cod_perfil;
-    //   }
-    //   if (usuariomenu[i].nivel === 11 && usuariomenu[i].accion === 'A') {
-    //     console.log('once',usuariomenu[i].accion + usuariomenu[i].cod_perfil);
-    //     xAcceso = usuariomenu[i].accion + usuariomenu[i].cod_perfil;
-    //   }    
-    // }    
+      //   console.log("usuariomenu: ", usuariomenu[i].nivel,usuariomenu[i].accion);
+      //   if (usuariomenu[i].nivel === 12 && usuariomenu[i].accion === 'A') {
+        //     console.log('doce');
+        //     xAcceso = usuariomenu[i].accion + usuariomenu[i].cod_perfil;
+        //   }
+        //   if (usuariomenu[i].nivel === 11 && usuariomenu[i].accion === 'A') {
+          //     console.log('once',usuariomenu[i].accion + usuariomenu[i].cod_perfil);
+          //     xAcceso = usuariomenu[i].accion + usuariomenu[i].cod_perfil;
+          //   }    
+          // }    
     if (usuariomenu[0].accion === 'A') {
       xAcceso = usuariomenu[0].accion + usuariomenu[0].cod_perfil;
+      cookies.set('acceso', xAcceso,{path:'/'})
     }    
-
+    
     sts = "0" // Default
     if (xAcceso ==="A1") sts = "2|2"      // Gerencia
     if (xAcceso ==="A2") sts = "99|3,4,5" // Adminsitracion 
-    if (xAcceso ==="A3") sts = "1,3|1"    // Ventas
-    if (xAcceso ==="A4") sts = "99|6"     // Planeacion
-    if (xAcceso ==="A5") sts = "99|6,7"   // Manufactura
-    if (xAcceso ==="A6") sts = "99|7,8"   // Compras
-    
+    if (xAcceso ==="A3") sts = "1,3|1"        // Ventas
+    if (xAcceso ==="A6") sts = "99|7,9,13,14" // Almacen
+    if (xAcceso ==="A5") sts = "99|8,10,12"   // Manufactura
+    if (xAcceso ==="A8") sts = "99|11,13"     // Calidad
+     
     setXstatus(99)
     console.log('xstatus-----------------------------------------', xstatus);
     console.log('acceso', xAcceso);
@@ -71,15 +75,18 @@ const Layout = () => {
   // console.log('admin: ', admin);
   // console.log('LayOut fin--------------------------------');
   if (porciva.length>0){
-   localStorage.setItem('porciva',porciva[0].valor)
- }
- if (admin){
-  for (var i = 0; i < admin.length; i++) {
-    if (admin[i].tipo === 0 ) {
-      localStorage.setItem('cot', admin[i].count)
-    }
-    if (admin[i].tipo === 1 ) {
-      localStorage.setItem('fac', admin[i].count)
+    // localStorage.setItem('porciva',porciva[0].valor)
+    cookies.set('porciva', porciva[0].valor,{path:'/'})
+  }
+  if (admin){
+    for (var i = 0; i < admin.length; i++) {
+      if (admin[i].tipo === 0 ) {
+        // localStorage.setItem('cot', admin[i].count)
+        cookies.set('cot', admin[i].count,{path:'/'})
+      }
+      if (admin[i].tipo === 1 ) {
+        // localStorage.setItem('fac', admin[i].count)
+        cookies.set('fac', admin[i].count,{path:'/'})
     }
   }
  }

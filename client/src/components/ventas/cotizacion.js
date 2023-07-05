@@ -18,10 +18,11 @@ import AsignCli from './cotizAsignClient';
 import { GetMails } from "../../actions/usuario";
 import { AddLogs } from "../../actions/logs";
 // import { PDFDownloadLink } from "@react-pdf/renderer";
-
+import Cookies from 'universal-cookie'
 
 
 const Cotizacion = () => {
+  const cookies = new Cookies();
 
   // Modal 
   const [show, setShow] = useState(false);
@@ -29,13 +30,13 @@ const Cotizacion = () => {
   const handleClose = () => setShow(false);
   // end Modal 
   const idProg = 12;
-  const id_usuario = localStorage.getItem("usuario");
+  const id_usuario = cookies.get("usuario");
   const { cotizacion } = useSelector((state) => state);
   const { mails } = useSelector((state) => state);
 
   const [onChange, setOnChange] = useState(false);
   // const actlogin = useSelector((state) => state.actlogin)
-  const usuariomenu = useSelector((state) => state.usuariomenu);
+  // const usuariomenu = useSelector((state) => state.usuariomenu);
   const dispatch = useDispatch();
   const dollarUSLocale = Intl.NumberFormat("de-DE");
   const estilo = { fontSize: "200%", transition: "font-size 0.5s" };
@@ -143,6 +144,7 @@ const Cotizacion = () => {
     console.log("Use Efect 1");
     dispatch(AccessCtrl(id_usuario));
     dispatch(getCotizacion());
+    setAcceso(cookies.get("acceso"))
     //  dispatch(getUsuariomenId(id_usuario));
   }, [dispatch, id_usuario, onChange]);
 
@@ -227,15 +229,7 @@ const Cotizacion = () => {
     window.location.href = '/cotizacion';
   };
 
-  console.log("------------------------------",acceso);
-  if (usuariomenu && acceso === "") {
-    // console.log("usuariomenu: ", usuariomenu);
-    for (var i = 0; i < usuariomenu.length; i++) {
-      if (usuariomenu[i].nivel === idProg) {
-        setAcceso(usuariomenu[i].accion + usuariomenu[i].cod_perfil);
-      }
-    }
-  }
+  
   console.log("cotizacionss: ", cotizacion);
   return (
     <>

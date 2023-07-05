@@ -4,11 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { menuItems } from '../menuNibbot';
 import MenuItems from './MenuItems';
 import { getUsuariomenId } from "../actions/usuariomenu";
+import Cookies from 'universal-cookie'
 
 const UsuarioMenu = () => {
+  const cookies = new Cookies();
 
   const { usuariomenu } = useSelector((state) => state);
-  const id_usuario = localStorage.getItem("usuario");
+  const id_usuario = cookies.get("usuario");
   const dispatch = useDispatch();
 
   useEffect(() => {

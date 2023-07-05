@@ -79,5 +79,16 @@ export const menuItems = [
         url: '/facturaMP',
       },
     ]
-  }  
+  },  
+  {
+    title: 'Calidad',
+    nivel: 22,
+    submenu: [
+      {
+        title: 'Pendientes',
+        nivel: 23,
+        url: '/facturaMP',
+      },
+    ]
+  }    
 ];

@@ -25,20 +25,21 @@ import { FcAddRow, FcDeleteRow, FcLeft, FcOk } from "react-icons/fc";
 import Header from "../Header";
 // CSS
 import "../../css/factdet.css";
-
+import Cookies from 'universal-cookie'
 var btnGrabar = false;
 var btnAgregar = false;
 var btnEliminarReg = false;
 
 const Formfactura = () => {
+  const cookies = new Cookies();
   let fecha = new Date().toLocaleDateString("en-GB");
 
   // Manejo acceso del Usuario
-  const usuariomenu = useSelector((state) => state.usuariomenu);
+  //const usuariomenu = useSelector((state) => state.usuariomenu);
   const [acceso, setAcceso] = useState("A");
   const idProg = 11;
 
-  const id_usuario = localStorage.getItem("usuario");
+  const id_usuario = cookies.get("usuario");
   const navigate = useNavigate();
   const { cliente } = useSelector((state) => state);
   const { direccion } = useSelector((state) => state);
@@ -193,13 +194,7 @@ const Formfactura = () => {
     dispatch(getDetailIva(1));
     dispatch(getUsuariomenId(id_usuario));
     setMostrar(true);
-    if (usuariomenu) {
-      for (var i = 0; i < usuariomenu.length; i++) {
-        if (usuariomenu[i].nivel === idProg) {
-          setAcceso(usuariomenu[i].accion + usuariomenu[i].cod_perfil);
-        }
-      }
-    }
+    setAcceso(cookies.get("acceso"))
     // return (
     //   dispatch(resetFact())
     //   )
@@ -211,15 +206,7 @@ const Formfactura = () => {
   //   }
   // }, [onChange, factdet])
 
-  // useEffect(() => {
-  //   if (input.dir_id != 0) {
-  //     console.log('AddFactura input ', input);
-  //     dispatch(AddFactura(input))
-  //     factdet.forEach((fact) => {
-  //       console.log('fact.precio: ', fact.precio);
-  //     })
-  //   }
-  // }, [onChange, input])
+
 
   // Calculo subtotal
   useEffect(() => {

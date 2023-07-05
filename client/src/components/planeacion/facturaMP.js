@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getFacturaMP} from "../../actions/facturaMP";
 import { Link } from "react-router-dom";
 import Header from "../Header";
-import { FcAddDatabase,FcCancel,FcDiploma2} from "react-icons/fc";
+import { FcAddDatabase,FcCancel,FcDiploma2, FcAbout} from "react-icons/fc";
 import style from "../../css/factura.module.css";
 import { AccessCtrl } from "../../actions/index";
 import { getUsuariomenId } from "../../actions/usuariomenu";
@@ -13,23 +13,20 @@ import { AddLogs } from "../../actions/logs";
 import { GetMails } from "../../actions/usuario";
 import crearMail from "../CrearMails";
 import { mailEnviar } from "../../actions/index";
-
+import Cookies from 'universal-cookie'
 // import { getDetail } from "../../actions/tabla";
 
-
-
-
-
 const Factura = () => {
+  const cookies = new Cookies();
   const idProg = 20;
-  const id_usuario = localStorage.getItem("usuario");
+  const id_usuario = cookies.get("usuario");
   const { facturaMP } = useSelector((state) => state);
   const [idFact,setIdFact]=useState(0)
   const [newStatus, setNewStatus] = useState(0);
   const [idMail, setIdMail] = useState(0);
   //const { mails } = useSelector((state) => state);
   // const actlogin = useSelector((state) => state.actlogin)
-  const usuariomenu = useSelector((state) => state.usuariomenu);
+  // const usuariomenu = useSelector((state) => state.usuariomenu);
   const dispatch = useDispatch();
   const dollarUSLocale = Intl.NumberFormat("de-DE");
   const estilo = { fontSize: "200%", transition: "font-size 0.5s" };
@@ -40,6 +37,7 @@ const Factura = () => {
   const [displayConfirmationModal, setDisplayConfirmationModal] = useState(false);
   const [deleteMessage, setDeleteMessage] = useState(null);
   const [id, setId] = useState(null);
+  const { lang } = useSelector((state) => state);
   const { mails } = useSelector((state) => state);
   const btnDiploma2 = true;
   
@@ -50,7 +48,38 @@ const Factura = () => {
     setDeleteMessage(`Esta seguro/a de cambiar el status a la O.C.?`);
     setDisplayConfirmationModal(true);
   };
+  var verStatus = [];
+  var muestroRegistro = false;
 
+ // Control Botones a mostrar
+ const control = (data) => {
+  verStatus = [];
+  muestroRegistro = false;
+  // Gerencia
+  if (acceso === "A1") {
+    verStatus.push(7,8,9,10,11,12,13,14);
+  }
+  // Almacen
+  if (acceso === "A6") {
+    verStatus.push(6,7,9,13,14);
+  }
+  // Manufactura
+  if (acceso === "A5") {
+    verStatus.push(8,10,12);
+  }
+  //Calidad
+  if (acceso === "A8") {
+    verStatus.push(11,13);
+  }
+
+  if (verStatus.find((element) => element === data.cod_status)) {
+    muestroRegistro = true;
+  }
+  console.log("Muestro", data.id, data.cod_status, muestroRegistro);
+};
+
+
+// solo para rechazos 
   const handleSubmit = (id) => {
     var control = "x";
     var newStatus = 0;
@@ -67,6 +96,9 @@ const Factura = () => {
       control = "N";
       console.log("newStatus: ", newStatus);
     }
+    if (found.cod_status === 8)  newStatus = 9;//Rechazado Manufactura.
+    if (found.cod_status === 11) newStatus = 12;//Rechazado Calidad
+    if (found.cod_status === 12) newStatus = 9;//Rechazado Manuf.
 
     setIdFact(id);
     setNewStatus(newStatus);
@@ -81,7 +113,7 @@ const Factura = () => {
       tipo_id: "FAC",
       usr_id: id_usuario,
       cod_status: newStatus,
-      observ:'',
+      observ:lang,
     };
 
     console.log("log: ", newLog);
@@ -95,7 +127,8 @@ const Factura = () => {
       dispatch(mailEnviar(crearMail(newStatus, mails[index].email, found)));
     }
     //handleShow();
-    //console.log("mails: ",idMail, mails);
+    console.log("mails: ",idMail, mails);
+    console.log("newLog: ",newLog);
     window.location.href = '/facturaMP';
   };
 
@@ -104,43 +137,11 @@ const Factura = () => {
     dispatch(AccessCtrl(id_usuario));
     dispatch(getFacturaMP());
     dispatch(getUsuariomenId(id_usuario));
-    if (usuariomenu) {
-      console.log('usuariomenu: ', usuariomenu);
-      for (var i = 0; i < usuariomenu.length; i++) {
-        if (usuariomenu[i].nivel === idProg) {
-          setAcceso(usuariomenu[i].accion + usuariomenu[i].cod_perfil);
-        }
-      }
-    }
+    setAcceso(cookies.get("acceso"))
   }, [dispatch, id_usuario]);
 
-  // const handleSubmit = (id) => {
-  //   var control = "x";
-  //   const found = facturaMP.find((element) => element.id === id);
-  //   control = found.control;
-  //   if (control === "S") {
-  //       // dispatch(UpdateFacturaSts(id,4))
-  //     // Perfil Administrador
-  //       dispatch(GetMails(1));
-  //       for (var x = 0; x < mails.length; x++) {
-  //           dispatch(
-  //           mailEnviar(crearMail("Espera Aprobación", mails[x].email, found))
-  //           );
-  //       }
-  //   } else {
-  //       // dispatch(UpdateFacturaSts(id,3))
-  //       // Perfil Planeacion
-  //       dispatch(GetMails(3));
-  //       console.log("mails 2: ", mails);
-  //       for (var x1 = 0; x1 < mails.length; x1++) {
-  //       dispatch(mailEnviar(crearMail("Confeccionado", mails[x1].email, found)));
-  //       }
-  //   }
-  //   window.location.href = '/facturaMP';
-  // };
-
-console.log('facturaMP: ', facturaMP);
-console.log("acceso: ", acceso);
+// console.log('facturaMP: ', facturaMP);
+// console.log("acceso: ", acceso);
   return (
     <>
       <Header />
@@ -163,6 +164,8 @@ console.log("acceso: ", acceso);
           <tbody>
             {facturaMP &&
               facturaMP.map((data) => {
+                control(data);
+                if (muestroRegistro) {
                 return (
                   <tr key={data.id} className="style.row">
                     <td>{data.id}</td>
@@ -177,7 +180,8 @@ console.log("acceso: ", acceso);
                         to={"/formfacturaMP"}
                         className="dLink"
                         state={{
-                          idfact: data.id
+                          idfact: data.id,
+                          sts:data.cod_status
                         }}
                       >
                         <FcAddDatabase
@@ -191,6 +195,28 @@ console.log("acceso: ", acceso);
                           }
                         />
                       </Link>
+                      {btnDiploma2 ? (
+                          <Link
+                            to="/logs"
+                            className="dLink"
+                            state={{
+                              idfact: data.id,
+                              tipo:'FAC'
+                            }}
+                          >
+                            <FcAbout
+                              style={estilo}
+                              title="Ver Logs"
+                              onMouseEnter={({ target }) =>
+                                (target.style.fontSize = "280%")
+                              }
+                              onMouseLeave={({ target }) =>
+                                (target.style.fontSize = "200%")
+                              }
+                            />
+                          </Link>
+                        ) : null}
+
                       {btnDiploma2 ? (
                           <>
                             <Link
@@ -220,8 +246,7 @@ console.log("acceso: ", acceso);
                               title="Cancelar Ultimo Estado"
                               // onClick={() => {
                               //   handleSubmit(data.id, "-");
-                              onClick={() => {showDeleteModal(data.id,'-');
-                              }}
+                              onClick={() => {showDeleteModal(data.id,'-');}}
                               onMouseEnter={({ target }) =>
                                 (target.style.fontSize = "280%")
                               }
@@ -233,7 +258,10 @@ console.log("acceso: ", acceso);
 
                     </td>
                   </tr>
-                );
+                )
+              } else {
+                return null;
+              };
               })}
           </tbody>
         </table>

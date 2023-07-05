@@ -2,10 +2,12 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
 import { FaBell } from "react-icons/fa";
+import Cookies from 'universal-cookie'
 
 export default function ShoppingCartBtn() {
-   var cot = localStorage.getItem("cot");
-   var fac = localStorage.getItem("fac");
+   const cookies = new Cookies();
+   var cot = cookies.get("cot");
+   var fac = cookies.get("fac");
 
    return (
       <>

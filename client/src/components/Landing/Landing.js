@@ -1,6 +1,6 @@
 import { React, useState } from 'react'
 import style from './landing.module.css'
-
+import Cookies from 'universal-cookie'
 
 // Landing Page
 function LandingPage() {
@@ -14,8 +14,11 @@ function LandingPage() {
   
   function handleSubmit(e) {
     e.preventDefault()
-    localStorage.setItem('usuario', input.usr)
-    localStorage.setItem('pass', input.password) 
+    // localStorage.setItem('usuario', input.usr)
+    // localStorage.setItem('pass', input.password) 
+    const cookies = new Cookies();
+    cookies.set('usuario', input.usr,{path:'/'})
+    cookies.set('pass', input.password,{path:'/'})
      window.location.href = '/layout';
   }
 

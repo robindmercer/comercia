@@ -11,23 +11,32 @@
 # Access Definition 
 ````
   Accesos 
-        A1 = All       1 = Gerencia
-        C1 = Consulta  2 = Administrador
-        A2 = All       3 = Ventas
-        A3 = All       4 = Planeación
-        A4 = All       5 = Manufactura
-        A5 = All       6 = Compras
+        A1 = All       Gerencia
+        A2 = All       Administrador
+        A3 = All       Ventas
+        A4 = All       Planeacion
+        A5 = All       Manufactura
+        A6 = All       Almacen 
+        A7 = All       Compras
+        A8 = All       Calidad
+        C1 = Consulta  Administrador
 ````
 # Status 
 ````
-  1 = Ingreso 
-  2 = Espera Aprobación	
-  3 = Aprobado GC.	
-  4 = Pendiente ADMIN.	
-  5 = Pendiente Pago	
-  6 = Liberado	
-  7 = Almacen	
-  8 = Manufactura	
+  1  = Ingreso 
+  2  = Espera Aprobación	
+  3  = Aprobado GC.	
+  4  = Pendiente ADMIN.	
+  5  = Pendiente Pago	
+  6  = Liberado	
+  7  = Almacen	
+  8  = Manufactura	
+  9  = Rechazado Manuf.
+  10 = En Producción
+  11 = Revison Calidad
+  12 = Rechazado Calidad
+  13 = Liberado pendiente de envío
+  14 = Producto Despachado
 ````  
 # Prog Id 
 ````  
