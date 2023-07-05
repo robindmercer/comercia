@@ -28,7 +28,11 @@ router.get('/', async function (req, res, next) {
       sql = sql + " join tabla                t  on t.id = 6 and t.cod= f.cod_status" 
       sql = sql + " left join cotizacioncond  fc on fc.cot_id = f.id" 
       sql = sql + " left join condiciones    con on con.id = fc.cond_id"       
-      sql = sql + " left join logs             l on l.doc_id = f.id and l.tipo_id = 'COT'"    
+      sql = sql + " left join logs             l on l.doc_id = f.id and l.tipo_id = 'COT'"   
+      sql = sql + "                             and l.id in ("
+      sql = sql + "                               select  max(id) "
+      sql = sql + "                                 from logs "
+      sql = sql + "                                where doc_id = f.id and l.tipo_id = 'COT')" 
       sql = sql + " order by f.id"
       const records = await seq.query(sql,
         {
