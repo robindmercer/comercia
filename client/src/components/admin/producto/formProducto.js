@@ -51,8 +51,7 @@ function ABMProducto() {
   // const usuariomenu = useSelector((state) => state.usuariomenu);
   const [acceso, setAcceso] = useState("");
 
-  setAcceso(cookies.get("acceso"));
-
+  
   if (acceso.substring(0,1)==='A'){
     btnGrabar = true
   }
@@ -60,6 +59,7 @@ function ABMProducto() {
   useEffect(() => {
     dispatch(getStatus());
     dispatch(getProducto(state.id));
+    setAcceso(cookies.get("acceso"));
   }, [dispatch, state.id]);
 
 
