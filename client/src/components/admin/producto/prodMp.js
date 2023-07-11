@@ -12,7 +12,15 @@ import Header from '../../Header';
 // Acciones 
 import { deleteMPDetail, getMateriaprima, getMPDetail,AddMPDetail, resetProd } from '../../../actions/materiaprima';
 import Cookies from 'universal-cookie'
+import { InsertData, RunSqlDel } from '../../../actions/admin';
 const FormProdMp = () => {
+
+
+   const [datos, setDatos] = useState({
+      sql1:"",
+      sql2:""
+   }); 
+
   const idProg = 3;
   const cookies = new Cookies();
   var btnGrabar = false;
@@ -28,7 +36,6 @@ const FormProdMp = () => {
   const [onChange, setOnChange] = useState(false)
 
   // Accesos 
-  // const usuariomenu = useSelector((state) => state.usuariomenu);
   const [acceso, setAcceso] = useState("");
   
   // Fin control Accesos 
@@ -73,6 +80,7 @@ const FormProdMp = () => {
         const newProdmp = {
           prod_id : state.id,
           name : materiaprima[z].name,
+          mp_name : materiaprima[z].name,
           description : materiaprima[z].description,
           cantidad : 1
         }
@@ -113,6 +121,7 @@ const FormProdMp = () => {
       } else {
         for (var z = 0; z < materiaprima.length; z++) {
           if (materiaprima[z].id === e.target.value) {
+            prodmp[i.i].mp_name = materiaprima[z].name
             prodmp[i.i].name = materiaprima[z].name
             prodmp[i.i].description = materiaprima[z].description
             prodmp[i.i].udm = materiaprima[z].udm
@@ -137,24 +146,26 @@ const FormProdMp = () => {
   }
   const handleSubmit = (e) => {
     e.preventDefault();
-    //console.log('input', input);
+   console.log('prodmp', prodmp);
     //dispatch(AddCliente(input));
     //navigate("/cliente");
-    console.log('state.id: ', state.id);
-    console.log('prodmp: ', prodmp);
-    dispatch(deleteMPDetail(state.id));
-    prodmp.forEach(e => {
-      const send={
-        prod_id : state.id,
-        mp_name : e.name,
-        cantidad: e.cantidad
-      }
-      console.log('prodmp submit: ', send);
-      dispatch(AddMPDetail(send));
-    });
-    window.location.href = '/producto';
+    var xSql2 = "insert into prodmp  (prod_id,mp_name,cantidad) values "
+      var xSql3 = ""
+      for (var i = 0; i < prodmp.length; i++) {
+          xSql3 +=`(${state.id},'${prodmp[i].mp_name}',${prodmp[i].cantidad});`
+         }
+      
+      //xSql3 = xSql2 + xSql3.substring(0,xSql3.length-1)
+      var sql=`delete from prodmp where prod_id = ${state.id}` 
+      setDatos(datos.sql1=sql)
+      dispatch(RunSqlDel(datos))
+      setDatos(datos.sql1=xSql2)
+      setDatos(datos.sql2=xSql3)
+     
+      dispatch(InsertData(datos))
+      window.location.href = '/producto';
   };
-  console.log('materiaprima: ', materiaprima);
+
   if (acceso.substring(0,1)==='A'){
     btnGrabar = true
   }
