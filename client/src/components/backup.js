@@ -18,7 +18,7 @@ const Backup = () => {
    const { factdet } = useSelector((state) => state);
    const { cliente } = useSelector((state) => state);
    const { direccion } = useSelector((state) => state);
-   const dispatch = useDispatch();
+   const dispatch = useDispatch(); 
 
    useEffect(() => {
       dispatch(getProducto());
@@ -28,7 +28,7 @@ const Backup = () => {
       dispatch(getFacturaDetAll());   
       dispatch(getClienteBckp());   
       dispatch(getDireccionBckp());   
-   }, [dispatch]);
+   }, [dispatch]); 
 
    const downloadBackup = () => {
       //Productos
