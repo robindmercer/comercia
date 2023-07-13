@@ -47,6 +47,23 @@ router.get("/", async function (req, res, next) {
   }
 });
 
+
+router.get("/bckp", async function (req, res, next) {
+  try {
+    sql = "select * from facturas";
+    const records = await seq.query(sql, {
+      logging: console.log,
+      type: QueryTypes.SELECT,
+    });
+    res.send(records);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+
+
+
 router.get("/cab", async function (req, res, next) {
   const { id } = req.query;
   if (id) {

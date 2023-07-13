@@ -40,6 +40,25 @@ router.get('/', async function (req, res, next) {
   
 })
 
+router.get('/all', async function (req, res, next) {
+  try {
+    console.log("fACTdET all");    
+    sql='select *'
+    sql = sql + ' from factdet'
+    const records = await seq.query(sql,
+      {
+        logging: console.log,
+        type: QueryTypes.SELECT
+      });
+      //console.log('records: ', records);
+    res.send(records)
+  } catch (error) {
+    console.log(error)
+  }
+  
+})
+
+
 router.get('/det', async function (req, res, next) {
   const {id} = req.query;
   if(id) {
