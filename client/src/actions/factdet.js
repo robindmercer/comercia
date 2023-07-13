@@ -12,6 +12,18 @@ import { GET_FACTURADET } from './constant'
    }
 } 
 
+export function getFacturaDetAll(){
+  // console.log('Action getFactura: DET');
+   return async function (dispatch) {
+       var factdet = await axios.get(`factdet/all`);
+       return dispatch({
+           type: GET_FACTURADET,
+           payload: factdet.data
+       })
+   }
+} 
+
+
 export function AddFacturaDet(input) {
     //console.log('AddFacturaDet input: ', input);
     return async function (dispatch) {

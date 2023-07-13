@@ -14,6 +14,16 @@ export function getFactura() {
     })
   }
 }
+export function getFacturaBckp() {
+  console.log('Action getFactura: bckp');
+  return async function (dispatch) {
+    var factura = await axios.get(`factura/bckp`);
+    return dispatch({
+      type: GET_FACTURA,
+      payload: factura.data
+    })
+  }
+}
 
 export function getFacturaCab(id) {
   // console.log('Action getFacturaCab: ', id);
