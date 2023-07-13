@@ -11,9 +11,24 @@ const path = require('path');
 const { DB_USER, DB_PASSWORD, DB_HOST, DB_DATABASE, DB_PORT } = process.env;
 
 const seq = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_DATABASE}`, {
-    logging: false, // set to console.log to see the raw SQL queries
+  logging: false, // set to console.log to see the raw SQL queries
   native: false, // lets Sequelize know we can use pg-native for ~30% more speed
 });
+
+router.get('/bckp', async function (req, res, next) {
+  try {
+    sql='select * from clientes'
+    const records = await seq.query(sql,
+      {
+        logging: console.log,
+        type: QueryTypes.SELECT
+      });
+      //console.log('records: ', records);
+    res.send(records)
+  } catch (error) {
+    console.log(error)
+  }
+})
 
 router.get('/:id', async function (req, res, next) {
   console.log("cliente con :id")
@@ -32,7 +47,7 @@ router.get('/:id', async function (req, res, next) {
         type: QueryTypes.SELECT
       });
       //console.log('records: ', records);
-    res.send(records)
+      res.send(records)
   } catch (error) {
     console.log(error)
   }
@@ -74,6 +89,8 @@ router.get('/', async function (req, res, next) {
     console.log(error)
   }
 })
+
+
 
 router.post('/', async function (req, res, next) {
   try {

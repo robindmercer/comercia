@@ -12,6 +12,17 @@ export function getDireccion(id){
      }
  }
  
+ export function getDireccionBckp(id){
+  //console.log('Action getDireccion: All');
+   return async function (dispatch) {
+       var direccion = await axios.get(`direccion/bckp`);
+       return dispatch({
+           type: GET_DIRECCION,
+           payload: direccion.data
+       })
+   }
+}
+
  export function AddDireccion(direccion) {
     return function (dispatch) {
       axios.post('direccion', direccion)

@@ -40,6 +40,25 @@ router.get('/', async function (req, res, next) {
   }
 
 })
+
+router.get('/bckp', async function (req, res, next) {
+  try {
+    
+    sql='select * from direccion'
+    const records = await seq.query(sql,
+      {
+        logging: console.log,
+        type: QueryTypes.SELECT
+      });
+      //console.log('records: ', records);
+    res.send(records)
+  } catch (error) {
+    console.log(error)
+  }
+
+})
+
+
 router.post('/', async function (req, res, next) {
   try {
     const {id,cli_id,orden, calle,localidad,cp,ciudad,pais,cod_tipo,cod_status} = req.body

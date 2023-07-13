@@ -11,6 +11,17 @@ export function getCliente(){
          })
      }
  }
+
+ export function getClienteBckp(){
+  // console.log('Action getCliente: All');
+   return async function (dispatch) {
+       var cliente = await axios.get(`cliente/bckp`);
+       return dispatch({
+           type: GET_CLIENTE,
+           payload: cliente.data
+       })
+   }
+}
  
  export function getClienteId(id){
   // console.log('Action getClienteId:',id);
