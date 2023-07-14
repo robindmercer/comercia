@@ -4,12 +4,9 @@ import { getFactura, UpdateFacturaSts } from "../../actions/factura";
 import { Link } from "react-router-dom";
 
 import Header from "../Header";
-import { FcAddDatabase, FcApproval, FcDiploma2, FcCancel, FcAbout,FcCopyright} from "react-icons/fc";
+import { FcAddDatabase, FcApproval, FcDiploma2, FcCancel, FcAbout,FcCopyright,FcNews} from "react-icons/fc";
 import style from "../../css/factura.module.css";
 import { AccessCtrl } from "../../actions/index";
-//import { getUsuariomenId } from "../../actions/usuariomenu";
-// import { getDetail } from "../../actions/tabla";
-// import crearMail from "../CrearMails";
 import { mailEnviar } from "../../actions/index";
 import { GetMails } from "../../actions/usuario";
 
@@ -164,7 +161,11 @@ const Factura = () => {
       btnDiploma2 = true;
       verStatus.push(1, 2, 3, 4, 5, 6);
     }
-
+    
+    //Calidad
+    if (acceso === "A8") {
+      verStatus.push(1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14);
+    }
     if (verStatus.find((element) => element === data.cod_status)) {
       muestroRegistro = true;
     }
@@ -448,6 +449,27 @@ const Factura = () => {
                           </>
                         ) : null}
                         &nbsp;&nbsp;
+                          <>
+                            <Link
+                              to={"/comentario"}
+                              className="dLink"
+                              state={{
+                                facid: data.id,
+                              }}
+                            >
+                              <FcNews
+                                style={estilo}
+                                title="Ver Comentarios"
+                                onMouseEnter={({ target }) =>
+                                  (target.style.fontSize = "280%")
+                                }
+                                onMouseLeave={({ target }) =>
+                                  (target.style.fontSize = "200%")
+                                }
+                              />
+                            </Link>
+                          </>
+
                       </td>
                     </tr>
                   );
