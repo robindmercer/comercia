@@ -37,7 +37,10 @@ import UploadFile from '../Upload'
 // import VerPdf from '../verPdf'
 import Contrato from '../components/ventas/contrato'
 import Backups from '../components/backup'
+//import Restore  from '../components/restore'
 import PlaneacionPdf from '../components/planeacion/planeacionPdf'
+import Comentario from '../components/comentario/ComentarioMain'
+
 
 function HandleRoutes() {
 
@@ -240,13 +243,26 @@ function HandleRoutes() {
             element: <Backups/>,
             exact: true,
             private: true,
-        },
+        },        
+        // {
+        //     path: "/restore",
+        //     element: <Restore/>,
+        //     exact: true,
+        //     private: true,
+        // },        
         {
             path: "planeacionPdf",
             element: <PlaneacionPdf/>,
             exact: true,
             private: true,
-        },
+        },        
+        {
+            path: "/comentario",
+            element: <Comentario/>,
+            exact: true,
+            private: true,
+        }
+        
     ]
     return routes;
 };

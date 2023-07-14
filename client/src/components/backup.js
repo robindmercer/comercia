@@ -7,8 +7,10 @@ import { getFacturaBckp } from "../actions/factura";
 import { getFacturaDetAll } from "../actions/factdet";
 import { getClienteBckp } from "../actions/cliente";
 import { getDireccionBckp } from "../actions/direccion";
+import { getCondicionesBckp } from "../actions/factcond";
 
 import * as XLSX from "xlsx";
+
 
 const Backup = () => {
    const { producto } = useSelector((state) => state);
@@ -16,10 +18,11 @@ const Backup = () => {
    const { prodmp } = useSelector((state) => state);
    const { factura } = useSelector((state) => state);
    const { factdet } = useSelector((state) => state);
+   const { factcond } = useSelector((state) => state);
    const { cliente } = useSelector((state) => state);
    const { direccion } = useSelector((state) => state);
    const dispatch = useDispatch(); 
-
+   
    useEffect(() => {
       dispatch(getProducto());
       dispatch(getMateriaprima());
@@ -28,6 +31,7 @@ const Backup = () => {
       dispatch(getFacturaDetAll());   
       dispatch(getClienteBckp());   
       dispatch(getDireccionBckp());   
+      dispatch(getCondicionesBckp());
    }, [dispatch]); 
 
    const downloadBackup = () => {
@@ -68,6 +72,11 @@ const Backup = () => {
       const hojadireccion = XLSX.utils.json_to_sheet(direccion);
       XLSX.utils.book_append_sheet(librodireccion, hojadireccion, "Backups");
       XLSX.writeFile(librodireccion, "direccion.xlsx");
+      //factcond
+      const librofactcond = XLSX.utils.book_new();
+      const hojafactcond = XLSX.utils.json_to_sheet(factcond);
+      XLSX.utils.book_append_sheet(librofactcond, hojafactcond, "Backups");
+      XLSX.writeFile(librofactcond, "factcond.xlsx");
    };
 
    if (
@@ -77,7 +86,8 @@ const Backup = () => {
       factura.length > 0 &&
       factdet.length > 0 &&
       cliente.length > 0 &&
-      direccion.length > 0
+      direccion.length > 0 && 
+      factcond.length > 0
       // tabla.length > 0
    ) {
       downloadBackup();
@@ -92,6 +102,7 @@ const Backup = () => {
          {prodmp.length > 0 ? (<p>Productos Materia Prima ok</p>) : (<p>Buscando Productos Materia Prima</p>)}
          {factura.length > 0 ? (<p>Factura ok</p>) : (<p>Buscando Facturas</p>)}
          {factdet.length > 0 ? (<p>Factdet ok</p>) : (<p>Buscando Factdets</p>)}
+         {factcond.length > 0 ? (<p>FactCond ok</p>) : (<p>Buscando FactCond</p>)}
          {cliente.length > 0 ? (<p>Cliente ok</p>) : (<p>Buscando Cliente</p>)}
          {direccion.length > 0 ? (<p>Direccion ok</p>) : (<p>Buscando Direccion</p>)}
          <p>Por Favor Espere... </p>

@@ -85,9 +85,9 @@ export const menuItems = [
     nivel: 22,
     submenu: [
       {
-        title: 'Pendientes',
+        title: 'Ordenes de Compra',
         nivel: 23,
-        url: '/facturaMP',
+        url: '/factura',
       },
     ]
   }    

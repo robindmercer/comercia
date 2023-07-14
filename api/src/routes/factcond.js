@@ -16,6 +16,22 @@ const seq = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_
   native: false, // lets Sequelize know we can use pg-native for ~30% more speed
 });
 
+
+router.get("/bckp", async function (req, res, next) {
+  try {
+    var sql = `select * from factcond `;
+    const records = await seq.query(sql, {
+      logging: console.log,
+      type: QueryTypes.SELECT,
+    });
+    //console.log('records: ', records);
+    res.send(records);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+
 router.get('/', async function (req, res, next) {
   try {
       sql="select facturas.id,to_char(facturas.fecha,'dd/mm/yyyy') as fecha,facturas.subtotal,facturas.iva,facturas.total,status.description as stsdes,"

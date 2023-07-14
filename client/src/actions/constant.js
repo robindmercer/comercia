@@ -55,3 +55,5 @@ export const GET_LANG = 'GET_LANG'
 export const GET_CONTRATOID='GET_CONTRATOID'
 // ADMIN SQL especiales
 export const GET_ADMIN='GET_ADMIN'
+// Comentarios sobre las OC 
+export const GET_COMENTARIO='GET_COMENTARIO'
