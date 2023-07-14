@@ -10,7 +10,8 @@ import {
   GET_FACTURAMP,
   GET_LOGSID,
   GET_LANG,
-  GET_ADMIN
+  GET_ADMIN,
+  GET_COMENTARIO
 } from "../actions/constant.js";
 import {
   GET_TABLA,
@@ -67,7 +68,6 @@ const initialState = {
   factdet: [],
   porciva: [],
   materiaprima: [],
-  facturaMP: [],
   prodmp: [], // materia prima por producto
   cotizacion: [],
   cotizacioncab: [],
@@ -77,6 +77,7 @@ const initialState = {
   idcli: 0,
   contrato:[],
   admin:[],// Cualquier SQL 
+  comentario:[],
 };
 
 // Reducer to get foods ordered by alphabet
@@ -354,6 +355,13 @@ const rootReducer = (state = initialState, action) => {
       admin: action.payload,
     };
   }
+  if (action.type === GET_COMENTARIO) {
+    return {
+      ...state,
+      comentario: action.payload,
+    };
+  }
+
   return state;
 };
 
