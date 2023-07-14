@@ -22,6 +22,8 @@ const condiciones = require("./condiciones") // condiciones generales de fectura
 const cotizacion =require("./cotizacion")
 const cotizaciondet =require("./cotizaciondet")
 const cotizacioncond =require("./cotizacioncond")
+const comentario = require("./comentario")
+
 const log = require ("./log")
 const upload = require("./upload")
 const router = Router();
@@ -66,4 +68,5 @@ router.use('/cotizacioncond',cotizacioncond)      // CotizacionesDet
 router.use('/log',log)                          //Log 
 router.use('/upload',upload)
 router.use('/contrato',contrato)
+router.use('/comentario',comentario)
 module.exports = router;
