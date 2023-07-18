@@ -16,7 +16,19 @@ export function InsertData(data) {
         })
     }
   }
-  
+
+  export function BulkData(data) {
+    return async function (dispatch) {
+      await axios.post(`admin/bulk`, data)
+      .then(response => {
+        return response
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
+}
+
   export function RunSqlPost(data) {
     return async function (dispatch) {
       await axios.post(`admin/update`, data)
