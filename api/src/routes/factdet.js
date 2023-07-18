@@ -63,9 +63,9 @@ router.get('/det', async function (req, res, next) {
   const {id} = req.query;
   if(id) {
     try {
-      sql='select factdet.*,productos.name,productos.description,l.name nameExt,l.description descripExt from factdet '
-      sql = sql + ' join productos on productos.id = factdet.prod_id'
-      sql = sql + ' join productolang l on l.id = factdet.prod_id'
+      sql='select factdet.*,p.name,p.description,coalesce(l.name,p.name) nameExt,coalesce(l.description,p.description) descripExt from factdet '
+      sql = sql + ' join productos p on p.id = factdet.prod_id'
+      sql = sql + ' left join productolang l on l.id = factdet.prod_id'
       sql = sql + ' where fac_id = ' + id
       const records = await seq.query(sql,
         {

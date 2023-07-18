@@ -70,12 +70,12 @@ router.get("/cab", async function (req, res, next) {
     try {
       sql = "select f.id,to_char(f.fecha,'dd/mm/yyyy') as fecha,f.subtotal,f.iva,f.total,f.dhl,f.cli_id,f.cod_status, ";
       sql = sql + " d.calle,d.localidad,d.cp,d.ciudad,d.pais, ";
-      sql = sql + " c.nombre,f.cli_id,t.description as Status,f.observ, f.moneda,f.idioma";
+      sql = sql + " coalesce(c.nombre,'n/a') nombre,f.cli_id,t.description as Status,f.observ, f.moneda,f.idioma";
       sql = sql + " from facturas f";
-      sql = sql + " join clientes  c on c.id = f.cli_id ";
-      sql = sql + " join direccion d on d.orden = f.dir_id ";
+      sql = sql + " left join clientes  c on c.id = f.cli_id ";
+      sql = sql + " left join direccion d on d.orden = f.dir_id ";
       sql = sql + "               and d.cli_id  = f.cli_id ";
-      sql = sql + " join tabla     t on t.id = 6 and t.cod= f.cod_status";
+      sql = sql + " left join tabla     t on t.id = 6 and t.cod= f.cod_status";
       sql = sql + "  where f.id =  " + id;
 
       const records = await seq.query(sql, {
