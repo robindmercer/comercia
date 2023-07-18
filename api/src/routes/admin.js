@@ -95,6 +95,22 @@ router.post('/insert', async function (req, res, next) {
     
   })
 
+
+  router.post('/bulk', async function (req, res, next) {
+    const { sql1 } = req.body;
+    try {
+      const [records] = await seq.query(sql1,
+        {
+          logging: console.log,
+          type: QueryTypes.INSERT
+        });
+        res.send("OK")
+      } catch (error) {
+        console.log(error)
+      }
+    }
+)
+
 router.post('/update', async function (req, res, next) {
   const { sql1,sql2,sql3,sql4 } = req.body;
   console.log('Admin Update ', req.body);
