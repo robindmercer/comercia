@@ -45,7 +45,7 @@ router.get("/fac", async function (req, res, next) {
   const { id } = req.query;
   if (id) {
     try {
-      sql = "select fac_id,prodmp.prod_id,productos.name as ProdName , materiaprima.name,";
+      sql = "select 1 as Orden,fac_id,prodmp.prod_id,productos.name as ProdName , materiaprima.name,";
       sql = sql + " materiaprima.description,materiaprima.udm,materiaprima.stock,prodmp.cantidad * factdet.cantidad as Pedido";
       sql = sql + " from productos ";
       sql = sql + " join prodmp on prodmp.prod_id = productos.id";
@@ -53,7 +53,7 @@ router.get("/fac", async function (req, res, next) {
       sql = sql + " join factdet on fac_id = " + id;
       sql = sql + " where productos.id =  factdet.prod_id";
       sql = sql + " UNION"
-      sql = sql + " select fac_id,1000,'Resumen ----------------------------------------' , materiaprima.name, "
+      sql = sql + " select 2,fac_id,1000,'Resumen ----------------------------------------' , materiaprima.name, "
       sql = sql + " materiaprima.description,materiaprima.udm,materiaprima.stock,"
       sql = sql + " sum(prodmp.cantidad * factdet.cantidad) as Pedido "
       sql = sql + " from productos  "
@@ -63,7 +63,7 @@ router.get("/fac", async function (req, res, next) {
       sql = sql + " where productos.id =  factdet.prod_id "
       sql = sql + " group by fac_id,materiaprima.name, "
       sql = sql + " materiaprima.description,materiaprima.udm,materiaprima.stock"
-
+      sql = sql + " order by orden"
       const records = await seq.query(sql, {
         logging: console.log,
         type: QueryTypes.SELECT,
