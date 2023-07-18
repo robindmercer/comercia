@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import { getCondiciones, PostCondicionesCot } from "../../actions/condiciones";
+import { getCondiciones } from "../../actions/condiciones";
 
 // Acciones
 // import { getFacturaDet } from '../../actions/factdet';
@@ -18,7 +18,7 @@ import { getUsuariomenId } from "../../actions/usuariomenu";
 import { getDetail } from "../../actions/tabla";
 // Modal
 import OkForm from "../modal/OkForm";
-import { Modal, Button, Alert } from "react-bootstrap";
+import { Modal, Button } from "react-bootstrap";
 
 // Iconos
 import { FcAddRow, FcDeleteRow, FcLeft, FcOk } from "react-icons/fc";
@@ -27,7 +27,7 @@ import Header from "../Header";
 import "../../css/factdet.css";
 import Cookies from 'universal-cookie'
 var btnGrabar = false;
-var btnAgregar = false;
+// var btnAgregar = false;
 var btnEliminarReg = false;
 
 const Formfactura = () => {
@@ -37,7 +37,7 @@ const Formfactura = () => {
   // Manejo acceso del Usuario
   //const usuariomenu = useSelector((state) => state.usuariomenu);
   const [acceso, setAcceso] = useState("A");
-  const idProg = 11;
+  // const idProg = 11;
 
   const id_usuario = cookies.get("usuario");
   const navigate = useNavigate();
@@ -162,17 +162,17 @@ const Formfactura = () => {
     //   btnEliminarReg,
     //   acceso.substring(0, 1)
     // );
-    btnAgregar = false;
+    //btnAgregar = false;
     btnEliminarReg = false;
     if (acceso.substring(0, 1) === "A") {
       // Gerencia All
-      btnAgregar = true;
+      //btnAgregar = true;
       btnEliminarReg = true;
     }
     if (acceso.substring(0, 1) === "C") {
       // Consulta
       btnGrabar = false;
-      btnAgregar = false;
+      //btnAgregar = false;
       btnEliminarReg = false;
     }
     // console.log("control2: ", btnGrabar, btnAgregar, btnEliminarReg);

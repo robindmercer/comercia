@@ -15,6 +15,7 @@ const menu  = require("./usuariomenu");
 const tabla =require("./tablas")
 const materiaprima = require("./materiaprima")
 const factura =require("./factura")
+const factcond =require("./factcond")
 const factdet =require("./factdet")
 const email = require('./send_mail')
 const facturaMP =require("./facturaMP") // Materias primas utilizadas en una factura 
@@ -69,4 +70,5 @@ router.use('/log',log)                          //Log
 router.use('/upload',upload)
 router.use('/contrato',contrato)
 router.use('/comentario',comentario)
+router.use('/factcond',factcond)
 module.exports = router;

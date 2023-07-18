@@ -60,3 +60,12 @@
 thead{
     background-color: #009879;
 }
+
+
+
+@media (max-width: 600px) {
+
+    .onlyScreen{
+        display:none;
+    }
+}

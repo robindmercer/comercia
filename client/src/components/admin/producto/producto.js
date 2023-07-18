@@ -64,7 +64,7 @@ const Producto = () => {
      <table   className="styled-table">
      <thead>
          <tr className="table-success">
-             <th>Id</th>
+             <th className="d-none d-lg-table-cell">Id</th>
              <th>Nombre</th>
              <th className="d-none d-lg-table-cell">Descripcion</th>
              <th className="d-none d-lg-table-cell">Precio</th>
@@ -77,7 +77,7 @@ const Producto = () => {
          {producto && producto.map(prod => { 
              return (
                  <tr key={prod.id}>
-                     <td>{prod.id}</td>
+                     <td className="d-none d-lg-table-cell">{prod.id}</td>
                      <td>{prod.name}</td>
                      <td className="d-none d-lg-table-cell">{prod.description}</td>
                      <td className="d-none d-lg-table-cell">{prod.price}</td>

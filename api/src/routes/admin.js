@@ -20,7 +20,7 @@ router.delete('/', async function (req, res, next) {
   try {
     const { tabla, campo, id, campoProd } = req.query;
     sql=`delete from ${tabla} where ${campo} = ${id} and ${campo} not in (select ${campoProd} from products)`    
-    console.log(sql)
+    // console.log(sql)
     const [records] = await seq.query(sql,
       {
         logging: console.log,
@@ -36,7 +36,7 @@ router.get('/', async function (req, res, next) {
   try {
     const { tabla, campo, id, campoProd } = req.query;
     sql=`select * from ${tabla} where ${campo} = ${id} and ${campo} in (select ${campoProd} from products)`    
-    console.log(sql)
+    // console.log(sql)
     const [records] = await seq.query(sql,
       {
         logging: console.log,
@@ -52,8 +52,8 @@ router.get('/', async function (req, res, next) {
 router.get('/sql', async function (req, res, next) {
   try {
     const { sql,nada } = req.body;
-      console.log('/sql sql',sql)
-      console.log('/sql nada',nada)
+      // console.log('/sql sql',sql)
+      // console.log('/sql nada',nada)
       const records = await seq.query(sql,
         {
           logging: console.log,
@@ -72,14 +72,15 @@ router.get('/sql', async function (req, res, next) {
 
 router.post('/insert', async function (req, res, next) {
   const { sql1,sql2 } = req.body;
-  // console.log('sql: ', sql);
-  // console.log('sql2:0 ', sql2[0]);
-  // console.log('sql2:1 ', sql2[1]);
-  // console.log('sql2.length: ', sql2.length);
-  var sql3= sql2.split(";")
+  //  console.log('sql1: ', sql1);
+  //  console.log('sql2:0 ', sql2);
+   // console.log('sql2.length: ', sql2.length);
+   var sql3= sql2.split(";")
+   //  console.log('sql3: ', sql3);
+
   for (var i = 0; i < sql3.length-1; i++) {
     var element = sql1 + sql3[i];
-    console.log('element: ', element);
+    //console.log('element: ', element,sql3[i]);
     try {
       const [records] = await seq.query(element,
         {
@@ -122,8 +123,8 @@ router.post('/update', async function (req, res, next) {
 
 router.post('/delete', async function (req, res, next) {
   const { sql1 } = req.body;
-  console.log('Admin Delete ', req.body);
-  console.log('sql: ', sql1);
+  // console.log('Admin Delete ', req.body);
+  // console.log('sql: ', sql1);
   
     try {
       const [records] = await seq.query(sql1,
@@ -142,7 +143,7 @@ router.get("/count", async function (req, res, next) {
   const { id } = req.query;
   if (id) {
     xid= id.split("|")
-    console.log('xid: ', xid);
+    // console.log('xid: ', xid);
     try {
       sql="select 0 tipo,count(*) from cotizacion where cod_status in(" + xid[0] + ") union select 1 tipo,count(*) from facturas where cod_status in (" + xid[1] + ")"
 

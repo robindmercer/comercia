@@ -58,7 +58,7 @@ function Contrato() {
       "November",
       "Dicember",
    ];
-   var diaHoy = new Date().toLocaleDateString("en-GB");
+  // var diaHoy = new Date().toLocaleDateString("en-GB");
    const d = new Date();
    let month = d.getMonth();
    let day = d.getDate();
