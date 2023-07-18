@@ -33,11 +33,11 @@ import Cotizacion from '../components/ventas/cotizacion'
 import CotizacionModif from '../components/ventas/cotizacionModif'
 import CotizacionAlta from '../components/ventas/cotizacionAlta'
 import CotizacionPDF from '../components/ventas/cotizacionPDF'
-import UploadFile from '../Upload'
+//import UploadFile from '../Upload'
 // import VerPdf from '../verPdf'
 import Contrato from '../components/ventas/contrato'
 import Backups from '../components/backup'
-//import Restore  from '../components/restore'
+import Restore  from '../components/restore'
 import PlaneacionPdf from '../components/planeacion/planeacionPdf'
 import Comentario from '../components/comentario/ComentarioMain'
 
@@ -219,13 +219,6 @@ function HandleRoutes() {
             exact: true,
             private: true,
         },
-        
-        {
-            path: "/upload",
-            element: <UploadFile />,
-            exact: true,
-            private: true,
-        },
         {
             path: "/contrato",
             element: <Contrato />,
@@ -244,12 +237,12 @@ function HandleRoutes() {
             exact: true,
             private: true,
         },        
-        // {
-        //     path: "/restore",
-        //     element: <Restore/>,
-        //     exact: true,
-        //     private: true,
-        // },        
+        {
+            path: "/restore",
+            element: <Restore/>,
+            exact: true,
+            private: true,
+        },        
         {
             path: "planeacionPdf",
             element: <PlaneacionPdf/>,
