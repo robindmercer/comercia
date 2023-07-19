@@ -17,8 +17,6 @@ const seq = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_
 });
 
 router.get('/all', async function (req, res, next) {
-  const {id} = req.query;
-  if(id) {
       try {
       sql="select * from cotizacion "  
       const records = await seq.query(sql,
@@ -31,7 +29,6 @@ router.get('/all', async function (req, res, next) {
     } catch (error) {
       console.log(error)
     }
-  }
 }) 
 
 router.get('/', async function (req, res, next) {

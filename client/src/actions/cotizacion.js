@@ -19,7 +19,7 @@ export function getCotizacion() {
 export function getCotizacionAll() {
   console.log('Action getCotizacion: All');
   return async function (dispatch) {
-    var cotizacion = await axios.get(`cotizacion`);
+    var cotizacion = await axios.get(`cotizacion/all`);
     return dispatch({
       type: GET_COTIZACION,
       payload: cotizacion.data
