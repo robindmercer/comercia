@@ -126,7 +126,7 @@ function Formcotizacion() {
     total: 0,
   };
   const initialFacdet = {
-    id: 0,
+    id: 0,   //0 nueva condicion 1 ya tiene condicion es para el insert o update 
     fac_id: state.idCotiz,
     cond_id: 0,
     descuento: 0,
@@ -945,7 +945,7 @@ function Formcotizacion() {
               <table>
                 <tbody>
                   <tr className="totaltr">
-                    {acceso === "A" ? (
+                    {acceso.substring(0,1) === "A" ? (
                       <td>
                         <Button
                           variant="success"

@@ -190,8 +190,8 @@ router.post("/cotifac", async function (req, res, next) {
         });
     }
 
-    sql = `insert into facturas (cli_id,dir_id,dhl,subtotal,iva,total,cod_status,observ,fecha,idioma,moneda) `;
-    sql = sql + `select ${cli_id}, 1 , dhl, subtotal, iva, total ,1, observ,fecha, 1, moneda from cotizacion`;
+    sql = `insert into facturas (id,cli_id,dir_id,dhl,subtotal,iva,total,cod_status,observ,fecha,idioma,moneda) `;
+    sql = sql + `select (select max(id)+1  from facturas ) id, ${cli_id}, 1 , dhl, subtotal, iva, total ,1, observ,fecha, 1, moneda from cotizacion`;
     sql = sql + ` where id = ${cot_id} RETURNING id`;
     const records = await seq
     .query(sql, {
@@ -203,8 +203,8 @@ router.post("/cotifac", async function (req, res, next) {
         sql2=`insert into factdet select ${fac_id},orden ,prod_id,precio,cantidad,total from cotizaciondet where cot_id = ${cot_id};`
         
         sql3=`insert into factcond `
-        sql3=sql3 + ` (fac_id,cond_id,descuento,enganche,meses,interes)`
-        sql3=sql3 + ` select ${fac_id},cond_id,descuento,enganche,meses,interes from cotizacioncond where cot_id = ${cot_id};;`
+        sql3=sql3 + ` ( id,fac_id,cond_id,descuento,enganche,meses,interes)`
+        sql3=sql3 + ` select ${fac_id},${fac_id},cond_id,descuento,enganche,meses,interes from cotizacioncond where cot_id = ${cot_id};;`
 
         sql4=`update cotizacion set cli_id = ${cli_id} ,nombre=razsoc `
         sql4= sql4 + ` from clientes ` 
