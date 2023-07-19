@@ -16,6 +16,25 @@ const seq = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_
   native: false, // lets Sequelize know we can use pg-native for ~30% more speed
 });
 
+
+router.get('/all', async function (req, res, next) {
+  try {
+   
+    sql='select * from cotizaciondet'
+    const records = await seq.query(sql,
+      {
+        logging: console.log,
+        type: QueryTypes.SELECT
+      });
+      //console.log('records: ', records);
+    res.send(records)
+  } catch (error) {
+    console.log(error)
+  }
+  
+})
+
+
 router.get('/', async function (req, res, next) {
   try {
     const {cot_id} = req.query;
@@ -39,6 +58,7 @@ router.get('/', async function (req, res, next) {
   }
   
 })
+
 
 router.get('/det', async function (req, res, next) {
   const {id} = req.query;

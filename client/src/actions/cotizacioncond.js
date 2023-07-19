@@ -13,3 +13,14 @@ export function getCondicionesCot(cot_id){
        })
    }
 }
+
+// Cotizaciones 
+export function getCotizacioncondAll(){
+     return async function (dispatch) {
+         var condicionescond = await axios.get(`cotizacioncond`);
+         return dispatch({
+             type: GET_COTCOND,
+             payload: condicionescond.data
+         })
+     }
+  }

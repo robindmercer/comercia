@@ -16,6 +16,17 @@ export function getCotizacion() {
   }
 }
 
+export function getCotizacionAll() {
+  console.log('Action getCotizacion: All');
+  return async function (dispatch) {
+    var cotizacion = await axios.get(`cotizacion`);
+    return dispatch({
+      type: GET_COTIZACION,
+      payload: cotizacion.data
+    })
+  }
+}
+
 export function getCotizacionCab(id) {
   // console.log('Action getCotizacionCab: ', id);
   return async function (dispatch) {

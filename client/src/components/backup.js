@@ -8,8 +8,12 @@ import { getFacturaDetAll } from "../actions/factdet";
 import { getClienteBckp } from "../actions/cliente";
 import { getDireccionBckp } from "../actions/direccion";
 import { getCondicionesBckp } from "../actions/factcond";
+import { getCotizacionDetAll } from "../actions/cotizaciondet";
+import { getCotizacioncondAll } from "../actions/cotizacioncond";
+import { getCotizacionAll } from "../actions/cotizacion";
 
 import * as XLSX from "xlsx";
+
 
 
 const Backup = () => {
@@ -21,6 +25,9 @@ const Backup = () => {
    const { factcond } = useSelector((state) => state);
    const { cliente } = useSelector((state) => state);
    const { direccion } = useSelector((state) => state);
+   const { cotizacion } = useSelector((state) => state);
+   const { cotizacioncond } = useSelector((state) => state);
+   const { cotizaciondet } = useSelector((state) => state);
    const dispatch = useDispatch(); 
    
    useEffect(() => {
@@ -32,6 +39,9 @@ const Backup = () => {
       dispatch(getClienteBckp());   
       dispatch(getDireccionBckp());   
       dispatch(getCondicionesBckp());
+      dispatch(getCotizacionAll());
+      dispatch(getCotizacionDetAll());
+      dispatch(getCotizacioncondAll());
    }, [dispatch]); 
 
    const downloadBackup = () => {
@@ -77,6 +87,27 @@ const Backup = () => {
       const hojafactcond = XLSX.utils.json_to_sheet(factcond);
       XLSX.utils.book_append_sheet(librofactcond, hojafactcond, "Backups");
       XLSX.writeFile(librofactcond, "factcond.xlsx");
+
+      //cotizacion
+      const librocotizacion = XLSX.utils.book_new();
+      const hojacotizacion = XLSX.utils.json_to_sheet(cotizacion);
+      XLSX.utils.book_append_sheet(librocotizacion, hojacotizacion, "Backups");
+      XLSX.writeFile(librocotizacion, "cotizacion.xlsx");
+
+      //cotizaciondet
+      const librocotizaciondet = XLSX.utils.book_new();
+      const hojacotizaciondet = XLSX.utils.json_to_sheet(cotizaciondet);
+      XLSX.utils.book_append_sheet(librocotizaciondet, hojacotizaciondet, "Backups");
+      XLSX.writeFile(librocotizaciondet, "cotizaciondet.xlsx");
+
+      //cotizacioncond
+      const librocotizacioncond = XLSX.utils.book_new();
+      const hojacotizacioncond = XLSX.utils.json_to_sheet(cotizacioncond);
+      XLSX.utils.book_append_sheet(librocotizacioncond, hojacotizacioncond, "Backups");
+      XLSX.writeFile(librocotizacioncond, "cotizacioncond.xlsx");
+
+
+
    };
 
    if (
@@ -87,7 +118,10 @@ const Backup = () => {
       factdet.length > 0 &&
       cliente.length > 0 &&
       direccion.length > 0 && 
-      factcond.length > 0
+      factcond.length > 0 && 
+      cotizacion.length > 0 &&
+      cotizacioncond.length > 0 &&
+      cotizaciondet.length > 0
       // tabla.length > 0
    ) {
       downloadBackup();
@@ -105,6 +139,9 @@ const Backup = () => {
          {factcond.length > 0 ? (<p>FactCond ok</p>) : (<p>Buscando FactCond</p>)}
          {cliente.length > 0 ? (<p>Cliente ok</p>) : (<p>Buscando Cliente</p>)}
          {direccion.length > 0 ? (<p>Direccion ok</p>) : (<p>Buscando Direccion</p>)}
+         {cotizacion.length > 0 ? (<p>Cotizacion ok</p>) : (<p>Buscando Cotizacion</p>)}
+         {cotizacioncond.length > 0 ? (<p>Cotizacioncond ok</p>) : (<p>Buscando Cotizacioncond</p>)}
+         {cotizaciondet.length > 0 ? (<p>Cotizaciondet ok</p>) : (<p>Buscando Ctizaciondet</p>)}
          <p>Por Favor Espere... </p>
       </div>
    );

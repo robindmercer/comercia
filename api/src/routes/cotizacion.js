@@ -16,10 +16,28 @@ const seq = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_
   native: false, // lets Sequelize know we can use pg-native for ~30% more speed
 });
 
+router.get('/all', async function (req, res, next) {
+  const {id} = req.query;
+  if(id) {
+      try {
+      sql="select * from cotizacion "  
+      const records = await seq.query(sql,
+        {
+          logging: console.log,
+          type: QueryTypes.SELECT
+        });
+        //console.log('records: ', records);
+      res.send(records)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+}) 
+
 router.get('/', async function (req, res, next) {
   try {
-      sql="select f.id,to_char(f.fecha,'dd/mm/yyyy') as fecha,f.subtotal,f.iva,f.total,f.cli_id,t.description as stsdes,"
-      sql = sql + " f.cod_status,f.observ, f.moneda,f.idioma,f.nombre,"
+    sql="select f.id,to_char(f.fecha,'dd/mm/yyyy') as fecha,f.subtotal,f.iva,f.total,f.cli_id,t.description as stsdes,"
+    sql = sql + " f.cod_status,f.observ, f.moneda,f.idioma,f.nombre,"
       sql = sql + " f.telefono,f.direccion,f.email,f.vendedor,"
       sql = sql + " coalesce(fc.descuento,0)  fde,coalesce(fc.enganche,0) fen,coalesce(fc.meses,0) fme,coalesce(fc.interes,0) finter,"
       sql = sql + " coalesce(con.descuento,0) de, coalesce(con.enganche,0) en,coalesce(con.meses,0) me,coalesce(con.interes,0) inter,"
@@ -69,6 +87,9 @@ router.get('/cab', async function (req, res, next) {
     }
   }
 }) 
+
+
+
 // Listado de materias primas a solicitar 
 router.get('/mail', async function (req, res, next) {
   const {id} = req.query;
