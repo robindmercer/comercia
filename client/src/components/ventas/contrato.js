@@ -7,10 +7,13 @@ import { jsPDF } from "jspdf";
 import Imagen from "../../images/LogoNibbot.png";
 import Header from "../Header";
 import { AddContrato, getContratoID } from "../../actions/contrato";
+import { getLogs } from "../../actions/logs";
 
 function Contrato() {
    const { factcab } = useSelector((state) => state);
    const { contrato } = useSelector((state) => state);
+   const { logs } = useSelector((state) => state);
+
    const navigate = useNavigate();
    const lineSpacing = 15;
    const firstLineAfterHeader = 120;
@@ -31,6 +34,7 @@ function Contrato() {
    useEffect(() => {
       dispatch(getFacturaCab(state.idfact));
       dispatch(getContratoID(state.idfact));
+      dispatch(getLogs(state.idfact,state.tipo));
       console.log("state.idfact: ", state.idfact);
    }, [dispatch, state.idfact]);
    var meses = [
@@ -193,7 +197,7 @@ function Contrato() {
       producto: "",
       serie: "",
       garantia: "",
-      adicional: "",
+      adicional: "merda",
       fecha: day + " de " + meses[month] + " de " + anio,
       terminado: "",
       especial: "",
@@ -293,13 +297,13 @@ function Contrato() {
             "@garantia",
             "<strong>" + input.garantia + "</strong>"
          );
-      // if (input.adicional !== "") {
-      //    txtAdicional = txtAdicional.replace(
-      //       "@adicional",
-      //       "<strong>" + input.adicional + "<strong>"
-      //    );
-      //    textoIni += txtAdicional;
-      // }
+      if (input.adicional !== "") {
+         txtAdicional = txtAdicional.replace(
+            "@adicional",
+            "<strong>" + input.adicional + "<strong>"
+         );
+         textoIni += txtAdicional;
+      }
       if (input.punitorio !== "") {
          clausulas = clausulas.replace(
             "@punitorio",
@@ -535,6 +539,16 @@ function Contrato() {
          [e.target.name]: e.target.value,
       });
    }
+   if (logs.length > 0){
+      for (var z = 0; z < logs.length; z++) {
+         if (logs[z].observ.substring(0,5) ==='Viene'){
+               input.adicional = logs[z].observ;
+               document.getElementById("adicional").innerHTML = logs[z].observ;
+         }
+         
+      }   
+      console.log('logs: ', logs);
+   }
    
    console.log("input: ", input);
    console.log("factcab",factcab)
@@ -730,6 +744,8 @@ function Contrato() {
                                  className={style.editable2}
                                  contentEditable="true"
                                  id="adicional"
+                                 value={input.adicional}
+                                 onChange={handleChange}
                               ></div>
                            </td>
                         </tr>

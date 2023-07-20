@@ -200,11 +200,16 @@ router.post("/cotifac", async function (req, res, next) {
       })
       .then(async function (facIdCreated) {
         const fac_id = facIdCreated[0][0].id;
+        
         sql2=`insert into factdet select ${fac_id},orden ,prod_id,precio,cantidad,total from cotizaciondet where cot_id = ${cot_id};`
         
         sql3=`insert into factcond `
         sql3=sql3 + ` ( id,fac_id,cond_id,descuento,enganche,meses,interes)`
         sql3=sql3 + ` select ${fac_id},${fac_id},cond_id,descuento,enganche,meses,interes from cotizacioncond where cot_id = ${cot_id};;`
+        
+        sql5="insert into logs (doc_id, tipo_id, usr_id, cod_status,observ,fecha) "
+        sql5= sql5 + `select ${fac_id}, 'FAC', vendedor, 1,'Viene de la OC : ${cot_id}',now()`
+        sql5= sql5 + ` from cotizacion where id =${cot_id}`
 
         sql4=`update cotizacion set cli_id = ${cli_id} ,nombre=razsoc `
         sql4= sql4 + ` from clientes ` 
@@ -217,16 +222,23 @@ router.post("/cotifac", async function (req, res, next) {
           type: QueryTypes.INSERT,
         })
         .then(async function() {          
-          const records = await seq
+          const records3 = await seq
           .query(sql3, {
             logging: console.log,
             type: QueryTypes.INSERT,
           })
           .then(async function () {
-            const records = await seq            
+            const records4 = await seq            
             .query(sql4, {
               logging: console.log,
               type: QueryTypes.UPDATE,
+            })
+            .then(async function () {
+              const records5 = await seq            
+              .query(sql5, {
+                logging: console.log,
+                type: QueryTypes.UPDATE,
+              })
             })
             .then(async function () {
               res.status(200).json({ message: "OC Creada"});

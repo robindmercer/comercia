@@ -102,8 +102,8 @@ const Factura = () => {
       // Gerencia All
       btnAddDatabase = true;
       btnApproval = true;
+      btnDiploma2 = true;
       if (data.cod_status > 2) {
-        btnDiploma2 = true;
         btnCancel = true;
       }
       if (data.cod_status > 3) {
@@ -132,10 +132,10 @@ const Factura = () => {
       btnAddDatabase = true;
       btnApproval = true;
       btnCancel = true;
+      btnDiploma2 = true;
       if (data.cod_status === 2) {
         btnApproval = false;
         btnAddDatabase = false;
-        btnDiploma2 = false;
       }
       if (data.cod_status > 2 ) {
         btnApproval = false;
