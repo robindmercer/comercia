@@ -63,7 +63,7 @@ router.get("/fac", async function (req, res, next) {
       sql = sql + " where productos.id =  factdet.prod_id "
       sql = sql + " group by fac_id,materiaprima.name, "
       sql = sql + " materiaprima.description,materiaprima.udm,materiaprima.stock"
-      sql = sql + " order by orden"
+      sql = sql + " order by orden,prod_id"
       const records = await seq.query(sql, {
         logging: console.log,
         type: QueryTypes.SELECT,
