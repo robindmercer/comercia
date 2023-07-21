@@ -40,7 +40,11 @@ router.get("/:id", function (req, res, next) {
     const { id } = req.params;
 
     Productolang.findByPk(id).then((response) => {
+      if (response === null){
+        res.json({'id':id,"lang": "ENG","name": "DEFINE","description": "Definition"})
+      } else {
       res.json(response);
+    }
     });
   } catch (error) {
     next(error);
