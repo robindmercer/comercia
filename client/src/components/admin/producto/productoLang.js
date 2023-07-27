@@ -7,11 +7,11 @@ import Header from "../../Header";
 const Productolang = () => {
   const { productolang } = useSelector((state) => state);
   const dispatch = useDispatch();
-
+  
   useEffect(() => {
     dispatch(getProductoLang());
   }, [dispatch]);
-
+  
   return (
     <>
       <Header />
@@ -39,7 +39,7 @@ const Productolang = () => {
             </tr>
           </thead>
           <tbody>
-            {productolang &&
+            {productolang.length>0 &&
               productolang.map((prod) => {
                 return (
                   <tr key={prod.id}>
