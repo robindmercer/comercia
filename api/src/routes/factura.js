@@ -21,22 +21,25 @@ const seq = new Sequelize(
 
 router.get("/", async function (req, res, next) {
   try {
-    sql =
-      "select f.id,to_char(f.fecha,'dd/mm/yyyy') as fecha,f.subtotal,f.iva,f.total,f.cli_id,t.description as stsdes,";
+    sql ="select f.id,to_char(f.fecha,'dd/mm/yyyy') as fecha,f.subtotal,";
+    sql = sql + " f.iva,f.total,f.cli_id,t.description as stsdes,";
     sql = sql + " c.nombre,f. cod_status,f. observ, f.moneda,f.idioma,";
-    sql =
-      sql +
-      " coalesce(fc.descuento,0)  fde,coalesce(fc.enganche,0) fen,coalesce(fc.meses,0) fme,coalesce(fc.interes,0) finter,";
-    sql =
-      sql +
-      " coalesce(con.descuento,0) de, coalesce(con.enganche,0) en,coalesce(con.meses,0) me,coalesce(con.interes,0) inter";
+    sql = sql + " coalesce(fc.descuento,0)  fde,coalesce(fc.enganche,0) fen, ";
+    sql = sql + " coalesce(fc.meses,0) fme,coalesce(fc.interes,0) finter,";
+    sql = sql + " coalesce(con.descuento,0) de, coalesce(con.enganche,0) en, ";
+    sql = sql + " coalesce(con.meses,0) me,coalesce(con.interes,0) inter,stsprod.sts";
     sql = sql + " from facturas f";
     sql = sql + " join clientes c           on c.id = f.cli_id";
-    sql =
-      sql + " join tabla   t            on t.id = 6 and t.cod= f.cod_status";
+    sql = sql + " join tabla   t            on t.id = 6 and t.cod = f.cod_status";
     sql = sql + " left join factcond fc     on fc.fac_id = f.id";
     sql = sql + " left join condiciones con on con.id = fc.cond_id";
+    sql = sql + " join (select fa.fac_id,avg(p.cod_status) sts"; 
+    sql = sql + "     from factdet fa";
+    sql = sql + "     join productos p on p.id = fa.prod_id ";
+    sql = sql + "     group by fa.fac_id";
+    sql = sql + "  ) stsprod on stsprod.fac_id = f.id";
     sql = sql + " order by f.id";
+
     const records = await seq.query(sql, {
       logging: console.log,
       type: QueryTypes.SELECT,

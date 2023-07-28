@@ -96,6 +96,7 @@ const Factura = () => {
     btnApproval = false;
     btnDiploma2 = false;
     btnContrato = false;
+    btnCancel = false;
     verStatus = [];
     muestroRegistro = false;
     if (acceso === "A1") {
@@ -147,6 +148,22 @@ const Factura = () => {
       }
       verStatus.push(1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14);
     }
+    if (data.cod_status > 5) {
+      btnApproval = false;
+      btnAddDatabase = true;
+      btnDiploma2 = true;
+      verStatus.push(1, 2, 3, 4, 5, 6);
+    }
+    //Calidad
+    if (acceso === "A8") {
+      btnAddDatabase = true;
+      if (data.cod_status >= 11) {
+        btnCancel = true;
+        btnApproval = true;
+      }
+      verStatus.push(1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14);
+    }
+    // Solo consulta
     if (acceso.substring(0, 1) === "C") {
       btnCancel = false;
       btnApproval = false;
@@ -155,23 +172,12 @@ const Factura = () => {
       toLink = "/formfacturaPDF";
       verStatus.push(1, 2, 3, 4, 5, 6, 7, 8, 9);
     }
-    if (data.cod_status > 5) {
-      btnApproval = false;
-      btnAddDatabase = true;
-      btnDiploma2 = true;
-      verStatus.push(1, 2, 3, 4, 5, 6);
-    }
-    
-    //Calidad
-    if (acceso === "A8") {
-      verStatus.push(1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14);
-    }
     if (verStatus.find((element) => element === data.cod_status)) {
       muestroRegistro = true;
     }
     // console.log("Muestro", data.id, data.cod_status, muestroRegistro);
   };
-
+  
   useEffect(() => {
     //console.log("Use Efect 1");
     dispatch(AccessCtrl(id_usuario));
@@ -230,14 +236,27 @@ const Factura = () => {
       if (found.cod_status === 5) {
         control = "N";
         newStatus = 6; // Liberado
+        if (parseInt(found.sts) === 3){ // Venta de productos tercerizados 
+          newStatus = 14; // Producto Despachado
+        }
         paramMail = 4; // Planeacion
       }
       // Gerencia no se controla
       if (acceso === "A1" && found.cod_status < 4) {
         control = "N";
-        newStatus = 4; // Pendiente Admin
+        newStatus = 4; // Pendiente ADMIN.
         paramMail = 2; // Administracion
       }
+      if (acceso === "A8" && found.cod_status === 11) {
+        control = "N";
+        newStatus = 13; // Liberado pendiente de envío
+        paramMail = 2; // Administracion
+      }
+      if (acceso === "A8" && found.cod_status === 13) {
+        newStatus = 14; // Producto Despachado
+        paramMail = 2; // Administracion
+      }
+
     }
     //console.log("Log Data");
     //console.log("usuario:", id_usuario);
@@ -265,14 +284,14 @@ const Factura = () => {
     dispatch(AddLogs(newLog));
     
     // dispatch(GetMails(idMail));
-    //console.log("mails: ", mails);
+    console.log("mails: ", mails);
     for (var index = 0; index < mails.length; index++) {
       console.log("enviar mail: ", mails[index].email);
       dispatch(mailEnviar(crearMail(newStatus, mails[index].email, found)));
     }
     //handleShow();
     //console.log("mails: ",idMail, mails);
-    window.location.href = '/factura';
+   // window.location.href = '/factura';
   };
   console.log('factura: ', factura);
   

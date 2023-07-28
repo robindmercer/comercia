@@ -1,5 +1,5 @@
 /*
-  Tabla de Productos 
+  Tabla de cotizaciondet 
 */
 const { DataTypes, Sequelize } = require('sequelize');
 

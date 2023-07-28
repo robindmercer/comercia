@@ -8,7 +8,8 @@ import '../../../css/all.css'
 import '../../../css/formProducto.css'
 // Acciones
 //import { AccessCtrl } from '../../../actions/index'
-import { getStatus } from '../../../actions/status';
+import { getTablaAll } from '../../../actions/tabla';
+
 import Cookies from 'universal-cookie'
 
 export function validate(input) {
@@ -45,7 +46,7 @@ function ABMProducto() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   //const producto = useSelector((state) => state.producto)
-  const status = useSelector((state) => state.status)
+  const tabla = useSelector((state) => state.tabla)
 
   // Accesos 
   // const usuariomenu = useSelector((state) => state.usuariomenu);
@@ -57,7 +58,7 @@ function ABMProducto() {
   }
   // Fin control Accesos 
   useEffect(() => {
-    dispatch(getStatus());
+    dispatch(getTablaAll());
     dispatch(getProducto(state.id));
     setAcceso(cookies.get("acceso"));
   }, [dispatch, state.id]);
@@ -225,18 +226,24 @@ function ABMProducto() {
                   value={input.cod_status}
                 >
                   <option value="0">Seleccionar</option>
-                  {status.map((sts, index) => {
-                        return (
-                          <option
-                            selected
-                            value={sts.id_status}
-                            key={index}
-                          >{`${sts.description}`}</option>
-                        )
-                  })}                </select>
+                  {tabla &&
+                      tabla.map((tabla) => {
+                        if (tabla.id === 13 && tabla.cod !== 0) {
+                          return (
+                            <option
+                              selected
+                              value={tabla.cod}
+                              key={tabla.cod}
+                            >{`${tabla.description}`}</option>
+                          );
+                        } else {
+                          return null;
+                        }
+                      })}{" "}                  
+                              </select>
                 <span>Seleccione el Status del Producto</span>
-                {errors.status && (
-                  <p className="text-red-500">{errors.status}</p>
+                {errors.tabla && (
+                  <p className="text-red-500">{errors.tabla}</p>
                 )}
               </li>
               <li>

@@ -169,6 +169,8 @@ import Cookies from 'universal-cookie'
          }
       }
       console.log("total: ", total);
+      console.log("factdet: ", factdet);
+
    }, [onChange, factdet]);
 
    useEffect(() => {
@@ -248,16 +250,16 @@ import Cookies from 'universal-cookie'
          }
       }
       if (e.target.name === "CGdesc") {
-         condiciones[i.i].descuento = e.target.value;
+         condiciones[i.i].descuento = e.target.value.replace(",", ".");
       }
       if (e.target.name === "CGenganche") {
-         condiciones[i.i].enganche = e.target.value;
+         condiciones[i.i].enganche = e.target.value.replace(",", ".");
       }
       if (e.target.name === "CGmeses") {
          condiciones[i.i].meses = e.target.value;
       }
       if (e.target.name === "CGinter") {
-         condiciones[i.i].interes = e.target.value;
+         condiciones[i.i].interes = e.target.value.replace(",", ".");
       }
       if (e.target.name[0] === "C") {
          condiciones[i.i].sel = "S";
@@ -404,19 +406,13 @@ import Cookies from 'universal-cookie'
         btnElimProd = false;
         btnGrabar = false;
      }
-     // if (saleDesc === 0 && factcab[0].descuento > 0) {
-      //   tabla.forEach((z) => {
-      //     if (parseInt(z.cod) === parseInt(factcab[0].desc_id)) {
-      //       setSaleDesc(z.description + " " + z.valor + "%");
-      //     }
-      //   });
-      //   //        var dscto = Math.round((factcab[0].subTotal + factcab[0].iva) * desctoporc / 100)
-      //   // console.log('desctoporc : ', desctoporc);
-      //   // console.log('Descuento: ', dscto);
-      //   setDesc_id(factcab[0].desc_id);
-      //   setTotal(parseInt(factcab[0].total));
-      //   setSaleDescto(factcab[0].descuento);
-      // }
+
+     if (acceso === "A8") { // Calidad no puede modificar las OC. 
+      btnAgregar = false;
+      btnElimProd = false;
+      btnGrabar = false;
+      }
+
       return (
          <>
             <Header />
@@ -426,13 +422,6 @@ import Cookies from 'universal-cookie'
                      <div className="row">
                         <div className="col">
                            Cliente:&nbsp;
-                           {/* <!--input className='input_fact'
-                    type="text"
-                    id="cli_id"
-                    name="cli_id"
-                    value={factcab[0].cli_id}
-                    onChange={(e) => handleTipo(e, 0)}
-                  /--> */}
                            &nbsp;{factcab[0].nombre}
                         </div>
                         <div className="col">Fecha: {factcab[0].fecha}</div>

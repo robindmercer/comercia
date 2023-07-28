@@ -82,7 +82,7 @@ const Producto = () => {
                      <td className="d-none d-lg-table-cell">{prod.description}</td>
                      <td className="d-none d-lg-table-cell">{prod.price}</td>
                      <td className="d-none d-lg-table-cell">{prod.dolar}</td>
-                     <td className="d-none d-lg-table-cell">{prod.status.description}</td>
+                     <td className="d-none d-lg-table-cell">{prod.estprod}</td>
                      <td>
                          <Link
                              to={'/formProducto'}

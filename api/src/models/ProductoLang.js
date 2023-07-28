@@ -1,5 +1,5 @@
 /*
-  Tabla de Productos 
+  Tabla de productolang 
 */
 const { DataTypes, Sequelize } = require('sequelize');
 

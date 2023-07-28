@@ -1,5 +1,5 @@
 /*
-  Tabla de Productos 
+  Tabla de factura 
 */
 const { DataTypes, Sequelize } = require('sequelize');
 

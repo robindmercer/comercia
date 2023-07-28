@@ -290,18 +290,20 @@ function Formcotizacion() {
         setOnChange(true);
       }
     }
+
     if (e.target.name === "CGdesc") {
-      condiciones[i.i].descuento = e.target.value;
-    }
-    if (e.target.name === "CGenganche") {
-      condiciones[i.i].enganche = e.target.value;
-    }
-    if (e.target.name === "CGmeses") {
+      condiciones[i.i].descuento = e.target.value.replace(",", ".");
+   }
+   if (e.target.name === "CGenganche") {
+      condiciones[i.i].enganche = e.target.value.replace(",", ".");
+   }
+   if (e.target.name === "CGmeses") {
       condiciones[i.i].meses = e.target.value;
-    }
-    if (e.target.name === "CGinter") {
-      condiciones[i.i].interes = e.target.value;
-    }
+   }
+   if (e.target.name === "CGinter") {
+      condiciones[i.i].interes = e.target.value.replace(",", ".");
+   }
+
     if (e.target.name[0] === "C") {
       condiciones[i.i].sel = "S";
       console.log("C condiciones: ", condiciones);
