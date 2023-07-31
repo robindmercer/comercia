@@ -31,8 +31,8 @@
   6  = Liberado	
   7  = Almacen	
   8  = Manufactura	
-  9  = Rechazado Manuf.
-  10 = En Producción
+  9  = Rechazado Man.
+  10 = Producción
   11 = Revison Calidad
   12 = Rechazado Calidad
   13 = Liberado pendiente de envío

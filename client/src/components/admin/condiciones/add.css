@@ -12,9 +12,13 @@ tr{
 }
 
 .td2Des{
-    width: 300px;
+    width: 400px;
 }
 .td2Dato{
     width: 60px;
     TEXT-ALIGN: RIGHT;
+}
+
+.selWidth{
+    width: 360px;
 }

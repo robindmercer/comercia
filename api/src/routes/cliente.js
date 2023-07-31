@@ -77,7 +77,7 @@ router.get('/', async function (req, res, next) {
       sql = sql + ` where upper(clientes.nombre) like upper('%${nombre}%')`
       xand = ' and '
     }
-    sql = sql + xand + ' clientes.cod_status > 0 '
+    sql = sql + xand + ' clientes.cod_status > 0 order by nombre'
     const records = await seq.query(sql,
       {
         logging: console.log,
