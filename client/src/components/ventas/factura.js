@@ -104,9 +104,9 @@ const Factura = () => {
       btnAddDatabase = true;
       btnApproval = true;
       btnDiploma2 = true;
-      if (data.cod_status > 2) {
+      //if (data.cod_status > 2) {
         btnCancel = true;
-      }
+      //}
       if (data.cod_status > 3) {
         btnContrato = true;
       }
@@ -291,7 +291,7 @@ const Factura = () => {
     }
     //handleShow();
     //console.log("mails: ",idMail, mails);
-   // window.location.href = '/factura';
+    window.location.href = '/factura';
   };
   console.log('factura: ', factura);
   
