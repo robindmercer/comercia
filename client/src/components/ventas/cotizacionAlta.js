@@ -267,6 +267,11 @@ const Formcotizacion = () => {
             var total = aux + iva + parseInt(saleDHL);
             setTotal(total);
          }
+         if (iva < 0) {
+             iva=0
+             setSaleTax(iva);
+             setTotal(0);
+         }
       }
    }, [onChange, saleDHL]);
 
@@ -375,9 +380,10 @@ const Formcotizacion = () => {
       console.log("input: ", input);
       console.log("found: ", found);
       console.log("condGral: ", condGral);
-      if (subTotal === 0) {
-         return alert("O/C no puede quedar en 0 (Cero)");
-      }
+      // sacado el 01/08/2023
+      // if (subTotal === 0) {
+      //    return alert("O/C no puede quedar en 0 (Cero)");
+      // }
       //console.log('i f d',input, factdet, inputDet);
       dispatch(AddCotizacion(input, factdet, inputDet, condGral));
       handleShow();

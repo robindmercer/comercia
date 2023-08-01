@@ -144,15 +144,18 @@ import Cookies from 'universal-cookie'
       if (factcab) {
          if (factdet && porciva) {
             factdet.forEach((fact) => {
-               const quantityNumber = parseFloat(fact.cantidad);
-               const rateNumber = parseFloat(fact.precio);
-               const amount =
-                  quantityNumber && rateNumber
-                     ? quantityNumber * rateNumber
-                     : 0;
-               subTotal += amount;
+               if (fact.precio > 0 ){
+                  const quantityNumber = parseFloat(fact.cantidad);
+                  const rateNumber = parseFloat(fact.precio);
+                  const amount =
+                     quantityNumber && rateNumber
+                        ? quantityNumber * rateNumber
+                        : 0;
+                  subTotal += amount;
+               }
             });
             setSubTotal(subTotal);
+            console.log('subTotal: ', subTotal);
             if (subTotal > 0) {
                if (factcab[0].moneda === 1) {
                   iva = subTotal * (parseFloat(porciva[0].valor) / 100);
@@ -163,6 +166,7 @@ import Cookies from 'universal-cookie'
                total = subTotal + iva + parseInt(factcab[0].dhl);
                setTotal(total);
             } else {
+               subTotal=0;
                setSaleTax(0);
                setTotal(0);
             }

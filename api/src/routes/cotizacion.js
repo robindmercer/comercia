@@ -142,20 +142,30 @@ router.post('/', async function (req, res, next) {
     const { cli_id, dir_id, cot_id, subtotal, iva,total,cod_status,observ,fecha,dhl,idioma,moneda,nombre,telefono,direccion,email,vendedor } = req.body;
     console.log('Post Cotizacion: ', req.body);
   
-   if (!subtotal || !total || !cod_status  ) {
-    // console.log('cod_status: ', cod_status);
-    // console.log('total: ', total);
-    // console.log('iva: ', iva);
-    // console.log('subtotal: ', subtotal);
-    // console.log('dir_id: ', dir_id);
-    // console.log('cli_id: ', cli_id);
-     return res.status(400).json({message:"Falta información para poder darte de alta el Documento"})
-    }    
+    
+    
+    
+    if (!cod_status  ) {
+      // console.log('cod_status: ', cod_status);
+      // console.log('total: ', total);
+      // console.log('iva: ', iva);
+      // console.log('subtotal: ', subtotal);
+      // console.log('dir_id: ', dir_id);
+      // console.log('cli_id: ', cli_id);
+      return res.status(400).json({message:"Falta información para poder darte de alta el Documento"})
+    }  
+    var xIva = iva
+    var xTot = total
+    if (subtotal === 0 )  {
+        xIva=0
+        xTot=0
+    }
+
     if (cot_id !== 0){
       res.status(400).json({message:"Error en la información recibida"})
     } else {
       sql=`insert into cotizacion (cli_id,dhl,subtotal,iva,total,cod_status,observ,fecha,idioma,moneda,nombre,telefono,direccion,email,vendedor ) `
-      sql= sql + `values (${0},${dhl},${subtotal},${iva},${total},${cod_status},'${observ}','${fecha}','${idioma}','${moneda}','${nombre}',`
+      sql= sql + `values (${0},${dhl},${subtotal},${xIva},${xTot},${cod_status},'${observ}','${fecha}','${idioma}','${moneda}','${nombre}',`
       sql= sql + `'${telefono}','${direccion}','${email}','${vendedor}' ) RETURNING id`
     }
     const records = await seq.query(sql,
