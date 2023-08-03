@@ -85,7 +85,7 @@ router.put("/", async function (req, res, next) {
 
 router.post("/", async function (req, res, next) {
    const { id, name, description, price, dolar, cod_status } = req.body;
-   console.log("Post Procuto req.body: ", req.body);
+   console.log("Post Producto req.body: ", req.body);
    if (!name || !description || !cod_status) {
       return res.send(
          "Falta información para poder darte de alta el Productoo"
@@ -95,7 +95,6 @@ router.post("/", async function (req, res, next) {
    const producto = await Producto.findOne({
       where: { id: id },
    });
-   console.log("producto: ", producto);
 
    if (!producto) {
       try {
@@ -104,7 +103,7 @@ router.post("/", async function (req, res, next) {
             description,
             price,
             dolar,
-            cod_status: 1,
+            cod_status,
          });
          res.status(200).send("Producto Creado");
       } catch (error) {

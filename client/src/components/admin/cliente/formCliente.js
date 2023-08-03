@@ -78,7 +78,7 @@ function ABMCliente() {
   });
 
   const [errors, setErrors] = useState({});
-  console.log("tabla: ", input);
+  console.log("input: ", input);
 
   function cancelo(id){
     console.log('cancelo: ');
@@ -114,14 +114,15 @@ function ABMCliente() {
         [e.target.name]: e.target.value,
       })
       );
-      console.log('input: ', input);
+      console.log('handleTipo input: ', input);
   }
 
   function handleStatus(e) {
     e.preventDefault();
+    console.log('e.target.name: ', e.target.name,e.target.value);
     setInput({
       ...input,
-      cod_status: e.target.value,
+      [e.target.name]: e.target.value,
     });
     setErrors(
       validate({
@@ -164,7 +165,7 @@ function ABMCliente() {
               COMPLETE LOS SIGUIENTES CAMPOS:
               </td>
             </tr>
-            {input.id!==0? (
+            {input.id !==0 ? (
               <tr>
                 <td className="tdTitulo">Id: </td>
                 <td className="tdSmall">
@@ -306,7 +307,7 @@ function ABMCliente() {
                     className={style.facinput}
                     name="cod_cliente"
                     id="cod_cliente"
-                    onChange={(e) => handleTipo(e)}
+                    onChange={(e) => handleChange(e)}
                     value={input.cod_cliente}
                     placeholder="Seleccione el Tipo del Cliente"
                   >
@@ -337,7 +338,7 @@ function ABMCliente() {
                     className={style.facinput}
                     name="idioma"
                     id="idioma"
-                    onChange={(e) => handleTipo(e)}
+                    onChange={(e) => handleChange(e)}
                     value={input.idioma}
                     placeholder="Seleccione el Idioma"
                   >
@@ -368,7 +369,7 @@ function ABMCliente() {
                     className={style.facinput}
                     name="moneda"
                     id="moneda"
-                    onChange={(e) => handleTipo(e)}
+                    onChange={(e) => handleChange(e)}
                     value={input.moneda}
                     placeholder="Seleccione el moneda"
                   >
@@ -399,8 +400,8 @@ function ABMCliente() {
                 <td>
                   <select
                     className={style.facinput}
-                    name="status"
-                    id="status"
+                    name="cod_status"
+                    id="cod_status"
                     onChange={(e) => handleStatus(e)}
                     value={input.cod_status}
                     placeholder="Seleccione el Status del Cliente"

@@ -101,8 +101,8 @@ const Cliente = () => {
                             <th>Razon Social</th>
                             <th>Nombre</th>
                             <th>Email</th>
-                            <th>Movil</th>
-                            <th>Fijo</th>
+                            {/* <th>Movil</th>
+                            <th>Fijo</th> */}
                             <th>Tipo Cliente</th>
                             <th>Idioma</th>
                             <th>Moneda</th>
@@ -118,8 +118,8 @@ const Cliente = () => {
                                     <td>{data.razsoc}</td>
                                     <td>{data.nombre}</td>
                                     <td>{data.email}</td>
-                                    <td>{data.movil}</td>
-                                    <td>{data.fijo}</td>
+                                    {/* <td>{data.movil}</td>
+                                    <td>{data.fijo}</td> */}
                                     <td>{data.actividad}</td>
                                     <td>{data.idiomades}</td>
                                     <td>{data.monedades}</td>

@@ -108,6 +108,7 @@ function ABMProducto() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log('input: ', input);
     dispatch(AddProducto(input));
     window.location.href = '/producto';
   };
@@ -125,6 +126,7 @@ function ABMProducto() {
             </h1>
             <br />
             <ul>
+            {input.id !==0 ? (
               <li  className='lblId'>
                 <label
                   htmlFor="id"
@@ -142,7 +144,7 @@ function ABMProducto() {
                 {errors.id && <p className="text-red-500">{errors.id}</p>}
 
               </li>
-
+            ):(null)}
               <li>
                 <label
                   htmlFor="name"
@@ -220,9 +222,9 @@ function ABMProducto() {
                   Status:
                 </label>
                 <select
-                  name="status"
-                  id="status"
-                  onChange={(e) => handleStatus(e)}
+                  name="cod_status"
+                  id="cod_status"
+                  onChange={(e) => handleChange(e)}
                   value={input.cod_status}
                 >
                   <option value="0">Seleccionar</option>
