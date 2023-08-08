@@ -56,6 +56,9 @@ router.get("/all", function (req, res, next) {
         include: [
           { model: Status },
         ],
+        order: [
+          ["description", "ASC"],
+        ],
       }
       ).then((resp) => {
         resp.length
