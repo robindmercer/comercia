@@ -8,6 +8,7 @@ import style from "../../css/factura.module.css";
 import { AccessCtrl } from "../../actions/index";
 import DeleteConfirmation from "../DeleteConfirmation";
 
+import { getTablaAll } from "../../actions/tabla";
 
 import { Modal, Button} from 'react-bootstrap';
 import AsignCli from './cotizAsignClient';
@@ -33,6 +34,7 @@ const Cotizacion = () => {
   const id_usuario = cookies.get("usuario");
   const { cotizacion } = useSelector((state) => state);
   const { mails } = useSelector((state) => state);
+  const { tabla } = useSelector((state) => state);
 
   const [onChange, setOnChange] = useState(false);
   // const actlogin = useSelector((state) => state.actlogin)
@@ -41,6 +43,7 @@ const Cotizacion = () => {
   const dollarUSLocale = Intl.NumberFormat("de-DE");
   const estilo = { fontSize: "200%", transition: "font-size 0.5s" };
   const [acceso, setAcceso] = useState("");
+  const [filtro, setFiltro] = useState("");
   const [cotid, setCotId] = useState(0);
   const [idCotiz, setIdCotiz] = useState(0);
   const [newStatus, setNewStatus] = useState(0);
@@ -62,8 +65,6 @@ const Cotizacion = () => {
     setDisplayConfirmationModal(true);
   };
 
-
-  // const { tabla } = useSelector((state) => state);
   // Manejo de Botones a ver
   var toLink = "/cotizacionModif";
   var btnAddDatabase = false;
@@ -142,6 +143,7 @@ const Cotizacion = () => {
  
   useEffect(() => {
     console.log("Use Efect 1");
+    dispatch(getTablaAll());
     dispatch(AccessCtrl(id_usuario));
     dispatch(getCotizacion());
     setAcceso(cookies.get("acceso"))
@@ -229,8 +231,21 @@ const Cotizacion = () => {
     window.location.href = '/cotizacion';
   };
 
+  function handleChange(e) {
+    e.preventDefault();
+    setFiltro(e.target.value)
+    if (onChange) {
+      setOnChange(false);
+    } else {
+      setOnChange(true);
+    }
+
+    console.log('Filtro: ', filtro,'e',e.target.value);
+
+  }
+
   
-  console.log("cotizacionss: ", cotizacion);
+//  console.log("cotizacionss: ", cotizacion);
   return (
     <>
       <Header />
@@ -240,6 +255,34 @@ const Cotizacion = () => {
           <div>
             <h2>Cotizaciones</h2>
           </div>
+            <div>
+              <label htmlFor="filtro">Filtrar:&nbsp;</label>
+                  <select
+                      // className={style.facinput}
+                      name="filtro"
+                      id="filtro"
+                      onChange={(e) => handleChange(e)}
+                      //  value={0}
+                      placeholder="Seleccione un Estado a Filtrar"
+                    >
+                      <option value="0">Seleccionar</option>
+                      {tabla &&
+                        tabla.map((tabla) => {
+                          if (tabla.id === 6 && tabla.cod !== 0) {
+                            return (
+                              <option
+                                selected
+                                value={tabla.cod}
+                                key={tabla.cod}
+                              >{`${tabla.description}`}</option>
+                            );
+                          } else {
+                            return null;
+                          }
+                        })}{" "}
+                    </select>
+            </div>
+
           <div>
             {acceso.substring(0,1) === "A" ? (
               <Link
@@ -271,7 +314,13 @@ const Cotizacion = () => {
             {cotizacion &&
               cotizacion.map((data) => {
                 // Manejo Botones
+                muestroRegistro=true;
                 control(data);
+                    if (filtro !=='' && filtro !=='0' ) {
+                      if(parseInt(data.cod_status) !== parseInt(filtro)){
+                        muestroRegistro=false
+                      }
+                    }
                 if (muestroRegistro) {
                   return (
                     <tr key={data.id}>

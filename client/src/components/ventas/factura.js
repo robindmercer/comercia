@@ -9,6 +9,7 @@ import style from "../../css/factura.module.css";
 import { AccessCtrl } from "../../actions/index";
 import { mailEnviar } from "../../actions/index";
 import { GetMails } from "../../actions/usuario";
+import { getTablaAll } from "../../actions/tabla";
 
 // Modal
 // import OkForm from "../modal/TraerCotiz";
@@ -27,7 +28,7 @@ const Factura = () => {
   const [deleteMessage, setDeleteMessage] = useState(null);
   const [id, setId] = useState(null);
   const { lang } = useSelector((state) => state);
-
+  const [filtro, setFiltro] = useState("");
   const hideConfirmationModal = () => {setDisplayConfirmationModal(false);};
   // Handle the displaying of the modal based on type and id
   const showDeleteModal = (id,accion) => {
@@ -50,7 +51,7 @@ const Factura = () => {
   const [signo, setSigno] = useState('+');
   const [newStatus, setNewStatus] = useState(0);
   const [idMail, setIdMail] = useState(0);
-  // const { tabla } = useSelector((state) => state);
+  const { tabla } = useSelector((state) => state);
   // Manejo de Botones a ver
   var toLink = "/formfactura";
   var btnAddDatabase = false;
@@ -180,6 +181,7 @@ const Factura = () => {
   
   useEffect(() => {
     //console.log("Use Efect 1");
+    dispatch(getTablaAll());
     dispatch(AccessCtrl(id_usuario));
     dispatch(getFactura());
     setAcceso(cookies.get("acceso"))
@@ -294,7 +296,18 @@ const Factura = () => {
     window.location.href = '/factura';
   };
   console.log('factura: ', factura);
-  
+  function handleChange(e) {
+    e.preventDefault();
+    setFiltro(e.target.value)
+    if (onChange) {
+      setOnChange(false);
+    } else {
+      setOnChange(true);
+    }
+
+    console.log('Filtro: ', filtro,'e',e.target.value);
+
+  }
   return (
     <>
       <Header />
@@ -304,6 +317,34 @@ const Factura = () => {
           <div>
             <h2>Ordenes de Compra</h2>
           </div>
+          <div>
+              <label htmlFor="filtro">Filtrar:&nbsp;</label>
+                  <select
+                      // className={style.facinput}
+                      name="filtro"
+                      id="filtro"
+                      onChange={(e) => handleChange(e)}
+                      //  value={0}
+                      placeholder="Seleccione un Estado a Filtrar"
+                    >
+                      <option value="0">Seleccionar</option>
+                      {tabla &&
+                        tabla.map((tabla) => {
+                          if (tabla.id === 6 && tabla.cod !== 0) {
+                            return (
+                              <option
+                                selected
+                                value={tabla.cod}
+                                key={tabla.cod}
+                              >{`${tabla.description}`}</option>
+                            );
+                          } else {
+                            return null;
+                          }
+                        })}{" "}
+                    </select>
+            </div>
+
           {/* <div>
             <button className="btn btn-success" onClick={() => handleShow()}>
               Traer Cotización
@@ -329,7 +370,14 @@ const Factura = () => {
               factura.map((data) => {
                 // Manejo Botones
                 //console.log('data: ', data);
+                muestroRegistro=true;
                 control(data);
+                    if (filtro !=='' && filtro !=='0' ) {
+                      if(parseInt(data.cod_status) !== parseInt(filtro)){
+                        muestroRegistro=false
+                      }
+                    }
+
                 if (muestroRegistro) {
                   return (
                     <tr key={data.id}>
