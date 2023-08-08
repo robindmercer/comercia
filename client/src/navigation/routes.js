@@ -36,10 +36,13 @@ import CotizacionPDF from '../components/ventas/cotizacionPDF'
 //import UploadFile from '../Upload'
 // import VerPdf from '../verPdf'
 import Contrato from '../components/ventas/contrato'
-import Backups from '../components/backup'
-import Restore  from '../components/restore'
+import Backups from '../components/varios/backup'
+import Restore  from '../components/varios/restore'
 import PlaneacionPdf from '../components/planeacion/planeacionPdf'
 import Comentario from '../components/comentario/ComentarioMain'
+//Atencion al cliente
+import Ticket from '../components/admin/atc/ticket'
+import FormTicket from '../components/admin/atc/formTicket'
 
 
 function HandleRoutes() {
@@ -254,7 +257,20 @@ function HandleRoutes() {
             element: <Comentario/>,
             exact: true,
             private: true,
-        }
+        },        
+        {
+            path: "/ticket",
+            element: <Ticket/>,
+            exact: true,
+            private: true,
+        },        
+        {
+            path: "/formTicket",
+            element: <FormTicket/>,
+            exact: true,
+            private: true,
+        },        
+
         
     ]
     return routes;
