@@ -78,7 +78,37 @@ export function AddFactura(factcab, factdet, inputDet,initialCondGral) {
   }
 }
 
-export function UpdateFactura(factcab, factdet, inputDet) {
+// export function UpdateFactura(factcab, factdet, inputDet) {
+//   return async function (dispatch) {
+//     await axios.put(`factura`, factcab)
+//       .then(response => {
+//         if (response.data.message !== 'OK') {
+//           console.log('UpdateFactura - response: ', response);
+//           alert('Error UpdateFactura');
+//           return response;
+//         } else {
+//           //console.log('UpdateFactura response: ', response);
+//           var xOrden = 0;
+//           factdet.forEach((fact) => {
+//             xOrden += 1
+//             inputDet.fac_id = fact.fac_id
+//             inputDet.orden = xOrden
+//             inputDet.prod_id = fact.prod_id
+//             inputDet.precio = fact.precio
+//             inputDet.cantidad = fact.cantidad
+//             inputDet.total = fact.total
+//             dispatch(AddFacturaDet(inputDet))
+//           })
+//           return response
+//         }
+//       })
+//       .catch(err => {
+//         console.log(err)
+//       })
+//   }
+// }
+
+export function UpdateFactura2(factcab, factdet, inputDet,initialFacdet) {
   return async function (dispatch) {
     await axios.put(`factura`, factcab)
       .then(response => {
@@ -87,7 +117,6 @@ export function UpdateFactura(factcab, factdet, inputDet) {
           alert('Error UpdateFactura');
           return response;
         } else {
-          //console.log('UpdateFactura response: ', response);
           var xOrden = 0;
           factdet.forEach((fact) => {
             xOrden += 1
@@ -99,6 +128,9 @@ export function UpdateFactura(factcab, factdet, inputDet) {
             inputDet.total = fact.total
             dispatch(AddFacturaDet(inputDet))
           })
+          if (response.data.message === 'OK') {
+            dispatch(PostCondicionesFac(initialFacdet))
+          }
           return response
         }
       })
@@ -107,6 +139,8 @@ export function UpdateFactura(factcab, factdet, inputDet) {
       })
   }
 }
+
+
 
 export function UpdateFacturaSts(id, sts) {
   console.log('UpdateFacturaSTS');

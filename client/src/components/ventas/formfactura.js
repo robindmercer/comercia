@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 // Acciones
 import { getFacturaDet } from "../../actions/factdet";
-import { getFacturaCab, UpdateFactura } from "../../actions/factura";
+import { getFacturaCab, UpdateFactura2 } from "../../actions/factura";
 import { getDetailIva } from "../../actions/tabla";
 import { getProducto } from "../../actions/producto";
 //import { getClienteId } from "../../actions/cliente";
@@ -344,6 +344,7 @@ import Cookies from 'universal-cookie'
       setInput((input.iva = saleTax.toFixed(0)));
       setInput((input.total = total.toFixed(0)));
       setInput((input.observ = factcab[0].observ));
+      setInput((input.dhl = factcab[0].dhl))
       if (tieneCG === 1) {
          initialFacdet.id = 1; // si ya tiene una C.General grabada el id es siempre 1
       } else {
@@ -357,21 +358,22 @@ import Cookies from 'universal-cookie'
       initialFacdet.interes = found.interes;
 
       console.log("state.idfact: ", state.idfact);
-      console.log("factcab: ", factcab);
+      // console.log("factcab: ", factcab);
+      console.log("input: ", input);
       console.log("factdet: ", factdet);
       console.log("initialFacdet: ", initialFacdet);
-      console.log("input: ", input);
-      console.log("factcond: ", factcond);
-      console.log("condiciones: ", condiciones);
+      // console.log("factcond: ", factcond);
+      // console.log("condiciones: ", condiciones);
       // console.log("tieneCG",tieneCG );
 
       // if (factcab[0].subtotal === 0) {
       //   alert("La Orden de Compra no puede quedar en 0");
       //   return;
       // }
-      dispatch(UpdateFactura(input, factdet, inputDet));
-      dispatch(PostCondicionesFac(initialFacdet));
-      window.location.href = "/factura";
+      // dispatch(UpdateFactura(input, factdet, inputDet));
+      dispatch(UpdateFactura2(input, factdet, inputDet,initialFacdet));
+      // dispatch(PostCondicionesFac(initialFacdet));
+      //window.location.href = "/factura";
    };
 
    // console.log("total: ", total);
@@ -610,7 +612,7 @@ import Cookies from 'universal-cookie'
                                        </td>
                                     </tr>
                                  ) : null}
-                                 {factcab[0].moneda > 1 ? (
+                                 {factcab[0].moneda > 0 ? (
                                     <tr className="totaltr">
                                        <td colSpan="3" className="totaltd1">
                                           Costo de Envio:&nbsp;

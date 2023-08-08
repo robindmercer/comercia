@@ -802,7 +802,18 @@ const Formcotizacion = () => {
                                        {dollarUSLocale.format(subTotal)}
                                     </td>
                                  </tr>
-                                 {xMoneda === "2" ? (
+                                 
+                                    <tr className="totaltr">
+                                       <td colSpan="3" className="totaltd1">
+                                          IVA({porciva}%)
+                                       </td>
+                                       <td className="totaltd2">
+                                          {dollarUSLocale.format(
+                                             saleTax.toFixed(0)
+                                          )}
+                                       </td>
+                                    </tr>
+                                    
                                     <tr className="totaltr">
                                        <td colSpan="3" className="totaltd1">
                                           Costo de Envio:&nbsp;
@@ -818,18 +829,8 @@ const Formcotizacion = () => {
                                           />
                                        </td>
                                     </tr>
-                                 ) : (
-                                    <tr className="totaltr">
-                                       <td colSpan="3" className="totaltd1">
-                                          IVA({porciva}%)
-                                       </td>
-                                       <td className="totaltd2">
-                                          {dollarUSLocale.format(
-                                             saleTax.toFixed(0)
-                                          )}
-                                       </td>
-                                    </tr>
-                                 )}
+                                 
+                                 
                                  <tr className="totaltr">
                                     <td colSpan="3">
                                        {xMoneda === 2 ? (

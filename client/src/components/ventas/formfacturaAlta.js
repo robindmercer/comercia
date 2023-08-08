@@ -630,7 +630,7 @@ const Formfactura = () => {
                           </td>
                         </tr>
                       ) : null}
-                      {cliente[0].moneda > 1 ? (
+                      {cliente[0].moneda > 0 ? (
                         <tr className="totaltr">
                           <td colSpan="3" className="totaltd1">
                             Costo de Envio:&nbsp;

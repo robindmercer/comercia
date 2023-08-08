@@ -1,16 +1,16 @@
 //robin
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getProducto } from "../actions/producto";
-import { getMateriaprima, getProdmp } from "../actions/materiaprima";
-import { getFacturaBckp } from "../actions/factura";
-import { getFacturaDetAll } from "../actions/factdet";
-import { getClienteBckp } from "../actions/cliente";
-import { getDireccionBckp } from "../actions/direccion";
-import { getCondicionesBckp } from "../actions/factcond";
-import { getCotizacionDetAll } from "../actions/cotizaciondet";
-import { getCotizacioncondAll } from "../actions/cotizacioncond";
-import { getCotizacionAll } from "../actions/cotizacion";
+import { getProducto } from "../../actions/producto";
+import { getMateriaprima, getProdmp } from "../../actions/materiaprima";
+import { getFacturaBckp } from "../../actions/factura";
+import { getFacturaDetAll } from "../../actions/factdet";
+import { getClienteBckp } from "../../actions/cliente";
+import { getDireccionBckp } from "../../actions/direccion";
+import { getCondicionesBckp } from "../../actions/factcond";
+import { getCotizacionDetAll } from "../../actions/cotizaciondet";
+import { getCotizacioncondAll } from "../../actions/cotizacioncond";
+import { getCotizacionAll } from "../../actions/cotizacion";
 
 import * as XLSX from "xlsx";
 

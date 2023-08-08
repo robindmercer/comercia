@@ -673,7 +673,6 @@ function Formcotizacion() {
                           <b>{dollarUSLocale.format(subTotal)}</b>
                         </td>
                       </tr>
-                      {cotizacioncab[0].moneda === 1 ? (
                         <tr className="totaltr">
                           <td colSpan="3" className="totaltd1">
                             IVA({porciva}%)
@@ -682,8 +681,6 @@ function Formcotizacion() {
                             <b>{dollarUSLocale.format(saleTax.toFixed(0))}</b>
                           </td>
                         </tr>
-                      ) : null}
-                      {cotizacioncab[0].moneda > 1 ? (
                         <tr className="totaltr">
                           <td colSpan="3" className="totaltd1">
                             Costo de Envio:&nbsp;
@@ -699,7 +696,6 @@ function Formcotizacion() {
                             />
                           </td>
                         </tr>
-                      ) : null}
                       <tr className="totaltr">
                         <td colSpan="3" className="totaltd1">
                           <b>TOTAL A PAGAR</b>
