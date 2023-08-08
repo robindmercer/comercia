@@ -127,7 +127,7 @@ function Formcotizacion() {
   };
   const initialFacdet = {
     id: 0,   //0 nueva condicion 1 ya tiene condicion es para el insert o update 
-    fac_id: state.idCotiz,
+    cot_id: state.idCotiz,
     cond_id: 0,
     descuento: 0,
     enganche: 0,
@@ -382,17 +382,6 @@ function Formcotizacion() {
     console.log("cotizacioncab: ", cotizacioncab);
     const found = condiciones.find((element) => element.sel === "S");
     console.log("found: ", found);
-
-    setInput((input.id = cotizacioncab[0].id));
-    setInput((input.subtotal = subTotal.toFixed(0)));
-    setInput((input.iva = saleTax.toFixed(0)));
-    setInput((input.total = total.toFixed(0)));
-    setInput((input.observ = cotizacioncab[0].observ));
-    setInput((input.nombre = cotizacioncab[0].nombre));
-    setInput((input.moneda = cotizacioncab[0].moneda));
-    // Grabo Cabecera y detalles
-    dispatch(UpdateCotizacion(input, cotizaciondet, inputDet));
-    
     if (found) {
       if (tieneCG === 1) {
         initialFacdet.id = 1; // si ya tiene una C.General grabada el id es siempre 1
@@ -405,8 +394,20 @@ function Formcotizacion() {
       initialFacdet.enganche = found.enganche;
       initialFacdet.meses = found.meses;
       initialFacdet.interes = found.interes;
-      dispatch(PostCondicionesCot(initialFacdet));
+      //dispatch(PostCondicionesCot(initialFacdet));
     }
+
+    setInput((input.id = cotizacioncab[0].id));
+    setInput((input.subtotal = subTotal.toFixed(0)));
+    setInput((input.iva = saleTax.toFixed(0)));
+    setInput((input.total = total.toFixed(0)));
+    setInput((input.observ = cotizacioncab[0].observ));
+    setInput((input.nombre = cotizacioncab[0].nombre));
+    setInput((input.moneda = cotizacioncab[0].moneda));
+    setInput((input.dhl = cotizacioncab[0].dhl))
+    // Grabo Cabecera y detalles
+    dispatch(UpdateCotizacion(input, cotizaciondet, inputDet,initialFacdet));
+    
     console.log("state.idCotiz: ", state.idCotiz);
     console.log("input: ", input);
     console.log("cotizaciondet: ", cotizaciondet);

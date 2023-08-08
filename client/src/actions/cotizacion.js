@@ -92,7 +92,7 @@ export function AddCotizacion2(cotizCab) {
 
 
 
-export function UpdateCotizacion(cotizCab, cotizaciondet, inputDet) {
+export function UpdateCotizacion(cotizCab, cotizaciondet, inputDet,condicion) {
   return async function (dispatch) {
     await axios.put(`cotizacion`, cotizCab)
     .then(response => {
@@ -114,6 +114,9 @@ export function UpdateCotizacion(cotizCab, cotizaciondet, inputDet) {
             inputDet.total = fact.total
             dispatch(AddCotizacionDet(inputDet))
           })
+          if (response.data.message === 'OK') {
+            dispatch(PostCondicionesCot(condicion))
+          }          
           return response
         }
       })
