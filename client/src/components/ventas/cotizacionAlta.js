@@ -1,17 +1,17 @@
 // Cotizaciones Rapidas
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
-import Collapsible from "react-collapsible";
+import { useNavigate } from "react-router-dom";
+// import Collapsible from "react-collapsible";
 // Acciones
 // import { getCotizacionDet } from '../../actions/factdet';
-import { getClienteId } from "../../actions/cliente";
-import { getDireccion } from "../../actions/direccion";
-import { AddCotizacion, AddCotizacion2 } from "../../actions/cotizacion";
+// import { getClienteId } from "../../actions/cliente";
+// import { getDireccion } from "../../actions/direccion";
+import { AddCotizacion } from "../../actions/cotizacion";
 import { getProducto } from "../../actions/producto";
-import { getDetailIva, getTabla } from "../../actions/tabla";
-import { getUsuariomenId } from "../../actions/usuariomenu";
-import { getCondiciones, PostCondicionesCot } from "../../actions/condiciones";
+// import { getDetailIva, getTabla } from "../../actions/tabla";
+// import { getUsuariomenId } from "../../actions/usuariomenu";
+import { getCondiciones } from "../../actions/condiciones";
 
 // Descuentos
 import { getDetail } from "../../actions/tabla";
@@ -865,14 +865,13 @@ const Formcotizacion = () => {
                                  {condiciones &&
                                     condiciones.map((cond, i) => {
                                        if (cond.sel === "S") {
-                                          var xEnganche =
-                                             (total * cond.enganche) / 100;
-                                          var xFinanciar = total - xEnganche;
-                                          var xAnos = cond.meses / 12;
-                                          var xPorMes =
-                                             xFinanciar *
-                                             (cond.interes / 100) *
-                                             xAnos;
+                                          var xTotal2 = total
+                                          var xDescuento = (total * cond.descuento) / 100;
+                                          xTotal2 = xTotal2 - xDescuento
+                                          var xEnganche  = (xTotal2 * cond.enganche) / 100;
+                                          var xFinanciar = xTotal2 - xEnganche;
+                                          var xAnos      = cond.meses / 12;
+                                          var xPorMes    = xFinanciar * (cond.interes / 100) * xAnos;
                                           var xPagoMens =
                                              (xFinanciar + xPorMes) /
                                              cond.meses;

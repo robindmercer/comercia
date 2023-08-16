@@ -663,9 +663,11 @@ import Cookies from 'universal-cookie'
                                  {condiciones &&
                                     condiciones.map((cond, i) => {
                                        if (cond.sel === "S") {
-                                          var xEnganche =
-                                             (total * cond.enganche) / 100;
-                                          var xFinanciar = total - xEnganche;
+                                          var xTotal2 = total
+                                          var xDescuento = (total * cond.descuento) / 100;
+                                          xTotal2 = xTotal2 - xDescuento                                          
+                                          var xEnganche  = (xTotal2 * cond.enganche) / 100;
+                                          var xFinanciar = xTotal2 - xEnganche;
                                           var xAnos = cond.meses / 12;
                                           var xPorMes =
                                              xFinanciar *
