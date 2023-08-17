@@ -276,10 +276,15 @@ const FormfacturaPDF = () => {
          xhor += 8;
          doc.text(`${xDescripcion}`, leftMargin+25, xhor);
          doc.text(`${xImporte}`, 200, xhor, "right");
+         var xTotal2 = 0
+         var xDescuento = 0
          xhor += 8;
          for (let cotiInd = 0; cotiInd < factcond.length; cotiInd++) {
-            var xEnganche = (factcab[0].total * factcond[cotiInd].enganche) / 100;
-            var xFinanciar = factcab[0].total - xEnganche;
+            xTotal2 = factcab[0].total
+            xDescuento = (factcab[0].total * factcond[cotiInd].descuento) / 100;
+            xTotal2 = xTotal2 - xDescuento
+            var xEnganche = (xTotal2 * factcond[cotiInd].enganche) / 100;
+            var xFinanciar = xTotal2 - xEnganche;
             var xAnos = factcond[cotiInd].meses / 12;
             var xPorMes = xFinanciar * (factcond[cotiInd].interes / 100) * xAnos;
             var xPagoMens = (xFinanciar + xPorMes) / factcond[cotiInd].meses;
@@ -293,7 +298,7 @@ const FormfacturaPDF = () => {
             if (parseInt(factcond[cotiInd].cond_id) === 2) {
                xEnganche = 0;
                xFinanciar = 0;
-               var xDescuento = (factcab[0].total * factcond[cotiInd].descuento) / 100;
+               xDescuento = (factcab[0].total * factcond[cotiInd].descuento) / 100;
                xTotal = factcab[0].total -
                        (factcab[0].total * factcond[cotiInd].descuento) / 100;
 

@@ -260,10 +260,15 @@ const FormcotizPDF = () => {
          xhor += 8;
          doc.text(`${xDescripcion}`, leftMargin+25, xhor);
          doc.text(`${xImporte}`, 200, xhor, "right");
+         var xTotal2 = 0
+         var xDescuento = 0 
          xhor += 8;
          for (let cotiInd = 0; cotiInd < cotizacioncond.length; cotiInd++) {
-            var xEnganche = (cotizacioncab[0].total * cotizacioncond[cotiInd].enganche) / 100;
-            var xFinanciar = cotizacioncab[0].total - xEnganche;
+            xTotal2 = cotizacioncab[0].total
+            xDescuento = (cotizacioncab[0].total * cotizacioncond[cotiInd].descuento) / 100;
+            xTotal2 = xTotal2 - xDescuento
+            var xEnganche = (xTotal2 * cotizacioncond[cotiInd].enganche) / 100;
+            var xFinanciar = xTotal2 - xEnganche;
             var xAnos = cotizacioncond[cotiInd].meses / 12;
             var xPorMes = xFinanciar * (cotizacioncond[cotiInd].interes / 100) * xAnos;
             var xPagoMens = (xFinanciar + xPorMes) / cotizacioncond[cotiInd].meses;
@@ -277,7 +282,7 @@ const FormcotizPDF = () => {
             if (parseInt(cotizacioncond[cotiInd].cond_id) === 2) {
                xEnganche = 0;
                xFinanciar = 0;
-               var xDescuento = (cotizacioncab[0].total * cotizacioncond[cotiInd].descuento) / 100;
+               xDescuento = (cotizacioncab[0].total * cotizacioncond[cotiInd].descuento) / 100;
                xTotal = cotizacioncab[0].total -
                        (cotizacioncab[0].total * cotizacioncond[cotiInd].descuento) / 100;
 
