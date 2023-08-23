@@ -41,8 +41,8 @@ import Restore  from '../components/varios/restore'
 import PlaneacionPdf from '../components/planeacion/planeacionPdf'
 import Comentario from '../components/comentario/ComentarioMain'
 //Atencion al cliente
-// import Ticket from '../components/admin/atc/ticket'
-// import FormTicket from '../components/admin/atc/formTicket'
+//import Ticket from '../components/admin/atc/ticket'
+import TicketOCMain from '../components/admin/atc/TicketOCMain'
 
 
 function HandleRoutes() {
@@ -264,12 +264,12 @@ function HandleRoutes() {
         //     exact: true,
         //     private: true,
         // },        
-        // {
-        //     path: "/formTicket",
-        //     element: <FormTicket/>,
-        //     exact: true,
-        //     private: true,
-        // },        
+        {
+            path: "/TicketOCMain",
+            element: <TicketOCMain/>,
+            exact: true,
+            private: true,
+        },        
 
         
     ]

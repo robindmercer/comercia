@@ -30,6 +30,37 @@ router.get('/bckp', async function (req, res, next) {
   }
 })
 
+
+// Especial para atencion al cliente atc
+router.get('/atc', async function (req, res, next) {
+  try {
+     sql = 'select clientes.razsoc,nombre,apellido,tabla.description as Actividad,status.description as StsDesc,'
+     sql = sql + '  t1.description as IdiomaDes,'
+     sql = sql + '  t2.description as MonedaDes,'
+     sql = sql + ' facturas.id as fac_id, facturas.total'
+     sql = sql + '    from clientes'
+     sql = sql + '    join facturas on cli_id = clientes.id '
+     sql = sql + '                 and facturas.cod_status >= 6'
+     sql = sql + '    join tabla on tabla.id = 3 and tabla.cod = cod_cliente'
+     sql = sql + '    join status on status.id_status = clientes.cod_status'
+     sql = sql + '    join tabla t1 on t1.id = 7 and t1.cod = clientes.idioma'
+     sql = sql + '    join tabla t2 on t2.id = 8 and t2.cod = clientes.moneda'
+     sql = sql + '    where clientes.cod_status > 0'
+     sql = sql + '    order by nombre;'
+     const records = await seq.query(sql,
+       {
+         logging: console.log,
+         type: QueryTypes.SELECT
+       });
+       //console.log('records: ', records);
+     res.send(records)
+     } catch (error) {
+     console.log(error)
+     }
+ })
+ 
+
+
 router.get('/:id', async function (req, res, next) {
   console.log("cliente con :id")
   try {
@@ -89,7 +120,6 @@ router.get('/', async function (req, res, next) {
     console.log(error)
   }
 })
-
 
 
 router.post('/', async function (req, res, next) {

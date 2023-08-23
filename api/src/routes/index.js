@@ -27,6 +27,8 @@ const comentario = require("./comentario")
 
 const log = require ("./log")
 const upload = require("./upload")
+const ticket = require("./ticket")
+
 const router = Router();
 // Send Email
 //router.use('/email', email)
@@ -71,4 +73,5 @@ router.use('/upload',upload)
 router.use('/contrato',contrato)
 router.use('/comentario',comentario)
 router.use('/factcond',factcond)
+router.use('/ticket',ticket)
 module.exports = router;

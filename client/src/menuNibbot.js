@@ -15,6 +15,11 @@ export const menuItems = [
         url: '/cliente',
       }, 
       {
+        title: 'Atención Clientes',
+        nivel: 24,
+        url: '/ticket',
+      },       
+      {
         title: 'Productos',
         nivel: 3,
         url: '/producto',

@@ -34,6 +34,17 @@ export function getCliente(){
    }
 }
 
+export function getClienteATC(){
+   return async function (dispatch) {
+       var cliente = await axios.get(`cliente/atc`);
+       return dispatch({
+           type: GET_CLIENTE,
+           payload: cliente.data
+       })
+   }
+}
+
+
  export function getClienteByName(nombre){
   // console.log('Action getClienteByName: ',nombre);
    return async function (dispatch) {

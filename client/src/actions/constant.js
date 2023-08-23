@@ -57,3 +57,5 @@ export const GET_CONTRATOID='GET_CONTRATOID'
 export const GET_ADMIN='GET_ADMIN'
 // Comentarios sobre las OC 
 export const GET_COMENTARIO='GET_COMENTARIO'
+// Ticket 
+export const GET_TICKET='GET_TICKET'
