@@ -2,13 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getClienteATC } from "../../../actions/cliente";
 import { getUsuariomenId } from "../../../actions/usuariomenu";
-import { getDetailIva  } from "../../../actions/tabla";
 import { Link } from "react-router-dom";
-import '../../../css/all.css'
 import Header from '../../Header';
-import { FcHome, FcBusinessman,FcCurrencyExchange } from 'react-icons/fc'
-import { resetFact } from "../../../actions/factura";
+import { FcAddDatabase } from 'react-icons/fc'
 import Cookies from 'universal-cookie'
+import '../../../css/all.css'
 // import Modal from "../../components/modal"
 const Cliente = () => {
     const cookies = new Cookies();
@@ -18,8 +16,8 @@ const Cliente = () => {
     const [acceso, setAcceso] = useState("A"); 
     const id_usuario = cookies.get("usuario");
     // const usuariomenu = useSelector((state) => state.usuariomenu);
-    const { porciva } = useSelector((state) => state);
-    const idProg = 6; // es el nivel 
+    // const { porciva } = useSelector((state) => state);
+    // const idProg = 6; // es el nivel 
     // const [openModal, SetOpenModal]=useState(false);
 
     useEffect(() => {
@@ -99,7 +97,7 @@ const Cliente = () => {
                                                 }
                                             }
 
-                                        > <FcBusinessman style={estilo}
+                                        > <FcAddDatabase style={estilo}
                                             onMouseEnter={({ target }) => target.style.fontSize = "280%"}
                                             onMouseLeave={({ target }) => target.style.fontSize = "200%"} />
                                         </Link>&nbsp;&nbsp;
