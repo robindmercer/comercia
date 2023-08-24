@@ -75,7 +75,7 @@ const Factura = () => {
   if (verStatus.find((element) => element === data.cod_status)) {
     muestroRegistro = true;
   }
-  console.log("Muestro", data.id, data.cod_status, muestroRegistro);
+  //console.log("Muestro", data.id, data.cod_status, muestroRegistro);
 };
 
 

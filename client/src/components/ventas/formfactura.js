@@ -12,7 +12,6 @@ import { getProducto } from "../../actions/producto";
 import {
    getCondiciones,
    getCondicionesFac,
-   PostCondicionesFac,
 } from "../../actions/condiciones";
 
 import { getUsuariomenId } from "../../actions/usuariomenu";
@@ -25,18 +24,18 @@ import {
    FcAddRow,
    FcOk,
    FcLeft,
-   FcApproval,
 } from "react-icons/fc";
 import Header from "../Header";
 // CSS
 import "../../css/factdet.css";
 import Cookies from 'universal-cookie'
+import controlAccesos from "../../controlAcceso";
 //const Formfactura = () => {
    function Formfactura() {
    const cookies = new Cookies();
    const navigate = useNavigate();
    // Manejo acceso del Usuario
-   //const usuariomenu = useSelector((state) => state.usuariomenu);
+   const usuariomenu = useSelector((state) => state.usuariomenu);
    const [acceso, setAcceso] = useState("A");
    const idProg = 11;
 
@@ -128,7 +127,7 @@ import Cookies from 'universal-cookie'
          console.log("factcab ok: ", factcab, " lenght ", factcab.length);
          setSaleDHL(factcab[0].dhl);
       }
-   }, [dispatch, id_usuario]);
+   }, []);
 
    useEffect(() => {
       if (onChange) {
@@ -418,7 +417,7 @@ import Cookies from 'universal-cookie'
       btnElimProd = false;
       btnGrabar = false;
       }
-
+      btnGrabar = controlAccesos(usuariomenu,idProg)
       return (
          <>
             <Header />

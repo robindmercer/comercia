@@ -324,7 +324,7 @@ const Factura = () => {
                       name="filtro"
                       id="filtro"
                       onChange={(e) => handleChange(e)}
-                      //  value={0}
+                      value={0}
                       placeholder="Seleccione un Estado a Filtrar"
                     >
                       <option value="0">Seleccionar</option>
@@ -333,7 +333,6 @@ const Factura = () => {
                           if (tabla.id === 6 && tabla.cod !== 0) {
                             return (
                               <option
-                                selected
                                 value={tabla.cod}
                                 key={tabla.cod}
                               >{`${tabla.description}`}</option>
