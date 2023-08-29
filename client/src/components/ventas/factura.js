@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getFactura, UpdateFacturaSts } from "../../actions/factura";
 import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 import Header from "../Header";
 import { FcAddDatabase, FcApproval, FcDiploma2, FcCancel, FcAbout,FcCopyright,FcNews} from "react-icons/fc";
@@ -18,9 +19,17 @@ import crearMail from "../CrearMails";
 import { AddLogs } from "../../actions/logs";
 import DeleteConfirmation from "../DeleteConfirmation";
 import Cookies from 'universal-cookie'
+import { RunSqlPost } from "../../actions/admin";
 
 const Factura = () => {
   const cookies = new Cookies();
+
+  const [datos, setDatos] = useState({
+    sql1:"",
+    sql2:""
+ }); 
+ const location = useLocation();
+ const { state } = location;
   const idProg = 11;
   const [idFact,setIdFact]=useState(0)
   // Delete Confirmation 
@@ -53,6 +62,7 @@ const Factura = () => {
   const [idMail, setIdMail] = useState(0);
   const { tabla } = useSelector((state) => state);
   // Manejo de Botones a ver
+  var sql = ""
   var toLink = "/formfactura";
   var btnAddDatabase = false;
   var btnApproval = false;
@@ -191,6 +201,7 @@ const Factura = () => {
   
   const handleSubmit = (id, signo) => {
     //console.log('handleSubmit: ',id,signo,lang);
+    var actStock = false
     var control = "x";
     var newStatus = 0;
     var paramMail = 1;
@@ -205,7 +216,25 @@ const Factura = () => {
         paramMail = 1;
       }
       control = "N";
-      //console.log("newStatus: ", newStatus);
+      // Devuelvo materia prima al Stock 
+      if (newStatus === 5 ){
+        sql = `update materiaprima set stock = stock + t1.pedido  `
+        sql = sql +  ` from (`
+        sql = sql +  `  select materiaprima.name MPID, `
+        sql = sql +  `    sum(prodmp.cantidad * factdet.cantidad) as Pedido `
+        sql = sql +  `    from productos  `
+        sql = sql +  `    join prodmp on prodmp.prod_id = productos.id `
+        sql = sql +  `    join materiaprima on materiaprima.name = prodmp.mp_name `
+        sql = sql +  `    join factdet on fac_id = ${found.id} `
+        sql = sql +  `    where productos.id =  factdet.prod_id `
+        sql = sql +  `    group by fac_id,materiaprima.name, `
+        sql = sql +  `    materiaprima.description,materiaprima.udm,materiaprima.stock`
+        sql = sql +  `  ) t1`
+        sql = sql +  ` where name = t1.MPID`;
+        setDatos(datos.sql1 = sql)
+        console.log('RunsqlPost: ',sql, found.id);
+        dispatch(RunSqlPost(datos))
+      }      
     }
     if (signo === "+") {
       if (found.cod_status === 1) {
@@ -238,6 +267,7 @@ const Factura = () => {
       if (found.cod_status === 5) {
         control = "N";
         newStatus = 6; // Liberado
+        actStock = true
         if (parseInt(found.sts) === 3){ // Venta de productos tercerizados 
           newStatus = 14; // Producto Despachado
         }
@@ -280,6 +310,25 @@ const Factura = () => {
       cod_status: newStatus,
       observ: lang,
     };
+// Actualizo Stock 
+    if (actStock ){
+      sql = `update materiaprima set stock = stock - t1.pedido  `
+      sql = sql +  ` from (`
+      sql = sql +  `  select materiaprima.name MPID, `
+      sql = sql +  `    sum(prodmp.cantidad * factdet.cantidad) as Pedido `
+      sql = sql +  `    from productos  `
+      sql = sql +  `    join prodmp on prodmp.prod_id = productos.id `
+      sql = sql +  `    join materiaprima on materiaprima.name = prodmp.mp_name `
+      sql = sql +  `    join factdet on fac_id = ${found.id} `
+      sql = sql +  `    where productos.id =  factdet.prod_id `
+      sql = sql +  `    group by fac_id,materiaprima.name, `
+      sql = sql +  `    materiaprima.description,materiaprima.udm,materiaprima.stock`
+      sql = sql +  `  ) t1`
+      sql = sql +  ` where name = t1.MPID`;
+      setDatos(datos.sql1 = sql)
+      // console.log('RunsqlPost: ',sql, state.idfact);
+      dispatch(RunSqlPost(datos))
+    }
 
     // console.log("log: ", newLog);
     dispatch(UpdateFacturaSts(found.id, newStatus)); // Espera Aprobacion
@@ -329,12 +378,12 @@ const Factura = () => {
                     >
                       <option value="0">Seleccionar</option>
                       {tabla &&
-                        tabla.map((tabla) => {
+                        tabla.map((tabla,i) => {
                           if (tabla.id === 6 && tabla.cod !== 0) {
                             return (
                               <option
                                 value={tabla.cod}
-                                key={tabla.cod}
+                                key={i}
                               >{`${tabla.description}`}</option>
                             );
                           } else {
