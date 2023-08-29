@@ -20,6 +20,7 @@ import Cookies from 'universal-cookie'
 import { RunSqlPost }  from '../../../src/actions/admin'
 
 const Factura = () => {
+
     const idProg = 11;
     const cookies = new Cookies();
     const id_usuario = cookies.get("usuario");
@@ -44,7 +45,7 @@ const Factura = () => {
     const { lang } = useSelector((state) => state);
     // End Modal 
     useEffect(() => {
-        console.log("Factura Use Efect");
+        // console.log("Factura Use Efect");
         dispatch(AccessCtrl(id_usuario));
         dispatch(getFacturaMPId(state.idfact));
         dispatch(getUsuariomenId(id_usuario));
@@ -68,37 +69,23 @@ const Factura = () => {
             cod_status: 0,
             observ:lang,
         };
-
+        
         if (state.sts === 6)  newLog.cod_status = 7   // Manufactura
         if (state.sts === 7)  newLog.cod_status = 8   // Manufactura
         if (state.sts === 9)  newLog.cod_status = 8   // Manufactura
-        if (state.sts === 8)  newLog.cod_status = 10   // En Produccion FALTA actualizar el stock 
+        if (state.sts === 8)  newLog.cod_status = 10   //Manufactura a Produccion Actualiza Stock 
         if (state.sts === 10) newLog.cod_status = 11 // Revision Calidad
         if (state.sts === 11) newLog.cod_status = 13 // Liberado pendiente de envío
         if (state.sts === 12) newLog.cod_status = 11 // Revision Calidad
         if (state.sts === 13) newLog.cod_status = 14 // Revision Calidad
-// Actualizo Stock 
-        if (newLog.cod_status === 10){
-            var sql = "update materiaprima set stock = stock - t1.pedido  "
-            sql &= " from ("
-            sql &= "  select materiaprima.name MPID, "
-            sql &= "    sum(prodmp.cantidad * factdet.cantidad) as Pedido "
-            sql &= "    from productos  "
-            sql &= "    join prodmp on prodmp.prod_id = productos.id "
-            sql &= "    join materiaprima on materiaprima.name = prodmp.mp_name "
-            sql &= "    join factdet on fac_id = " & state.idfact6
-            sql &= "    where productos.id =  factdet.prod_id "
-            sql &= "    group by fac_id,materiaprima.name, "
-            sql &= "    materiaprima.description,materiaprima.udm,materiaprima.stock"
-            sql &= "  ) t1"
-            sql &= " where name = t1.MPID";
-            dispatch(RunSqlPost(sql))
-        }
+
         dispatch(UpdateFacturaSts(id, newLog.cod_status)); // Envio a Manufactura
+        //console.log('id: ', id, newLog.cod_status);
         dispatch(AddLogs(newLog));
         dispatch(GetMails(5));
+        // console.log('mails: ', mails);
         for (var x = 0; x < mails.length; x++) {
-            dispatch(mailEnviar(crearMail(8, mails[x].email, "")));
+            dispatch(mailEnviar(crearMail(8, mails[x].email, state.idfact)));
         }
         window.location.href = "/facturaMP";
     };
@@ -109,7 +96,7 @@ const Factura = () => {
         fac_id = facturaMP[0].fac_id;
     }
 
-    console.log("facturaMP: ", facturaMP);
+    // console.log("facturaMP: ", facturaMP);
     return (
         <>
             <Header />

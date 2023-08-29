@@ -46,11 +46,12 @@ const Layout = () => {
           //     xAcceso = usuariomenu[i].accion + usuariomenu[i].cod_perfil;
           //   }    
           // }    
-    if (usuariomenu[0].accion === 'A') {
-      xAcceso = usuariomenu[0].accion + usuariomenu[0].cod_perfil;
-      cookies.set('acceso', xAcceso,{path:'/'})
-    }    
+    // if (usuariomenu[0].accion === 'A') {
+    //   xAcceso = usuariomenu[0].accion + usuariomenu[0].cod_perfil;
+    //   cookies.set('acceso', xAcceso,{path:'/'})
+    // }    
     
+    xAcceso = "A" + usuariomenu[0].cod_perfil;
     sts = "0" // Default
     if (xAcceso ==="A1") sts = "2|2"      // Gerencia
     if (xAcceso ==="A2") sts = "99|3,4,5" // Adminsitracion 

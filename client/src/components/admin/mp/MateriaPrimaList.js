@@ -1,9 +1,15 @@
 import { Modal, Button, Alert} from 'react-bootstrap';
+import { useDispatch, useSelector } from "react-redux";
 import {useContext, useEffect, useState } from 'react';
 import {MateriaprimaContext} from './MateriaPrimaContext';
 import Materiaprima from './MateriaPrima';
 import AddForm from './AddForm';
 import Pagination from './Pagination';
+
+import { getMateriaprima } from "../../../actions/materiaprima"
+
+
+import * as XLSX from "xlsx";
 
 const MateriaprimaList = () => {
 
@@ -34,23 +40,35 @@ const MateriaprimaList = () => {
             handleShowAlert();
         }
     }, [sortedMateriaprima])
-
+    const dispatch = useDispatch();
     const indexOfLastMateriaprima = currentPage * materiaprimaPerPage;
     const indexOfFirstMateriaprima = indexOfLastMateriaprima - materiaprimaPerPage;
     const currentMateriaPrima = sortedMateriaprima.slice(indexOfFirstMateriaprima, indexOfLastMateriaprima);
     const totalPagesNum = Math.ceil(sortedMateriaprima.length / materiaprimaPerPage);
-
+    const { materiaprima } = useSelector((state) => state);
+    const handleExcel = () =>{
+        dispatch(getMateriaprima());
+        if (materiaprima.length>0){
+            const libroMP = XLSX.utils.book_new();
+            const hojaMP = XLSX.utils.json_to_sheet(materiaprima);
+            XLSX.utils.book_append_sheet(libroMP, hojaMP, "Backups");
+            XLSX.writeFile(libroMP, "materiaPrima.xlsx");
+        }
+    }
 
     return (
     <>
 <br/>
     <div className="table-title">
         <div className="row">
-            <div className="col-sm-6">
+            <div className="col-sm-4">
                 <h2>MateriaPrima</h2>
             </div>
-            <div className="col-sm-6">
+            <div className="col-sm-4">
                 <Button onClick={handleShow} className="btn btn-success" data-toggle="modal"><i className="material-icons">&#xE147;</i> <span>Alta Materiaprima</span></Button>					
+            </div>
+            <div className="col-sm-4">
+                <Button onClick={handleExcel} className="btn btn-success" data-toggle="modal"><i className="material-icons">&#xE147;</i> <span>Generar Excel</span></Button>					
             </div>
         </div>
     </div>

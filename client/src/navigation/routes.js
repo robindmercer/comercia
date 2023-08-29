@@ -38,6 +38,7 @@ import CotizacionPDF from '../components/ventas/cotizacionPDF'
 import Contrato from '../components/ventas/contrato'
 import Backups from '../components/varios/backup'
 import Restore  from '../components/varios/restore'
+import UpdateMp  from '../components/varios/UpdateMp'
 import PlaneacionPdf from '../components/planeacion/planeacionPdf'
 import Comentario from '../components/comentario/ComentarioMain'
 //Atencion al cliente
@@ -270,7 +271,12 @@ function HandleRoutes() {
             exact: true,
             private: true,
         },        
-
+        {
+            path: "/UpdateMp",
+            element: <UpdateMp/>,
+            exact: true,
+            private: true,
+        },        
         
     ]
     return routes;
