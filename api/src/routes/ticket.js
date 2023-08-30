@@ -72,7 +72,7 @@ router.post("/", async function (req, res, next) {
     });
     res.status(200).json({ message: "OK" });
   } catch (error) {
-    res.status(400).json({ message: err });    
+    res.status(400).json({ message: error });    
   }
 });
 
