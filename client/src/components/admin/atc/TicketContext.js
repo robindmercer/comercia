@@ -24,7 +24,7 @@ const TicketContextProvider = (props) => {
       console.log("addTicket: ", data);
       dispatch(AddTicket(data));
       dispatch(getTicket(state.facid));
-      //window.location.href = "/TicketOCMain";
+      window.location.href = "/TicketOCMain";
       // setTicket([...ticket , {id:uuidv4(), name, descuento, enganche, meses}])
    };
 
@@ -32,21 +32,21 @@ const TicketContextProvider = (props) => {
       console.log("deleteTicket: ", id);
       dispatch(DeleteTicket(id));
       dispatch(getTicket(state.facid));
-      //window.location.href = "/TicketOCMain";
+      window.location.href = "/TicketOCMain";
    };
 
    const closeTicket = (id) => {
       console.log("closeTicket: ", id);
       dispatch(CloseTicket(id));
       dispatch(getTicket(state.facid));
-      //window.location.href = "/TicketOCMain";
+      window.location.href = "/TicketOCMain";
    };
 
    const updateTicket = (data) => {
       console.log("updateTicket: ", data);
       dispatch(UpdateTicket(data));
       dispatch(getTicket(state.facid));
-      //window.location.href = "/TicketOCMain";
+      window.location.href = "/TicketOCMain";
       // setTicket(ticket.map((employee) => employee.id === id ? updatedTicket : employee))
    };
 

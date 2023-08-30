@@ -70,9 +70,9 @@ router.post("/", async function (req, res, next) {
       logging: console.log,
       type: QueryTypes.INSERT,
     });
-    res.send(records);
+    res.status(200).json({ message: "OK" });
   } catch (error) {
-    console.log(error);
+    res.status(400).json({ message: err });    
   }
 });
 

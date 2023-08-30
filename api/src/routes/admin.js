@@ -114,7 +114,7 @@ router.post('/insert', async function (req, res, next) {
 router.post('/update', async function (req, res, next) {
   const { sql1,sql2,sql3,sql4 } = req.body;
   console.log('Admin Update ', req.body);
-  console.log('sql: ', sql1);
+  console.log('sql1: ', sql1);
   
     try {
       const [records] = await seq.query(sql1,
@@ -122,7 +122,7 @@ router.post('/update', async function (req, res, next) {
           logging: console.log,
           type: QueryTypes.UPDATE
         });
-        if (sql1) {
+        if (sql2) {
           const [records2] = await seq.query(sql2,
             {
               logging: console.log,
