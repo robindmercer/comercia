@@ -24,6 +24,7 @@ const AddForm = () => {
   const onInputChange = (e) => {
     setNewTicket({ ...newTicket, [e.target.name]: e.target.value });
     console.log('newTicket: ', newTicket);
+
   };
 
   const { description, alta, cierre, Usr,cod_status } = newTicket;
@@ -37,6 +38,9 @@ const AddForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    var newDate1 = newTicket.alta.split("/");
+    const newdate = newDate1[2] + newDate1[1] + newDate1[0];
+    setNewTicket((newTicket.alta = newdate));    
     //addTicket(name, description, stockmin, udm);
     addTicket(newTicket);
   };
