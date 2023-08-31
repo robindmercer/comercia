@@ -24,7 +24,7 @@ const TicketContextProvider = (props) => {
       console.log("addTicket: ", data);
       dispatch(AddTicket(data));
       dispatch(getTicket(state.facid));
-      //window.location.href = "/TicketOCMain";
+      window.location.href = "/TicketOCMain";
       // setTicket([...ticket , {id:uuidv4(), name, descuento, enganche, meses}])
    };
 
