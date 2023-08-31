@@ -79,20 +79,18 @@ router.post("/", async function (req, res, next) {
 
 router.delete('/:id', async function (req, res, next) {
   try {
-    console.log('req.body: ', req.query,req.params);
+    console.log('Delete Ticket: ', req.params);
     const { id } = req.params;
     sql=`delete from ticket where id = ${id}`    
-    // console.log(sql)
     const [records] = await seq.query(sql,
       {
         logging: console.log,
         type: QueryTypes.DELETE
       });
-    res.send(records)
+      res.status(200).json({ message: "OK" });
   } catch (error) {
-    console.log(error)
+    res.status(400).json({ message: error });    
   }
-
 })
 
 router.put('/close/:id', async function (req, res, next) {
