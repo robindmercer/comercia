@@ -15,7 +15,7 @@ const AddForm = () => {
   const [newTicket, setNewTicket] = useState({
     fac_id: state ? state.facid : 0,
     description: "",
-    alta: new Date().toISOString().split('T')[0],
+    alta: new Date().toISOString(),
     cierre: "01/01/1900",
     usr: id_usuario,
     cod_status: 1 ,
@@ -40,7 +40,7 @@ const AddForm = () => {
     //addTicket(name, description, stockmin, udm);
     addTicket(newTicket);
   };
-
+  
   return (
     <Form onSubmit={handleSubmit}>
       <table>
