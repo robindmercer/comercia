@@ -15,7 +15,7 @@ const AddForm = () => {
   const [newTicket, setNewTicket] = useState({
     fac_id: state ? state.facid : 0,
     description: "",
-    alta: new Date().toISOString(),
+    alta:  new Date().toLocaleDateString("en-GB"),
     cierre: "01/01/1900",
     usr: id_usuario,
     cod_status: 1 ,
