@@ -36,11 +36,14 @@ const TicketList = () => {
             handleShowAlert();
         }
     }, [sortedTicket])
-
+    
     const indexOfLastTicketOC = currentPage * ticketPerPage;
     const indexOfFirstTicketOC = indexOfLastTicketOC - ticketPerPage;
     const currentTicketOC = sortedTicket.slice(indexOfFirstTicketOC, indexOfLastTicketOC);
     const totalPagesNum = Math.ceil(sortedTicket.length / ticketPerPage);
+
+    console.log('currentTicketOC: ', currentTicketOC);
+    
     return (
     <>
 <br/>
