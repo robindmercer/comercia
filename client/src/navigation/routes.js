@@ -43,8 +43,8 @@ import PlaneacionPdf from '../components/planeacion/planeacionPdf'
 import Comentario from '../components/comentario/ComentarioMain'
 //Atencion al cliente
 import Ticket from '../components/admin/atc/ticket'
-import TicketOCMain from '../components/admin/atc/TicketOCMain'
-
+import TicketVer from '../components/admin/atc/TicketVer'
+import TicketForm from '../components/admin/atc/ticketForm'
 
 function HandleRoutes() {
 
@@ -266,8 +266,14 @@ function HandleRoutes() {
             private: true,
         },        
         {
-            path: "/TicketOCMain",
-            element: <TicketOCMain/>,
+            path: "/TicketVer",
+            element: <TicketVer/>,
+            exact: true,
+            private: true,
+        },        
+        {
+            path: "/ticketForm",
+            element: <TicketForm/>,
             exact: true,
             private: true,
         },        
