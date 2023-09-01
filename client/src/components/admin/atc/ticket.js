@@ -7,6 +7,8 @@ import Header from '../../Header';
 import { FcAddDatabase } from 'react-icons/fc'
 import Cookies from 'universal-cookie'
 import '../../../css/all.css'
+import TicketVer from "./TicketVer";
+
 // import Modal from "../../components/modal"
 const Cliente = () => {
     const cookies = new Cookies();
@@ -88,7 +90,7 @@ const Cliente = () => {
                                     <td>
                                         <Link
                                             title="Datos"
-                                            to={'/TicketOCMain'}
+                                            to={'/ticketVer'}
                                             className="dLink"
                                             state={
                                                 {

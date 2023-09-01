@@ -17,7 +17,7 @@ export function UpdateTicket(ticket) {
    console.log("UpdateTicket: ", ticket);
    return function (dispatch) {
       axios
-         .post("/ticket", ticket)
+         .put("/ticket", ticket)
          .then((response) => {
             return response;
          })

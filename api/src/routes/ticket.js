@@ -110,4 +110,24 @@ router.put('/close/:id', async function (req, res, next) {
 
 })
 
+router.put("/", async function (req, res, next) {
+  console.log("Ticket Put : ", req.body);
+  const { id,fac_id, description, alta,cierre,usr, cod_status } = req.body;
+  
+  if (!fac_id || !description || !cod_status) {
+    return res.send("Falta información para poder darte de alta el Log");
+  }
+  try {
+    sql=`update ticket set description ='${description}' where id = ${id}`
+    const records = await seq.query(sql, {
+      logging: console.log,
+      type: QueryTypes.UPDATE,
+    });
+    res.status(200).json({ message: "Update OK" });
+  } catch (error) {
+    res.status(400).json({ message: error });    
+  }
+});
+
+
 module.exports = router;
