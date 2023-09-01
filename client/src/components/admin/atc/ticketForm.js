@@ -133,7 +133,7 @@ function ABMTicket() {
          dispatch(UpdateTicket(input));
          console.log('modif');
       }
-     //window.location.href = '/TicketVer';
+     window.location.href = '/TicketVer';
    };
    return (
       <>
