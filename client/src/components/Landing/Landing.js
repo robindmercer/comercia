@@ -10,18 +10,24 @@ function LandingPage() {
     usr: '',
     password: '',
   })
-
+ 
+  const cookies = new Cookies();
   
   function handleSubmit(e) {
     e.preventDefault()
     // localStorage.setItem('usuario', input.usr)
     // localStorage.setItem('pass', input.password) 
-    const cookies = new Cookies();
     cookies.set('usuario', input.usr,{path:'/'})
     cookies.set('pass', input.password,{path:'/'})
-     window.location.href = '/layout';
+    window.location.href = '/layout';
   }
-
+  if (input.usr===""){
+  cookies.remove('usuario')
+  cookies.remove('acceso')
+  cookies.remove('fac')
+  cookies.remove('cot')
+  cookies.remove('pass')
+  }
   
   // Handle Inputs
   function handleInput(e) {

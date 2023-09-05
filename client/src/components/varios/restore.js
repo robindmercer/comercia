@@ -106,6 +106,8 @@ function Restore() {
          <br />
          <br />
          ... webstylepress ...
+         <br />
+         Facturas : agregar espacio a las observaciones y anular los enter.
       </div>
    );
 }
