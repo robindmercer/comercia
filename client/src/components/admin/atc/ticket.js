@@ -29,7 +29,10 @@ const Cliente = () => {
     }, [dispatch]);
 
     const [nombre, setName] = useState("");
-    
+
+    cookies.remove('tckfac')
+    cookies.remove('tckraz')
+
     function handleInputChange(e) {
         
         if (e.key === "Enter") {
