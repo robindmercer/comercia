@@ -400,7 +400,7 @@ import controlAccesos from "../../controlAcceso";
    }
    console.log("factcab", factcab);
 
-   if (factcab.length > 0) {
+   if (factcab.length > 0 && condiciones.length > 0) {
       if (factcab[0].cod_status > 2 && acceso === "A3") {
          btnAgregar = false;
          btnElimProd = false;
@@ -988,6 +988,9 @@ import controlAccesos from "../../controlAcceso";
       return (
          <div>
             <h3>Cargando...</h3>
+            {factcab.length > 0 ? <p>Cabecara OC ok</p> : <p>Buscando datos Cabecera</p>}
+            {factdet.length > 0 ? <p>Productos ok</p> : <p>Buscando Productos</p>}
+            {condiciones.length > 0 ? <p>Condicion de Pago ok</p> : <p>Buscando Condicion de Pago</p>}
          </div>
       );
    }

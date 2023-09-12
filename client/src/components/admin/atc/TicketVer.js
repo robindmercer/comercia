@@ -7,7 +7,7 @@ import '../../../css/all.css'
 import Header from '../../Header';
 
 import Cookies from 'universal-cookie'
-import { FcAddDatabase, FcInternal, FcDeleteRow } from "react-icons/fc";
+import { FcAddDatabase, FcInternal, FcDeleteRow, FcLeft } from "react-icons/fc";
 // import Modal from "../../components/modal"
 const TicketVer = () => {
     const location = useLocation();
@@ -60,6 +60,7 @@ const TicketVer = () => {
                             <Link
                                 to={'/ticketForm'}
                                 className="dLink"
+                                title="Nuevo"
                                 state={
                                     {
                                         id: 0,
@@ -71,6 +72,14 @@ const TicketVer = () => {
                                 onMouseLeave={({ target }) => target.style.fontSize = "200%"} />
                             </Link>
                              ) : null}
+                        <Link
+                                to={'/ticket'}
+                                className="dLink"
+                                title="Volver"
+                            > <FcLeft style={estilo}
+                                onMouseEnter={({ target }) => target.style.fontSize = "280%"}
+                                onMouseLeave={({ target }) => target.style.fontSize = "200%"} />
+                            </Link>
                         </div>
                     </div>
                 </div>
