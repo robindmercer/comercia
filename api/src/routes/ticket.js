@@ -41,9 +41,9 @@ router.get("/fac/:id",async function (req, res, next) {
       sql = sql +" to_char(l.alta,'dd/mm/yyyy') as alta, " 
       sql = sql +" to_char(l.cierre,'dd/mm/yyyy') as cierre, " 
       sql = sql +" l.usr,l.cod_status, " 
-      sql = sql +" t.description as Status"// c.nombre,c.apellido,c.razsoc"
+      sql = sql +" coalesce(t.description,'') as Perfil"// c.nombre,c.apellido,c.razsoc"
       sql = sql +" from ticket l"
-      sql = sql +" join tabla t on t.id = 14 and t.cod = l.cod_status"
+      sql = sql +" left join perfils t on id_perfil = l.cod_status"
       sql = sql +" where l.fac_id =" + id.id ;
       sql = sql +" order by id"
       const records = await seq.query(sql, {
@@ -60,7 +60,7 @@ router.post("/", async function (req, res, next) {
   console.log("Ticket Post : ", req.body);
   const { fac_id, description, alta,cierre,usr, cod_status } = req.body;
   
-  if (!fac_id || !description || !cod_status) {
+  if (!fac_id || !description) {
     return res.send("Falta información para poder darte de alta el Log");
   }
   try {

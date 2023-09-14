@@ -33,9 +33,9 @@ const TicketVer = () => {
         if (auxfac){
             dispatch(getTicket(auxfac));
         } else {
-        dispatch(getTicket(state.facid));
+            dispatch(getTicket(state.facid));
         }
-     }, []);
+    }, []);
     
     const handleRemove = (id) => {
         dispatch(DeleteTicket(id))
@@ -45,6 +45,7 @@ const TicketVer = () => {
         dispatch(CloseTicket(id));
         window.location.href = '/TicketVer';
     }
+        console.log('ticket: ', ticket);
     return (
         <>
             <Header />
@@ -89,6 +90,7 @@ const TicketVer = () => {
                             <th>Descripcion</th>
                             <th>Alta</th>
                             <th>Cierre</th>
+                            <th>Sector</th>
                             <th>Usario</th>
                             <th>Acciones</th>
                         </tr>
@@ -100,6 +102,7 @@ const TicketVer = () => {
                                     <td>{data.description}</td>
                                     <td>{data.alta}</td>
                                     <td>{data.cierre}</td>
+                                    <td>{data.perfil}</td>
                                     <td>{data.usr}</td>
                                     <td>
                                         <Link

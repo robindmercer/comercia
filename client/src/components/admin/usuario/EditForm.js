@@ -114,16 +114,6 @@ const EditForm = ({ theUsuario }) => {
         </tr>
         <tr>
           <td className="td1">Perfil </td>
-          {/* <td>
-            <input
-              className="td2Dato"
-              type="text"
-              placeholder="Perfil"
-              name="cod_perfil"
-              value={cod_perfil}
-              onChange={(e) => setPerfil(e.target.value)}
-            />
-          </td> */}
           <select
                   name="perfil"
                   id="perfil"
@@ -140,7 +130,6 @@ const EditForm = ({ theUsuario }) => {
                           )
                   })}
                 </select>
-
         </tr>
         <tr>
           <td className="td1">Status </td>

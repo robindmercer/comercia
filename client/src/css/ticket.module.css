@@ -1,0 +1,16 @@
+.td1{
+    text-align: center;
+}
+
+.tdCEnter{
+	text-align: -webkit-center;
+	background-color: #009879;;
+	color: white;
+}
+
+
+.tdTitulo{
+	width:33%;
+	text-align: right;
+	padding: 10px;
+}

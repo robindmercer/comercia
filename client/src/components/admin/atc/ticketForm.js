@@ -4,7 +4,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import Cookies from "universal-cookie";
 import { FcHome, FcOk, FcLeft } from "react-icons/fc";
 import { Link } from "react-router-dom";
-
+import { getPerfil } from "../../../actions/perfil";
+import style from '../../../css/ticket.module.css'
 import { AddTicket, UpdateTicket, getTicket } from "../../../actions/ticket";
 
 import Header from "../../Header";
@@ -30,12 +31,14 @@ function ABMTicket() {
    //const ticket = useSelector((state) => state.ticket)
    const status = useSelector((state) => state.status);
    const tabla = useSelector((state) => state.tabla);
-
+   const [cod_perfil, setPerfil] = useState(0);
+   const perfil = useSelector((state) => state.perfil)
    const estilo = { fontSize: "200%", transition: "font-size 0.5s" };
    const [data, setData] = useState({
       sql1: "",
    });
    useEffect(() => {
+      dispatch(getPerfil());
       dispatch(getTicket(state.id));
    }, [dispatch, state.id]);
 
@@ -49,11 +52,11 @@ function ABMTicket() {
       if (id === 3) {
          let clasificacion = window.prompt(
             "Ingrese la Clasificacion Obtenida (solo numeros enteros)"
-         );
+            );
          setInput({ ...input, description: `Calificacion: ${clasificacion}` });
       }
    };
-
+   
    const [input, setInput] = useState({
       id: state ? state.id : 0,
       fac_id: state ? state.fac_id : 0,
@@ -61,12 +64,12 @@ function ABMTicket() {
       alta: new Date().toLocaleDateString("en-GB"),
       cierre: "19000101",
       usr: id_usuario,
-      cod_status: 1,
+      cod_status: 0,// ahora esto es el codigo de Perfil 
    });
-
+   
    const [errors, setErrors] = useState({});
    console.log("input: ", input);
-
+   
    function handleChange(e) {
       e.preventDefault();
       setInput({
@@ -85,15 +88,15 @@ function ABMTicket() {
       console.log("e.target.value: ", e.target.name, e.target.value);
       e.preventDefault();
       if (e.target.name === "description")
-         setInput((input.description = e.target.value));
-      setErrors(
-         validate({
-            ...input,
+      setInput((input.description = e.target.value));
+   setErrors(
+      validate({
+         ...input,
             [e.target.name]: e.target.value,
          })
-      );
-      console.log("handleTipo input: ", input);
-   }
+         );
+         console.log("handleTipo input: ", input);
+      }
 
    function handleStatus(e) {
       e.preventDefault();
@@ -109,31 +112,26 @@ function ABMTicket() {
          })
       );
    }
-   // function handlePerfil(e) {
-   //   e.preventDefault();
-   //   setInput({
-   //     ...input,
-   //     [e.target.name]: e.target.value.substring(4).trim(),
-   //     cod_perfil: e.target.value,
-   //   });
-   //   setErrors(
-   //     validate({
-   //       ...input,
-   //       [e.target.name]: e.target.value,
-   //     })
-   //   );
-   // }
+   function handlePerfil(e) {
+     e.preventDefault();
+     setPerfil(e.target.value)
+     setInput({
+      ...input,
+      cod_status: e.target.value,
+   });     
+     console.log('cod_perfil: ', cod_perfil);
+   }
    const handleSubmit = (e) => {
       e.preventDefault();
       console.log("input", input);
       if (input.id === 0) {
          dispatch(AddTicket(input));
-         console.log('alta');
+         console.log("alta");
       } else {
          dispatch(UpdateTicket(input));
-         console.log('modif');
+         console.log("modif");
       }
-     window.location.href = '/TicketVer';
+      window.location.href = "/TicketVer";
    };
    return (
       <>
@@ -144,13 +142,17 @@ function ABMTicket() {
                   <table>
                      <tbody>
                         <tr>
-                           <td colSpan={2} className="tdCEnter">
+                           <td colSpan={2} className={style.tdCEnter}>
                               COMPLETE LOS SIGUIENTES CAMPOS:
                            </td>
                         </tr>
-                     <tr><td colSpan={2}>&nbsp;</td></tr>
                         <tr>
-                           <td className="tdTitulo"><b>Descripcion: </b></td>
+                           <td colSpan={2}>&nbsp;</td>
+                        </tr>
+                        <tr>
+                           <td className={style.tdTitulo}>
+                              <b>Descripcion: </b>
+                           </td>
                            <td>
                               {/* <input
                                  className="tdBig"
@@ -161,18 +163,17 @@ function ABMTicket() {
                                  onChange={handleChange}
                                  placeholder="Ingrese Descripción"
                               /> */}
-                           <textarea
-                              type="text"
-                              id="description"
-                              cols="80"
-                              rows="5"
-                              name="description"
-                              value={input.description}
-                              placeholder="Ingrese datos del Ticket"
-                              onChange={handleChange}
-                              className="tdBig"
-                           />
-
+                              <textarea
+                                 type="text"
+                                 id="description"
+                                 cols="80"
+                                 rows="5"
+                                 name="description"
+                                 value={input.description}
+                                 placeholder="Ingrese datos del Ticket"
+                                 onChange={handleChange}
+                                 className="tdBig"
+                              />
 
                               {errors.description && (
                                  <p className="text-red-500">
@@ -181,11 +182,34 @@ function ABMTicket() {
                               )}
                            </td>
                         </tr>
-                        </tbody>
-                        </table>
-                        <table>
-                        <tbody>
-                        <tr><td colSpan={4}>&nbsp;</td></tr>
+                        <tr>
+                           <td className={style.td1} colSpan={2}>Perfil&nbsp;
+                           <select
+                                    name="perfil"
+                                    id="perfil"
+                                    onChange={(e) => handlePerfil(e)}
+                                    value={cod_perfil}
+                                 >
+                                    <option value="0">Seleccionar</option>
+                                    {perfil.map((perf) => {
+                                    return (
+                                          <option
+                                             value={perf.id_perfil}
+                                             key={perf.id_perfil}
+                                          >{`${perf.description}`}</option>                   
+                                          )
+                                    })}
+                                 </select>
+                                    </td>
+                        </tr>
+
+                     </tbody>
+                  </table>
+                  <table>
+                     <tbody>
+                        <tr>
+                           <td colSpan={4}>&nbsp;</td>
+                        </tr>
                         <tr>
                            <td colSpan={1}>
                               <button
@@ -197,7 +221,8 @@ function ABMTicket() {
                                  Mail
                               </button>
                               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                              </td><td>
+                           </td>
+                           <td>
                               <button
                                  className="nibbotBtn"
                                  onClick={() => {
@@ -206,23 +231,28 @@ function ABMTicket() {
                               >
                                  Entrenamiento
                               </button>
-                              </td><td>
+                           </td>
+                           <td>
                               &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
                               <button
                                  className="nibbotBtn"
                                  onClick={() => {
                                     defaultMail(3);
                                  }}
-                                 >
+                              >
                                  Clasificacion
                               </button>
-                                 </td><td>
+                           </td>
+                           <td>
                               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                              <button className="nibbotBtn" type="submit">Grabar                                 
+                              <button className="nibbotBtn" type="submit">
+                                 Grabar
                               </button>
                            </td>
                         </tr>
-                        <tr><td colSpan={4}>&nbsp;</td></tr>
+                        <tr>
+                           <td colSpan={4}>&nbsp;</td>
+                        </tr>
                         <tr>
                            <td>&nbsp;</td>
                            <td>
