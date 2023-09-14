@@ -96,8 +96,9 @@ router.delete('/:id', async function (req, res, next) {
 router.put('/close/:id', async function (req, res, next) {
   try {
     console.log('close req.body: ', req.query,req.params);
+    const hoy = new Date()
     const { id } = req.params;
-    sql=`update ticket set cierre = LOCALTIMESTAMP where id = ${id}`    
+    sql=`update ticket set cierre = '${hoy.toISOString().split('T')[0]}' where id = ${id}`    
     const [records] = await seq.query(sql,
       {
         logging: console.log,
