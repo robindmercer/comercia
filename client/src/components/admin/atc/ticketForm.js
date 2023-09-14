@@ -22,6 +22,7 @@ export function validate(input) {
 }
 
 function ABMTicket() {
+   const hoy = new Date()
    const cookies = new Cookies();
    const id_usuario = cookies.get("usuario");
    const location = useLocation();
@@ -61,7 +62,7 @@ function ABMTicket() {
       id: state ? state.id : 0,
       fac_id: state ? state.fac_id : 0,
       description: state ? state.description : "",
-      alta: new Date().toLocaleDateString("en-GB"),
+      alta: hoy.toISOString().split('T')[0],
       cierre: "19000101",
       usr: id_usuario,
       cod_status: 0,// ahora esto es el codigo de Perfil 
