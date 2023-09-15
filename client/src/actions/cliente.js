@@ -34,9 +34,9 @@ export function getCliente(){
    }
 }
 
-export function getClienteATC(){
+export function getClienteATC(perfil){
    return async function (dispatch) {
-       var cliente = await axios.get(`cliente/atc`);
+       var cliente = await axios.get(`cliente/atc/${perfil}`);
        return dispatch({
            type: GET_CLIENTE,
            payload: cliente.data

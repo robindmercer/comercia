@@ -52,13 +52,14 @@ const Layout = () => {
     
     xAcceso = "A" + usuariomenu[0].cod_perfil;
     cookies.set('acceso', xAcceso,{path:'/'})
+    cookies.set('perfil', usuariomenu[0].cod_perfil)
     sts = "0" // Default
-    if (xAcceso ==="A1") sts = "2|2"      // Gerencia
-    if (xAcceso ==="A2") sts = "99|3,4,5" // Adminsitracion 
-    if (xAcceso ==="A3") sts = "1,3|1"        // Ventas
-    if (xAcceso ==="A6") sts = "99|7,9,13,14" // Almacen
-    if (xAcceso ==="A5") sts = "99|8,10,12"   // Manufactura
-    if (xAcceso ==="A8") sts = "99|11,13"     // Calidad
+    if (xAcceso ==="A1") sts = `2|2|${usuariomenu[0].cod_perfil}`      // Gerencia
+    if (xAcceso ==="A2") sts = `99|3,4,5|${usuariomenu[0].cod_perfil}` // Adminsitracion 
+    if (xAcceso ==="A3") sts = `1,3|1|${usuariomenu[0].cod_perfil}`        // Ventas
+    if (xAcceso ==="A6") sts = `99|7,9,13,14|${usuariomenu[0].cod_perfil}` // Almacen
+    if (xAcceso ==="A5") sts = `99|8,10,12|${usuariomenu[0].cod_perfil}`   // Manufactura
+    if (xAcceso ==="A8") sts = `99|11,13|${usuariomenu[0].cod_perfil}`     // Calidad
      
     setXstatus(99)
     console.log('xstatus-----------------------------------------', xstatus);
@@ -80,15 +81,17 @@ const Layout = () => {
     cookies.set('porciva', porciva[0].valor,{path:'/'})
   }
   if (admin){
+    console.log('admin: ', admin);
     for (var i = 0; i < admin.length; i++) {
-      if (admin[i].tipo === 0 ) {
-        // localStorage.setItem('cot', admin[i].count)
-        cookies.set('cot', admin[i].count,{path:'/'})
+      if (admin[i].tipo === '0' ) {
+        cookies.set('cot', admin[i].cta,{path:'/'})
       }
-      if (admin[i].tipo === 1 ) {
-        // localStorage.setItem('fac', admin[i].count)
-        cookies.set('fac', admin[i].count,{path:'/'})
-    }
+      if (admin[i].tipo === '1' ) {
+        cookies.set('fac', admin[i].cta,{path:'/'})
+      }
+        if (admin[i].tipo === '2' ) {
+          cookies.set('tck', admin[i].cta,{path:'/'})
+      }
   }
  }
   //console.log('actlogin.usr_id: ', actlogin[0].usr_id);

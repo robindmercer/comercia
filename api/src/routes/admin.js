@@ -159,9 +159,12 @@ router.get("/count", async function (req, res, next) {
   const { id } = req.query;
   if (id) {
     xid= id.split("|")
-    // console.log('xid: ', xid);
     try {
-      sql="select 0 tipo,count(*) from cotizacion where cod_status in(" + xid[0] + ") union select 1 tipo,count(*) from facturas where cod_status in (" + xid[1] + ")"
+      sql="select '0' tipo,count(*) cta from cotizacion where cod_status in(" + xid[0] + ")"
+      sql = sql + " union all "
+      sql = sql + " select '1' tipo,count(*) cta from facturas where cod_status in (" + xid[1] + ")"
+      sql = sql + " union all " 
+      sql = sql + " select   '2' tipo,count(*)  from ticket where cierre < '19010101' and cod_status in(" + xid[2] + ")"
 
       const records = await seq.query(sql, {
         logging: console.log,

@@ -8,7 +8,8 @@ export default function ShoppingCartBtn() {
    const cookies = new Cookies();
    var cot = cookies.get("cot");
    var fac = cookies.get("fac");
-
+   var tck = cookies.get("tck")
+   console.log('tck: ', tck);
    return (
       <>
          <div>
@@ -44,6 +45,23 @@ export default function ShoppingCartBtn() {
                   <span>{fac}</span>
                </>
             ) : null}
+            {tck > 0 ? (
+               <>
+                  <a href="Tickets">
+                     <FaBell
+                        style={{
+                           marginTop: "-15px",
+                           height: "20px",
+                           width: "27px",
+                           color: "#FFFF00",
+                        }}
+                        title="Tickets Pendientes"
+                     />
+                  </a>
+                  <span>{tck}</span>
+               </>
+            ) : null}
+
          </div>
       </>
    );

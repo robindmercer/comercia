@@ -4,7 +4,7 @@ import { getClienteATC } from "../../../actions/cliente";
 import { getUsuariomenId } from "../../../actions/usuariomenu";
 import { Link } from "react-router-dom";
 import Header from '../../Header';
-import { FcAddDatabase } from 'react-icons/fc'
+import { FcAbout, FcAddDatabase } from 'react-icons/fc'
 import Cookies from 'universal-cookie'
 import '../../../css/all.css'
 import TicketVer from "./TicketVer";
@@ -17,22 +17,23 @@ const Cliente = () => {
     const estilo = { fontSize: "200%", transition: 'font-size 0.5s' };
     const [acceso, setAcceso] = useState("A"); 
     const id_usuario = cookies.get("usuario");
+    const perfil = cookies.get("perfil");
     // const usuariomenu = useSelector((state) => state.usuariomenu);
     // const { porciva } = useSelector((state) => state);
     // const idProg = 6; // es el nivel 
     // const [openModal, SetOpenModal]=useState(false);
 
     useEffect(() => {
-        dispatch(getClienteATC());
+        dispatch(getClienteATC(perfil));
         dispatch(getUsuariomenId(id_usuario));
         setAcceso(cookies.get("acceso"));
     }, [dispatch]);
 
     const [nombre, setName] = useState("");
-
+    
     cookies.remove('tckfac')
     cookies.remove('tckraz')
-
+    
     function handleInputChange(e) {
         
         if (e.key === "Enter") {
@@ -40,7 +41,8 @@ const Cliente = () => {
             setName('');
         }
     }
-    //console.log('cliente: ', cliente);
+    console.log('cliente: ', cliente);
+
     return (
         <>
             <Header />
@@ -106,6 +108,10 @@ const Cliente = () => {
                                             onMouseEnter={({ target }) => target.style.fontSize = "280%"}
                                             onMouseLeave={({ target }) => target.style.fontSize = "200%"} />
                                         </Link>&nbsp;&nbsp;
+                                    {data.cantidad > 0 ? (
+                                        <FcAbout style={estilo}/>
+                                    ) : (null)
+                                    }
                                     </td>
                                 </tr>
                             )

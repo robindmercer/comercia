@@ -32,12 +32,14 @@ router.get('/bckp', async function (req, res, next) {
 
 
 // Especial para atencion al cliente atc
-router.get('/atc', async function (req, res, next) {
+router.get('/atc/:perfil', async function (req, res, next) {
   try {
+    const { perfil } = req.params;
      sql = 'select clientes.razsoc,nombre,apellido,tabla.description as Actividad,status.description as StsDesc,'
      sql = sql + '  t1.description as IdiomaDes,'
      sql = sql + '  t2.description as MonedaDes,'
      sql = sql + ' facturas.id as fac_id, facturas.total'
+     sql = sql + ` ,(select count(*) as cantidad from ticket tk where tk.fac_id = facturas.id and cierre <='19010101' and cod_status = ${perfil}) cantidad`
      sql = sql + '    from clientes'
      sql = sql + '    join facturas on cli_id = clientes.id '
      sql = sql + '                 and facturas.cod_status >= 6'
