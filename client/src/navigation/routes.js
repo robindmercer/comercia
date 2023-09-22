@@ -45,6 +45,7 @@ import Comentario from '../components/comentario/ComentarioMain'
 import Ticket from '../components/admin/atc/ticket'
 import TicketVer from '../components/admin/atc/TicketVer'
 import TicketForm from '../components/admin/atc/ticketForm'
+import Grafico from '../components/ventas/grafico'
 
 function HandleRoutes() {
 
@@ -280,6 +281,12 @@ function HandleRoutes() {
         {
             path: "/UpdateMp",
             element: <UpdateMp/>,
+            exact: true,
+            private: true,
+        },        
+        {
+            path: "/Grafico",
+            element: <Grafico/>,
             exact: true,
             private: true,
         },        

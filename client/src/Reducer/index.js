@@ -37,6 +37,7 @@ import {
   GET_FACTCOND,
   GET_FACTSTS,
   GET_CONTRATOID,
+  GET_GRAF
 } from "../actions/constant.js";
 import {
   GET_COTIZACION,
@@ -63,6 +64,7 @@ const initialState = {
   condiciones: [], // Condiciones Generales
   facsts:[],
   factura: [],
+  grafico: [],
   facturaMP:[],
   factcab: [],
   factcond: [], // Condiciones Generales elegidas en una factura
@@ -369,6 +371,15 @@ const rootReducer = (state = initialState, action) => {
       ticket: action.payload,
     };
   }
+
+  if (action.type === GET_GRAF) {
+    return {
+      ...state,
+      grafico: action.payload,
+    };
+  }
+
+
   return state;
 };
 

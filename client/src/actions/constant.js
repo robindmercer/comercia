@@ -30,6 +30,7 @@ export const GET_FACTURADET = 'GET_FACTURADET'
 export const GET_FACTURAID = 'GET_FACTURAID'
 export const RESET_FAC = 'RESET_FAC' // LO SACO DE MEMORIA
 export const GET_FACTSTS = 'GET_FACTSTS'
+export const GET_GRAF = 'GET_GRAF'
 // Facturas Confeccionadas
 export const GET_FACTURAMP = 'GET_FACTURAMP'  // Facturas Confeccionadas busca Materias Primas sdfc
 export const GET_MPDEFAC = 'GET_MPDEFAC'      // Materias primas de una factura

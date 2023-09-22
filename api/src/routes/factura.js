@@ -19,6 +19,10 @@ const seq = new Sequelize(
   }
 );
 
+
+
+
+
 router.get("/", async function (req, res, next) {
   try {
     sql ="select f.id,to_char(f.fecha,'dd/mm/yyyy') as fecha,f.subtotal,";
@@ -118,6 +122,35 @@ router.get("/mail", async function (req, res, next) {
     }
   }
 });
+
+router.get("/graf", async function (req, res, next) {
+  try {
+      console.log('Graf req.body: ', req.query);
+      const { fDesde,fHasta } = req.query;
+      sql = "select moneda,(date_part('year', f.fecha::DATE) *100) + date_part('month',f.fecha::DATE) Periodo,"
+      sql = sql + " COALESCE(sum(f.total) filter (where cod_status <= 5),0) as NoLib,"
+      sql = sql + " COALESCE(sum(f.total) filter (where cod_status > 5),0) as Lib,"
+      sql = sql + " COALESCE(count(f.id) filter (where cod_status <= 5),0) as NoLibC,"
+      sql = sql + " COALESCE(count(f.id) filter (where cod_status > 5),0) as LibC"      
+      sql = sql + " from facturas f"
+      sql = sql + " where  to_char(fecha::DATE, 'YYYY-MM-DD') >= '" + fDesde + "'"  
+      sql = sql + " and   to_char(fecha::DATE, 'YYYY-MM-DD') <= '" + fHasta + "'"  
+      sql = sql + " group by moneda,Periodo"
+      sql = sql + " order by moneda,Periodo"
+
+      const records = await seq.query(sql, {
+        logging: console.log,
+        type: QueryTypes.SELECT,
+      });
+      //console.log('records: ', records);
+      res.send(records);
+    } catch (error) {
+      console.log(error);
+    }
+});
+
+
+
 
 router.put("/stat", async function (req, res, next) {
   const { id, sts } = req.query;
