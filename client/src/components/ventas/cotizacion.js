@@ -381,7 +381,7 @@ const Cotizacion = () => {
                         ) : null}
 
                         &nbsp;&nbsp;
-                        {btnCancel ? (
+                        {btnCancel  && data.cod_status !== 15  ? (
                           <>
                             <FcCancel
                               style={estilo}
@@ -420,7 +420,7 @@ const Cotizacion = () => {
                           </>
                         ) : null}
                         {/* // si sos administrador o de ventas con status = 1 */}
-                        {btnApproval ? ( //
+                        {btnApproval  ? ( //
                           <>
                             <FcApproval
                               style={estilo}
