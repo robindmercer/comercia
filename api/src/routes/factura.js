@@ -31,7 +31,8 @@ router.get("/", async function (req, res, next) {
     sql = sql + " coalesce(fc.descuento,0)  fde,coalesce(fc.enganche,0) fen, ";
     sql = sql + " coalesce(fc.meses,0) fme,coalesce(fc.interes,0) finter,";
     sql = sql + " coalesce(con.descuento,0) de, coalesce(con.enganche,0) en, ";
-    sql = sql + " coalesce(con.meses,0) me,coalesce(con.interes,0) inter,stsprod.sts";
+    sql = sql + " coalesce(con.meses,0) me,coalesce(con.interes,0) inter,stsprod.sts,";
+    sql = sql + " now() as Hoy"
     sql = sql + " from facturas f";
     sql = sql + " join clientes c           on c.id = f.cli_id";
     sql = sql + " join tabla   t            on t.id = 6 and t.cod = f.cod_status";
@@ -227,8 +228,9 @@ router.post("/cotifac", async function (req, res, next) {
     }
 
     sql = `insert into facturas (id,cli_id,dir_id,dhl,subtotal,iva,total,cod_status,observ,fecha,idioma,moneda) `;
-    sql = sql + `select (select max(id)+1  from facturas ) id, ${cli_id}, 1 , dhl, subtotal, iva, total ,1, observ,fecha, 1, moneda from cotizacion`;
+    sql = sql + `select (select max(id)+1  from facturas ) id, ${cli_id}, 1 , dhl, subtotal, iva, total ,4, observ,fecha, 1, moneda from cotizacion`;
     sql = sql + ` where id = ${cot_id} RETURNING id`;
+
     const records = await seq
     .query(sql, {
       logging: console.log,
@@ -243,14 +245,14 @@ router.post("/cotifac", async function (req, res, next) {
         sql3=sql3 + ` ( id,fac_id,cond_id,descuento,enganche,meses,interes)`
         sql3=sql3 + ` select ${fac_id},${fac_id},cond_id,descuento,enganche,meses,interes from cotizacioncond where cot_id = ${cot_id};;`
         
-        sql5="insert into logs (doc_id, tipo_id, usr_id, cod_status,observ,fecha) "
-        sql5= sql5 + `select ${fac_id}, 'FAC', vendedor, 1,'Viene de la OC : ${cot_id}',now()`
-        sql5= sql5 + ` from cotizacion where id =${cot_id}`
-
-        sql4=`update cotizacion set cli_id = ${cli_id} ,nombre=razsoc `
+        sql4=`update cotizacion set cli_id = ${cli_id} ,nombre=razsoc,cod_status = 15 `
         sql4= sql4 + ` from clientes ` 
         sql4= sql4 +     ` where cotizacion.id = ${cot_id}` 
         sql4= sql4 +     ` and clientes.id = ${cli_id}`           
+        
+        sql5="insert into logs (doc_id, tipo_id, usr_id, cod_status,observ,fecha) "
+        sql5= sql5 + `select ${fac_id}, 'FAC', vendedor, 1,'Viene de la OC : ${cot_id}',now()`
+        sql5= sql5 + ` from cotizacion where id =${cot_id}`
         
         const records2 = await seq
         .query(sql2, {

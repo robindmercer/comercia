@@ -100,13 +100,13 @@ const Cliente = () => {
                             <th>Id</th>
                             <th>Razon Social</th>
                             <th>Nombre</th>
-                            <th>Email</th>
+                            {/* <th>Email</th> */}
                             {/* <th>Movil</th>
                             <th>Fijo</th> */}
-                            <th>Tipo Cliente</th>
+                            {/* <th>Tipo Cliente</th>
                             <th>Idioma</th>
                             <th>Moneda</th>
-                            <th>Estado</th>
+                            <th>Estado</th> */}
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -117,13 +117,13 @@ const Cliente = () => {
                                     <td>{data.id}</td>
                                     <td>{data.razsoc}</td>
                                     <td>{data.nombre}</td>
-                                    <td>{data.email}</td>
+                                    {/* <td>{data.email}</td> */}
                                     {/* <td>{data.movil}</td>
                                     <td>{data.fijo}</td> */}
-                                    <td>{data.actividad}</td>
+                                    {/* <td>{data.actividad}</td>
                                     <td>{data.idiomades}</td>
                                     <td>{data.monedades}</td>
-                                    <td>{data.stsdesc}</td>
+                                    <td>{data.stsdesc}</td> */}
                                     <td>
                                         <Link
                                             title="Datos"
@@ -163,7 +163,7 @@ const Cliente = () => {
                                             onMouseEnter={({ target }) => target.style.fontSize = "280%"}
                                             onMouseLeave={({ target }) => target.style.fontSize = "200%"} />
                                         </Link>&nbsp;&nbsp;
-                                        { parseInt(data.cantdir) > 0  && acceso.substring(0,1) === "A" ? (
+                                        {/* { parseInt(data.cantdir) > 0  && acceso.substring(0,1) === "A" ? (
                                         <Link
                                             title="Crear Venta"
                                             to={'/formfacturaAlta'}
@@ -178,7 +178,7 @@ const Cliente = () => {
                                             onMouseEnter={({ target }) => target.style.fontSize = "280%"}
                                             onMouseLeave={({ target }) => target.style.fontSize = "200%"} />
                                         </Link>
-                                       ):null} 
+                                       ):null}  */}
                                     </td>
                                 </tr>
                             )

@@ -98,7 +98,7 @@ const Cotizacion = () => {
       if (data.cod_status === 2) {
         btnApproval=true
       }
-      verStatus.push(1, 2, 3, 4, 5, 6, 7, 8, 9);
+      verStatus.push(1, 2, 3, 4, 5, 6, 7, 8, 9, 15);
     }
     if (acceso === "A2") {
       // Adminsitracion All
@@ -120,14 +120,14 @@ const Cotizacion = () => {
         btnAsignarCli = true;
         btnAddDatabase = true;
       }
-      verStatus.push(1, 2, 3, 4, 5, 6, 7, 8, 9);
+      verStatus.push(1, 2, 3, 4, 5, 6, 7, 8, 9, 15);
     }
     if (acceso.substring(0, 1) === "C") {
       btnCancel = false;
       btnAsignarCli = false;      
       btnAddDatabase = true;
       toLink = "/formcotizacionPDF";
-      verStatus.push(1, 2, 3, 4, 5, 6, 7, 8, 9);
+      verStatus.push(1, 2, 3, 4, 5, 6, 7, 8, 9, 15);
     }
     if (verStatus.find((element) => element === data.cod_status)) {
       muestroRegistro = true;
@@ -245,7 +245,7 @@ const Cotizacion = () => {
   }
 
   
-//  console.log("cotizacionss: ", cotizacion);
+  console.log("cotizacionss: ", cotizacion);
   return (
     <>
       <Header />
@@ -303,8 +303,8 @@ const Cotizacion = () => {
               <th>Id</th>
               <th>Fecha</th>
               <th>Nombre</th>
-              <th>Subtotal</th>
-              <th>IVA</th>
+              {/* <th>Subtotal</th>
+              <th>IVA</th> */}
               <th>Total</th>
               <th>Estado</th>
               <th>Acciones</th>
@@ -316,19 +316,20 @@ const Cotizacion = () => {
                 // Manejo Botones
                 muestroRegistro=true;
                 control(data);
-                    if (filtro !=='' && filtro !=='0' ) {
-                      if(parseInt(data.cod_status) !== parseInt(filtro)){
-                        muestroRegistro=false
-                      }
-                    }
+                if (filtro !=='' && filtro !=='0' ) {
+                  if(parseInt(data.cod_status) !== parseInt(filtro)){
+                    muestroRegistro=false
+                  }
+                }
+                console.log('data.cod_status: ', data.cod_status,muestroRegistro,filtro);
                 if (muestroRegistro) {
                   return (
                     <tr key={data.id}>
                       <td>{data.id}</td>
                       <td>{data.fecha}</td>
                       <td>{data.nombre}</td>
-                      <td>{dollarUSLocale.format(data.subtotal)}</td>
-                      <td>{dollarUSLocale.format(data.iva)}</td>
+                      {/* <td>{dollarUSLocale.format(data.subtotal)}</td>
+                      <td>{dollarUSLocale.format(data.iva)}</td> */}
                       <td>{dollarUSLocale.format(data.total)}</td>
                       {data.cod_status === 2 && acceso === "A1" ? (
                         <td className={style.row_green}>{data.stsdes}</td>
@@ -401,7 +402,7 @@ const Cotizacion = () => {
 
                         &nbsp;&nbsp;
                         {/* // si sos administrador o de ventas con status = 1 */}
-                        {btnAsignarCli && data.cod_status !== 2 ? ( //
+                        {btnAsignarCli && data.cod_status !== 2 && data.cod_status !== 15 ? ( //
                           <>
                             <FcBusinessman
                               style={estilo}

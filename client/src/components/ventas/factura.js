@@ -28,10 +28,10 @@ const Factura = () => {
     sql1:"",
     sql2:""
  }); 
- const location = useLocation();
- const { state } = location;
-  const idProg = 11;
-  const [idFact,setIdFact]=useState(0)
+  // const location = useLocation();
+  // const { state } = location;
+  // const idProg = 11;
+  // const [idFact,setIdFact]=useState(0)
   // Delete Confirmation 
   const [displayConfirmationModal, setDisplayConfirmationModal] = useState(false);
   const [deleteMessage, setDeleteMessage] = useState(null);
@@ -58,8 +58,8 @@ const Factura = () => {
   const estilo = { fontSize: "200%", transition: "font-size 0.5s" };
   const [acceso, setAcceso] = useState("");
   const [signo, setSigno] = useState('+');
-  const [newStatus, setNewStatus] = useState(0);
-  const [idMail, setIdMail] = useState(0);
+  // const [newStatus, setNewStatus] = useState(0);
+  // const [idMail, setIdMail] = useState(0);
   const { tabla } = useSelector((state) => state);
   // Manejo de Botones a ver
   var sql = ""
@@ -299,11 +299,11 @@ const Factura = () => {
     //console.log("usuario:", id_usuario);
     //console.log("Factura:", found.id, "Status", found.cod_status);
     //console.log("Control:", control);
-    //console.log("newStatus: ", newStatus);
-    //console.log("paramMail: ", paramMail);
-    setIdFact(id);
-    setNewStatus(newStatus);
-    setIdMail(paramMail);
+    console.log("newStatus: ", newStatus);
+    console.log("paramMail: ", paramMail);
+    // setIdFact(id);
+    // setNewStatus(newStatus);
+    // setIdMail(paramMail);
 
     // setLog((log.cod_status = newStatus));
     // setLog((log.doc_id = found.id));
@@ -339,11 +339,11 @@ const Factura = () => {
     dispatch(UpdateFacturaSts(found.id, newStatus)); // Espera Aprobacion
     dispatch(AddLogs(newLog));
     
-    // dispatch(GetMails(idMail));
+    dispatch(GetMails(paramMail));
     console.log("mails: ", mails);
     for (var index = 0; index < mails.length; index++) {
-      console.log("enviar mail: ", mails[index].email);
-      dispatch(mailEnviar(crearMail(newStatus, mails[index].email, found)));
+      console.log("enviar mail: ", mails[index].email,newLog.observ);
+      dispatch(mailEnviar(crearMail(newStatus, mails[index].email, found,newLog.observ)));
     }
     //handleShow();
     //console.log("mails: ",idMail, mails);
@@ -410,8 +410,8 @@ const Factura = () => {
               <th>Id</th>
               <th>Fecha</th>
               <th>Nombre</th>
-              <th>Subtotal</th>
-              <th>IVA</th>
+              {/* <th>Subtotal</th>
+              <th>IVA</th> */}
               <th>Total</th>
               <th>Estado</th>
               <th>Acciones</th>
@@ -437,8 +437,8 @@ const Factura = () => {
                       <td>{data.id}</td>
                       <td>{data.fecha}</td>
                       <td>{data.nombre}</td>
-                      <td>{dollarUSLocale.format(data.subtotal)}</td>
-                      <td>{dollarUSLocale.format(data.iva)}</td>
+                      {/* <td>{dollarUSLocale.format(data.subtotal)}</td>
+                      <td>{dollarUSLocale.format(data.iva)}</td> */}
                       <td>{dollarUSLocale.format(data.total)}</td>
                       {data.cod_status === 2 && acceso === "A1" ? (
                         <td className={style.row_green}>{data.stsdes}</td>

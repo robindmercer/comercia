@@ -65,6 +65,7 @@ const Tabla = () => {
             <tbody>
               {tabla &&
                 tabla.map((data) => {
+                  if (data.cod === 0 || detail) {
                   return (
                     <tr key={data.id + data.cod}>
                       <td>{data.id}</td>
@@ -95,6 +96,9 @@ const Tabla = () => {
                       </td>
                     </tr>
                   );
+                } else {
+                  return null;
+                }
                 })}
             </tbody>
           </table>

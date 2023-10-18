@@ -18,7 +18,9 @@ const seq = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_
 
 router.get('/all', async function (req, res, next) {
       try {
-      sql="select * from cotizacion "  
+      sql="select * "
+      sql = sql + ", now() as Hoy"
+      sql = sql + " from cotizacion "  
       const records = await seq.query(sql,
         {
           logging: console.log,

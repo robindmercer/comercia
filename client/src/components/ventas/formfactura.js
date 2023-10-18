@@ -67,8 +67,8 @@ import controlAccesos from "../../controlAcceso";
    const estilo2 = { fontSize: "200%" };
 
    // botones
-   var btnAgregar = true;
-   var btnElimProd = true;
+   var btnAgregar = false; //true;
+   var btnElimProd = false; //true;
    var btnGrabar = true;
 
    // eslint-disable-next-line no-unused-vars
@@ -485,18 +485,7 @@ import controlAccesos from "../../controlAcceso";
                                  factdet.map((fact, i) => {
                                     return (
                                        <tr key={i}>
-                                          <td>
-                                             <input
-                                                className="input_fact"
-                                                type="text"
-                                                id="prod_id"
-                                                name="prod_id"
-                                                value={fact.prod_id}
-                                                onChange={(e) =>
-                                                   handleTipo(e, { i })
-                                                }
-                                             />
-                                          </td>
+                                          <td>{fact.prod_id}</td>
                                           <td>{fact.name}</td>
                                           {fact.precio > 0 ? (
                                              <td className="totaltr">
@@ -513,18 +502,7 @@ import controlAccesos from "../../controlAcceso";
                                              </td>
                                           )}
                                           {fact.precio > 0 ? (
-                                             <td>
-                                                <input
-                                                   className="input_fact"
-                                                   type="text"
-                                                   id="quantity"
-                                                   name="quantity"
-                                                   value={fact.cantidad}
-                                                   onChange={(e) =>
-                                                      handleTipo(e, { i })
-                                                   }
-                                                ></input>
-                                             </td>
+                                             <td>{fact.cantidad}</td>
                                           ) : null}
                                           {fact.precio > 0 ? (
                                              <td className="totaltr">
