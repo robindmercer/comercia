@@ -104,7 +104,7 @@ router.get('/mail', async function (req, res, next) {
         sql = sql + " join prodmp    pm on pm.prod_id  = fd.prod_id " 
         sql = sql + " join materiaprima mp on mp.name = pm.mp_name "
         sql = sql + " where fd.cot_id = " + id
-  
+        sql = sql + " order by pr.orden"   
       const records = await seq.query(sql,
         {
           logging: console.log,

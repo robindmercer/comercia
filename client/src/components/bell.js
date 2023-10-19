@@ -9,7 +9,6 @@ export default function ShoppingCartBtn() {
    var cot = cookies.get("cot");
    var fac = cookies.get("fac");
    var tck = cookies.get("tck")
-   console.log('tck: ', tck);
    return (
       <>
          <div>

@@ -68,6 +68,7 @@ router.get('/det', async function (req, res, next) {
       sql = sql + ' join productos p on p.id = factdet.prod_id'
       sql = sql + ' left join productolang l on l.id = factdet.prod_id'
       sql = sql + ' where fac_id = ' + id
+      sql = sql + ' order by p.orden,p.id'
       const records = await seq.query(sql,
         {
           logging: console.log,

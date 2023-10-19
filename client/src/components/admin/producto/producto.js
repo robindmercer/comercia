@@ -52,6 +52,8 @@ const Producto = () => {
                                     name: "",
                                     description: "",
                                     price: 0,
+                                    dolar: 0,
+                                    orden:"A1",
                                     cod_status: 1
                                 }
                             }
@@ -94,6 +96,7 @@ const Producto = () => {
                                      description:prod.description ,
                                      price: prod.price,
                                      dolar: prod.dolar,
+                                     orden: prod.orden,
                                      cod_status: prod.cod_status                                 
                                     }
                                 }

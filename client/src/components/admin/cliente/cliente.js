@@ -51,9 +51,7 @@ const Cliente = () => {
                             <h2>Clientes</h2>
                         </div>
                         <div>
-                            <label
-                                htmlFor="id"
-                            >
+                            <label htmlFor="search-navbar">
                                 Buscar:&nbsp;
                             </label>
                             <input
