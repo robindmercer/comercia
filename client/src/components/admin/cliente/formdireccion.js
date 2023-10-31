@@ -255,6 +255,7 @@ function ABMDireccion() {
                   >
                     <option value="0">Seleccionar</option>
                     {tabla && tabla.map((tabla) => {
+                      if (tabla.id === 5 && tabla.cod !== 0) {
                           return (
                             <option
                               selected
@@ -262,6 +263,9 @@ function ABMDireccion() {
                               key={tabla.cod}
                             >{`${tabla.description}`}</option>
                           );
+                        } else {
+                          return null;
+                        }
                     })}                
                     </select>
                 </td>

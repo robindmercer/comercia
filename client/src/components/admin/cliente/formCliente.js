@@ -438,6 +438,7 @@ function ABMCliente() {
                   />
                 </button>
                 &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp;
+                {input.id !==0 ? (
                 <Link
                   to={"/direccion"}
                   className="dLink"
@@ -456,29 +457,32 @@ function ABMCliente() {
                     }
                   />
                 </Link>
+                ) : null}
                 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
                 <FcLeft
                   style={estilo}
                   onMouseEnter={({ target }) =>
-                    (target.style.fontSize = "280%")
-                  }
+                  (target.style.fontSize = "280%")
+                }
                   onMouseLeave={({ target }) =>
-                    (target.style.fontSize = "200%")
+                  (target.style.fontSize = "200%")
                   }
                   onClick={() => {
                     navigate("/cliente");
                   }}
                 />
-                <FcCancel
-                    style={estilo}
-                    onMouseEnter={({ target }) =>
-                      (target.style.fontSize = "280%")
-                    }
-                    onMouseLeave={({ target }) =>
-                      (target.style.fontSize = "200%")
-                    }
-                    onClick={()=> cancelo(input.id)}
-                />
+                {input.id !==0 ? (
+                  <FcCancel
+                      style={estilo}
+                      onMouseEnter={({ target }) =>
+                        (target.style.fontSize = "280%")
+                      }
+                      onMouseLeave={({ target }) =>
+                        (target.style.fontSize = "200%")
+                      }
+                      onClick={()=> cancelo(input.id)}
+                  />
+                ):null}
                   </td>
               </tr>
             </table>
