@@ -39,7 +39,7 @@ const Cliente = () => {
             setName('');
         }
     }
-    console.log('cliente: ', cliente);
+    // console.log('cliente: ', cliente);
     return (
         <>
             <Header />

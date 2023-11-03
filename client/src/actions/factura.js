@@ -125,6 +125,22 @@ export function UpdateFacturaSts(id, sts) {
   }
 }
 
+export function UpdateFacturaSts2(newLog) {
+  console.log('UpdateFacturaSTS');
+  return async function (dispatch) {
+    var factsts = await axios.put(`factura/stat`,newLog);
+    return dispatch({
+      type: GET_FACTSTS,
+      payload: factsts.data
+    })
+  }
+}
+
+
+
+
+
+
 export function cotiToFact(data) {
   return async function (dispatch) {
     await axios.post(`factura/cotifac`, data)

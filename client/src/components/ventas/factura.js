@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getFactura, UpdateFacturaSts } from "../../actions/factura";
+import { getFactura, UpdateFacturaSts2 } from "../../actions/factura";
 import { Link } from "react-router-dom";
-import { useLocation } from "react-router-dom";
+// import { useLocation } from "react-router-dom";
 
 import Header from "../Header";
 import { FcAddDatabase, FcApproval, FcDiploma2, FcCancel, FcAbout,FcCopyright,FcNews} from "react-icons/fc";
 import style from "../../css/factura.module.css";
 import { AccessCtrl } from "../../actions/index";
-import { mailEnviar } from "../../actions/index";
-import { GetMails } from "../../actions/usuario";
+// import { mailEnviar } from "../../actions/index";
+// import { GetMails } from "../../actions/usuario";
 import { getTablaAll } from "../../actions/tabla";
 
 // Modal
 // import OkForm from "../modal/TraerCotiz";
 // import { Modal, Button, Alert } from "react-bootstrap";
-import crearMail from "../CrearMails";
-import { AddLogs } from "../../actions/logs";
+// import crearMail from "../CrearMails";
+// import { AddLogs } from "../../actions/logs";
 import DeleteConfirmation from "../DeleteConfirmation";
 import Cookies from 'universal-cookie'
 import { RunSqlPost } from "../../actions/admin";
@@ -39,16 +39,11 @@ const Factura = () => {
   const { lang } = useSelector((state) => state);
   const [filtro, setFiltro] = useState("");
   const hideConfirmationModal = () => {setDisplayConfirmationModal(false);};
+
   // Handle the displaying of the modal based on type and id
-  const showDeleteModal = (id,accion) => {
-    setSigno(accion)
-    setId(id);
-    setDeleteMessage(`Esta seguro/a de cambiar el status a la O.C.?`);
-    setDisplayConfirmationModal(true);
-  };
   const id_usuario = cookies.get("usuario");
   const { factura } = useSelector((state) => state);
-  const { mails } = useSelector((state) => state);
+  // const { mails } = useSelector((state) => state);
   
   const [onChange, setOnChange] = useState(false);
   // const actlogin = useSelector((state) => state.actlogin)
@@ -71,36 +66,6 @@ const Factura = () => {
   var btnCancel = false;
   var verStatus = [];
   var muestroRegistro = false;
-  // For Modal Only ------------------------------------------------------
-  // const [showAlert, setShowAlert] = useState(false);
-  // const [show, setShow] = useState(false);
-  // const handleShow = () => setShow(true);
-  // const handleClose = () => setShow(false);
-  // const [rutaOk, setRutaOk] = useState("./factura");
-
-  // // const [log, setLog] = useState({
-  // //   doc_id: 0,
-  // //   tipo_id: "FAC",
-  // //   usr_id: id_usuario,
-  // //   cod_status: 0,
-  // // });
-
-  // const handleShowAlert = () => {
-  //   setShowAlert(true);
-  //   setTimeout(() => {
-  //     setShowAlert(false);
-  //   }, 2000);
-  // };
-
-  // useEffect(() => {
-  //   handleClose();
-
-  //   return () => {
-  //     handleShowAlert();
-  //   };
-  // }, [showAlert]);
-  // End Modal ----------------------------------------------------
-
   // Control Botones a mostrar
   const control = (data) => {
     btnAddDatabase = false;
@@ -187,13 +152,20 @@ const Factura = () => {
     if (data.cod_status === 14) {
       btnApproval = false;
     }
-
+    
     if (verStatus.find((element) => element === data.cod_status)) {
       muestroRegistro = true;
     }
     // console.log("Muestro", data.id, data.cod_status, muestroRegistro);
   };
   
+  const showDeleteModal = (id,accion) => {
+    setSigno(accion)
+    setId(id);
+    setDeleteMessage(`Esta seguro/a de cambiar el status a la O.C. ${id}`);
+    setDisplayConfirmationModal(true);
+  };
+
   useEffect(() => {
     //console.log("Use Efect 1");
     dispatch(getTablaAll());
@@ -336,20 +308,20 @@ const Factura = () => {
     }
 
     // console.log("log: ", newLog);
-    dispatch(UpdateFacturaSts(found.id, newStatus)); // Espera Aprobacion
-    dispatch(AddLogs(newLog));
-    
-    dispatch(GetMails(paramMail));
-    console.log("mails: ", mails);
-    for (var index = 0; index < mails.length; index++) {
-      console.log("enviar mail: ", mails[index].email,newLog.observ);
-      dispatch(mailEnviar(crearMail(newStatus, mails[index].email, found,newLog.observ)));
-    }
+    // dispatch(UpdateFacturaSts2(found.id, newStatus,newLog)); // Espera Aprobacion
+    dispatch(UpdateFacturaSts2(newLog)); // Espera Aprobacion
+    // dispatch(AddLogs(newLog));   
+    // dispatch(GetMails(paramMail));
+    // console.log("mails: ", mails);
+    // for (var index = 0; index < mails.length; index++) {
+    //   console.log("enviar mail: ", mails[index].email,newLog.observ);
+    //   dispatch(mailEnviar(crearMail(newStatus, mails[index].email, found,newLog.observ)));
+    // }
     //handleShow();
     //console.log("mails: ",idMail, mails);
     window.location.href = '/factura';
   };
-  console.log('factura: ', factura);
+  // console.log('factura: ', factura);
   function handleChange(e) {
     e.preventDefault();
     setFiltro(e.target.value)

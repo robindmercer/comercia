@@ -150,23 +150,27 @@ router.get("/graf", async function (req, res, next) {
     }
 });
 
-
-
-
 router.put("/stat", async function (req, res, next) {
-  const { id, sts } = req.query;
-  if (id) {
+  const { doc_id, tipo_id, usr_id, cod_status, observ } = req.body;
+  console.log('*** factura/stat req.query: ', req.body);
+  if (doc_id) {
     try {
-      sql = `update facturas set cod_status = ${sts} where id =  ${id}`;
-
+      sql = `update facturas set cod_status = ${cod_status} where id =  ${doc_id}`;
+      sql2 =`insert into logs (doc_id, tipo_id, usr_id, cod_status,observ,fecha) values `
+      sql2 = sql2 + `(${doc_id}, '${tipo_id}', '${usr_id}', ${cod_status},'${observ}',now())`
+  
       const records = await seq.query(sql, {
         logging: console.log,
         type: QueryTypes.UPDATE,
       });
-      //console.log('records: ', records);
-      res.send(records);
+      const records2 = await seq
+      .query(sql2, {
+        logging: console.log,
+        type: QueryTypes.INSERT,
+      })
+      res.status(200).json({ message: "OK" });
     } catch (error) {
-      console.log(error);
+      console.log('Error',error);
     }
   }
 });

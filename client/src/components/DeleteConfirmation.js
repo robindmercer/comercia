@@ -11,7 +11,7 @@ const DeleteConfirmation = ({ showModal, hideModal, confirmModal, id, signo, mes
   function handleTipo(e) {
     e.preventDefault();
     dispatch(PutLang(e.target.value))
-    console.log('lang: ', lang);
+    //console.log('lang: ', lang);
   }
   
   // console.log('del lang: ', lang);
