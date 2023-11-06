@@ -597,7 +597,7 @@ function Formcotizacion() {
                                 {dollarUSLocale.format(fact.total)}
                               </td>
                             ) : null}
-                            {acceso === "A" ? (
+                            {acceso.substring(0,1) === "A" ? (
                               <td onClick={() => handleRemove(i)}>
                                 <FcDeleteRow
                                   style={estilo}
@@ -613,7 +613,7 @@ function Formcotizacion() {
                             ) : (
                               <td>&nbsp;</td>
                             )}
-                            {acceso === "A" && fact.precio > 0 ? (
+                            {acceso.substring(0,1) === "A" && fact.precio > 0 ? (
                               <td onClick={() => handleFree(i)}>
                                 <FcMinus
                                   style={estilo}
@@ -634,7 +634,7 @@ function Formcotizacion() {
                       })}
                   </tbody>
                 </table>
-                {acceso === "A" ? (
+                {acceso.substring(0,1) === "A" ? (
                   <div className="addprod">
                     <p onClick={() => handleAdd()}>
                       <FcAddRow
