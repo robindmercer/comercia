@@ -9,7 +9,7 @@ import { getUsuariomenId } from "../../actions/usuariomenu";
 import crearMail from "../CrearMails";
 import { mailEnviar } from "../../actions/index";
 import { GetMails } from "../../actions/usuario";
-import { UpdateFacturaSts } from "../../actions/factura";
+import { UpdateFacturaSts2 } from "../../actions/factura";
 import { AddLogs } from "../../actions/logs";
 // Iconos
 import { FcLeft, FcOk } from "react-icons/fc";
@@ -79,14 +79,15 @@ const Factura = () => {
         if (state.sts === 12) newLog.cod_status = 11 // Revision Calidad
         if (state.sts === 13) newLog.cod_status = 14 // Revision Calidad
 
-        dispatch(UpdateFacturaSts(id, newLog.cod_status)); // Envio a Manufactura
-        //console.log('id: ', id, newLog.cod_status);
-        dispatch(AddLogs(newLog));
-        dispatch(GetMails(5));
-        // console.log('mails: ', mails);
-        for (var x = 0; x < mails.length; x++) {
-            dispatch(mailEnviar(crearMail(8, mails[x].email, state.idfact)));
-        }
+        // dispatch(UpdateFacturaSts(id, newLog.cod_status)); // Envio a Manufactura
+        // //console.log('id: ', id, newLog.cod_status);
+        // dispatch(AddLogs(newLog));
+        // dispatch(GetMails(5));
+        // // console.log('mails: ', mails);
+        // for (var x = 0; x < mails.length; x++) {
+        //     dispatch(mailEnviar(crearMail(8, mails[x].email, state.idfact)));
+        // }
+        dispatch(UpdateFacturaSts2(newLog));
         window.location.href = "/facturaMP";
     };
 
@@ -162,7 +163,7 @@ const Factura = () => {
                                     }
                                     return (
                                         <tr
-                                            key={index}
+                                            key={index + 400}
                                             className={
                                                 data.stock < data.pedido
                                                     ? style.redRow
