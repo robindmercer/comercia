@@ -270,8 +270,7 @@ const Cotizacion = () => {
                         tabla.map((tabla) => {
                           if (tabla.id === 6 && tabla.cod !== 0) {
                             return (
-                              <option
-                                selected
+                              <option                                
                                 value={tabla.cod}
                                 key={tabla.cod}
                               >{`${tabla.description}`}</option>
@@ -321,7 +320,7 @@ const Cotizacion = () => {
                     muestroRegistro=false
                   }
                 }
-                console.log('data.cod_status: ', data.cod_status,muestroRegistro,filtro);
+                // console.log('data.cod_status: ', data.cod_status,muestroRegistro,filtro);
                 if (muestroRegistro) {
                   return (
                     <tr key={data.id}>

@@ -88,7 +88,7 @@ router.get('/:id', async function (req, res, next) {
 
 
 router.get('/', async function (req, res, next) {
-  console.log("cliente generico")
+  //console.log("cliente generico")
   try {
     const {busco} = req.body;
     const {nombre} = req.query;

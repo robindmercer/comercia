@@ -45,7 +45,7 @@ function ABMDireccion() {
     dispatch(getDireccion(state.id));
   }, [dispatch,state.id]);
   
-  console.log('frm dir state.id: ', state.id);
+  //console.log('frm dir state.id: ', errors);
 
   const [input, setInput] = useState({
     id: state ? state.id : 0,
@@ -61,7 +61,7 @@ function ABMDireccion() {
 
   });
 
-  console.log('input: ', input);
+  // console.log('input: ', input);
 
   // function handleTipo(e) {
   //   e.preventDefault();
