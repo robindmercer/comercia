@@ -8,7 +8,7 @@ import style from "../../css/factura.module.css";
 import { AccessCtrl } from "../../actions/index";
 import { getUsuariomenId } from "../../actions/usuariomenu";
 import DeleteConfirmation from "../DeleteConfirmation";
-import { UpdateFacturaSts } from "../../actions/factura";
+import { UpdateFacturaSts2 } from "../../actions/factura";
 import { AddLogs } from "../../actions/logs";
 import { GetMails } from "../../actions/usuario";
 import crearMail from "../CrearMails";
@@ -31,6 +31,7 @@ const Factura = () => {
   const dollarUSLocale = Intl.NumberFormat("de-DE");
   const estilo = { fontSize: "200%", transition: "font-size 0.5s" };
   const [acceso, setAcceso] = useState("A");
+  const [signo, setSigno] = useState('+');
   // const { tabla } = useSelector((state) => state);
   
   // Status Change Confirmation 
@@ -43,9 +44,10 @@ const Factura = () => {
   
   const hideConfirmationModal = () => {setDisplayConfirmationModal(false);};
   // Handle the displaying of the modal based on type and id
-  const showDeleteModal = (id) => {
+  const showDeleteModal = (id,accion) => {
+    setSigno(accion)
     setId(id);
-    setDeleteMessage(`Esta seguro/a de cambiar el status a la O.C.?`);
+    setDeleteMessage(`Esta seguro/a de cambiar el status a la O.C. : ${id}`);
     setDisplayConfirmationModal(true);
   };
   var verStatus = [];
@@ -117,19 +119,20 @@ const Factura = () => {
     };
 
     console.log("log: ", newLog);
-    dispatch(UpdateFacturaSts(found.id, newStatus)); // Espera Aprobacion
-    dispatch(AddLogs(newLog));
+    // dispatch(UpdateFacturaSts(found.id, newStatus)); // Espera Aprobacion
+    // dispatch(AddLogs(newLog));
+    dispatch(UpdateFacturaSts2(newLog));
 
-    dispatch(GetMails(idMail));
-    console.log("mails: ", mails);
-    for (var index = 0; index < mails.length; index++) {
-      console.log("enviar mail: ", mails[index].email);
-      dispatch(mailEnviar(crearMail(newStatus, mails[index].email, found)));
-    }
-    //handleShow();
-    console.log("mails: ",idMail, mails);
-    console.log("newLog: ",newLog);
-    window.location.href = '/facturaMP';
+    // dispatch(GetMails(idMail));
+    // console.log("mails: ", mails);
+    // for (var index = 0; index < mails.length; index++) {
+    //   console.log("enviar mail: ", mails[index].email);
+    //   dispatch(mailEnviar(crearMail(newStatus, mails[index].email, found)));
+    // }
+    // //handleShow();
+    // console.log("mails: ",idMail, mails);
+    // console.log("newLog: ",newLog);
+    // window.location.href = '/facturaMP';
   };
 
   useEffect(() => {

@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getFactura, UpdateFacturaSts2 } from "../../actions/factura";
+import { AccessCtrl } from "../../actions/index";
+import { getTablaAll } from "../../actions/tabla";
 import { Link } from "react-router-dom";
 // import { useLocation } from "react-router-dom";
 
 import Header from "../Header";
 import { FcAddDatabase, FcApproval, FcDiploma2, FcCancel, FcAbout,FcCopyright,FcNews} from "react-icons/fc";
 import style from "../../css/factura.module.css";
-import { AccessCtrl } from "../../actions/index";
 // import { mailEnviar } from "../../actions/index";
 // import { GetMails } from "../../actions/usuario";
-import { getTablaAll } from "../../actions/tabla";
 
 // Modal
 // import OkForm from "../modal/TraerCotiz";
