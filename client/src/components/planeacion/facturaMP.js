@@ -132,7 +132,7 @@ const Factura = () => {
     // //handleShow();
     // console.log("mails: ",idMail, mails);
     // console.log("newLog: ",newLog);
-    // window.location.href = '/facturaMP';
+     window.location.href = '/facturaMP';
   };
 
   useEffect(() => {
