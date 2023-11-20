@@ -6,18 +6,18 @@ import Header from "../Header";
 import { getFacturaMPId } from "../../actions/facturaMP";
 import { AccessCtrl } from "../../actions/index";
 import { getUsuariomenId } from "../../actions/usuariomenu";
-import crearMail from "../CrearMails";
+// import crearMail from "../CrearMails";
 // import { mailEnviar } from "../../actions/index";
-import { GetMails } from "../../actions/usuario";
+// import { GetMails } from "../../actions/usuario";
 import { UpdateFacturaSts2 } from "../../actions/factura";
-import { AddLogs } from "../../actions/logs";
+// import { AddLogs } from "../../actions/logs";
 // Iconos
 import { FcLeft, FcOk } from "react-icons/fc";
 // CSS
 import "../../css/factdet.css";
 import style from "../../css/factura.module.css";
 import Cookies from 'universal-cookie'
-import { RunSqlPost }  from '../../../src/actions/admin'
+// import { RunSqlPost }  from '../../../src/actions/admin'
 
 const Factura = () => {
 
@@ -25,7 +25,7 @@ const Factura = () => {
     const cookies = new Cookies();
     const id_usuario = cookies.get("usuario");
     const { facturaMP } = useSelector((state) => state);
-    const { mails } = useSelector((state) => state);
+    // const { mails } = useSelector((state) => state);
     // const actlogin = useSelector((state) => state.actlogin)
     // const usuariomenu = useSelector((state) => state.usuariomenu);
     const dispatch = useDispatch();
@@ -56,7 +56,7 @@ const Factura = () => {
 
     const showDeleteModal = (id) => {
         setId(id);
-        setDeleteMessage(`Esta seguro/a de cambiar el status a la O.C.?`);
+        setDeleteMessage(`Esta seguro/a de cambiar el status a la O.C.: ${id}`);
         setDisplayConfirmationModal(true);
       };
 

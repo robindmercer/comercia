@@ -21,7 +21,8 @@ const seq = new Sequelize(
 router.get('/', async function (req, res, next) {
   try {
       sql="select facturas.id,to_char(facturas.fecha,'dd/mm/yyyy') as fecha,facturas.subtotal,facturas.iva,facturas.total,facturas.cod_status,t.description as stsdes,"
-      sql = sql + " clientes.nombre,facturas.cod_status,facturas.observ,coalesce(control,'N') as Control "
+      sql = sql + " clientes.nombre,facturas.cod_status,facturas.observ,coalesce(control,'N') as Control, "
+      sql = sql + " now() as Hoy";
       sql = sql + " from facturas"
       sql = sql + " join clientes on clientes.id = facturas.cli_id "
       sql = sql + " join tabla t   on t.id = 6 and t.cod = facturas.cod_status "
