@@ -303,14 +303,14 @@ const Factura = () => {
       sql = sql +  `  ) t1`
       sql = sql +  ` where name = t1.MPID`;
       setDatos(datos.sql1 = sql)
+      var sql2 = `update facturas set cod_status = ${newLog.cod_status} where id =  ${newLog.doc_id} `
+      setDatos(datos.sql2 = sql2)
       // console.log('RunsqlPost: ',sql, state.idfact);
       dispatch(RunSqlPost(datos))
+    } else {
+      dispatch(UpdateFacturaSts2(newLog)); // Espera Aprobacion
     }
-
-    // console.log("log: ", newLog);
-    // dispatch(UpdateFacturaSts2(found.id, newStatus,newLog)); // Espera Aprobacion
-    dispatch(UpdateFacturaSts2(newLog)); // Espera Aprobacion
-    // dispatch(AddLogs(newLog));   
+    window.location.href = '/factura';
     // dispatch(GetMails(paramMail));
     // console.log("mails: ", mails);
     // for (var index = 0; index < mails.length; index++) {
@@ -319,7 +319,6 @@ const Factura = () => {
     // }
     //handleShow();
     //console.log("mails: ",idMail, mails);
-    window.location.href = '/factura';
   };
   // console.log('factura: ', factura);
   function handleChange(e) {
