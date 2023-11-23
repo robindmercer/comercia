@@ -233,6 +233,9 @@ function ABMProducto() {
                         </select>
                      </div>
                      <div>
+                        <h4>* Acuerdese de grabar la definicion en INGLES de este producto</h4>
+                     </div>
+                     <div>
                         {btnGrabar ? (
                            <button className="nibbotBtn" type="submit">
                               {state ? "GRABAR" : "AGREGAR"}
