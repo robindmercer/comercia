@@ -4,7 +4,7 @@ import { getCotizacion, UpdateCotizacionSts } from "../../actions/cotizacion";
 import { Link } from "react-router-dom";
 import Header from "../Header";
 import { FcAddDatabase, FcBusinessman, FcDiploma2,FcCancel,FcApproval,FcAbout} from "react-icons/fc";
-import style from "../../css/factura.module.css";
+import style from "../../css/cotizacion.module.css";
 import { AccessCtrl } from "../../actions/index";
 import DeleteConfirmation from "../DeleteConfirmation";
 
@@ -299,14 +299,14 @@ const Cotizacion = () => {
         <table className={style.styledTable}>
           <thead>
             <tr>
-              <th>Id</th>
-              <th>Fecha</th>
+              <th className={style.solopc}>Id</th>
+              <th className={style.solopc}>Fecha</th>
               <th>Nombre</th>
               {/* <th>Subtotal</th>
               <th>IVA</th> */}
-              <th>Total</th>
+              <th className={style.solopc}>Total</th>
               <th>Estado</th>
-              <th>Acciones</th>
+              <th className={style.soloph_acciones}>Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -324,18 +324,18 @@ const Cotizacion = () => {
                 if (muestroRegistro) {
                   return (
                     <tr key={data.id}>
-                      <td>{data.id}</td>
-                      <td>{data.fecha}</td>
-                      <td>{data.nombre}</td>
+                      <td className={style.solopc}>{data.id}</td>
+                      <td className={style.solopc}>{data.fecha}</td>
+                      <td className={style.soloph}>{data.nombre}</td>
                       {/* <td>{dollarUSLocale.format(data.subtotal)}</td>
                       <td>{dollarUSLocale.format(data.iva)}</td> */}
-                      <td>{dollarUSLocale.format(data.total)}</td>
+                      <td className={style.solopc}>{dollarUSLocale.format(data.total)}</td>
                       {data.cod_status === 2 && acceso === "A1" ? (
                         <td className={style.row_green}>{data.stsdes}</td>
                       ) : (
                         <td>{data.stsdes}</td>
                       )}
-                      <td>
+                      <td className={style.soloph_acciones}>
                         {btnAddDatabase ? (
                           <Link
                             to={toLink}

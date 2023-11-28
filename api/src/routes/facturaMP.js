@@ -47,7 +47,8 @@ router.get("/fac", async function (req, res, next) {
   if (id) {
     try {
       sql = "select 1 as Orden,fac_id,prodmp.prod_id,productos.name as ProdName , materiaprima.name,";
-      sql = sql + " materiaprima.description,materiaprima.udm,materiaprima.stock,prodmp.cantidad * factdet.cantidad as Pedido";
+      sql = sql + " materiaprima.description,materiaprima.udm,materiaprima.stock,prodmp.cantidad * factdet.cantidad as Pedido,";
+      sql = sql + " now() as Hoy";
       sql = sql + " from productos ";
       sql = sql + " join prodmp on prodmp.prod_id = productos.id";
       sql = sql + " join materiaprima on materiaprima.name = prodmp.mp_name";
@@ -56,7 +57,8 @@ router.get("/fac", async function (req, res, next) {
       sql = sql + " UNION"
       sql = sql + " select 2,fac_id,1000,'Resumen ----------------------------------------' , materiaprima.name, "
       sql = sql + " materiaprima.description,materiaprima.udm,materiaprima.stock,"
-      sql = sql + " sum(prodmp.cantidad * factdet.cantidad) as Pedido "
+      sql = sql + " sum(prodmp.cantidad * factdet.cantidad) as Pedido, "
+      sql = sql + " now() as Hoy";
       sql = sql + " from productos  "
       sql = sql + " join prodmp on prodmp.prod_id = productos.id "
       sql = sql + " join materiaprima on materiaprima.name = prodmp.mp_name "

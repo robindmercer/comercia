@@ -73,20 +73,12 @@ const Factura = () => {
         if (state.sts === 6)  newLog.cod_status = 7   // Manufactura
         if (state.sts === 7)  newLog.cod_status = 8   // Manufactura
         if (state.sts === 9)  newLog.cod_status = 8   // Manufactura
-        if (state.sts === 8)  newLog.cod_status = 10   //Manufactura a Produccion Actualiza Stock 
-        if (state.sts === 10) newLog.cod_status = 11 // Revision Calidad
+        // if (state.sts === 8)  newLog.cod_status = 10   //Manufactura a Produccion Actualiza Stock 
+        if (state.sts === 8)  newLog.cod_status = 11 // Revision Calidad
         if (state.sts === 11) newLog.cod_status = 13 // Liberado pendiente de envío
         if (state.sts === 12) newLog.cod_status = 11 // Revision Calidad
         if (state.sts === 13) newLog.cod_status = 14 // Revision Calidad
 
-        // dispatch(UpdateFacturaSts(id, newLog.cod_status)); // Envio a Manufactura
-        // //console.log('id: ', id, newLog.cod_status);
-        // dispatch(AddLogs(newLog));
-        // dispatch(GetMails(5));
-        // // console.log('mails: ', mails);
-        // for (var x = 0; x < mails.length; x++) {
-        //     dispatch(mailEnviar(crearMail(8, mails[x].email, state.idfact)));
-        // }
         dispatch(UpdateFacturaSts2(newLog));
         window.location.href = "/facturaMP";
     };

@@ -1,3 +1,4 @@
+//react-hooks/exhaustive-deps
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getFactura, UpdateFacturaSts2 } from "../../actions/factura";
@@ -51,7 +52,8 @@ const Factura = () => {
   const dispatch = useDispatch();
   const dollarUSLocale = Intl.NumberFormat("de-DE");
   const estilo = { fontSize: "200%", transition: "font-size 0.5s" };
-  const [acceso, setAcceso] = useState("");
+  // const [acceso, setAcceso] = useState(cookies.get("acceso"));
+  const [acceso] = useState(cookies.get("acceso"));
   const [signo, setSigno] = useState('+');
   // const [newStatus, setNewStatus] = useState(0);
   // const [idMail, setIdMail] = useState(0);
@@ -124,11 +126,17 @@ const Factura = () => {
       }
       verStatus.push(1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14);
     }
+
     if (data.cod_status > 5) {
       btnApproval = false;
       btnAddDatabase = true;
       btnDiploma2 = true;
       verStatus.push(1, 2, 3, 4, 5, 6);
+    }
+    // Almacen
+    if (acceso === "A6"){
+      btnApproval = true;
+      verStatus.push(13)
     }
     //Calidad
     if (acceso === "A8") {
@@ -137,7 +145,7 @@ const Factura = () => {
         btnCancel = true;
         btnApproval = true;
       }
-      verStatus.push(1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14);
+      verStatus.push(11);
     }
     // Solo consulta
     if (acceso.substring(0, 1) === "C") {
@@ -170,8 +178,8 @@ const Factura = () => {
     //console.log("Use Efect 1");
     dispatch(getTablaAll());
     dispatch(AccessCtrl(id_usuario));
+    //setAcceso(cookies.get("acceso"))
     dispatch(getFactura());
-    setAcceso(cookies.get("acceso"))
     //  dispatch(getUsuariomenId(id_usuario));
   }, [dispatch, id_usuario, onChange]);
 
@@ -242,7 +250,7 @@ const Factura = () => {
         paramMail = 3;
       }
       if (found.cod_status === 5) {
-        control = "N";
+        // control = "N";
         newStatus = 6; // Liberado
         actStock = true
         if (parseInt(found.sts) === 3){ // Venta de productos tercerizados 
@@ -252,33 +260,23 @@ const Factura = () => {
       }
       // Gerencia no se controla
       if (acceso === "A1" && found.cod_status < 4) {
-        control = "N";
+        // control = "N";
         newStatus = 4; // Pendiente ADMIN.
         paramMail = 2; // Administracion
       }
       if (acceso === "A8" && found.cod_status === 11) {
-        control = "N";
+        // control = "N";
         newStatus = 13; // Liberado pendiente de envío
         paramMail = 2; // Administracion
       }
-      if (acceso === "A8" && found.cod_status === 13) {
+      if (acceso === "A6" && found.cod_status === 13) {
         newStatus = 14; // Producto Despachado
         paramMail = 2; // Administracion
       }
 
     }
-    //console.log("Log Data");
-    //console.log("usuario:", id_usuario);
-    //console.log("Factura:", found.id, "Status", found.cod_status);
-    //console.log("Control:", control);
     console.log("newStatus: ", newStatus);
     console.log("paramMail: ", paramMail);
-    // setIdFact(id);
-    // setNewStatus(newStatus);
-    // setIdMail(paramMail);
-
-    // setLog((log.cod_status = newStatus));
-    // setLog((log.doc_id = found.id));
 
     var newLog = {
       doc_id: found.id,
@@ -287,7 +285,8 @@ const Factura = () => {
       cod_status: newStatus,
       observ: lang,
     };
-// Actualizo Stock 
+
+    // Actualizo Stock 
     if (actStock ){
       sql = `update materiaprima set stock = stock - t1.pedido  `
       sql = sql +  ` from (`
@@ -396,11 +395,19 @@ const Factura = () => {
                 //console.log('data: ', data);
                 muestroRegistro=true;
                 control(data);
-                    if (filtro !=='' && filtro !=='0' ) {
-                      if(parseInt(data.cod_status) !== parseInt(filtro)){
-                        muestroRegistro=false
-                      }
-                    }
+                if (filtro !=='' && filtro !=='0' ) {
+                  if(parseInt(data.cod_status) !== parseInt(filtro)){
+                    muestroRegistro=false
+                  }
+                }
+                
+                // console.log('filtro: ', typeof(filtro));
+                if (filtro === '' || filtro ==='0' ) {
+                  if(parseInt(data.cod_status) === 14){
+                    console.log('saque 14');
+                    muestroRegistro=false
+                  }
+                }
 
                 if (muestroRegistro) {
                   return (

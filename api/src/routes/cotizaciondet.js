@@ -59,14 +59,13 @@ router.get('/', async function (req, res, next) {
   
 })
 
-
 router.get('/det', async function (req, res, next) {
   const {id} = req.query;
   if(id) {
     try {
-      sql='select cotizaciondet.*,pr.name,pr.description,l.name nameExt,l.description descripExt from cotizaciondet '
+      sql=`select cotizaciondet.*,pr.name,pr.description,coalesce(l.name,'Falta') nameExt,coalesce(l.description,'SIN DESCRIPCION') descripExt from cotizaciondet `
       sql = sql + ' join productos pr on pr.id = cotizaciondet.prod_id'
-      sql = sql + ' join productolang l on l.id = cotizaciondet.prod_id'
+      sql = sql + ' left join productolang l on l.id = cotizaciondet.prod_id'
       sql = sql + ' where cot_id = ' + id
       sql = sql + " order by pr.orden,pr.id"   
 

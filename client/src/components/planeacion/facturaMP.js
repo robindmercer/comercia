@@ -59,11 +59,11 @@ const Factura = () => {
   muestroRegistro = false;
   // Gerencia
   if (acceso === "A1") {
-    verStatus.push(7,8,9,10,11,12,13,14);
+    verStatus.push(7,8,9,10,11,12,13);
   }
   // Almacen
   if (acceso === "A6") {
-    verStatus.push(6,7,9,13,14);
+    verStatus.push(6,7,9,13);
   }
   // Manufactura
   if (acceso === "A5") {
