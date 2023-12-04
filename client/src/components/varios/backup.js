@@ -77,11 +77,6 @@ const Backup = () => {
       const hojaclientes = XLSX.utils.json_to_sheet(cliente);
       XLSX.utils.book_append_sheet(libroclientes, hojaclientes, "Backups");
       XLSX.writeFile(libroclientes, "clientes.xlsx");
-      //direccion
-      const librodireccion = XLSX.utils.book_new();
-      const hojadireccion = XLSX.utils.json_to_sheet(direccion);
-      XLSX.utils.book_append_sheet(librodireccion, hojadireccion, "Backups");
-      XLSX.writeFile(librodireccion, "direccion.xlsx");
       //factcond
       const librofactcond = XLSX.utils.book_new();
       const hojafactcond = XLSX.utils.json_to_sheet(factcond);
@@ -94,20 +89,25 @@ const Backup = () => {
       XLSX.utils.book_append_sheet(librocotizacion, hojacotizacion, "Backups");
       XLSX.writeFile(librocotizacion, "cotizacion.xlsx");
 
-      //cotizaciondet
-      const librocotizaciondet = XLSX.utils.book_new();
-      const hojacotizaciondet = XLSX.utils.json_to_sheet(cotizaciondet);
-      XLSX.utils.book_append_sheet(librocotizaciondet, hojacotizaciondet, "Backups");
-      XLSX.writeFile(librocotizaciondet, "cotizaciondet.xlsx");
-
       //cotizacioncond
       const librocotizacioncond = XLSX.utils.book_new();
       const hojacotizacioncond = XLSX.utils.json_to_sheet(cotizacioncond);
       XLSX.utils.book_append_sheet(librocotizacioncond, hojacotizacioncond, "Backups");
       XLSX.writeFile(librocotizacioncond, "cotizacioncond.xlsx");
 
-
-
+      //cotizaciondet
+      const librocotizaciondet = XLSX.utils.book_new();
+      const hojacotizaciondet = XLSX.utils.json_to_sheet(cotizaciondet);
+      XLSX.utils.book_append_sheet(librocotizaciondet, hojacotizaciondet, "Backups");
+      XLSX.writeFile(librocotizaciondet, "cotizaciondet.xlsx");
+      
+      //direccion
+      const librodireccion = XLSX.utils.book_new();
+      const hojadireccion = XLSX.utils.json_to_sheet(direccion);
+      XLSX.utils.book_append_sheet(librodireccion, hojadireccion, "Backups");
+      XLSX.writeFile(librodireccion, "direccion.xlsx");
+      
+      
    };
 
    if (
