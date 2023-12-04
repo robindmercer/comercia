@@ -17,20 +17,20 @@ import { getCondiciones } from "../../actions/condiciones";
 import { getDetail } from "../../actions/tabla";
 
 // Iconos
-import { FcAddRow, FcDeleteRow, FcLeft, FcOk, FcMinus } from "react-icons/fc";
+import { FcAddRow, FcDeleteRow, FcMinus } from "react-icons/fc";
 import Header from "../Header";
 // CSS
 import "../../css/factdet.css";
 //import { AddCotizacionDet } from "../../actions/cotizaciondet";
 // Modal
 import OkForm from "../modal/OkForm";
-import { Modal, Button, Alert } from "react-bootstrap";
+import { Modal, Button } from "react-bootstrap";
 import Cookies from "universal-cookie";
 //import { getCondicionesCot } from "../../actions/cotizacioncond";
 
 var xMoneda = "1";
 var btnGrabar = false;
-var btnAgregar = false;
+// var btnAgregar = false;
 var btnEliminarReg = false;
 
 const Formcotizacion = () => {
@@ -62,22 +62,22 @@ const Formcotizacion = () => {
    // Manejo acceso del Usuario
    // const usuariomenu = useSelector((state) => state.usuariomenu);
    const [acceso, setAcceso] = useState("A");
-   const idProg = 11;
-   const id_usuario = cookies.get("usuario");
+   // const idProg = 11;
+   // const id_usuario = cookies.get("usuario");
    const navigate = useNavigate();
    const { cliente } = useSelector((state) => state);
    const { factcab } = useSelector((state) => state);
    const { factdet } = useSelector((state) => state);
 
    const { producto } = useSelector((state) => state);
-   const { tabla } = useSelector((state) => state);
+   // const { tabla } = useSelector((state) => state);
    // const { idfact } = useSelector((state) => state)
 
    const dispatch = useDispatch();
    // const location = useLocation();
    // const { state } = location;
    const estilo = { fontSize: "150%", transition: "font-size 0.5s" };
-   const estilo2 = { fontSize: "200%" };
+   // const estilo2 = { fontSize: "200%" };
 
    const [onChange, setOnChange] = useState(false);
    // const [onIva, setOnIva] = useState(false)
@@ -166,17 +166,17 @@ const Formcotizacion = () => {
       //   btnEliminarReg,
       //   acceso.substring(0, 1)
       // );
-      btnAgregar = false;
+      // btnAgregar = false;
       btnEliminarReg = false;
       if (acceso.substring(0, 1) === "A") {
          // Gerencia All
-         btnAgregar = true;
+         // btnAgregar = true;
          btnEliminarReg = true;
       }
       if (acceso.substring(0, 1) === "C") {
          // Consulta
          btnGrabar = false;
-         btnAgregar = false;
+         // btnAgregar = false;
          btnEliminarReg = false;
       }
       // console.log("control2: ", btnGrabar, btnAgregar, btnEliminarReg);
@@ -268,9 +268,9 @@ const Formcotizacion = () => {
             setTotal(total);
          }
          if (iva < 0) {
-             iva=0
-             setSaleTax(iva);
-             setTotal(0);
+            iva = 0;
+            setSaleTax(iva);
+            setTotal(0);
          }
       }
    }, [onChange, saleDHL]);
@@ -417,7 +417,7 @@ const Formcotizacion = () => {
    // }
    function handleTipo(e, i) {
       e.preventDefault();
-      console.log("e.target.name: ", e.target.name, e.target.value);
+      console.log("handleTipo: ", e.target.name, e.target.value);
       if (e.target.name === "telefono") {
          input.telefono = e.target.value;
          if (onChange) {
@@ -523,8 +523,7 @@ const Formcotizacion = () => {
          console.log(
             "e.target.name: ",
             e.target.name,
-            e.target.value,
-            producto
+            e.target.value,i.i
          );
          if (e.target.value === "0") {
             handleRemove(i.i);
@@ -540,15 +539,60 @@ const Formcotizacion = () => {
                   }
                   factdet[i.i].total =
                      factdet[i.i].cantidad * factdet[i.i].precio;
+                     break;
                }
             }
          }
+         var lista =[]
+         if (parseInt(e.target.value) === 1) {
+            lista = [2,3,4,13,12,17,19,23,9,7,8]
+            console.log('factdet: ', factdet);
+            //lista.push('9','7','8')
+             agregar_prod(lista)
+         }
+         if (parseInt(e.target.value) === 25) {
+            lista = [38,27,26,21,4,17,19,23,7,8,29,28]
+            console.log('factdet: ', factdet);
+            //lista.push('9','7','8')
+             agregar_prod(lista)
+         }
+
          if (onChange) {
             setOnChange(false);
          } else {
             setOnChange(true);
          }
       }
+   }
+
+   function agregar_prod(lista) {
+      var indx = 0;
+      console.log('Indice: ',indx, factdet[indx].prod_id );
+      for (var indxLista = 0; indxLista < lista.length; indxLista++) {
+         for (var zz = 0; zz < producto.length; zz++) {
+            if (parseInt(producto[zz].id) === parseInt(lista[indxLista])) {
+               var newPrecio = 0
+               if (xMoneda === "2") {
+                  newPrecio = producto[zz].dolar;
+               } else {
+                  newPrecio = producto[zz].price;
+               }
+               factdet.push({
+                  prod_id: producto[zz].id,
+                  cantidad: 1,
+                  name: producto[zz].name,
+                  cot_id: 0,
+                  orden: producto[zz].orden,
+                  precio: newPrecio,
+                  total: parseInt(newPrecio)
+               }
+               );
+               console.log('Indice: ',indx, factdet[indx].prod_id );
+               break;
+            }
+         }
+      }
+      console.log('factdet: ', factdet);
    }
 
    // console.log("Cliente_1: ", cliente, state.idCli);
@@ -802,35 +846,34 @@ const Formcotizacion = () => {
                                        {dollarUSLocale.format(subTotal)}
                                     </td>
                                  </tr>
-                                 
-                                    <tr className="totaltr">
-                                       <td colSpan="3" className="totaltd1">
-                                          IVA({porciva}%)
-                                       </td>
-                                       <td className="totaltd2">
-                                          {dollarUSLocale.format(
-                                             saleTax.toFixed(0)
-                                          )}
-                                       </td>
-                                    </tr>
-                                    
-                                    <tr className="totaltr">
-                                       <td colSpan="3" className="totaltd1">
-                                          Costo de Envio:&nbsp;
-                                       </td>
-                                       <td>
-                                          <input
-                                             className="costoEnvio"
-                                             type="text"
-                                             id="dhl"
-                                             name="dhl"
-                                             value={factcab[0].dhl}
-                                             onChange={(e) => handleTipo(e, 0)}
-                                          />
-                                       </td>
-                                    </tr>
-                                 
-                                 
+
+                                 <tr className="totaltr">
+                                    <td colSpan="3" className="totaltd1">
+                                       IVA({porciva}%)
+                                    </td>
+                                    <td className="totaltd2">
+                                       {dollarUSLocale.format(
+                                          saleTax.toFixed(0)
+                                       )}
+                                    </td>
+                                 </tr>
+
+                                 <tr className="totaltr">
+                                    <td colSpan="3" className="totaltd1">
+                                       Costo de Envio:&nbsp;
+                                    </td>
+                                    <td>
+                                       <input
+                                          className="costoEnvio"
+                                          type="text"
+                                          id="dhl"
+                                          name="dhl"
+                                          value={factcab[0].dhl}
+                                          onChange={(e) => handleTipo(e, 0)}
+                                       />
+                                    </td>
+                                 </tr>
+
                                  <tr className="totaltr">
                                     <td colSpan="3">
                                        {xMoneda === 2 ? (
@@ -865,13 +908,18 @@ const Formcotizacion = () => {
                                  {condiciones &&
                                     condiciones.map((cond, i) => {
                                        if (cond.sel === "S") {
-                                          var xTotal2 = total
-                                          var xDescuento = (total * cond.descuento) / 100;
-                                          xTotal2 = xTotal2 - xDescuento
-                                          var xEnganche  = (xTotal2 * cond.enganche) / 100;
+                                          var xTotal2 = total;
+                                          var xDescuento =
+                                             (total * cond.descuento) / 100;
+                                          xTotal2 = xTotal2 - xDescuento;
+                                          var xEnganche =
+                                             (xTotal2 * cond.enganche) / 100;
                                           var xFinanciar = xTotal2 - xEnganche;
-                                          var xAnos      = cond.meses / 12;
-                                          var xPorMes    = xFinanciar * (cond.interes / 100) * xAnos;
+                                          var xAnos = cond.meses / 12;
+                                          var xPorMes =
+                                             xFinanciar *
+                                             (cond.interes / 100) *
+                                             xAnos;
                                           var xPagoMens =
                                              (xFinanciar + xPorMes) /
                                              cond.meses;
