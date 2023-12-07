@@ -27,7 +27,8 @@ const Factura = () => {
 
   const [datos, setDatos] = useState({
     sql1:"",
-    sql2:""
+    sql2:"",
+    sql3:""
  }); 
   // const location = useLocation();
   // const { state } = location;
@@ -187,7 +188,7 @@ const Factura = () => {
   const handleSubmit = (id, signo) => {
     //console.log('handleSubmit: ',id,signo,lang);
     var actStock = false
-    var control = "x";
+    // var control = "x";
     var newStatus = 0;
     var paramMail = 1;
     setOnChange(false);
@@ -200,7 +201,7 @@ const Factura = () => {
         newStatus = 1;
         paramMail = 1;
       }
-      control = "N";
+      // control = "N";
       // Devuelvo materia prima al Stock 
       if (newStatus === 5 ){
         sql = `update materiaprima set stock = stock + t1.pedido  `
@@ -229,23 +230,23 @@ const Factura = () => {
           found.fme !== found.me ||
           found.finter !== found.inter
         ) {
-          control = "S";
+          // control = "S";
           newStatus = 2; // Espera Aprobacion
           paramMail = 1;
           //console.log("Espera Aprobacion");
         } else {
-          control = "N";
+          //control = "N";
           newStatus = 4; // Pendiente Admin
           paramMail = 3;
         }
       }
       if (found.cod_status === 2) {
-        control = "N";
+        //control = "N";
         newStatus = 4; // Pendiente Admin
         paramMail = 3;
       }
       if (found.cod_status === 4) {
-        control = "N";
+        //control = "N";
         newStatus = 5; // Pendiente de pago
         paramMail = 3;
       }
@@ -305,6 +306,9 @@ const Factura = () => {
       var sql2 = `update facturas set cod_status = ${newLog.cod_status} where id =  ${newLog.doc_id} `
       setDatos(datos.sql2 = sql2)
       // console.log('RunsqlPost: ',sql, state.idfact);
+      var sql3=`insert into logs (doc_id, tipo_id, usr_id, cod_status,observ,fecha) values `
+      sql3 = sql3 + `(${newLog.doc_id}, 'FAC', '${newLog.usr_id}', ${newLog.cod_status},'${newLog.observ}',now())`
+      setDatos(datos.sql3 = sql3)
       dispatch(RunSqlPost(datos))
     } else {
       dispatch(UpdateFacturaSts2(newLog)); // Espera Aprobacion

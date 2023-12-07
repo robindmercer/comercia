@@ -12,7 +12,8 @@ AND n.nspname NOT IN ('pg_catalog', 'pg_toast')
 AND pg_catalog.pg_table_is_visible(c.oid)
 ORDER BY 1,2;
 
--- si se pierde el index en una tabla SELECT n.nspname as "Schema",
+-- si se pierde el index en una tabla 
+SELECT n.nspname as "Schema",
 c.relname as "Name",
 CASE c.relkind WHEN 'r' THEN 'table' WHEN 'v' THEN 'view' WHEN 'i' THEN
 'index' WHEN 'S' THEN 'sequence' WHEN 's' THEN 'special' END as "Type",
@@ -58,6 +59,16 @@ delete from cotizacioncond where cot_id in
 delete from cotizaciondet where cot_id in
 (select id from cotizacion where cod_status = 0);
 delete from cotizacion  where cod_status = 0;
+
+
+-- Duplicacion Condiciones de pago
+select cot_id ,count(*) from cotizacioncond
+group by cot_id 
+having count(*)>1;
+
+select fac_id ,count(*) from factcond
+group by fac_id 
+having count(*)>1;
 
 --todo 
 delete from tabla where id = 13
@@ -195,3 +206,24 @@ select clientes.razsoc,nombre,apellido,tabla.description as Actividad,status.des
 ALTER TABLE productos ADD COLUMN orden varchar(5);
 update productos set orden = 'A1'
 update productos set orden = 'B1' where price = 0
+
+
+-- control cotizacion 
+select * from cotizacion where id = 247
+select * from cotizacioncond where cot_id = 247
+select * from condiciones    where cot_id = 247
+
+
+
+TRUNCATE TABLE facturas;
+TRUNCATE TABLE factcond;
+TRUNCATE TABLE factdet;
+TRUNCATE TABLE cotizacion;
+TRUNCATE TABLE cotizacioncond;
+TRUNCATE TABLE cotizaciondet;
+
+ALTER SEQUENCE cotizacion_id_seq RESTART WITH 1;
+ALTER SEQUENCE cotizacioncond_id_seq RESTART WITH 1;
+ALTER SEQUENCE cotizacions_id_seq RESTART WITH 1;
+ALTER SEQUENCE factcond_id_seq RESTART WITH 1;
+ALTER SEQUENCE facturas_id_seq RESTART WITH 1;

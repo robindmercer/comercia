@@ -240,7 +240,7 @@ router.post("/cotifac", async function (req, res, next) {
       }
 
       sql = `insert into facturas (id,cli_id,dir_id,dhl,subtotal,iva,total,cod_status,observ,fecha,idioma,moneda) `;
-      sql = sql + `select (select max(id)+1  from facturas ) id, ${cli_id}, 1 , dhl, subtotal, iva, total ,4, observ,fecha, 1, moneda from cotizacion`;
+      sql = sql + `select (select COALESCE(max(id)+1,1)  from facturas ) id, ${cli_id}, 1 , dhl, subtotal, iva, total ,4, observ,fecha, 1, moneda from cotizacion`;
       sql = sql + ` where id = ${cot_id} RETURNING id`;
 
       const records = await seq

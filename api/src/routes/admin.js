@@ -128,7 +128,15 @@ router.post('/update', async function (req, res, next) {
               logging: console.log,
               type: QueryTypes.UPDATE
             });    
-            return res.send("OK")
+            // return res.send("OK")
+        }
+        if (sql3) {
+          const [records3] = await seq.query(sql3,
+            {
+              logging: console.log,
+              type: QueryTypes.UPDATE
+            });    
+            // return res.send("OK")
         }
         res.send("OK")
       } catch (error) {
