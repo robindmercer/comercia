@@ -727,16 +727,35 @@ function Formcotizacion() {
                       {condiciones &&
                         condiciones.map((cond, i) => {
                           if (cond.sel === "S") {
-                            var xTotal2 = total
-                            var xDescuento = (total * cond.descuento) / 100;
-                            xTotal2 = xTotal2 - xDescuento
-                            var xEnganche  = (xTotal2 * cond.enganche) / 100;
+                            var xTotal2 = total - saleDHL;
+                            var xDescuento =
+                               (total * cond.descuento) / 100;
+                            xTotal2 = xTotal2 - xDescuento;
+                            var xEnganche =
+                               (xTotal2 * cond.enganche) / 100;
                             var xFinanciar = xTotal2 - xEnganche;
                             var xAnos = cond.meses / 12;
                             var xPorMes =
-                              xFinanciar * (cond.interes / 100) * xAnos;
-                            var xPagoMens = (xFinanciar + xPorMes) / cond.meses;
-                            var xTotal = xPagoMens * cond.meses;
+                               xFinanciar *
+                               (cond.interes / 100) *
+                               xAnos;
+                            var xPagoMens =
+                               (xFinanciar + xPorMes) /
+                               cond.meses;
+                            var aux2 = (xPagoMens * cond.meses)
+                            aux2 += parseInt(saleDHL);
+                            var xTotal = parseInt(aux2) ;
+
+                            // var xTotal2 = total
+                            // var xDescuento = (total * cond.descuento) / 100;
+                            // xTotal2 = xTotal2 - xDescuento
+                            // var xEnganche  = (xTotal2 * cond.enganche) / 100;
+                            // var xFinanciar = xTotal2 - xEnganche;
+                            // var xAnos = cond.meses / 12;
+                            // var xPorMes =
+                            //   xFinanciar * (cond.interes / 100) * xAnos;
+                            // var xPagoMens = (xFinanciar + xPorMes) / cond.meses;
+                            // var xTotal = xPagoMens * cond.meses;
                             if (cond.id === 1) {
                               xEnganche = 0;
                               xFinanciar = 0;
@@ -769,7 +788,14 @@ function Formcotizacion() {
                             if (cond.id === 2) {
                               xEnganche = 0;
                               xFinanciar = 0;
-                              xTotal = total - (total * cond.descuento) / 100;
+                              var aux = total - saleDHL
+                              console.log('aux0: ',aux,saleDHL);
+                              aux = parseInt(aux - (aux * cond.descuento) / 100);
+                              console.log('aux1: ', aux);
+                              aux += parseInt(saleDHL);
+                              console.log('aux2: ', aux,saleDHL);
+                              xTotal = parseInt(aux)
+                              console.log('xTotal: ', xTotal,aux,saleDHL);
                             }
                             return (
                               <>
@@ -832,7 +858,7 @@ function Formcotizacion() {
                                   <td>&nbsp;</td>
                                   <td colSpan={3}>Total Cotizacion</td>
                                   <td className="totaltr">
-                                    {dollarUSLocale.format(total.toFixed(0))}
+                                    {dollarUSLocale.format(parseInt(total - saleDHL))}
                                   </td>
                                 </tr>
                                 {xEnganche !== 0 ? (

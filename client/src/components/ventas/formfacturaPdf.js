@@ -235,7 +235,8 @@ const FormfacturaPDF = () => {
       doc.text(`Subtotal:`, 140, xhor);
       var xSub2 = factcab[0].subtotal
       var xIva2 = factcab[0].iva 
-      var xDhl2 = factcab[0].dhl
+      var xDhl2 = 0
+      xDhl2 = factcab[0].dhl
       var xTot = factcab[0].total 
       doc.text(`${xMoneda}${dollarUSLocale.format(xSub2)}`,200,xhor,"right");
       xhor += 8;
@@ -278,38 +279,42 @@ const FormfacturaPDF = () => {
          doc.text(`${xImporte}`, 200, xhor, "right");
          var xTotal2 = 0
          var xDescuento = 0
+         
          xhor += 8;
          for (let cotiInd = 0; cotiInd < factcond.length; cotiInd++) {
-            xTotal2 = factcab[0].total
-            xDescuento = (factcab[0].total * factcond[cotiInd].descuento) / 100;
-            xTotal2 = xTotal2 - xDescuento
+            xTotal2 = factcab[0].total - xDhl2
+            xDescuento = (xTotal2 * factcond[cotiInd].descuento) / 100;
             var xEnganche = (xTotal2 * factcond[cotiInd].enganche) / 100;
             var xFinanciar = xTotal2 - xEnganche;
             var xAnos = factcond[cotiInd].meses / 12;
-            var xPorMes = xFinanciar * (factcond[cotiInd].interes / 100) * xAnos;
+            var xPorMes = 
+                  xFinanciar * 
+                  (factcond[cotiInd].interes / 100) * xAnos;
             var xPagoMens = (xFinanciar + xPorMes) / factcond[cotiInd].meses;
-            var xTotal = xPagoMens * factcond[cotiInd].meses;
+            
+            var xTotal = (xPagoMens * factcond[cotiInd].meses) 
+            xTotal += parseInt(xDhl2);
             if (parseInt(factcond[cotiInd].cond_id) === 1) {
                doc.text(`${factcond[cotiInd].nombre}`, leftInput, xhor);
                doc.text(`${xTotPag}`, leftInput + 100, xhor);
-               doc.text(`${dollarUSLocale.format(xTotal.toFixed())}`, 175, xhor);
+               doc.text(`${dollarUSLocale.format(parseInt(xTotal))}`, 175, xhor);
                xhor += 6;
             }
             if (parseInt(factcond[cotiInd].cond_id) === 2) {
                xEnganche = 0;
                xFinanciar = 0;
                xDescuento = (factcab[0].total * factcond[cotiInd].descuento) / 100;
-               xTotal = factcab[0].total -
-                       (factcab[0].total * factcond[cotiInd].descuento) / 100;
-
+               xTotal = factcab[0].total - factcab[0].dhl -
+               (factcab[0].total * factcond[cotiInd].descuento) / 100;
+               
                doc.text(`${xTotOC}`, leftInput, xhor);
-               doc.text(`${xMoneda}${dollarUSLocale.format(factcab[0].total)}`,200,xhor,"right");
+               doc.text(`${xMoneda}${dollarUSLocale.format(factcab[0].total - factcab[0].dhl)}`,200,xhor,"right");
                xhor += 6;
-               doc.text(`${xDescDescrip} ${dollarUSLocale.format(factcond[cotiInd].descuento.toFixed())}`,leftInput,xhor);
+               doc.text(`${xDescDescrip} ${dollarUSLocale.format(factcond[cotiInd].descuento)}`,leftInput,xhor);
                doc.text(`${xMoneda}${dollarUSLocale.format(xDescuento.toFixed())}`,200,xhor,"right");
                xhor += 6;
                doc.text(`${xTotPag}`, leftInput, xhor);
-               doc.text(`${xMoneda}${dollarUSLocale.format(xTotal.toFixed())}`,200,xhor,"right");
+               doc.text(`${xMoneda}${dollarUSLocale.format(parseInt(xTotal))}`,200,xhor,"right");
             }
             if (parseInt(factcond[cotiInd].cond_id) > 2) {
                
@@ -317,18 +322,21 @@ const FormfacturaPDF = () => {
                console.log('xMoneda: ', xMoneda);
                console.log('xTot: ', xTot);
                console.log('xEngancheTit: ', xEngancheTit);
+               console.log('% enganche: ', factcond[cotiInd].enganche);
+               console.log('dhl: ', factcab[0].dhl);
                console.log('xEnganche: ', xEnganche);
+               console.log('xDescuento: ', xDescuento);
                console.log('xSaldo: ', xSaldo);
                console.log('xFinanciar: ', xFinanciar);
                console.log('factcond[cotiInd].meses: ', factcond[cotiInd].meses);
                console.log('factcond[cotiInd].interes: ', factcond[cotiInd].interes);
                console.log('xPagoMens: ', xPagoMens);
                console.log('xTotPag: ', xTotPag);
-               console.log('xTotal: ', xTotal.toFixed(0));
+               console.log('xTotal: ', xTotal);
                console.log('leftInput: ', leftInput);
                
                doc.text(`${xTotOC}`, leftInput, xhor);
-               doc.text(`${xMoneda}${dollarUSLocale.format(xTot)}`,200,xhor,"right");
+               doc.text(`${xMoneda}${dollarUSLocale.format(xTot- xDhl2)}`,200,xhor,"right");
                xhor += 6;
                if (xEnganche !== 0) {
                   doc.text(`${xEngancheTit}`, leftInput, xhor);
@@ -342,7 +350,7 @@ const FormfacturaPDF = () => {
                   xhor += 6;
                   // console.log('xhor: ', xhor);
                   doc.text(`${xTotPag}`, leftInput, xhor);
-                  doc.text(`${xMoneda}${dollarUSLocale.format(xTotal.toFixed(0))}`,200,xhor,"right");
+                  doc.text(`${xMoneda}${dollarUSLocale.format(parseInt(xTotal))}`,200,xhor,"right");
                   xhor += 6;
                }
             }

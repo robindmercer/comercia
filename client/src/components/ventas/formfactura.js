@@ -640,7 +640,7 @@ import controlAccesos from "../../controlAcceso";
                                  {condiciones &&
                                     condiciones.map((cond, i) => {
                                        if (cond.sel === "S") {
-                                          var xTotal2 = total
+                                          var xTotal2 = total - saleDHL
                                           var xDescuento = (total * cond.descuento) / 100;
                                           xTotal2 = xTotal2 - xDescuento                                          
                                           var xEnganche  = (xTotal2 * cond.enganche) / 100;
@@ -653,7 +653,10 @@ import controlAccesos from "../../controlAcceso";
                                           var xPagoMens =
                                              (xFinanciar + xPorMes) /
                                              cond.meses;
-                                          var xTotal = xPagoMens * cond.meses;
+                                          var aux2 = (xPagoMens * cond.meses)
+                                          aux2 += parseInt(saleDHL);
+                                          var xTotal = parseInt(aux2) ;  
+                                          // var xTotal = xPagoMens * cond.meses;
                                           if (cond.id === 1) {
                                              xEnganche = 0;
                                              xFinanciar = 0;
@@ -696,9 +699,15 @@ import controlAccesos from "../../controlAcceso";
                                           if (cond.id === 2) {
                                              xEnganche = 0;
                                              xFinanciar = 0;
-                                             xTotal =
-                                                total -
-                                                (total * cond.descuento) / 100;
+                                             var aux = total - saleDHL
+                                             aux = parseInt(aux - (aux * cond.descuento) / 100);
+                                             aux += parseInt(saleDHL);
+                                             xTotal = parseInt(aux)
+                                             // xEnganche = 0;
+                                             // xFinanciar = 0;
+                                             // xTotal =
+                                             //    total -
+                                             //    (total * cond.descuento) / 100;
                                           }
                                           return (
                                              <>
@@ -774,7 +783,7 @@ import controlAccesos from "../../controlAcceso";
                                                    </td>
                                                    <td className="totaltr">
                                                       {dollarUSLocale.format(
-                                                         total.toFixed(0)
+                                                         parseInt(total - saleDHL)
                                                       )}
                                                    </td>
                                                 </tr>

@@ -908,7 +908,7 @@ const Formcotizacion = () => {
                                  {condiciones &&
                                     condiciones.map((cond, i) => {
                                        if (cond.sel === "S") {
-                                          var xTotal2 = total;
+                                          var xTotal2 = total - saleDHL;
                                           var xDescuento =
                                              (total * cond.descuento) / 100;
                                           xTotal2 = xTotal2 - xDescuento;
@@ -923,7 +923,10 @@ const Formcotizacion = () => {
                                           var xPagoMens =
                                              (xFinanciar + xPorMes) /
                                              cond.meses;
-                                          var xTotal = xPagoMens * cond.meses;
+                                          var aux2 = (xPagoMens * cond.meses)
+                                          aux2 += parseInt(saleDHL);
+                                          var xTotal = parseInt(aux2) ;
+                                          // console.log('xTotal robin: ', parseInt(xTotal),saleDHL);
                                           if (cond.id === 1) {
                                              xEnganche = 0;
                                              xFinanciar = 0;
@@ -958,7 +961,7 @@ const Formcotizacion = () => {
                                                       </td>
                                                       <td className="totaltr">
                                                          {dollarUSLocale.format(
-                                                            xTotal.toFixed(0)
+                                                            parseInt(xTotal)
                                                          )}
                                                       </td>
                                                    </tr>
@@ -968,9 +971,14 @@ const Formcotizacion = () => {
                                           if (cond.id === 2) {
                                              xEnganche = 0;
                                              xFinanciar = 0;
-                                             xTotal =
-                                                total -
-                                                (total * cond.descuento) / 100;
+                                             var aux = total - saleDHL
+                                             console.log('aux0: ',aux,saleDHL);
+                                             aux = parseInt(aux - (aux * cond.descuento) / 100);
+                                             console.log('aux1: ', aux);
+                                             aux += parseInt(saleDHL);
+                                             console.log('aux2: ', aux,saleDHL);
+                                             xTotal = parseInt(aux)
+                                             console.log('xTotal: ', xTotal,aux,saleDHL);
                                           }
                                           return (
                                              <>
@@ -1046,7 +1054,7 @@ const Formcotizacion = () => {
                                                    </td>
                                                    <td className="totaltr">
                                                       {dollarUSLocale.format(
-                                                         total.toFixed(0)
+                                                         parseInt(total - saleDHL)
                                                       )}
                                                    </td>
                                                 </tr>
@@ -1105,7 +1113,7 @@ const Formcotizacion = () => {
                                                    </td>
                                                    <td className="totaltr">
                                                       {dollarUSLocale.format(
-                                                         xTotal.toFixed(0)
+                                                         parseInt(xTotal)
                                                       )}
                                                    </td>
                                                 </tr>

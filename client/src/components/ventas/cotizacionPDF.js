@@ -289,7 +289,7 @@ const FormcotizPDF = () => {
                doc.text(`${xTotOC}`, leftInput, xhor);
                doc.text(`${xMoneda}${dollarUSLocale.format(cotizacioncab[0].total)}`,200,xhor,"right");
                xhor += 6;
-               doc.text(`${xDescDescrip} ${dollarUSLocale.format(cotizacioncond[cotiInd].descuento.toFixed())}`,leftInput,xhor);
+               doc.text(`${xDescDescrip} ${dollarUSLocale.format(cotizacioncond[cotiInd].descuento)}`,leftInput,xhor);
                doc.text(`${xMoneda}${dollarUSLocale.format(xDescuento.toFixed())}`,200,xhor,"right");
                xhor += 6;
                doc.text(`${xTotPag}`, leftInput, xhor);
