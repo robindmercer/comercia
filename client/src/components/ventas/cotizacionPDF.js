@@ -418,6 +418,11 @@ const FormcotizPDF = () => {
          <div>&nbsp;</div>
          <div>&nbsp;</div>
          <h3>Generando PDF</h3>
+         {cotizacioncab.length  > 0 ? (<p>Cabecera ok</p>) : (<p>Buscando Cabecera</p>)}
+         {cotizaciondet.length  > 0 ? (<p>Productos ok</p>) : (<p>Buscando Productos</p>)}
+         {cotizacioncond.length > 0 ? (<p>C.pago ok</p>) : (<p>Buscando C.Pago</p>)  }
+         {tabla.length    > 0 ? (<p>Tablas ok</p>) : (<p>Busando Tablas</p>)}
+
          <p>Por Favor Espere... </p>
          <img src={ImagenWait} alt="waiting" />
       </div>
