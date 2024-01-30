@@ -16,7 +16,7 @@ const Producto = () => {
    const dispatch = useDispatch();
    const estilo = { fontSize: "200%", transition: "font-size 0.5s" };
    const { tabla } = useSelector((state) => state);
-   const [filtro, setFiltro] = useState("");
+   const [filtro, setFiltro] = useState("1");
    const [onChange, setOnChange] = useState(false);
    useEffect(() => {
       dispatch(getProducto());
