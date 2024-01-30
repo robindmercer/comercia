@@ -40,7 +40,7 @@ router.get('/', async function (req, res, next) {
       sql = sql + " f.telefono,f.direccion,f.email,f.vendedor,"
       sql = sql + " coalesce(fc.descuento,0)  fde,coalesce(fc.enganche,0) fen,coalesce(fc.meses,0) fme,coalesce(fc.interes,0) finter,"
       sql = sql + " coalesce(con.descuento,0) de, coalesce(con.enganche,0) en,coalesce(con.meses,0) me,coalesce(con.interes,0) inter,"
-      sql = sql + " coalesce(l.cod_status,0) logsts "
+      sql = sql + " coalesce(l.cod_status,0) logsts, now() as Hoy "
       sql = sql + " from cotizacion f" 
       sql = sql + " join tabla                t  on t.id = 6 and t.cod= f.cod_status" 
       sql = sql + " left join cotizacioncond  fc on fc.cot_id = f.id" 

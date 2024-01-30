@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
+import Swal from 'sweetalert2'
 // Acciones
 import { getCotizacionCab, UpdateCotizacion } from "../../actions/cotizacion";
 import { getCotizacionDet } from "../../actions/cotizaciondet";
@@ -11,7 +12,7 @@ import { getDetailIva } from "../../actions/tabla";
 import { getProducto } from "../../actions/producto";
 //import { getClienteId } from "../../actions/cliente";
 
-import { getCondiciones, PostCondicionesCot } from "../../actions/condiciones";
+import { getCondiciones } from "../../actions/condiciones";
 import { getCondicionesCot } from "../../actions/cotizacioncond";
 
 import { getUsuariomenId } from "../../actions/usuariomenu";
@@ -19,14 +20,14 @@ import { getUsuariomenId } from "../../actions/usuariomenu";
 import { getDetail } from "../../actions/tabla";
 
 // Iconos
-import { FcDeleteRow, FcAddRow, FcOk, FcLeft, FcMinus } from "react-icons/fc";
+import { FcDeleteRow, FcAddRow, FcMinus } from "react-icons/fc";
 import Header from "../Header";
 // CSS
 import "../../css/factdet.css";
 
 // Modal
 import OkForm from "../modal/OkForm";
-import { Modal, Button, Alert } from "react-bootstrap";
+import { Modal, Button } from "react-bootstrap";
 import Cookies from 'universal-cookie'
 
 function Formcotizacion() {
@@ -35,7 +36,7 @@ function Formcotizacion() {
   // Manejo acceso del Usuario
   // const usuariomenu = useSelector((state) => state.usuariomenu);
   const [acceso, setAcceso] = useState("A");
-  const idProg = 11;
+  // const idProg = 11;
 
   const id_usuario = cookies.get("usuario");
   const { cotizacioncab } = useSelector((state) => state);
@@ -62,7 +63,7 @@ function Formcotizacion() {
   const dollarUSLocale = Intl.NumberFormat("de-DE");
   // Estilos
   const estilo = { fontSize: "150%", transition: "font-size 0.5s" };
-  const estilo2 = { fontSize: "200%" };
+  // const estilo2 = { fontSize: "200%" };
 
   // For Modal Only
   const [showAlert, setShowAlert] = useState(false);
@@ -347,12 +348,29 @@ function Formcotizacion() {
       } else {
         for (var z = 0; z < producto.length; z++) {
           if (parseInt(producto[z].id) === parseInt(e.target.value)) {
-            cotizaciondet[i.i].fac_id = state.idCotiz;
+            if (producto[z].cod_status === 1){
+              cotizaciondet[i.i].fac_id = state.idCotiz;
             cotizaciondet[i.i].prod_id = e.target.value;
             cotizaciondet[i.i].name = producto[z].name;
             cotizaciondet[i.i].precio = producto[z].price;
             cotizaciondet[i.i].total =
               cotizaciondet[i.i].cantidad * cotizaciondet[i.i].precio;
+          } else {
+            Swal.fire({
+              title: 'Aviso...',
+              text: `Producto ${producto[z].description} Congelado`,
+              icon: 'error', // You can customize the icon (info, success, warning, error, question)
+              confirmButtonText: 'OK',
+              // You can add more customization options as needed
+            }).then((result) => {
+              // Handle the result if needed
+              if (result.isConfirmed) {
+                // Code for 'OK' response
+              } else {
+                // Code for 'Cancel' response or other actions
+              }
+            });
+          }
           }
         }
       }

@@ -101,21 +101,21 @@ function ABMCliente() {
     );
   }
 
-  function handleTipo(e) {
-    console.log('e.target.value: ', e.target.name,e.target.value);
-    e.preventDefault();
-    if (e.target.name==="cod_cliente")   setInput(input.cod_cliente= e.target.value);
-    if (e.target.name==="idioma")   setInput(input.idioma= e.target.value);
-    if (e.target.name==="moneda")   setInput(input.moneda= e.target.value);
-    if (e.target.name==="cod_status")   setInput(input.cod_status= e.target.value);
-    setErrors(
-      validate({
-        ...input,
-        [e.target.name]: e.target.value,
-      })
-      );
-      console.log('handleTipo input: ', input);
-  }
+  // function handleTipo(e) {
+  //   console.log('e.target.value: ', e.target.name,e.target.value);
+  //   e.preventDefault();
+  //   if (e.target.name==="cod_cliente")   setInput(input.cod_cliente= e.target.value);
+  //   if (e.target.name==="idioma")   setInput(input.idioma= e.target.value);
+  //   if (e.target.name==="moneda")   setInput(input.moneda= e.target.value);
+  //   if (e.target.name==="cod_status")   setInput(input.cod_status= e.target.value);
+  //   setErrors(
+  //     validate({
+  //       ...input,
+  //       [e.target.name]: e.target.value,
+  //     })
+  //     );
+  //     console.log('handleTipo input: ', input);
+  // }
 
   function handleStatus(e) {
     e.preventDefault();

@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2'
 // import Collapsible from "react-collapsible";
 // Acciones
 // import { getCotizacionDet } from '../../actions/factdet';
@@ -529,7 +530,8 @@ const Formcotizacion = () => {
             handleRemove(i.i);
          } else {
             for (var z = 0; z < producto.length; z++) {
-               if (parseInt(producto[z].id) === parseInt(e.target.value)) {
+               if (parseInt(producto[z].id) === parseInt(e.target.value) ) {
+                  if (producto[z].cod_status === 1){
                   factdet[i.i].prod_id = e.target.value;
                   factdet[i.i].name = producto[z].name;
                   if (xMoneda === "2") {
@@ -540,6 +542,24 @@ const Formcotizacion = () => {
                   factdet[i.i].total =
                      factdet[i.i].cantidad * factdet[i.i].precio;
                      break;
+                  } else {
+
+                     Swal.fire({
+                        title: 'Aviso...',
+                        text: `Producto ${producto[z].description} Congelado`,
+                        icon: 'error', // You can customize the icon (info, success, warning, error, question)
+                        confirmButtonText: 'OK',
+                        // You can add more customization options as needed
+                      }).then((result) => {
+                        // Handle the result if needed
+                        if (result.isConfirmed) {
+                          // Code for 'OK' response
+                        } else {
+                          // Code for 'Cancel' response or other actions
+                        }
+                      });
+
+                  }
                }
             }
          }
