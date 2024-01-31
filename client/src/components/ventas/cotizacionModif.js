@@ -348,7 +348,7 @@ function Formcotizacion() {
       } else {
         for (var z = 0; z < producto.length; z++) {
           if (parseInt(producto[z].id) === parseInt(e.target.value)) {
-            if (producto[z].cod_status === 1){
+            if (producto[z].cod_status === 1  || producto[z].cod_status === 3){
               cotizaciondet[i.i].fac_id = state.idCotiz;
             cotizaciondet[i.i].prod_id = e.target.value;
             cotizaciondet[i.i].name = producto[z].name;
