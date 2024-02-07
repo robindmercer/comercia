@@ -20,7 +20,7 @@ router.delete('/', async function (req, res, next) {
   try {
     const { tabla, campo, id, campoProd } = req.query;
     sql=`delete from ${tabla} where ${campo} = ${id} and ${campo} not in (select ${campoProd} from products)`    
-    // console.log(sql)
+     console.log(sql)
     const [records] = await seq.query(sql,
       {
         logging: console.log,
