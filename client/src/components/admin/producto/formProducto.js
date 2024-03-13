@@ -203,7 +203,7 @@ function ABMProducto() {
                            value={input.orden}
                            onChange={handleChange}
                            className="form-control"
-                        />
+                        />&nbsp;&nbsp;(Solo letras)
                      </div>
 
                      <div className="input-group mb-3 w-50">

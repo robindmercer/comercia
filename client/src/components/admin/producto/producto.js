@@ -16,12 +16,46 @@ const Producto = () => {
    const dispatch = useDispatch();
    const estilo = { fontSize: "200%", transition: "font-size 0.5s" };
    const { tabla } = useSelector((state) => state);
+   const [ordenar, setOrdenar] = useState(false);
    const [filtro, setFiltro] = useState("1");
    const [onChange, setOnChange] = useState(false);
    useEffect(() => {
       dispatch(getProducto());
       dispatch(getTablaAll());
    }, [dispatch]);
+
+   const ordenar_Id = () => {
+      setOrdenar(!ordenar,true,false);
+      producto.sort((a, b) => a.id - b.id);
+   }
+
+   const ordenar_Orden = () => {
+      setOrdenar(!ordenar,true,false);
+         producto.sort((a, b) => {
+            if (a.orden < b.orden) {
+                return -1; // a should come before b in the sorted order
+            } else if (a.orden > b.orden) {
+                return 1; // a should come after b in the sorted order
+            } else {
+                return 0; // a and b are the same
+            }
+        });
+      }
+
+   const ordenar_Nombre = () => {
+      setOrdenar(!ordenar,true,false);
+         producto.sort((a, b) => {
+            if (a.name < b.name) {
+                return -1; // a should come before b in the sorted order
+            } else if (a.name > b.name) {
+                return 1; // a should come after b in the sorted order
+            } else {
+                return 0; // a and b are the same
+            }
+        });
+   }
+
+
    //   //const navigate = useNavigate();
    var muestroRegistro = false;
    // console.log('producto: ', producto);
@@ -105,12 +139,13 @@ const Producto = () => {
                <table className="styled-table">
                   <thead>
                      <tr className="table-success">
-                        <th className="d-none d-lg-table-cell">Id</th>
-                        <th>Nombre</th>
-                        <th className="d-none d-lg-table-cell">Descripcion</th>
-                        <th className="d-none d-lg-table-cell">Precio</th>
-                        <th className="d-none d-lg-table-cell">Dolar</th>
-                        <th className="d-none d-lg-table-cell">Estado</th>
+                        <th className="ordenado" onClick={() =>ordenar_Id()}>Id</th>
+                        <th className="ordenado" onClick={() =>ordenar_Nombre()}>Nombre</th>
+                        <th >Descripcion</th>
+                        <th >Precio</th>
+                        <th >Dolar</th>
+                        <th  className="ordenado"   onClick={() =>ordenar_Orden()}>Orden</th>
+                        <th >Estado</th>
                         <th>Acciones</th>
                      </tr>
                   </thead>
@@ -142,6 +177,9 @@ const Producto = () => {
                                     <td className="d-none d-lg-table-cell">
                                        {prod.dolar}
                                     </td>
+                                    <td className="d-none d-lg-table-cell">
+                                       {prod.orden}
+                                    </td>                                    
                                     <td className="d-none d-lg-table-cell">
                                        {prod.estprod}
                                     </td>
