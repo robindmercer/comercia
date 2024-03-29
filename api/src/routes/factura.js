@@ -70,7 +70,7 @@ router.get("/cab", async function (req, res, next) {
       try {
          sql = "select f.id,to_char(f.fecha,'dd/mm/yyyy') as fecha,f.subtotal,f.iva,f.total,f.dhl,f.cli_id,f.cod_status, ";
          sql = sql + " d.calle,d.localidad,d.cp,d.ciudad,d.pais, ";
-         sql = sql + " coalesce(c.nombre,'n/a') nombre,f.cli_id,t.description as Status,f.observ, f.moneda,f.idioma";
+         sql = sql + " coalesce(c.nombre,'n/a') nombre,f.cli_id,t.description as Status,f.observ, f.moneda,f.idioma,f.cot_id";
          sql = sql + " from facturas f";
          sql = sql + " left join clientes  c on c.id = f.cli_id ";
          sql = sql + " left join direccion d on d.orden = f.dir_id ";
@@ -239,8 +239,8 @@ router.post("/cotifac", async function (req, res, next) {
          });
       }
 
-      sql = `insert into facturas (id,cli_id,dir_id,dhl,subtotal,iva,total,cod_status,observ,fecha,idioma,moneda) `;
-      sql = sql + `select (select COALESCE(max(id)+1,1)  from facturas ) id, ${cli_id}, 1 , dhl, subtotal, iva, total ,4, observ,fecha, 1, moneda from cotizacion`;
+      sql = `insert into facturas (id,cli_id,dir_id,dhl,subtotal,iva,total,cod_status,observ,fecha,idioma,moneda,cot_id) `;
+      sql = sql + `select (select COALESCE(max(id)+1,1)  from facturas ) id, ${cli_id}, 1 , dhl, subtotal, iva, total ,4, observ,fecha, 1, moneda,id from cotizacion`;
       sql = sql + ` where id = ${cot_id} RETURNING id`;
 
       const records = await seq

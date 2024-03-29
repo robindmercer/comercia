@@ -24,6 +24,7 @@ import Cookies from 'universal-cookie'
 
 //const ref = React.createRef();
 // var campos del PDF
+var xTNA = "TNA"
 var maxhor = 253
 var xCliente = "Cliente";
 var xFecha = "Fecha";
@@ -53,6 +54,8 @@ var xMoneda = "$";
 var xCotizacion = "COTIZACION";
 var xDireccion = "Direccion";
 var xTelefono = "Telefono:";
+var XVto = "Vencimiento";
+
 // var xEmail = "E-Mail";
 var xVendedor = "Vendedor";
 var xFooter = ""
@@ -74,12 +77,12 @@ const FormcotizPDF = () => {
    // const [saleTax, setSaleTax] = useState(0);
    // const [saleDesc, setSaleDesc] = useState(0);
    // const [total, setTotal] = useState(0);
-
+   
    const location = useLocation();
    const { state } = location;
    // Formato Numeros
    const dollarUSLocale = Intl.NumberFormat("de-DE");
-
+   var kl =0
    // eslint-disable-next-line no-unused-vars
    const [inputDet, setInputDet] = useState({
       fac_id: 0,
@@ -99,12 +102,14 @@ const FormcotizPDF = () => {
       dispatch(getCondicionesCot(state.idfact));
       dispatch(getUsuariomenId(id_usuario));
    }, [dispatch, id_usuario, state.idfact]);
-
+   
    // console.log("actlogin: ", actlogin);
    if (cotizacioncab.length > 0) {
       if (cotizacioncab[0].moneda === 2) {
+         xTNA = "ANR"
          xCliente = "Client";
          xFecha = "Date";
+         XVto = "Due Date"
          xUnidad = "Units";
          xDescripcion = "Description";
          xPrecio = "Price";
@@ -133,10 +138,10 @@ const FormcotizPDF = () => {
          xTablaId = 10;      
       }
       if (pdfFilename === "cotizacion_"){
-          pdfFilename = pdfFilename + state.idfact
+         pdfFilename = pdfFilename + state.idfact
       }
    }
-
+   
    // Default export is a4 paper, portrait, using millimeters for units
    const downloadFileDocument = () => {
       const leftMargin = 5;
@@ -148,46 +153,64 @@ const FormcotizPDF = () => {
 
       header(doc, leftInput, leftMargin);
 // Only First Header
-      if (cotizacioncab[0].direccion !== "") {
-         doc.setFont("Times", "normal");
-         doc.text(`${xDireccion}`, leftMargin, xhor);
-         doc.setFont("Times", "bold");
-         doc.text(`${cotizacioncab[0].direccion}`, leftInput, xhor);
-         xhor += 8;
-      }
-      if (cotizacioncab[0].telefono !== "") {
-         doc.setFont("Times", "normal");
-         doc.text(`${xTelefono}`, leftMargin, xhor);
-         doc.setFont("Times", "bold");
-         doc.text(`${cotizacioncab[0].telefono}`, leftInput, xhor);
-         xleft = 100;
-         xhorNew = 8;
-      }
-      if (cotizacioncab[0].email !== "") {
-         doc.setFont("Times", "normal");
-         doc.text(`E-Mail :`, leftMargin + xleft, xhor);
-         doc.setFont("Times", "bold");
-         doc.text(`${cotizacioncab[0].email}`, leftInput + xleft, xhor);
-         xhorNew = 8;
-         xleft = 0;
-      }
-      xhor += xhorNew;
-      doc.setFont("Times", "normal");
-      doc.text(`${xVendedor} :`, leftMargin, xhor);
-      doc.setFont("Times", "bold");
-      doc.text(`${actlogin[0].name}`, leftInput, xhor);
-      doc.setFont("Times", "normal");
-      doc.text("E-Mail :", leftMargin + 100, xhor);
-      doc.setFont("Times", "bold");
-      doc.text(`${actlogin[0].email}`, leftInput + 95, xhor);
-      xhor += 8;
+if (cotizacioncab[0].direccion !== "") {
+   doc.setFont("Times", "normal");
+   doc.text(`${xDireccion}`, leftMargin, xhor);
+   doc.setFont("Times", "bold");
+   doc.text(`${cotizacioncab[0].direccion}`, leftInput, xhor);
+   xhor += 8;
+}
+if (cotizacioncab[0].telefono !== "") {
+   doc.setFont("Times", "normal");
+   doc.text(`${xTelefono}`, leftMargin, xhor);
+   doc.setFont("Times", "bold");
+   doc.text(`${cotizacioncab[0].telefono}`, leftInput, xhor);
+   xleft = 100;
+   xhorNew = 8;
+}
+if (cotizacioncab[0].email !== "") {
+   doc.setFont("Times", "normal");
+   doc.text(`E-Mail :`, leftMargin + xleft, xhor);
+   doc.setFont("Times", "bold");
+   doc.text(`${cotizacioncab[0].email}`, leftInput + xleft, xhor);
+   xhorNew = 8;
+   xleft = 0;
+}
+
+console.log('cotizacioncab: ', cotizacioncab);
+
+
+xhor += xhorNew;
+doc.setFont("Times", "normal");
+doc.text(`${xVendedor} :`, leftMargin, xhor);
+doc.setFont("Times", "bold");
+doc.text(`${actlogin[0].name}`, leftInput, xhor);
+doc.setFont("Times", "normal");
+doc.text("E-Mail :", leftMargin + 100, xhor);
+doc.setFont("Times", "bold");
+doc.text(`${actlogin[0].email}`, leftInput + 95, xhor);
+xhor += 8;
+doc.setFont("Times", "normal");
+doc.text(`${xFecha} : `, leftMargin , xhor);
+doc.setFont("Times", "bold");
+doc.text(`${cotizacioncab[0].fecha}`, leftInput , xhor);
+doc.setFont("Times", "normal");
+doc.text(`${XVto} : `, leftMargin + 140, xhor);
+
+var partes = cotizacioncab[0].vencimiento.split("-");
+var fvto = `${partes[2]}/${partes[1]}/${partes[0]}`
+doc.setFont("Times", "bold");
+doc.text(`${fvto}`, leftInput + 137, xhor);      
+xhor += 8;
+
 // end Only First Header
-      unidades(doc, leftInput, leftMargin,xhor);
-      xhor += 8;
+unidades(doc, leftInput, leftMargin,xhor);
+xhor += 8;
 //   Productos
       console.log('cotizaciondet: ', cotizaciondet);
       for (let prodIndx = 0; prodIndx < cotizaciondet.length; prodIndx++) {
-         xProdName = cotizaciondet[prodIndx].name.replace("″", "'");
+         kl += 1
+         xProdName = `${kl} ${cotizaciondet[prodIndx].name.replace("″", "'")} (${cotizaciondet[prodIndx].prod_id})`;
          xProdDescrip = cotizaciondet[prodIndx].description.replace("″", "'");
          if (cotizacioncab[0].moneda === 2) {
             xProdName = cotizaciondet[prodIndx].nameext.replace("″", "'");
@@ -306,7 +329,7 @@ const FormcotizPDF = () => {
                   doc.text(`${xSaldo}`, leftInput, xhor);
                   doc.text(`${xMoneda}${dollarUSLocale.format(xFinanciar.toFixed(0))}`,200,xhor,"right");
                   xhor += 6;
-                  doc.text(`${cotizacioncond[cotiInd].meses} ${xPagosMens}    ${xInteres} ${cotizacioncond[cotiInd].interes}% `, leftInput, xhor);
+                  doc.text(`${cotizacioncond[cotiInd].meses} ${xPagosMens}    ${xInteres} ${cotizacioncond[cotiInd].interes}% ${xTNA}`, leftInput, xhor);
                   doc.text(`${xMoneda}${dollarUSLocale.format(xPagoMens.toFixed(0))}`,200,xhor,"right");
                   xhor += 6;
                   doc.text(`${xTotPag}`, leftInput, xhor);
@@ -324,7 +347,7 @@ const FormcotizPDF = () => {
          doc.setFontSize(10);
          xhor = 38;
       } else {
-         xhor += 3;
+         xhor += 5;
       }
 
       doc.setFont("Times", "bold");
@@ -336,16 +359,19 @@ const FormcotizPDF = () => {
             doc.text(`${tabla[i].description}`, leftMargin, xhor);
             xhor += 5;
          }
-         if (tabla[i].id === 12 && tabla[i].cod === 1) {
-            xFooter = tabla[i].description
-         }
       }
       xhor += 5;
       doc.setDrawColor(0, 0, 193);
       doc.setLineWidth(0.5);
       doc.line(3, xhor, 200, xhor);
       xhor += 8;
-      doc.text(`${xFooter}`, leftMargin, xhor);
+      for (var ii = 0; ii < tabla.length; ii++) {
+         if (tabla[ii].id === 12 && tabla[ii].cod !== 0) {
+             doc.text(`${tabla[ii].description}`, leftMargin, xhor);
+             xhor += 5;
+          }
+       }
+//      doc.text(`${xFooter}`, leftMargin, xhor);
       xhor +=5
       doc.line(3, xhor, 200, xhor);
       // Linea final
@@ -369,7 +395,7 @@ const FormcotizPDF = () => {
          doc.text(muestro, leftMargin, xHor);
          xHor += 5;
       }
-      console.log("out: ", xHor);
+      //console.log("out: ", xHor);
       return xHor;
    };
 
@@ -398,10 +424,6 @@ const FormcotizPDF = () => {
       doc.setFont("Times", "bold");
       doc.text(`${cotizacioncab[0].nombre}`, leftInput, 30);
       doc.setFont("Times", "normal");
-      doc.text(`${xFecha} : `, leftMargin + 150, 30);
-      doc.setFont("Times", "bold");
-      doc.text(`${cotizacioncab[0].fecha}`, leftInput + 145, 30);
-
       doc.setFontSize(10);
    };
 

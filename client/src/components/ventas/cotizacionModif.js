@@ -89,6 +89,10 @@ function Formcotizacion() {
 
   const porciva = cookies.get("porciva");
 
+  var dateInput = new Date(); // Example date, you can replace it with your own date
+
+  var formattedDate = dateInput.toISOString().slice(0,10);
+
   // eslint-disable-next-line no-unused-vars
   const [inputDet, setInputDet] = useState({
     fac_id: 0,
@@ -113,6 +117,7 @@ function Formcotizacion() {
     direccion:'',
     email:'',
     vendedor:cookies.get("usuario"),
+    vencimiento: formattedDate,
 
   });
 
@@ -276,6 +281,15 @@ function Formcotizacion() {
       cotizacioncab[0].dhl = e.target.value;
       setSaleDHL(e.target.value);
     }
+
+    if (e.target.name === "vencimiento") {
+      cotizacioncab[0].vencimiento = e.target.value;
+      if (onChange) {
+         setOnChange(false);
+      } else {
+         setOnChange(true);
+      }
+   }      
     // console.log("i: ", i);
     // console.log("e.target.name: ", e.target.name);
     // console.log("e.target.value: ", e.target.value);
@@ -514,16 +528,27 @@ function Formcotizacion() {
                   name="telefono"
                   value={cotizacioncab[0].telefono}
                   onChange={(e) => handleTipo(e, 0)}
-                ></input>&nbsp;
+                ></input>
+                </div>
+                <div>
                 <label htmlFor="nombre">Email : </label>
                 <input
-                  className="input_text"
+                  className="input_text_mail"
                   type="text"
                   id="email"
                   name="email"
                   value={cotizacioncab[0].email}
                   onChange={(e) => handleTipo(e, 0)}
-                ></input>
+                  ></input>
+                        &nbsp;
+                        <label htmlFor="vencimiento">Vencimiento&nbsp;</label>
+                        <input
+                           id="vencimiento"
+                           name="vencimiento"
+                           type="date"
+                           value={cotizacioncab[0].vencimiento}
+                           onChange={(e) => handleTipo(e)}
+                           ></input>                
               </div>
               <div>
                 <label

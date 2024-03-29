@@ -93,6 +93,11 @@ const Formcotizacion = () => {
 
    // Formato Numeros
    const dollarUSLocale = Intl.NumberFormat("de-DE");
+   
+   var dateInput = new Date(); // Example date, you can replace it with your own date
+
+   var formattedDate = dateInput.toISOString().slice(0,10);
+   //console.log(formattedDate);
 
    const [input, setInput] = useState({
       cli_id: 0,
@@ -111,6 +116,8 @@ const Formcotizacion = () => {
       email: "",
       vendedor: cookies.get("usuario"),
       fecha: new Date().toLocaleDateString("en-GB"),
+      vencimiento: formattedDate,
+      
    });
 
    const [inputDet, setInputDet] = useState({
@@ -417,8 +424,11 @@ const Formcotizacion = () => {
 
    // }
    function handleTipo(e, i) {
-      e.preventDefault();
-      console.log("handleTipo: ", e.target.name, e.target.value);
+      if (e.key === "Enter") {
+         console.log("hola", e.target.value)
+      }
+      e.preventDefault(); 
+      console.log("handleTipo: ", e.target.name, e.target.value,e.key);
       if (e.target.name === "telefono") {
          input.telefono = e.target.value;
          if (onChange) {
@@ -453,6 +463,15 @@ const Formcotizacion = () => {
          }
          //      console.log('input.nombre: ', input.nombre);
       }
+
+      if (e.target.name === "vencimiento") {
+         input.vencimiento = e.target.value;
+         if (onChange) {
+            setOnChange(false);
+         } else {
+            setOnChange(true);
+         }
+      }      
       if (e.target.name === "dhl") {
          input.dhl = e.target.value;
          //console.log("e.target.name: ", e.target.name, e.target.value, input);
@@ -620,7 +639,7 @@ const Formcotizacion = () => {
    // console.log("total: ", total);
    // console.log("saleDHL: ", saleDHL);
    // console.log("tabla: ", tabla);
-   // console.log("xMoneda: ", xMoneda);
+   //console.log("input: ", input);
    if (!mostrar) {
       return (
          <>
@@ -677,16 +696,26 @@ const Formcotizacion = () => {
                            value={input.telefono}
                            onChange={(e) => handleTipo(e, 0)}
                         ></input>
-                        &nbsp;
+                     </div>
+                     <div>
                         <label htmlFor="nombre">Email : </label>
                         <input
-                           className="input_text"
+                           className="input_text_mail"
                            type="text"
                            id="email"
                            name="email"
                            value={input.email}
                            onChange={(e) => handleTipo(e, 0)}
-                        ></input>
+                           ></input>
+                        &nbsp;
+                        <label htmlFor="vencimiento">Vencimiento&nbsp;</label>
+                        <input
+                           id="vencimiento"
+                           name="vencimiento"
+                           type="date"
+                           value={input.vencimiento}
+                           onChange={(e) => handleTipo(e)}
+                           ></input>
                      </div>
                      <div>
                         <label

@@ -3,35 +3,28 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
+import Swal from "sweetalert2";
 // Acciones
 import { getFacturaDet } from "../../actions/factdet";
 import { getFacturaCab, UpdateFactura2 } from "../../actions/factura";
 import { getDetailIva } from "../../actions/tabla";
 import { getProducto } from "../../actions/producto";
 //import { getClienteId } from "../../actions/cliente";
-import {
-   getCondiciones,
-   getCondicionesFac,
-} from "../../actions/condiciones";
+import { getCondiciones, getCondicionesFac } from "../../actions/condiciones";
 
 import { getUsuariomenId } from "../../actions/usuariomenu";
 // Descuentos
 import { getDetail } from "../../actions/tabla";
 
 // Iconos
-import {
-   FcDeleteRow,
-   FcAddRow,
-   FcOk,
-   FcLeft,
-} from "react-icons/fc";
+import { FcDeleteRow, FcAddRow, FcOk, FcLeft } from "react-icons/fc";
 import Header from "../Header";
 // CSS
 import "../../css/factdet.css";
-import Cookies from 'universal-cookie'
+import Cookies from "universal-cookie";
 import controlAccesos from "../../controlAcceso";
 //const Formfactura = () => {
-   function Formfactura() {
+function Formfactura() {
    const cookies = new Cookies();
    const navigate = useNavigate();
    // Manejo acceso del Usuario
@@ -122,7 +115,7 @@ import controlAccesos from "../../controlAcceso";
       dispatch(getUsuariomenId(id_usuario));
       dispatch(getCondiciones());
       dispatch(getCondicionesFac(state.idfact));
-      setAcceso(cookies.get("acceso"))
+      setAcceso(cookies.get("acceso"));
       if (factcab.length > 0) {
          console.log("factcab ok: ", factcab, " lenght ", factcab.length);
          setSaleDHL(factcab[0].dhl);
@@ -143,7 +136,7 @@ import controlAccesos from "../../controlAcceso";
       if (factcab) {
          if (factdet && porciva) {
             factdet.forEach((fact) => {
-               if (fact.precio > 0 ){
+               if (fact.precio > 0) {
                   const quantityNumber = parseFloat(fact.cantidad);
                   const rateNumber = parseFloat(fact.precio);
                   const amount =
@@ -154,7 +147,7 @@ import controlAccesos from "../../controlAcceso";
                }
             });
             setSubTotal(subTotal);
-            console.log('subTotal: ', subTotal);
+            console.log("subTotal: ", subTotal);
             if (subTotal > 0) {
                if (factcab[0].moneda === 1) {
                   iva = subTotal * (parseFloat(porciva[0].valor) / 100);
@@ -165,7 +158,7 @@ import controlAccesos from "../../controlAcceso";
                total = subTotal + iva + parseInt(factcab[0].dhl);
                setTotal(total);
             } else {
-               subTotal=0;
+               subTotal = 0;
                setSaleTax(0);
                setTotal(0);
             }
@@ -173,7 +166,6 @@ import controlAccesos from "../../controlAcceso";
       }
       console.log("total: ", total);
       console.log("factdet: ", factdet);
-
    }, [onChange, factdet]);
 
    useEffect(() => {
@@ -306,12 +298,29 @@ import controlAccesos from "../../controlAcceso";
          } else {
             for (var z = 0; z < producto.length; z++) {
                if (parseInt(producto[z].id) === parseInt(e.target.value)) {
-                  factdet[i.i].fac_id = state.idfact;
-                  factdet[i.i].prod_id = e.target.value;
-                  factdet[i.i].name = producto[z].name;
-                  factdet[i.i].precio = producto[z].price;
-                  factdet[i.i].total =
-                     factdet[i.i].cantidad * factdet[i.i].precio;
+                  if (producto[z].cod_status === 1) {
+                     factdet[i.i].fac_id = state.idfact;
+                     factdet[i.i].prod_id = e.target.value;
+                     factdet[i.i].name = producto[z].name;
+                     factdet[i.i].precio = producto[z].price;
+                     factdet[i.i].total =
+                        factdet[i.i].cantidad * factdet[i.i].precio;
+                  } else {
+                     Swal.fire({
+                        title: "Aviso...",
+                        text: `Producto ${producto[z].description} Congelado`,
+                        icon: "error", // You can customize the icon (info, success, warning, error, question)
+                        confirmButtonText: "OK",
+                        // You can add more customization options as needed
+                     }).then((result) => {
+                        // Handle the result if needed
+                        if (result.isConfirmed) {
+                           // Code for 'OK' response
+                        } else {
+                           // Code for 'Cancel' response or other actions
+                        }
+                     });
+                  }
                }
             }
          }
@@ -343,7 +352,7 @@ import controlAccesos from "../../controlAcceso";
       setInput((input.iva = saleTax.toFixed(0)));
       setInput((input.total = total.toFixed(0)));
       setInput((input.observ = factcab[0].observ));
-      setInput((input.dhl = factcab[0].dhl))
+      setInput((input.dhl = factcab[0].dhl));
       if (tieneCG === 1) {
          initialFacdet.id = 1; // si ya tiene una C.General grabada el id es siempre 1
       } else {
@@ -370,7 +379,7 @@ import controlAccesos from "../../controlAcceso";
       //   return;
       // }
       // dispatch(UpdateFactura(input, factdet, inputDet));
-      dispatch(UpdateFactura2(input, factdet, inputDet,initialFacdet));
+      dispatch(UpdateFactura2(input, factdet, inputDet, initialFacdet));
       // dispatch(PostCondicionesFac(initialFacdet));
       //window.location.href = "/factura";
    };
@@ -406,18 +415,20 @@ import controlAccesos from "../../controlAcceso";
          btnElimProd = false;
          btnGrabar = false;
       }
-      if (factcab[0].cod_status >= 6 && acceso === "A2") { // administracion 
-        btnAgregar = false;
-        btnElimProd = false;
-        btnGrabar = false;
-     }
-
-     if (acceso === "A8") { // Calidad no puede modificar las OC. 
-      btnAgregar = false;
-      btnElimProd = false;
-      btnGrabar = false;
+      if (factcab[0].cod_status >= 6 && acceso === "A2") {
+         // administracion
+         btnAgregar = false;
+         btnElimProd = false;
+         btnGrabar = false;
       }
-      btnGrabar = controlAccesos(usuariomenu,idProg)
+
+      if (acceso === "A8") {
+         // Calidad no puede modificar las OC.
+         btnAgregar = false;
+         btnElimProd = false;
+         btnGrabar = false;
+      }
+      btnGrabar = controlAccesos(usuariomenu, idProg);
       return (
          <>
             <Header />
@@ -426,8 +437,7 @@ import controlAccesos from "../../controlAcceso";
                   <div className="row gap-1">
                      <div className="row">
                         <div className="col">
-                           Cliente:&nbsp;
-                           &nbsp;{factcab[0].nombre}
+                           Cliente:&nbsp; &nbsp;{factcab[0].nombre}
                         </div>
                         <div className="col">Fecha: {factcab[0].fecha}</div>
                      </div>
@@ -640,10 +650,12 @@ import controlAccesos from "../../controlAcceso";
                                  {condiciones &&
                                     condiciones.map((cond, i) => {
                                        if (cond.sel === "S") {
-                                          var xTotal2 = total - saleDHL
-                                          var xDescuento = (total * cond.descuento) / 100;
-                                          xTotal2 = xTotal2 - xDescuento                                          
-                                          var xEnganche  = (xTotal2 * cond.enganche) / 100;
+                                          var xTotal2 = total - saleDHL;
+                                          var xDescuento =
+                                             (total * cond.descuento) / 100;
+                                          xTotal2 = xTotal2 - xDescuento;
+                                          var xEnganche =
+                                             (xTotal2 * cond.enganche) / 100;
                                           var xFinanciar = xTotal2 - xEnganche;
                                           var xAnos = cond.meses / 12;
                                           var xPorMes =
@@ -653,9 +665,9 @@ import controlAccesos from "../../controlAcceso";
                                           var xPagoMens =
                                              (xFinanciar + xPorMes) /
                                              cond.meses;
-                                          var aux2 = (xPagoMens * cond.meses)
+                                          var aux2 = xPagoMens * cond.meses;
                                           aux2 += parseInt(saleDHL);
-                                          var xTotal = parseInt(aux2) ;  
+                                          var xTotal = parseInt(aux2);
                                           // var xTotal = xPagoMens * cond.meses;
                                           if (cond.id === 1) {
                                              xEnganche = 0;
@@ -699,10 +711,13 @@ import controlAccesos from "../../controlAcceso";
                                           if (cond.id === 2) {
                                              xEnganche = 0;
                                              xFinanciar = 0;
-                                             var aux = total - saleDHL
-                                             aux = parseInt(aux - (aux * cond.descuento) / 100);
+                                             var aux = total - saleDHL;
+                                             aux = parseInt(
+                                                aux -
+                                                   (aux * cond.descuento) / 100
+                                             );
                                              aux += parseInt(saleDHL);
-                                             xTotal = parseInt(aux)
+                                             xTotal = parseInt(aux);
                                              // xEnganche = 0;
                                              // xFinanciar = 0;
                                              // xTotal =
@@ -783,7 +798,9 @@ import controlAccesos from "../../controlAcceso";
                                                    </td>
                                                    <td className="totaltr">
                                                       {dollarUSLocale.format(
-                                                         parseInt(total - saleDHL)
+                                                         parseInt(
+                                                            total - saleDHL
+                                                         )
                                                       )}
                                                    </td>
                                                 </tr>
@@ -975,9 +992,21 @@ import controlAccesos from "../../controlAcceso";
       return (
          <div>
             <h3>Cargando...</h3>
-            {factcab.length > 0 ? <p>Cabecara OC ok</p> : <p>Buscando datos Cabecera</p>}
-            {factdet.length > 0 ? <p>Productos ok</p> : <p>Buscando Productos</p>}
-            {condiciones.length > 0 ? <p>Condicion de Pago ok</p> : <p>Buscando Condicion de Pago</p>}
+            {factcab.length > 0 ? (
+               <p>Cabecara OC ok</p>
+            ) : (
+               <p>Buscando datos Cabecera</p>
+            )}
+            {factdet.length > 0 ? (
+               <p>Productos ok</p>
+            ) : (
+               <p>Buscando Productos</p>
+            )}
+            {condiciones.length > 0 ? (
+               <p>Condicion de Pago ok</p>
+            ) : (
+               <p>Buscando Condicion de Pago</p>
+            )}
          </div>
       );
    }

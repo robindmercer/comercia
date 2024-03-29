@@ -25,6 +25,10 @@ router.get("/", function (req, res, next) {
         include: [
           { model: Status },
         ],
+        order: [
+          ["id", "ASC"],
+          ["cod", "ASC"],
+        ],        
       }
       ).then((resp) => {
         resp.length
@@ -57,7 +61,8 @@ router.get("/all", function (req, res, next) {
           { model: Status },
         ],
         order: [
-          ["description", "ASC"],
+          ["id", "ASC"],
+          ["cod", "ASC"],
         ],
       }
       ).then((resp) => {
@@ -84,7 +89,11 @@ router.get("/cod/:id", function (req, res, next) {
       include: [
         { model: Status },
       ],
-    }
+      order: [
+        ["id", "ASC"],
+        ["cod", "ASC"],
+      ],
+      }
     ).then((resp) => {
       resp.length
         ? res.send(resp)

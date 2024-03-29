@@ -29,7 +29,7 @@ var xUnidad = "Unidad";
 var xDescripcion = "Descripción";
 var xPrecio = "Precio";
 var xCant = "Cant";
-
+var xTabla = 15
 var xIncluido = "Incluido";
 var xTotPag = "TOTAL A PAGAR";
 var xCond = "Condiciones Generales";
@@ -45,9 +45,10 @@ var xTablaId = 9;
 var xTerminos = "Terminos y Condiciones";
 var xDHL = "Costos de Envio";
 var xOrden = "Orden de Compra";
+var xCotiz = "COTIZACION";
 var xMoneda = "$";
 var xVendedor = "Vendedor";
-var xFooter = ""
+// var xFooter = ""
 var xTotOC = "TOTAL O.C.";
 var xDescDescrip = "Descuento";
 const FormfacturaPDF = () => {
@@ -100,24 +101,21 @@ const FormfacturaPDF = () => {
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, []);
 
-   console.log(
-      "formFactura---------------------------------------------------"
-   );
-   console.log("state.idfact ", state.idfact);
-   console.log("tabla: ", tabla);
-   // console.log("usuariomenu: ", usuariomenu);
-   // console.log("console.log('factcond: ', factcond);: ", acceso);
-   console.log("factcab: ", factcab);
-   console.log("factdet: ", factdet);
-   console.log('factcond: ', factcond);
-   console.log(
-      "formFactura---------------------------------------------------"
-   );
+   //console.log("formFactura---------------------------------------------------");
+   //console.log("state.idfact ", state.idfact);
+   //console.log("tabla: ", tabla);
+   //console.log("usuariomenu: ", usuariomenu);
+   //console.log("//console.log('factcond: ', factcond);: ", acceso);
+   //console.log("factcab: ", factcab);
+   //console.log("factdet: ", factdet);
+   //console.log('factcond: ', factcond);
+   //console.log("formFactura---------------------------------------------------");
 
    if (factcab.length > 0) {
-      if (factcab[0].idioma === 2) {
+      if (factcab[0].idioma === 2 ) {
          xCliente = "Client";
          xFecha = "Date";
+         xTabla = 16
          xCalle = "Street";
          xLocalidad = "Postal Code";
          xCiudad = "City";
@@ -139,6 +137,7 @@ const FormfacturaPDF = () => {
          xTerminos = "Conditions";
          xDHL = "Shipping Costs";
          xOrden = "Pusrchase";
+         xCotiz = "QUOTATION"
          xMoneda = "USD ";
          xTotOC = "Total PURCHASE ORDER";
          xDescDescrip = "Discount";
@@ -269,9 +268,9 @@ const FormfacturaPDF = () => {
          doc.setFont("Times", "bold");
          doc.text(`${xCond}`, leftMargin, xhor);
          
-         console.log('xCond: ', xCond);
-         console.log('xDescripcion: ', xDescripcion);
-         console.log('xImporte: ', xImporte);
+         //console.log('xCond: ', xCond);
+         //console.log('xDescripcion: ', xDescripcion);
+         //console.log('xImporte: ', xImporte);
 
          doc.setFont("Times", "normal");
          xhor += 8;
@@ -318,22 +317,22 @@ const FormfacturaPDF = () => {
             }
             if (parseInt(factcond[cotiInd].cond_id) > 2) {
                
-               console.log('xTotOC: ', xTotOC);
-               console.log('xMoneda: ', xMoneda);
-               console.log('xTot: ', xTot);
-               console.log('xEngancheTit: ', xEngancheTit);
-               console.log('% enganche: ', factcond[cotiInd].enganche);
-               console.log('dhl: ', factcab[0].dhl);
-               console.log('xEnganche: ', xEnganche);
-               console.log('xDescuento: ', xDescuento);
-               console.log('xSaldo: ', xSaldo);
-               console.log('xFinanciar: ', xFinanciar);
-               console.log('factcond[cotiInd].meses: ', factcond[cotiInd].meses);
-               console.log('factcond[cotiInd].interes: ', factcond[cotiInd].interes);
-               console.log('xPagoMens: ', xPagoMens);
-               console.log('xTotPag: ', xTotPag);
-               console.log('xTotal: ', xTotal);
-               console.log('leftInput: ', leftInput);
+               //console.log('xTotOC: ', xTotOC);
+               //console.log('xMoneda: ', xMoneda);
+               //console.log('xTot: ', xTot);
+               //console.log('xEngancheTit: ', xEngancheTit);
+               //console.log('% enganche: ', factcond[cotiInd].enganche);
+               //console.log('dhl: ', factcab[0].dhl);
+               //console.log('xEnganche: ', xEnganche);
+               //console.log('xDescuento: ', xDescuento);
+               //console.log('xSaldo: ', xSaldo);
+               //console.log('xFinanciar: ', xFinanciar);
+               //console.log('factcond[cotiInd].meses: ', factcond[cotiInd].meses);
+               //console.log('factcond[cotiInd].interes: ', factcond[cotiInd].interes);
+               //console.log('xPagoMens: ', xPagoMens);
+               //console.log('xTotPag: ', xTotPag);
+               //console.log('xTotal: ', xTotal);
+               //console.log('leftInput: ', leftInput);
                
                doc.text(`${xTotOC}`, leftInput, xhor);
                doc.text(`${xMoneda}${dollarUSLocale.format(xTot- xDhl2)}`,200,xhor,"right");
@@ -356,45 +355,84 @@ const FormfacturaPDF = () => {
             }
          };
       }
-      //* Terminos y condiciones
-
+      xhor += 2;
+//* Terminos y condiciones
       if (xhor>maxhor){
-         console.log("new page")
          doc.addPage()
-         
-         console.log('factcab: ', factcab);
          header(doc, leftInput, leftMargin);
          doc.setFontSize(10);
          xhor = 38;
       } else {
          xhor += 3;
       }
-
       doc.setFont("Times", "bold");
       doc.text(`${xTerminos}`, leftMargin, xhor);
       doc.setFont("Times", "normal");
       xhor += 8;
       for (var i = 0; i < tabla.length; i++) {
-        if (tabla[i].id === xTablaId && tabla[i].cod !== 0) {
+         if (tabla[i].id === xTablaId && tabla[i].cod !== 0) {
+            console.log('Terminos: ', tabla[i].description,xhor);
             doc.text(`${tabla[i].description}`, leftMargin, xhor);
             xhor += 5;
          }
-         if (tabla[i].id === 12 && tabla[i].cod === 1) {
-            xFooter = tabla[i].description
-         }
       }
-      xhor += 5;
-      doc.setDrawColor(0, 0, 193);
-      doc.setLineWidth(0.5);
-      doc.line(3, xhor, 200, xhor);
-      xhor += 8;
-      doc.text(`${xFooter}`, leftMargin, xhor);
+// Fin Terminos y condiciones 
+      if (xhor>maxhor){
+         doc.addPage()
+         header(doc, leftInput, leftMargin);
+         doc.setFontSize(10);
+         xhor = 38;
+      } else {
+         xhor += 5;
+      }
+// Control de Pagina antes del Detalle de pago       
+      if (parseInt(xhor) > 240){
+         doc.addPage()
+         header(doc, leftInput, leftMargin);
+         doc.setFontSize(10);
+         doc.setFont("Times", "normal");
+         xhor = 38;
+      }         
+      linea(doc,xhor)
       xhor +=5
+      for (var ii = 0; ii < tabla.length; ii++) {
+         if (tabla[ii].id === xTabla && tabla[ii].cod !== 0) {
+            if (parseInt(tabla[ii].valor)>=10){ doc.setFontSize(parseInt(tabla[ii].valor)); }
+            if (tabla[ii].control==='B'){ doc.setFont("Times", "bold"); }
+            doc.text(`${tabla[ii].description}`, leftMargin, xhor);
+            console.log('description: ', tabla[ii].description,tabla[ii].valor,xhor);
+            if (xhor>maxhor){
+               doc.addPage()
+               header(doc, leftInput, leftMargin);
+               doc.setFontSize(10);
+               doc.setFont("Times", "normal");
+               xhor = 34;
+               linea(doc,xhor)
+               xhor = 40;
+            } else {
+               xhor += 5;
+            }             
+            if (parseInt(tabla[ii].valor)>=10){ doc.setFontSize(parseInt(10)); }
+            if (tabla[ii].control==='B'){ doc.setFont("Times", "normal");}
+         }
+      }    
+//Footer        
+      for (var xindx = 0; xindx < tabla.length; xindx++) {
+         if (tabla[xindx].id === 12 && tabla[xindx].cod !== 0) {
+             doc.text(`${tabla[xindx].description}`, leftMargin, xhor);
+             xhor += 5;
+          }
+       }
       doc.line(3, xhor, 200, xhor);
       // Linea final
       doc.save(`${pdfFilename}.pdf`);
       window.location.href = "/factura";
    };
+   function linea(doc,xhor){
+      doc.setDrawColor(0, 0, 193);
+      doc.setLineWidth(0.5);
+      doc.line(3, xhor, 200, xhor);
+   }
 
    function producto (doc, texto, xHor, leftMargin, cantCaracteres) {
       var words = texto.split(" ");
@@ -428,11 +466,11 @@ const FormfacturaPDF = () => {
       doc.setFont("Times", "normal");
    }
    function header (doc, leftInput, leftMargin) {
-      console.log('leftMargin: ', leftMargin);
-      console.log('leftInput: ', leftInput);
-      console.log('xOrden: ', xOrden);
-      console.log('xCliente: ', xCliente);
-      console.log('xFecha: ', xFecha);
+      //console.log('leftMargin: ', leftMargin);
+      //console.log('leftInput: ', leftInput);
+      //console.log('xOrden: ', xOrden);
+      //console.log('xCliente: ', xCliente);
+      //console.log('xFecha: ', xFecha);
       doc.setDrawColor(0, 0, 193);
       doc.setLineWidth(1);
       doc.line(5, 3, 200, 3);
@@ -441,6 +479,7 @@ const FormfacturaPDF = () => {
       doc.setFontSize(20);
       doc.text(`${xOrden} N°: ${factcab[0].id}`, 100, 15);
       doc.setFontSize(12);
+      doc.text(`${xCotiz} N°: ${factcab[0].cot_id}`, 120, 22);
       doc.setFont("Times", "normal");
       doc.text(`${xCliente} : `, leftMargin, 30);
       doc.setFont("Times", "bold");
@@ -461,10 +500,10 @@ const FormfacturaPDF = () => {
       ) {
          downloadFileDocument();
       }
-      console.log('factdet: ', factdet);
-      console.log('factcond: ', factcond);
-      console.log('factcab: ', factcab);
-      console.log('tabla: ', tabla);
+      //console.log('factdet: ', factdet);
+      //console.log('factcond: ', factcond);
+      //console.log('factcab: ', factcab);
+      //console.log('tabla: ', tabla);
    return (
       <div id="element-to-hide" data-html2canvas-ignore="true">
          <div>&nbsp;</div>
