@@ -55,7 +55,7 @@ var xCotizacion = "COTIZACION";
 var xDireccion = "Direccion";
 var xTelefono = "Telefono:";
 var XVto = "Vencimiento";
-
+var xTablaPago = 15
 // var xEmail = "E-Mail";
 var xVendedor = "Vendedor";
 var xFooter = ""
@@ -130,6 +130,7 @@ const FormcotizPDF = () => {
          xMoneda = "USD ";
          xCotizacion = "QUOTATION";
          xDescDescrip = "Discount";
+         xTablaPago = 16
       }
       if (cotizacioncab[0].moneda === 2) {
          xTablaId = 11;
@@ -360,6 +361,49 @@ xhor += 8;
             xhor += 5;
          }
       }
+
+
+      // Fin Terminos y condiciones 
+      if (xhor>maxhor){
+         doc.addPage()
+         header(doc, leftInput, leftMargin);
+         doc.setFontSize(10);
+         xhor = 38;
+      } else {
+         xhor += 5;
+      }
+      // Control de Pagina antes del Detalle de pago       
+      if (parseInt(xhor) > 240){
+         doc.addPage()
+         header(doc, leftInput, leftMargin);
+         doc.setFontSize(10);
+         doc.setFont("Times", "normal");
+         xhor = 38;
+      }         
+      linea(doc,xhor)
+      xhor +=5
+      for (var ii = 0; ii < tabla.length; ii++) {
+         if (tabla[ii].id === xTablaPago && tabla[ii].cod !== 0) {
+            if (parseInt(tabla[ii].valor)>=10){ doc.setFontSize(parseInt(tabla[ii].valor)); }
+            if (tabla[ii].control==='B'){ doc.setFont("Times", "bold"); }
+            doc.text(`${tabla[ii].description}`, leftMargin, xhor);
+            console.log('description: ', tabla[ii].description,tabla[ii].valor,xhor);
+            if (xhor>maxhor){
+               doc.addPage()
+               header(doc, leftInput, leftMargin);
+               doc.setFontSize(10);
+               doc.setFont("Times", "normal");
+               xhor = 34;
+               linea(doc,xhor)
+               xhor = 40;
+            } else {
+               xhor += 5;
+            }             
+            if (parseInt(tabla[ii].valor)>=10){ doc.setFontSize(parseInt(10)); }
+            if (tabla[ii].control==='B'){ doc.setFont("Times", "normal");}
+         }
+      }    
+//Footer        
       xhor += 5;
       doc.setDrawColor(0, 0, 193);
       doc.setLineWidth(0.5);
@@ -371,13 +415,19 @@ xhor += 8;
              xhor += 5;
           }
        }
-//      doc.text(`${xFooter}`, leftMargin, xhor);
+// end Footer
       xhor +=5
       doc.line(3, xhor, 200, xhor);
       // Linea final
       doc.save(`${pdfFilename}.pdf`);
       window.location.href = "/cotizacion";
    };
+
+   function linea(doc,xhor){
+      doc.setDrawColor(0, 0, 193);
+      doc.setLineWidth(0.5);
+      doc.line(3, xhor, 200, xhor);
+   }
 
    function producto (doc, texto, xHor, leftMargin, cantCaracteres) {
       var words = texto.split(" ");

@@ -29,7 +29,7 @@ var xUnidad = "Unidad";
 var xDescripcion = "Descripción";
 var xPrecio = "Precio";
 var xCant = "Cant";
-var xTabla = 15
+var xTablaPago = 15
 var xIncluido = "Incluido";
 var xTotPag = "TOTAL A PAGAR";
 var xCond = "Condiciones Generales";
@@ -115,7 +115,7 @@ const FormfacturaPDF = () => {
       if (factcab[0].idioma === 2 ) {
          xCliente = "Client";
          xFecha = "Date";
-         xTabla = 16
+         xTablaPago = 16
          xCalle = "Street";
          xLocalidad = "Postal Code";
          xCiudad = "City";
@@ -396,7 +396,7 @@ const FormfacturaPDF = () => {
       linea(doc,xhor)
       xhor +=5
       for (var ii = 0; ii < tabla.length; ii++) {
-         if (tabla[ii].id === xTabla && tabla[ii].cod !== 0) {
+         if (tabla[ii].id === xTablaPago && tabla[ii].cod !== 0) {
             if (parseInt(tabla[ii].valor)>=10){ doc.setFontSize(parseInt(tabla[ii].valor)); }
             if (tabla[ii].control==='B'){ doc.setFont("Times", "bold"); }
             doc.text(`${tabla[ii].description}`, leftMargin, xhor);
