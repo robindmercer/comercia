@@ -362,7 +362,6 @@ xhor += 8;
          }
       }
 
-
       // Fin Terminos y condiciones 
       if (xhor>maxhor){
          doc.addPage()
