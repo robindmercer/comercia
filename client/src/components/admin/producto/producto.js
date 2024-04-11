@@ -127,6 +127,7 @@ const Producto = () => {
                         dolar: 0,
                         orden: "A1",
                         cod_status: 1,
+                        id_interno:"",
                      }}
                   >
                      {" "}
@@ -195,6 +196,7 @@ const Producto = () => {
                                              dolar: prod.dolar,
                                              orden: prod.orden,
                                              cod_status: prod.cod_status,
+                                             id_interno:prod.id_interno,
                                           }}
                                        >
                                           <FcAcceptDatabase style={estilo} />

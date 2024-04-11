@@ -29,6 +29,10 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING,
             allowNull: false,
         },
+        id_interno: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
        
     },
         { timestamps: false }

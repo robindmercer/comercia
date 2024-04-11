@@ -71,6 +71,7 @@ function ABMProducto() {
       dolar: state ? state.dolar : 0,
       orden: state ? state.orden : "A1",
       cod_status: state ? state.cod_status : "1",
+      id_interno: state ? state.id_interno : "",
    });
 
    const [errors, setErrors] = useState({});
@@ -136,6 +137,20 @@ function ABMProducto() {
                            />
                         </div>
                      ) : null}
+                        <div className="input-group mb-3">
+                           <span class="input-group-text" id="basic-addon1">
+                              Codigo de Producto:
+                           </span>
+                           <input
+                              type="text"
+                              id="id_interno"
+                              name="id_interno"
+                              value={input.id_interno}
+                              onChange={handleChange}
+                              className="form-control"
+                           />
+                        </div>
+
                      <div className="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1">
                            Titulo:
