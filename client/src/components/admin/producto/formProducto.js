@@ -72,6 +72,7 @@ function ABMProducto() {
       orden: state ? state.orden : "A1",
       cod_status: state ? state.cod_status : "1",
       id_interno: state ? state.id_interno : "",
+      stock: state ? state.stock : "",
    });
 
    const [errors, setErrors] = useState({});
@@ -137,19 +138,19 @@ function ABMProducto() {
                            />
                         </div>
                      ) : null}
-                        <div className="input-group mb-3">
-                           <span class="input-group-text" id="basic-addon1">
-                              Codigo de Producto:
-                           </span>
-                           <input
-                              type="text"
-                              id="id_interno"
-                              name="id_interno"
-                              value={input.id_interno}
-                              onChange={handleChange}
-                              className="form-control"
-                           />
-                        </div>
+                     <div className="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">
+                           Codigo de Producto:
+                        </span>
+                        <input
+                           type="text"
+                           id="id_interno"
+                           name="id_interno"
+                           value={input.id_interno}
+                           onChange={handleChange}
+                           className="form-control"
+                        />
+                     </div>
 
                      <div className="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1">
@@ -207,18 +208,36 @@ function ABMProducto() {
                            />
                         </div>
                      </div>
-                     <div className="input-group mb-3 w-50">
-                        <span className="input-group-text">
-                           Orden del Producto:
-                        </span>
-                        <input
-                           type="text"
-                           id="orden"
-                           name="orden"
-                           value={input.orden}
-                           onChange={handleChange}
-                           className="form-control"
-                        />&nbsp;&nbsp;(Solo letras)
+                     <div className="d-flex p-1">
+                        <div className="input-group mb-3 w-40">
+                           <span className="input-group-text">
+                              Orden del Producto (Solo letras):
+                           </span>
+                           <input
+                              type="text"
+                              id="orden"
+                              name="orden"
+                              value={input.orden}
+                              onChange={handleChange}
+                              className="form-control"
+                              />
+                        </div>
+                        <div>
+                        &nbsp;&nbsp;&nbsp;
+                        </div>
+                        <div className="input-group mb-3  w-40">
+                           <span class="input-group-text" id="basic-addon1">
+                              Stock:
+                           </span>
+                           <input
+                              type="text"
+                              id="stock"
+                              name="stock"
+                              value={input.stock}
+                              onChange={handleChange}
+                              className="form-control"
+                           />
+                        </div>
                      </div>
 
                      <div className="input-group mb-3 w-50">
@@ -248,7 +267,10 @@ function ABMProducto() {
                         </select>
                      </div>
                      <div>
-                        <h4>* Acuerdese de grabar la definicion en INGLES de este producto</h4>
+                        <h4>
+                           * Acuerdese de grabar la definicion en INGLES de este
+                           producto
+                        </h4>
                      </div>
                      <div>
                         {btnGrabar ? (
