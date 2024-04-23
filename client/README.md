@@ -1,6 +1,6 @@
 <img src="./src/images/Nibbot.svg" align="center"
      alt="logo" width="220" height="178">
-## NIBBOT Administracion APP
+## NIBBOT Administración APP
 
 ## Table Of Content
 - [Access Definition](#access-definition)
