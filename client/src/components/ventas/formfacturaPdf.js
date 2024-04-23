@@ -26,7 +26,8 @@ var xLocalidad = "Localidad CP";
 var xCiudad = "Ciudad";
 var xPais = "Pais";
 var xUnidad = "Unidad";
-var xDescripcion = "Descripción";
+var xDescripcion = "Producto";
+var xDescripcion2 = "Descripción";
 var xPrecio = "Precio";
 var xCant = "Cant";
 var xTablaPago = 15
@@ -48,6 +49,8 @@ var xOrden = "Orden de Compra";
 var xCotiz = "COTIZACION";
 var xMoneda = "$";
 var xVendedor = "Vendedor";
+var xDscto = "Dto."
+var kl = 0
 // var xFooter = ""
 var xTotOC = "TOTAL O.C.";
 var xDescDescrip = "Descuento";
@@ -121,7 +124,8 @@ const FormfacturaPDF = () => {
          xCiudad = "City";
          xPais = "Country";
          xUnidad = "Units";
-         xDescripcion = "Description";
+         xDescripcion = "Product";
+         xDescripcion2 = "Description";
          xPrecio = "Price";
          xCant = "Amount";
          xTotPag = "Total Payment USD";
@@ -141,6 +145,7 @@ const FormfacturaPDF = () => {
          xMoneda = "USD ";
          xTotOC = "Total PURCHASE ORDER";
          xDescDescrip = "Discount";
+         xDscto = "Dis."
       }
       if (factcab[0].moneda === 2) {
          xTablaId = 11;
@@ -197,6 +202,8 @@ const FormfacturaPDF = () => {
       xhor += 8;
 //   Productos
       for (let prodIndx = 0; prodIndx < factdet.length; prodIndx++) {
+         kl += 1
+
          xProdName = factdet[prodIndx].name;
          xProdDescrip = factdet[prodIndx].description;
          if (factcab[0].moneda === 2) {
@@ -205,11 +212,14 @@ const FormfacturaPDF = () => {
          if (factcab[0].moneda === 2) {
             xProdDescrip = factdet[prodIndx].descripext;
          }
-         xhorNew = producto(doc, xProdName, xhor, leftMargin , 18);
-         xhorNew = producto(doc, xProdDescrip, xhor, leftMargin + 43, 49);
+         xhorNew = producto(doc, kl + ' ', xhor, leftMargin , 5);
+         xhorNew = producto(doc, `${factdet[prodIndx].id_interno} `, xhor, leftMargin + 5 , 18);
+         xhorNew = producto(doc, xProdName, xhor, leftMargin + 22, 18);
+         xhorNew = producto(doc, xProdDescrip, xhor, leftMargin + 57, 49);
          if (factdet[prodIndx].precio > 0) {
-            doc.text(`${factdet[prodIndx].cantidad}`,leftMargin + 150,xhor,"right");
-            doc.text(`${xMoneda}${dollarUSLocale.format(factdet[prodIndx].precio)}`,leftMargin + 175,xhor,"right");
+            doc.text(`${factdet[prodIndx].cantidad}`,leftMargin + 148,xhor,"right");
+            doc.text(`${xMoneda}${dollarUSLocale.format(factdet[prodIndx].precio)}`,leftMargin + 165,xhor,"right");
+            doc.text(`${dollarUSLocale.format(factdet[prodIndx].descto)}%`,leftMargin + 182,xhor,"right");
             doc.text(`${xMoneda}${dollarUSLocale.format(factdet[prodIndx].total)}`,leftMargin + 200,xhor,"right");
          } else {
             doc.setFont("Times", "bold");
@@ -456,10 +466,13 @@ const FormfacturaPDF = () => {
 
    function unidades (doc, leftInput, leftMargin,xhor) {
       doc.setFontSize(10);
+      doc.text('#', leftMargin, xhor);
       doc.text(xUnidad, leftMargin, xhor);
-      doc.text(xDescripcion, leftMargin + 43, xhor);
+      doc.text(xDescripcion, leftMargin + 22, xhor);
+      doc.text(xDescripcion2, leftMargin + 57, xhor);
       doc.text(xCant, leftMargin + 140, xhor);
-      doc.text(xPrecio, leftMargin + 175, xhor, "right");
+      doc.text(xPrecio, leftMargin + 165, xhor, "right");
+      doc.text(xDscto, leftMargin + 180, xhor, "right");
       doc.text(xImporte, leftMargin + 195, xhor, "right");
       doc.setLineWidth(0.5);
       doc.line(leftMargin, xhor + 2, 205, xhor + 2);
@@ -495,7 +508,7 @@ const FormfacturaPDF = () => {
    if (
       factdet.length > 0 &&
       factcab.length > 0 &&
-      factcond.length > 0 &&
+      // factcond.length > 0 &&
       tabla.length > 0
       ) {
          downloadFileDocument();
@@ -511,7 +524,7 @@ const FormfacturaPDF = () => {
          <h3>Generando PDF</h3>
          {factcab.length  > 0 ? (<p>Cabecera ok</p>) : (<p>Buscando Cabecera</p>)}
          {factdet.length  > 0 ? (<p>Productos ok</p>) : (<p>Buscando Productos</p>)}
-         {factcond.length > 0 ? (<p>C.pago ok</p>) : (<p>Buscando C.Pago</p>)  }
+         {/* {factcond.length > 0 ? (<p>C.pago ok</p>) : (<p>Buscando C.Pago</p>)  } */}
          {tabla.length    > 0 ? (<p>Tablas ok</p>) : (<p>Busando Tablas</p>)}
       
          <p>Por Favor Espere... </p>
