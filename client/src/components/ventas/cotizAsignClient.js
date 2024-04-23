@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { getClienteDir } from "../../actions/cliente";
+import { getCliente, getClienteByName } from "../../actions/cliente";
 import { cotiToFact } from "../../actions/factura";
 
 import "../admin/condiciones/add.css";
@@ -14,29 +14,20 @@ const AsignCli = (cotid) => {
    const { cliente } = useSelector((state) => state);
    const [nombre, setName] = useState("");
    const dispatch = useDispatch();
-   var ant = "";
+
    const [input, setInput] = useState({
       cli_id: "",
       cot_id: 0,
-      dir_id: 0,
    });
 
    useEffect(() => {
-      dispatch(getClienteDir());
+      dispatch(getCliente());
    }, [dispatch]);
 
    function handlePerfil(e) {
       e.preventDefault();
-      if (e.target.name ==="cliente"){
-         input.cli_id=e.target.value
-         setCliid(e.target.value);
-      }
-      
-      if (e.target.name ==="domic"){
-         input.dir_id=e.target.value
-      }
-      
-      console.log("e.target.value: ", e.target.value, input);
+      console.log("e.target.value: ", e.target.value);
+      setCliid(e.target.value);
       if (onChange) {
          setOnChange(false);
       } else {
@@ -59,8 +50,6 @@ const AsignCli = (cotid) => {
       }
    };
 
-   console.log('cliente: ', cliente);
-
    return (
       <Form onSubmit={handleSubmit}>
          <table>
@@ -77,55 +66,20 @@ const AsignCli = (cotid) => {
                      >
                         <option value="0">Seleccionar</option>
                         {cliente.map((perf) => {
-                           var nombre = perf.nombre + " " + perf.apellido;
-                           if (nombre.indexOf(perf.razsoc) < 0) {
-                              nombre += " - " + perf.razsoc;
+                           var nombre = perf.nombre + ' ' + perf.apellido
+                           if (nombre.indexOf(perf.razsoc) < 0){
+                               nombre += ' - ' + perf.razsoc
                            }
-                           if (nombre !== ant) {
-                              ant = nombre;
-                              return (
-                                 <option
-                                    value={perf.id}
-                                    key={perf.id}
-                                 >{`${nombre}`}</option>
-                              );
-                           } else {
-                              return null;
-                           }
+                           return (
+                              <option
+                                 value={perf.id}
+                                 key={perf.id}
+                              >{`${nombre}`}</option>
+                           );
                         })}
                      </select>
                   </td>
                </tr>
-               {cliid > 0 ? (
-                  <tr>
-                     <td>Entrega</td>
-                     <td>
-                        <select
-                           className="selWidth"
-                           name="domic"
-                           id="domic"
-                           onChange={(e) => handlePerfil(e)}
-                           value={input.dirId}
-                        >
-                           <option value="0">Seleccionar</option>
-                           {cliente.map((direc) => {
-                              var nombre = 
-                                 direc.dirdes + " : " + direc.cc + " " + direc.dd + " " + direc.cui + " " +direc.dd;
-                              if (parseInt(direc.id) === parseInt(input.cli_id)){
-                              return (
-                                 <option
-                                    value={direc.dirid}
-                                    key={direc.dirid}
-                                 >{`${nombre}`}</option>
-                              );} else{
-                                 return (
-                                    null
-                                 )}
-                           })}
-                        </select>
-                     </td>
-                  </tr>
-               ) : null}
             </tbody>
          </table>
          <Button variant="success" type="submit" block>

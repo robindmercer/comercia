@@ -117,8 +117,9 @@ const Formcotizacion = () => {
       vendedor: cookies.get("usuario"),
       fecha: new Date().toLocaleDateString("en-GB"),
       vencimiento: formattedDate,
+      
    });
-   
+
    const [inputDet, setInputDet] = useState({
       cot_id: 0,
       orden: 0,
@@ -126,7 +127,6 @@ const Formcotizacion = () => {
       precio: 0,
       cantidad: 0,
       total: 0,
-      descto: 0
    });
 
    const initialProductLine = {
@@ -137,7 +137,6 @@ const Formcotizacion = () => {
       orden: factcab.length,
       precio: 0,
       total: 0,
-      descto:0,
    };
 
    const condGral = {
@@ -224,31 +223,26 @@ const Formcotizacion = () => {
             const quantityNumber = parseFloat(fact.cantidad);
             if (fact.precio > 0) {
                const rateNumber = parseFloat(fact.precio);
-               var amount =
+               const amount =
                   quantityNumber && rateNumber
-                     ? quantityNumber * rateNumber 
+                     ? quantityNumber * rateNumber
                      : 0;
-               if (fact.descto !== 0) {
-                  amount = amount - (amount * fact.descto / 100)
-               }
-               subTotal += parseInt(amount);
+               subTotal += amount;
             }
          });
          setSubTotal(subTotal);
          if (subTotal > 0) {
             if (xMoneda === "1") {
-               iva = parseInt(subTotal * (parseFloat(porciva) / 100));
+               iva = subTotal * (parseFloat(porciva) / 100);
                setSaleTax(iva);
             }
-            total = parseInt(subTotal + iva);
-            setSaleTax(iva);
+            total = subTotal + iva;
             setTotal(total);
          } else {
             setSaleTax(0);
             setTotal(0);
          }
       }
-      //console.log('subTotal: ', subTotal,'Iva',iva);
    }, [onChange, factdet, porciva, cliente]);
 
    useEffect(() => {
@@ -258,11 +252,9 @@ const Formcotizacion = () => {
          factdet.forEach((fact) => {
             const quantityNumber = parseFloat(fact.cantidad);
             const rateNumber = parseFloat(fact.precio);
-            var amount =
+            const amount =
                quantityNumber && rateNumber ? quantityNumber * rateNumber : 0;
-            if (fact.descto !== 0) {
-               amount = amount - (amount * fact.descto / 100)
-            }
+
             aux += amount;
          });
 
@@ -276,7 +268,7 @@ const Formcotizacion = () => {
          // }
          if (subTotal > 0) {
             if (xMoneda === "1") {
-               iva = parseInt(aux * (parseFloat(porciva) / 100));
+               iva = aux * (parseFloat(porciva) / 100);
             }
             setSaleTax(iva);
             if (saleDHL.length === 0) setSaleDHL(0);
@@ -308,7 +300,7 @@ const Formcotizacion = () => {
       factdet[i].total = -1;
       if (onChange) {
          setOnChange(false);
-       } else {
+      } else {
          setOnChange(true);
       }
    };
@@ -316,22 +308,21 @@ const Formcotizacion = () => {
       for (var y = 0; y < factdet.length; y++) {
          for (var z = 0; z < producto.length; z++) {
             if (parseInt(producto[z].id) === parseInt(factdet[y].prod_id)) {
-               // console.log(
-               //    " in: ",
-               //    producto[z].id,
-               //    factdet[y].precio,
-               //    "xMoneda",
-               //    xMoneda,
-               //    producto[z].dolar
-               // );
+               console.log(
+                  " in: ",
+                  producto[z].id,
+                  factdet[y].precio,
+                  "xMoneda",
+                  xMoneda,
+                  producto[z].dolar
+               );
                if (xMoneda === "2") {
                   factdet[y].precio = producto[z].dolar;
                } else {
                   factdet[y].precio = producto[z].price;
                }
-               // console.log("out: ", factdet[y].precio);
-            // factdet[y].total = factdet[y].cantidad * factdet[y].precio;
-               factdet[y].total = parseInt(factdet[y].cantidad * (factdet[y].precio - (factdet[y].precio * (factdet[y].descto/100))));
+               console.log("out: ", factdet[y].precio);
+               factdet[y].total = factdet[y].cantidad * factdet[y].precio;
             }
          }
       }
@@ -349,15 +340,15 @@ const Formcotizacion = () => {
    const handleSubmit = () => {
       var newDate1 = fecha.split("/");
       const newdate = newDate1[2] + newDate1[1] + newDate1[0];
-      //console.log('saleTax: ', saleTax);
+      // console.log('saleTax: ', saleTax);
       // console.log('Total: ', total);
       factcab[0].subtotal = subTotal;
       factcab[0].iva = saleTax.toFixed(0);
-      factcab[0].total = parseInt(total)
+      factcab[0].total = total.toFixed(0);
       factcab[0].dir_id = parseInt(xMoneda);
       setInput((input.subtotal = subTotal));
       setInput((input.iva = saleTax));
-      setInput((input.total = parseInt(total)));
+      setInput((input.total = total));
       setInput((input.dir_id = 0));
       setInput((input.cli_id = 0));
       setInput((input.fecha = newdate));
@@ -433,9 +424,9 @@ const Formcotizacion = () => {
 
    // }
    function handleTipo(e, i) {
-      // if (e.key === "Enter") {
-      //    console.log("hola", e.target.value,e.key)
-      // }
+      if (e.key === "Enter") {
+         console.log("hola", e.target.value)
+      }
       e.preventDefault(); 
       console.log("handleTipo: ", e.target.name, e.target.value,e.key);
       if (e.target.name === "telefono") {
@@ -487,16 +478,10 @@ const Formcotizacion = () => {
          setSaleDHL(e.target.value);
       }
       if (e.target.name === "miCheck") {
-         console.log('in: ', condiciones);
-         // for (var xcond = 0; xcond < condiciones.length; xcond++) {
-            //    condiciones[xcond].sel = " ";       
-            // }
-            if (condiciones[i.i].sel !== "S") {
-               condiciones[i.i].sel = "S";
-            } else {
-               condiciones[i.i].sel = "";
-            }
-         console.log('out: ', condiciones[i.i].sel);
+         for (var xcond = 0; xcond < condiciones.length; xcond++) {
+            condiciones[xcond].sel = " ";
+         }
+         condiciones[i.i].sel = "S";
          //console.log("miCheck condiciones: ", condiciones);
          if (onChange) {
             setOnChange(false);
@@ -504,9 +489,9 @@ const Formcotizacion = () => {
             setOnChange(true);
          }
       }
-      // if (e.target.name === "CGdesc") {
-      //    condiciones[i.i].descuento = e.target.value.replace(",", ".");
-      // }
+      if (e.target.name === "CGdesc") {
+         condiciones[i.i].descuento = e.target.value.replace(",", ".");
+      }
       if (e.target.name === "CGenganche") {
          condiciones[i.i].enganche = e.target.value.replace(",", ".");
       }
@@ -554,17 +539,6 @@ const Formcotizacion = () => {
             setOnChange(true);
          }
       }
-      if (e.target.name === "descuento") {
-         factdet[i.i].descto = e.target.value;
-         factdet[i.i].total = parseInt(factdet[i.i].cantidad * (factdet[i.i].precio - (factdet[i.i].precio * (e.target.value/100))));
-         // console.log('descto: ', factdet[i.i].descto);
-         // console.log('total: ', factdet[i.i].total);
-         if (onChange) {
-            setOnChange(false);
-         } else {
-            setOnChange(true);
-         }
-      }
       if (e.target.name === "prod_id") {
          console.log(
             "e.target.name: ",
@@ -585,7 +559,7 @@ const Formcotizacion = () => {
                      factdet[i.i].precio = producto[z].price;
                   }
                   factdet[i.i].total =
-                     parseInt(factdet[i.i].cantidad * factdet[i.i].precio - (factdet[i.i].precio * factdet[i.i].descto / 100 ));
+                     factdet[i.i].cantidad * factdet[i.i].precio;
                      break;
                   } else {
 
@@ -649,8 +623,7 @@ const Formcotizacion = () => {
                   cot_id: 0,
                   orden: producto[zz].orden,
                   precio: newPrecio,
-                  total: parseInt(newPrecio),
-                  descto:0
+                  total: parseInt(newPrecio)
                }
                );
                console.log('Indice: ',indx, factdet[indx].prod_id );
@@ -787,7 +760,6 @@ const Formcotizacion = () => {
                                  <th>Descripcion</th>
                                  <th>Precio</th>
                                  <th>Cantidades</th>
-                                 <th>Descuento</th>
                                  <th>Total</th>
                                  <th colSpan={2}>Opciones</th>
                               </tr>
@@ -832,20 +804,6 @@ const Formcotizacion = () => {
                                                    id="quantity"
                                                    name="quantity"
                                                    value={fact.cantidad}
-                                                   onChange={(e) =>
-                                                      handleTipo(e, { i })
-                                                   }
-                                                ></input>
-                                             </td>
-                                          ) : null}
-                                          {fact.precio > 0 ? (
-                                             <td>
-                                                <input
-                                                   className="input_fact"
-                                                   type="text"
-                                                   id="descuento"
-                                                   name="descuento"
-                                                   value={fact.descto}
                                                    onChange={(e) =>
                                                       handleTipo(e, { i })
                                                    }
@@ -988,7 +946,7 @@ const Formcotizacion = () => {
                               <thead>
                                  <tr className="table-success">
                                     <th>Metodo de Pago</th>
-                                    {/* <!--th>Descuento</th--> */}
+                                    <th>Descuento</th>
                                     <th>Enganche</th>
                                     <th>Meses</th>
                                     <th>Interes Anual</th>
@@ -1000,8 +958,8 @@ const Formcotizacion = () => {
                                     condiciones.map((cond, i) => {
                                        if (cond.sel === "S") {
                                           var xTotal2 = total - saleDHL;
-                                          var xDescuento = 0
-                                             // (total * cond.descuento) / 100;
+                                          var xDescuento =
+                                             (total * cond.descuento) / 100;
                                           xTotal2 = xTotal2 - xDescuento;
                                           var xEnganche =
                                              (xTotal2 * cond.enganche) / 100;
@@ -1018,64 +976,64 @@ const Formcotizacion = () => {
                                           aux2 += parseInt(saleDHL);
                                           var xTotal = parseInt(aux2) ;
                                           // console.log('xTotal robin: ', parseInt(xTotal),saleDHL);
-                                          // if (cond.id === 1) {
-                                          //    xEnganche = 0;
-                                          //    xFinanciar = 0;
-                                          //    xTotal = total;
-                                          //    return (
-                                          //       <>
-                                          //          <tr key={i + 100}>
-                                          //             <td>
-                                          //                {cond.nombre} {i}
-                                          //             </td>
-                                          //             <td colSpan={4}>
-                                          //                &nbsp;
-                                          //             </td>
-                                          //             <td>
-                                          //                <input
-                                          //                   type="checkbox"
-                                          //                   id="miCheck"
-                                          //                   name="miCheck"
-                                          //                   checked
-                                          //                   onChange={(e) =>
-                                          //                      handleTipo(e, {
-                                          //                         i,
-                                          //                      })
-                                          //                   }
-                                          //                ></input>
-                                          //             </td>
-                                          //          </tr>
-                                          //          <tr key={i + 120}>
-                                          //             <td>&nbsp;</td>
-                                          //             <td colSpan={3}>
-                                          //                Total a Pagar
-                                          //             </td>
-                                          //             <td className="totaltr">
-                                          //                {dollarUSLocale.format(
-                                          //                   parseInt(xTotal)
-                                          //                )}
-                                          //             </td>
-                                          //          </tr>
-                                          //       </>
-                                          //    );
-                                          // }
-                                          // if (cond.id === 2) {
-                                          //    xEnganche = 0;
-                                          //    xFinanciar = 0;
-                                          //    var aux = total - saleDHL
-                                          //    console.log('aux0: ',aux,saleDHL);
-                                          //    aux = parseInt(aux - (aux * cond.descuento) / 100);
-                                          //    console.log('aux1: ', aux);
-                                          //    aux += parseInt(saleDHL);
-                                          //    console.log('aux2: ', aux,saleDHL);
-                                          //    xTotal = parseInt(aux)
-                                          //    console.log('xTotal: ', xTotal,aux,saleDHL);
-                                          // }
+                                          if (cond.id === 1) {
+                                             xEnganche = 0;
+                                             xFinanciar = 0;
+                                             xTotal = total;
+                                             return (
+                                                <>
+                                                   <tr key={i + 100}>
+                                                      <td>
+                                                         {cond.nombre} {i}
+                                                      </td>
+                                                      <td colSpan={4}>
+                                                         &nbsp;
+                                                      </td>
+                                                      <td>
+                                                         <input
+                                                            type="radio"
+                                                            id="miCheck"
+                                                            name="miCheck"
+                                                            checked
+                                                            onChange={(e) =>
+                                                               handleTipo(e, {
+                                                                  i,
+                                                               })
+                                                            }
+                                                         ></input>
+                                                      </td>
+                                                   </tr>
+                                                   <tr key={i + 120}>
+                                                      <td>&nbsp;</td>
+                                                      <td colSpan={3}>
+                                                         Total a Pagar
+                                                      </td>
+                                                      <td className="totaltr">
+                                                         {dollarUSLocale.format(
+                                                            parseInt(xTotal)
+                                                         )}
+                                                      </td>
+                                                   </tr>
+                                                </>
+                                             );
+                                          }
+                                          if (cond.id === 2) {
+                                             xEnganche = 0;
+                                             xFinanciar = 0;
+                                             var aux = total - saleDHL
+                                             console.log('aux0: ',aux,saleDHL);
+                                             aux = parseInt(aux - (aux * cond.descuento) / 100);
+                                             console.log('aux1: ', aux);
+                                             aux += parseInt(saleDHL);
+                                             console.log('aux2: ', aux,saleDHL);
+                                             xTotal = parseInt(aux)
+                                             console.log('xTotal: ', xTotal,aux,saleDHL);
+                                          }
                                           return (
                                              <>
                                                 <tr key={i + 130}>
                                                    <td>{cond.nombre}</td>
-                                                   {/* <td>
+                                                   <td>
                                                       <input
                                                          className="input_fact"
                                                          type="text"
@@ -1087,7 +1045,7 @@ const Formcotizacion = () => {
                                                          }
                                                       ></input>
                                                       %
-                                                   </td> */}
+                                                   </td>
                                                    <td>
                                                       <input
                                                          className="input_fact"
@@ -1128,7 +1086,7 @@ const Formcotizacion = () => {
                                                    </td>
                                                    <td>
                                                       <input
-                                                         type="checkbox"
+                                                         type="radio"
                                                          id="miCheck"
                                                          name="miCheck"
                                                          checked
@@ -1214,7 +1172,7 @@ const Formcotizacion = () => {
                                           return (
                                              <tr key={i}>
                                                 <td>{cond.nombre}</td>
-                                                {/* <td>
+                                                <td>
                                                    <input
                                                       className="input_fact"
                                                       type="text"
@@ -1226,7 +1184,7 @@ const Formcotizacion = () => {
                                                       }
                                                    ></input>
                                                    %
-                                                </td> */}
+                                                </td>
                                                 <td>
                                                    <input
                                                       className="input_fact"
@@ -1267,7 +1225,7 @@ const Formcotizacion = () => {
                                                 </td>
                                                 <td>
                                                    <input
-                                                      type="checkbox"
+                                                      type="radio"
                                                       id="miCheck"
                                                       name="miCheck"
                                                       onChange={(e) =>

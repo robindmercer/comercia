@@ -72,7 +72,6 @@ function Formfactura() {
       precio: 0,
       cantidad: 0,
       total: 0,
-      descto: 0,
    });
 
    const [input, setInput] = useState({
@@ -93,7 +92,6 @@ function Formfactura() {
       precio: 0,
       prod_id: "",
       total: 0,
-      descto: 0,
    };
    const initialFacdet = {
       id: 0,
@@ -141,13 +139,10 @@ function Formfactura() {
                if (fact.precio > 0) {
                   const quantityNumber = parseFloat(fact.cantidad);
                   const rateNumber = parseFloat(fact.precio);
-                  var amount =
+                  const amount =
                      quantityNumber && rateNumber
                         ? quantityNumber * rateNumber
                         : 0;
-                  if (fact.descto !== 0) {
-                     amount = amount - (amount * fact.descto) / 100;
-                  }
                   subTotal += amount;
                }
             });
@@ -181,11 +176,9 @@ function Formfactura() {
          factdet.forEach((fact) => {
             const quantityNumber = parseFloat(fact.cantidad);
             const rateNumber = parseFloat(fact.precio);
-            var amount =
+            const amount =
                quantityNumber && rateNumber ? quantityNumber * rateNumber : 0;
-            if (fact.descto !== 0) {
-               amount = amount - (amount * fact.descto / 100)
-               } 
+
             aux += amount;
          });
 
@@ -240,17 +233,11 @@ function Formfactura() {
       // console.log("e.target.name: ", e.target.name);
       // console.log("e.target.value: ", e.target.value);
       if (e.target.name === "miCheck") {
-         // for (var xcond = 0; xcond < condiciones.length; xcond++) {
-         //    condiciones[xcond].sel = " ";
-         // }
-         // condiciones[i.i].sel = "S";
-         // console.log("miCheck condiciones: ", condiciones);
-         if (condiciones[i.i].sel !== "S") {
-            condiciones[i.i].sel = "S";
-         } else {
-            condiciones[i.i].sel = "";
+         for (var xcond = 0; xcond < condiciones.length; xcond++) {
+            condiciones[xcond].sel = " ";
          }
-
+         condiciones[i.i].sel = "S";
+         console.log("miCheck condiciones: ", condiciones);
          if (onChange) {
             setOnChange(false);
          } else {
@@ -305,18 +292,6 @@ function Formfactura() {
             setOnChange(true);
          }
       }
-      if (e.target.name === "descuento") {
-         factdet[i.i].descto = e.target.value;
-         factdet[i.i].total = parseInt(factdet[i.i].cantidad * (factdet[i.i].precio - (factdet[i.i].precio * (e.target.value/100))));
-         console.log('descto: ', factdet[i.i].descto);
-         console.log('total: ', factdet[i.i].total);
-         if (onChange) {
-            setOnChange(false);
-         } else {
-            setOnChange(true);
-         }
-      } 
-
       if (e.target.name === "prod_id") {
          if (e.target.value === "0") {
             handleRemove(i.i);
@@ -329,7 +304,7 @@ function Formfactura() {
                      factdet[i.i].name = producto[z].name;
                      factdet[i.i].precio = producto[z].price;
                      factdet[i.i].total =
-                        factdet[i.i].cantidad * factdet[i.i].precio - (factdet[i.i].precio * factdet[i.i].descto / 100 );;
+                        factdet[i.i].cantidad * factdet[i.i].precio;
                   } else {
                      Swal.fire({
                         title: "Aviso...",
@@ -511,7 +486,6 @@ function Formfactura() {
                                  <th>Descripcion</th>
                                  <th>Precio</th>
                                  <th>Cantidades</th>
-                                 <th>Dto.</th>
                                  <th>Total</th>
                                  <th>&nbsp;</th>
                               </tr>
@@ -540,9 +514,6 @@ function Formfactura() {
                                           {fact.precio > 0 ? (
                                              <td>{fact.cantidad}</td>
                                           ) : null}
-                                          {fact.precio > 0 ? (
-                                             <td>{fact.descto}</td>
-                                          ) : null}                                             
                                           {fact.precio > 0 ? (
                                              <td className="totaltr">
                                                 {dollarUSLocale.format(
@@ -668,6 +639,7 @@ function Formfactura() {
                               <thead>
                                  <tr className="table-success">
                                     <th>Metodo de Pago</th>
+                                    <th>Descuento</th>
                                     <th>Enganche</th>
                                     <th>Meses</th>
                                     <th>Interes Anual</th>
@@ -679,8 +651,8 @@ function Formfactura() {
                                     condiciones.map((cond, i) => {
                                        if (cond.sel === "S") {
                                           var xTotal2 = total - saleDHL;
-                                          var xDescuento = 0
-                                             // (total * cond.descuento) / 100;
+                                          var xDescuento =
+                                             (total * cond.descuento) / 100;
                                           xTotal2 = xTotal2 - xDescuento;
                                           var xEnganche =
                                              (xTotal2 * cond.enganche) / 100;
@@ -697,65 +669,78 @@ function Formfactura() {
                                           aux2 += parseInt(saleDHL);
                                           var xTotal = parseInt(aux2);
                                           // var xTotal = xPagoMens * cond.meses;
-                                          // if (cond.id === 1) {
-                                          //    xEnganche = 0;
-                                          //    xFinanciar = 0;
-                                          //    xTotal = total;
-                                          //    return (
-                                          //       <>
-                                          //          <tr key={i + 100}>
-                                          //             <td>{cond.nombre}</td>
-                                          //             <td colSpan={4}>
-                                          //                &nbsp;
-                                          //             </td>
-                                          //             <td>
-                                          //                <input
-                                          //                   type="checkbox"
-                                          //                   id="miCheck"
-                                          //                   name="miCheck"
-                                          //                   checked
-                                          //                   onChange={(e) =>
-                                          //                      handleTipo(e, {
-                                          //                         i,
-                                          //                      })
-                                          //                   }
-                                          //                ></input>
-                                          //             </td>
-                                          //          </tr>
-                                          //          <tr key={i + 120}>
-                                          //             <td>&nbsp;</td>
-                                          //             <td colSpan={3}>
-                                          //                Total a Pagar
-                                          //             </td>
-                                          //             <td className="totaltr">
-                                          //                {dollarUSLocale.format(
-                                          //                   xTotal.toFixed(0)
-                                          //                )}
-                                          //             </td>
-                                          //          </tr>
-                                          //       </>
-                                          //    );
-                                          // }
-                                          // if (cond.id === 2) {
-                                          //    xEnganche = 0;
-                                          //    xFinanciar = 0;
-                                          //    var aux = total - saleDHL;
-                                          //    aux = parseInt(
-                                          //       aux -
-                                          //          (aux * cond.descuento) / 100
-                                          //    );
-                                          //    aux += parseInt(saleDHL);
-                                          //    xTotal = parseInt(aux);
-                                          //    // xEnganche = 0;
-                                          //    // xFinanciar = 0;
-                                          //    // xTotal =
-                                          //    //    total -
-                                          //    //    (total * cond.descuento) / 100;
-                                          // }
+                                          if (cond.id === 1) {
+                                             xEnganche = 0;
+                                             xFinanciar = 0;
+                                             xTotal = total;
+                                             return (
+                                                <>
+                                                   <tr key={i + 100}>
+                                                      <td>{cond.nombre}</td>
+                                                      <td colSpan={4}>
+                                                         &nbsp;
+                                                      </td>
+                                                      <td>
+                                                         <input
+                                                            type="radio"
+                                                            id="miCheck"
+                                                            name="miCheck"
+                                                            checked
+                                                            onChange={(e) =>
+                                                               handleTipo(e, {
+                                                                  i,
+                                                               })
+                                                            }
+                                                         ></input>
+                                                      </td>
+                                                   </tr>
+                                                   <tr key={i + 120}>
+                                                      <td>&nbsp;</td>
+                                                      <td colSpan={3}>
+                                                         Total a Pagar
+                                                      </td>
+                                                      <td className="totaltr">
+                                                         {dollarUSLocale.format(
+                                                            xTotal.toFixed(0)
+                                                         )}
+                                                      </td>
+                                                   </tr>
+                                                </>
+                                             );
+                                          }
+                                          if (cond.id === 2) {
+                                             xEnganche = 0;
+                                             xFinanciar = 0;
+                                             var aux = total - saleDHL;
+                                             aux = parseInt(
+                                                aux -
+                                                   (aux * cond.descuento) / 100
+                                             );
+                                             aux += parseInt(saleDHL);
+                                             xTotal = parseInt(aux);
+                                             // xEnganche = 0;
+                                             // xFinanciar = 0;
+                                             // xTotal =
+                                             //    total -
+                                             //    (total * cond.descuento) / 100;
+                                          }
                                           return (
                                              <>
                                                 <tr key={i + 130}>
                                                    <td>{cond.nombre}</td>
+                                                   <td>
+                                                      <input
+                                                         className="input_fact"
+                                                         type="text"
+                                                         id="CGdesc"
+                                                         name="CGdesc"
+                                                         value={cond.descuento}
+                                                         onChange={(e) =>
+                                                            handleTipo(e, { i })
+                                                         }
+                                                      ></input>
+                                                      %
+                                                   </td>
                                                    <td>
                                                       <input
                                                          className="input_fact"
@@ -796,7 +781,7 @@ function Formfactura() {
                                                    </td>
                                                    <td>
                                                       <input
-                                                         type="checkbox"
+                                                         type="radio"
                                                          id="miCheck"
                                                          name="miCheck"
                                                          checked
@@ -888,6 +873,19 @@ function Formfactura() {
                                                    <input
                                                       className="input_fact"
                                                       type="text"
+                                                      id="CGdesc"
+                                                      name="CGdesc"
+                                                      value={cond.descuento}
+                                                      onChange={(e) =>
+                                                         handleTipo(e, { i })
+                                                      }
+                                                   ></input>
+                                                   %
+                                                </td>
+                                                <td>
+                                                   <input
+                                                      className="input_fact"
+                                                      type="text"
                                                       id="CGenganche"
                                                       name="CGenganche"
                                                       value={cond.enganche}
@@ -924,7 +922,7 @@ function Formfactura() {
                                                 </td>
                                                 <td>
                                                    <input
-                                                      type="checkbox"
+                                                      type="radio"
                                                       id="miCheck"
                                                       name="miCheck"
                                                       onChange={(e) =>

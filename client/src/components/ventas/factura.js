@@ -28,8 +28,7 @@ const Factura = () => {
   const [datos, setDatos] = useState({
     sql1:"",
     sql2:"",
-    sql3:"",
-    sql4:""
+    sql3:""
  }); 
   // const location = useLocation();
   // const { state } = location;
@@ -205,20 +204,20 @@ const Factura = () => {
       // control = "N";
       // Devuelvo materia prima al Stock 
       if (newStatus === 5 ){
-
-        sql = `update materiaprima set stock = stock + prodmp.cantidad `
-        sql = sql +  ` from prodmp, factdet `
-        sql = sql +  ` where factdet.fac_id = ${found.id} `
-        sql = sql +  `  and prodmp.prod_id = factdet.prod_id`
-        sql = sql +  `  and materiaprima.name  = prodmp.mp_name`
+        sql = `update materiaprima set stock = stock + t1.pedido  `
+        sql = sql +  ` from (`
+        sql = sql +  `  select materiaprima.name MPID, `
+        sql = sql +  `    sum(prodmp.cantidad * factdet.cantidad) as Pedido `
+        sql = sql +  `    from productos  `
+        sql = sql +  `    join prodmp on prodmp.prod_id = productos.id `
+        sql = sql +  `    join materiaprima on materiaprima.name = prodmp.mp_name `
+        sql = sql +  `    join factdet on fac_id = ${found.id} `
+        sql = sql +  `    where productos.id =  factdet.prod_id `
+        sql = sql +  `    group by fac_id,materiaprima.name, `
+        sql = sql +  `    materiaprima.description,materiaprima.udm,materiaprima.stock`
+        sql = sql +  `  ) t1`
+        sql = sql +  ` where name = t1.MPID`;
         setDatos(datos.sql1 = sql)
-        
-        sql = `update productos set stock = stock - cantidad `
-        sql = sql  & ` from factdet `
-        sql = sql  & ` where fac_id =  ${found.id} `
-        sql = sql  & ` and prod_id = id`  
-        setDatos(datos.sql2 = sql)            
-
         console.log('RunsqlPost: ',sql, found.id);
         dispatch(RunSqlPost(datos))
       }      
@@ -290,23 +289,26 @@ const Factura = () => {
 
     // Actualizo Stock 
     if (actStock ){
-      sql = `update materiaprima set stock = stock - prodmp.cantidad `
-      sql = sql +  ` from prodmp, factdet `
-      sql = sql +  ` where factdet.fac_id = ${found.id} `
-      sql = sql +  `  and prodmp.prod_id = factdet.prod_id`
-      sql = sql +  `  and materiaprima.name  = prodmp.mp_name`
+      sql = `update materiaprima set stock = stock - t1.pedido  `
+      sql = sql +  ` from (`
+      sql = sql +  `  select materiaprima.name MPID, `
+      sql = sql +  `    sum(prodmp.cantidad * factdet.cantidad) as Pedido `
+      sql = sql +  `    from productos  `
+      sql = sql +  `    join prodmp on prodmp.prod_id = productos.id `
+      sql = sql +  `    join materiaprima on materiaprima.name = prodmp.mp_name `
+      sql = sql +  `    join factdet on fac_id = ${found.id} `
+      sql = sql +  `    where productos.id =  factdet.prod_id `
+      sql = sql +  `    group by fac_id,materiaprima.name, `
+      sql = sql +  `    materiaprima.description,materiaprima.udm,materiaprima.stock`
+      sql = sql +  `  ) t1`
+      sql = sql +  ` where name = t1.MPID`;
       setDatos(datos.sql1 = sql)
-      sql = `update facturas set cod_status = ${newLog.cod_status} where id =  ${newLog.doc_id} `
-      setDatos(datos.sql2 = sql)
-      sql=`insert into logs (doc_id, tipo_id, usr_id, cod_status,observ,fecha) values `
-      sql = sql + `(${newLog.doc_id}, 'FAC', '${newLog.usr_id}', ${newLog.cod_status},'${newLog.observ}',now())`
-      setDatos(datos.sql3 = sql)                           
-      sql = `update productos set stock = stock - cantidad `
-      sql = sql  & ` from factdet `
-      sql = sql  & ` where fac_id =  ${found.id} `
-      sql = sql  & ` and prod_id = id`  
-      setDatos(datos.sql4 = sql)         
-      // console.log('RunsqlPost: ',datos);
+      var sql2 = `update facturas set cod_status = ${newLog.cod_status} where id =  ${newLog.doc_id} `
+      setDatos(datos.sql2 = sql2)
+      // console.log('RunsqlPost: ',sql, state.idfact);
+      var sql3=`insert into logs (doc_id, tipo_id, usr_id, cod_status,observ,fecha) values `
+      sql3 = sql3 + `(${newLog.doc_id}, 'FAC', '${newLog.usr_id}', ${newLog.cod_status},'${newLog.observ}',now())`
+      setDatos(datos.sql3 = sql3)
       dispatch(RunSqlPost(datos))
     } else {
       dispatch(UpdateFacturaSts2(newLog)); // Espera Aprobacion

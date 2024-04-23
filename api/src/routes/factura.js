@@ -73,7 +73,7 @@ router.get("/cab", async function (req, res, next) {
          sql = sql + " coalesce(c.nombre,'n/a') nombre,f.cli_id,t.description as Status,f.observ, f.moneda,f.idioma,f.cot_id";
          sql = sql + " from facturas f";
          sql = sql + " left join clientes  c on c.id = f.cli_id ";
-         sql = sql + " left join direccion d on d.id = f.dir_id ";
+         sql = sql + " left join direccion d on d.orden = f.dir_id ";
          sql = sql + "               and d.cli_id  = f.cli_id ";
          sql = sql + " left join tabla     t on t.id = 6 and t.cod= f.cod_status";
          sql = sql + "  where f.id =  " + id;
@@ -230,7 +230,7 @@ router.post("/", async function (req, res, next) {
 // Cotizacion a Factura
 router.post("/cotifac", async function (req, res, next) {
    try {
-      const { cli_id, cot_id,dir_id } = req.body;
+      const { cli_id, cot_id } = req.body;
       console.log("Post cotifac: ", req.body);
 
       if (!cli_id || !cot_id) {
@@ -240,7 +240,7 @@ router.post("/cotifac", async function (req, res, next) {
       }
 
       sql = `insert into facturas (id,cli_id,dir_id,dhl,subtotal,iva,total,cod_status,observ,fecha,idioma,moneda,cot_id) `;
-      sql = sql + `select (select COALESCE(max(id)+1,1)  from facturas ) id, ${cli_id}, ${dir_id} , dhl, subtotal, iva, total ,4, observ,fecha, 1, moneda,id from cotizacion`;
+      sql = sql + `select (select COALESCE(max(id)+1,1)  from facturas ) id, ${cli_id}, 1 , dhl, subtotal, iva, total ,4, observ,fecha, 1, moneda,id from cotizacion`;
       sql = sql + ` where id = ${cot_id} RETURNING id`;
 
       const records = await seq
@@ -250,7 +250,7 @@ router.post("/cotifac", async function (req, res, next) {
          })
          .then(async function (facIdCreated) {
             const fac_id = facIdCreated[0][0].id;
-            sql2 = `insert into factdet select ${fac_id},orden ,prod_id,precio,cantidad,total,descto from cotizaciondet where cot_id = ${cot_id};`;
+            sql2 = `insert into factdet select ${fac_id},orden ,prod_id,precio,cantidad,total from cotizaciondet where cot_id = ${cot_id};`;
             sql3 = `insert into factcond `;
             sql3 = sql3 + ` ( id,fac_id,cond_id,descuento,enganche,meses,interes)`;
             sql3 = sql3 + ` select ${fac_id},${fac_id},cond_id,descuento,enganche,meses,interes from cotizacioncond where cot_id = ${cot_id};;`;

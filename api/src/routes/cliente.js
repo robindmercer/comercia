@@ -30,30 +30,6 @@ router.get('/bckp', async function (req, res, next) {
   }
 })
 
-router.get('/cliDir', async function (req, res, next) {
-  //console.log("cliente generico")
-  try {
-    sql='select clientes.id,clientes.razsoc,clientes.nombre,clientes.apellido, '
-    sql = sql + ' d.calle cc,d.localidad dd,d.cp ccpp,d.ciudad cui,d.pais pp,'
-    sql = sql + ' t3.description as DirDes, d.id dirId '
-    sql = sql + ' from clientes'
-    sql = sql + ' join direccion d on d.cli_id = clientes.id'
-    sql = sql + '                and d.cod_status = 1'
-    sql = sql + ' join tabla t3 on t3.id = 5 and t3.cod = d.cod_tipo '
-    sql = sql + ' where clientes.cod_status = 1'
-    sql = sql + ' order by clientes.razsoc'
-    const records = await seq.query(sql,
-      {
-        logging: console.log,
-        type: QueryTypes.SELECT
-      });
-      //console.log('records: ', records);
-    res.send(records)
-  } catch (error) {
-    console.log(error)
-  }
-})
-
 
 // Especial para atencion al cliente atc
 router.get('/atc/:perfil', async function (req, res, next) {

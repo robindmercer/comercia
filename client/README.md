@@ -1,5 +1,5 @@
-<img src="./src/images/Nibbot.svg" align="center"
-     alt="logo" width="220" height="178">
+<img src="./src/images/Nibbot.svg" align="right"
+     alt="Size Limit logo by Anton Lovchikov" width="220" height="178">
 ## NIBBOT Administracion APP
 
 ## Table Of Content
@@ -7,7 +7,6 @@
 - [Status](#status)
 - [Prog Id](#prog-id)
 - [Versiones](#versiones)
-- [Modificaciones](#modificaciones)
 
 # Access Definition 
 ````
@@ -66,39 +65,3 @@
     Crear Baja de Cotizaciones
     Crear Baja de Ordenes de compra
 ````  
-
-# Modificaciones 
-````
-- implementacion de Marzo
-ALTER TABLE facturas ADD COLUMN cot_id int;
-update facturas set cot_id = 0;
-insert into tabla VALUEs(5,5,'Ship To',0,'N',1);
-insert into tabla VALUEs(5,6,'Sold To',0,'N',1);
-
-ALTER TABLE cotizacion ADD COLUMN vencimiento date;
-update cotizacion set vencimiento = fecha ;
-- Fin Implementaciones marzo
-
-- implementacion de Abril 2024
-alter table productos add column id_interno varchar;
-update productos set id_interno = id;
-
-ALTER TABLE cotizaciondet ADD COLUMN descto numeric(18,2);
-ALTER TABLE factdet       ADD COLUMN descto numeric(18,2);
-
-update cotizaciondet set descto = 0
-update factdet set descto = 0
-
-
-alter table productos add column stock int;
-update productos set stock = 1;
-- Fin Implementaciones Abril
-
-delete from condiciones where id <> 3;
-update  condiciones set Nombre = 'Financiamiento' where id = 3
-old condiciones 
-	1	Sin Descuento	0	0	0	0
-	2	Contado	15	0	0	0
-	3	Financiamiento	0	20	12	5
-	4	Financiamiento 24 Meses	0	20	24	5
-````

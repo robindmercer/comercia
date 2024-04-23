@@ -30,11 +30,7 @@ module.exports = (sequelize) => {
         total:{
             type: DataTypes.NUMERIC,
             allowNull: false,
-        },
-        descto:{
-            type: DataTypes.NUMERIC,
-            allowNull: false,
-        },               
+        },       
     },
         { freezeTableName: true,
             timestamps: false }

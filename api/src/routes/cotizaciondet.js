@@ -39,9 +39,9 @@ router.get('/', async function (req, res, next) {
   try {
     const {cot_id} = req.query;
     
-    sql='select cotizaciondet.*,productos.name'
+    sql='select cotizaciondet.*,producto.name'
     sql = sql + ' from cotizaciondet'
-    sql = sql + ' join productos on producto.sid = cotizaciondet.prod_id'
+    sql = sql + ' join producto on producto.id = cotizaciondet.prod_id'
     if(cot_id) {
       sql = sql + ' where cot_id = '+   cot_id 
     }
@@ -63,7 +63,7 @@ router.get('/det', async function (req, res, next) {
   const {id} = req.query;
   if(id) {
     try {
-      sql=`select cotizaciondet.*,pr.name,pr.description,pr.id_interno,coalesce(l.name,'Falta') nameExt,coalesce(l.description,'SIN DESCRIPCION') descripExt from cotizaciondet `
+      sql=`select cotizaciondet.*,pr.name,pr.description,coalesce(l.name,'Falta') nameExt,coalesce(l.description,'SIN DESCRIPCION') descripExt from cotizaciondet `
       sql = sql + ' join productos pr on pr.id = cotizaciondet.prod_id'
       sql = sql + ' left join productolang l on l.id = cotizaciondet.prod_id'
       sql = sql + ' where cot_id = ' + id
@@ -82,7 +82,7 @@ router.get('/det', async function (req, res, next) {
 })
 
 router.post('/', async function (req, res, next) {
-  const { cot_id, orden, precio, prod_id, cantidad, total,descto } = req.body;
+  const { cot_id, orden, precio, prod_id, cantidad, total } = req.body;
   console.log('Post Cotizacion det: ', req.body);
   if (!cot_id || !orden || !prod_id || !cantidad ) {
     return res.send("Falta información para poder darte de alta el Producto")
@@ -94,14 +94,12 @@ router.post('/', async function (req, res, next) {
       prod_id,
       precio,
       cantidad,
-      total,
-      descto,    
+      total    
     })
     res.status(200).json({message:'cotizaciondet Creada'});
   } catch (error) {
-    console.log('Error', req.body)
     res.status(400).json({message:'cotizaciondet No Creado'});
-    console.log('Error', error)
+    console.log('Error', req.body)
     next(error)
   }
 })

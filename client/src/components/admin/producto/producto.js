@@ -128,7 +128,6 @@ const Producto = () => {
                         orden: "A1",
                         cod_status: 1,
                         id_interno:"",
-                        stock:1,
                      }}
                   >
                      {" "}
@@ -198,7 +197,6 @@ const Producto = () => {
                                              orden: prod.orden,
                                              cod_status: prod.cod_status,
                                              id_interno:prod.id_interno,
-                                             stock:prod.stock,
                                           }}
                                        >
                                           <FcAcceptDatabase style={estilo} />
