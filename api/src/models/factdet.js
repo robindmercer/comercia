@@ -31,6 +31,10 @@ module.exports = (sequelize) => {
             type: DataTypes.NUMERIC,
             allowNull: false,
         },       
+        descto:{
+            type: DataTypes.NUMERIC,
+            allowNull: false,
+        },       
     },
         { freezeTableName: true,
             timestamps: false }
