@@ -62,7 +62,7 @@ router.get("/", async function (req, res, next) {
 
 router.put("/", async function (req, res, next) {
    console.log(" req.body: ", req.body);
-   const { name, description, price, dolar, cod_status,id_interno } = req.body;
+   const { name, description, price, dolar, cod_status,id_interno,stock } = req.body;
    if (!name || !description || !price || !dolar || !cod_status) {
       return res.send(
          "Falta información para poder darte de alta el Productoo"
@@ -76,6 +76,7 @@ router.put("/", async function (req, res, next) {
          dolar,
          cod_status: 1,
          id_interno,
+         stock,
       });
       res.status(200).send(`Producto Creado : ${newProducto.id}`);
    } catch (error) {
@@ -85,7 +86,7 @@ router.put("/", async function (req, res, next) {
 });
 
 router.post("/", async function (req, res, next) {
-   const { id, name, description, price, dolar, cod_status, orden,id_interno } = req.body;
+   const { id, name, description, price, dolar, cod_status, orden,id_interno,stock } = req.body;
    console.log("Post Producto req.body: ", req.body);
    if (!name || !description || !cod_status) {
       return res.send(
@@ -107,6 +108,7 @@ router.post("/", async function (req, res, next) {
             cod_status,
             orden, 
             id_interno,
+            stock,
          });
          res.status(200).send("Producto Creado");
       } catch (error) {
@@ -121,6 +123,7 @@ router.post("/", async function (req, res, next) {
       producto.dolar       = dolar;
       producto.orden       = orden;
       producto.id_interno  = id_interno;
+      producto.stock       = stock;
       if (producto.id) await producto.save();
       res.json(producto);
    }

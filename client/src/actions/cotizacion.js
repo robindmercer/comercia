@@ -64,6 +64,7 @@ export function AddCotizacion(cotizCab, cotizaciondet, inputDet,initialCondGral)
           inputDet.precio = fact.precio
           inputDet.cantidad = fact.cantidad
           inputDet.total = fact.total
+          inputDet.descto = fact.descto
           console.log('Graba Productos ', inputDet);
           dispatch(AddCotizacionDet(inputDet))
           console.log('Detalle de Cotizacion ');

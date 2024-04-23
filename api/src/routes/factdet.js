@@ -63,7 +63,7 @@ router.get('/det', async function (req, res, next) {
   const {id} = req.query;
   if(id) {
     try {
-      sql = 'select factdet.*,p.name,p.description,coalesce(l.name,p.name) nameExt,'
+      sql = 'select factdet.*,p.name,p.description,p.id_interno,coalesce(l.name,p.name) nameExt,'
       sql = sql + ' coalesce(l.description,p.description) descripExt,p.cod_status EstProd from factdet '
       sql = sql + ' join productos p on p.id = factdet.prod_id'
       sql = sql + ' left join productolang l on l.id = factdet.prod_id'
@@ -83,7 +83,7 @@ router.get('/det', async function (req, res, next) {
 })
 
 router.post('/', async function (req, res, next) {
-  const { fac_id, orden, precio, prod_id, cantidad, total } = req.body;
+  const { fac_id, orden, precio, prod_id, cantidad, total,descto } = req.body;
   console.log('Post FACTDET req.body: ', req.body);
   if (!fac_id || !orden || !prod_id || !cantidad ) {
     return res.send("Falta información para poder darte de alta el Producto")
@@ -95,7 +95,8 @@ router.post('/', async function (req, res, next) {
       prod_id,
       precio,
       cantidad,
-      total    
+      total,
+      descto
     })
     res.status(200).json({message:'FactDet Creada'});
   } catch (error) {

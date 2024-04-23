@@ -138,6 +138,14 @@ router.post('/update', async function (req, res, next) {
             });    
             // return res.send("OK")
         }
+        if (sql4) {
+          const [records3] = await seq.query(sql4,
+            {
+              logging: console.log,
+              type: QueryTypes.UPDATE
+            });    
+            // return res.send("OK")
+        }        
         res.send("OK")
       } catch (error) {
         console.log(error)

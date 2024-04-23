@@ -28,8 +28,9 @@ var xTNA = "TNA"
 var maxhor = 253
 var xCliente = "Cliente";
 var xFecha = "Fecha";
-var xUnidad = "Unidad";
-var xDescripcion = "Descripción";
+var xUnidad = "ID";
+var xDescripcion = "Producto";
+var xDescripcion2 = "Descripción";
 var xPrecio = "Precio";
 var xCant = "Cant";
 // var xTotal = "Total";
@@ -58,7 +59,7 @@ var XVto = "Vencimiento";
 var xTablaPago = 15
 // var xEmail = "E-Mail";
 var xVendedor = "Vendedor";
-var xFooter = ""
+var xDscto = "Dto."
 const FormcotizPDF = () => {
    // Manejo acceso del Usuario
    // const navigate = useNavigate();
@@ -110,8 +111,9 @@ const FormcotizPDF = () => {
          xCliente = "Client";
          xFecha = "Date";
          XVto = "Due Date"
-         xUnidad = "Units";
-         xDescripcion = "Description";
+         xUnidad = "ID";
+         xDescripcion = "Product";
+         xDescripcion2 = "Description";
          xPrecio = "Price";
          xCant = "Quantity";
          xTotPag = "Total Payment USD";
@@ -130,7 +132,8 @@ const FormcotizPDF = () => {
          xMoneda = "USD ";
          xCotizacion = "QUOTATION";
          xDescDescrip = "Discount";
-         xTablaPago = 16
+         xTablaPago = 16;
+         xDscto = "Dis."
       }
       if (cotizacioncab[0].moneda === 2) {
          xTablaId = 11;
@@ -208,10 +211,12 @@ xhor += 8;
 unidades(doc, leftInput, leftMargin,xhor);
 xhor += 8;
 //   Productos
+      // var xHorid_interno = 0
       console.log('cotizaciondet: ', cotizaciondet);
       for (let prodIndx = 0; prodIndx < cotizaciondet.length; prodIndx++) {
          kl += 1
-         xProdName = `${kl} ${cotizaciondet[prodIndx].name.replace("″", "'")} (${cotizaciondet[prodIndx].prod_id})`;
+
+         xProdName = `${cotizaciondet[prodIndx].name.replace("″", "'")} (${cotizaciondet[prodIndx].prod_id})`;
          xProdDescrip = cotizaciondet[prodIndx].description.replace("″", "'");
          if (cotizacioncab[0].moneda === 2) {
             xProdName = cotizaciondet[prodIndx].nameext.replace("″", "'");
@@ -219,17 +224,23 @@ xhor += 8;
          if (cotizacioncab[0].moneda === 2) {
             xProdDescrip = cotizaciondet[prodIndx].descripext.replace("″", "'");
          }
-         xhorNew = producto(doc, xProdName, xhor, leftMargin , 18);
-         xhorNew = producto(doc, xProdDescrip, xhor, leftMargin + 43, 49);
+         xhorNew = producto(doc, kl + ' ', xhor, leftMargin , 5);
+         xhorNew = producto(doc, `${cotizaciondet[prodIndx].id_interno} `, xhor, leftMargin + 5 , 18);
+         xhorNew = producto(doc, xProdName, xhor, leftMargin + 22 , 18);
+         xhorNew = producto(doc, xProdDescrip, xhor, leftMargin + 57, 49);
          if (cotizaciondet[prodIndx].precio > 0) {
-            doc.text(`${cotizaciondet[prodIndx].cantidad}`,leftMargin + 150,xhor,"right");
-            doc.text(`${xMoneda}${dollarUSLocale.format(cotizaciondet[prodIndx].precio)}`,leftMargin + 175,xhor,"right");
+            doc.text(`${cotizaciondet[prodIndx].cantidad}`,leftMargin + 148,xhor,"right");
+            doc.text(`${xMoneda}${dollarUSLocale.format(cotizaciondet[prodIndx].precio)}`,leftMargin + 165,xhor,"right");
+            doc.text(`${dollarUSLocale.format(cotizaciondet[prodIndx].descto)}%`,leftMargin + 182,xhor,"right");
             doc.text(`${xMoneda}${dollarUSLocale.format(cotizaciondet[prodIndx].total)}`,leftMargin + 200,xhor,"right");
          } else {
             doc.setFont("Times", "bold");
             doc.text(`${xIncluido}`, leftMargin + 160, xhor);
             doc.setFont("Times", "normal");
          }
+         // if (xHorid_interno > xhorNew) {
+         //    xhorNew=xHorid_interno;
+         // }
          xhor = xhorNew + 5;
          if (xhor>maxhor){
             doc.addPage()
@@ -408,9 +419,9 @@ xhor += 8;
       doc.setLineWidth(0.5);
       doc.line(3, xhor, 200, xhor);
       xhor += 8;
-      for (var ii = 0; ii < tabla.length; ii++) {
-         if (tabla[ii].id === 12 && tabla[ii].cod !== 0) {
-             doc.text(`${tabla[ii].description}`, leftMargin, xhor);
+      for (var ii2 = 0; ii2 < tabla.length; ii2++) {
+         if (tabla[ii2].id === 12 && tabla[ii2].cod !== 0) {
+             doc.text(`${tabla[ii2].description}`, leftMargin, xhor);
              xhor += 5;
           }
        }
@@ -450,10 +461,14 @@ xhor += 8;
 
    function unidades (doc, leftInput, leftMargin,xhor) {
       doc.setFontSize(10);
-      doc.text(xUnidad, leftMargin, xhor);
-      doc.text(xDescripcion, leftMargin + 43, xhor);
+      doc.setFont("Times", "bold");
+      doc.text('#', leftMargin, xhor);
+      doc.text(xUnidad, leftMargin + 5, xhor);
+      doc.text(xDescripcion, leftMargin + 22, xhor);
+      doc.text(xDescripcion2, leftMargin + 57, xhor);
       doc.text(xCant, leftMargin + 140, xhor);
-      doc.text(xPrecio, leftMargin + 175, xhor, "right");
+      doc.text(xPrecio, leftMargin + 165, xhor, "right");
+      doc.text(xDscto, leftMargin + 180, xhor, "right");
       doc.text(xImporte, leftMargin + 195, xhor, "right");
       doc.setLineWidth(0.5);
       doc.line(leftMargin, xhor + 2, 205, xhor + 2);

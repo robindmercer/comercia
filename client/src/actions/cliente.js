@@ -11,7 +11,18 @@ export function getCliente(){
          })
      }
  }
-
+ 
+ export function getClienteDir(){
+  // console.log('Action getCliente: All');
+   return async function (dispatch) {
+       var cliente = await axios.get(`cliente/cliDir`);
+       return dispatch({
+           type: GET_CLIENTE,
+           payload: cliente.data
+       })
+   }
+}
+ 
  export function getClienteBckp(){
   // console.log('Action getCliente: All');
    return async function (dispatch) {
