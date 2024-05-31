@@ -28,7 +28,7 @@ const EditForm = ({ theUsuario }) => {
 
   const { updateUsuario } = useContext(UsuarioContext);
   
-  const updatedUsuario = { id, name, usr_id, email, password, cod_perfil,cod_status };
+  const updatedUsuario = { id, name, usr_id, email, password, cod_perfil,cod_status};
 
   useEffect(() => {
     dispatch(getPerfil());
@@ -36,9 +36,9 @@ const EditForm = ({ theUsuario }) => {
   }, [dispatch]);
 
 
-  console.log('theUsuario: ', theUsuario);
-  console.log('tperfil: ', perfil);
-  console.log('status: ', status);
+  // console.log('theUsuario: ', theUsuario);
+  // console.log('tperfil: ', perfil);
+  // console.log('status: ', status);
   
   function handlePerfil(e) {
     e.preventDefault();
@@ -47,11 +47,12 @@ const EditForm = ({ theUsuario }) => {
   function handleStatus(e) {
     e.preventDefault();
     setStatus(e.target.value)
+    updatedUsuario.cod_status = e.target.value;
+    console.log('handleStatus: ', updatedUsuario);
   }
   
   const handleSubmit = (e) => {
     e.preventDefault();
-    //console.log('updatedUsuario: ', updatedUsuario);
     updateUsuario(updatedUsuario);
   };
   

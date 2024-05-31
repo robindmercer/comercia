@@ -7,11 +7,13 @@ const AddForm = () => {
   const { addUsuario } = useContext(UsuarioContext);
 
   const [newUsuario, setNewUsuario] = useState({
+    id:0,
     name: "",
     usr_id: "",
     email: "",
     password: "",
     cod_perfil: "",
+    cod_status: "1"
   });
 
   const onInputChange = (e) => {

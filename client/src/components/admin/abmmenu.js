@@ -26,7 +26,8 @@ function AbmMenu() {
    const [data, setData] = useState({
       sql1:"",
       sql2:""
-   });   
+   });  
+
    const marcar = (letra, id) => {
     var xname = `chk_${letra}_${id}`;
     const found = usuariomenu.find((element) => element.nivel === id);
@@ -49,7 +50,7 @@ function AbmMenu() {
    };
 
    const [input, setInput] = useState({
-      usrid: "",
+      usrid: state.idacceso,
       nivel: 0,
       accion: "",
    });
@@ -65,7 +66,7 @@ function AbmMenu() {
   }, [onChange])
 
 
-   if (usuariomenu) {
+   if (usuariomenu.length>0) {
       console.log("usuariomenu: ", usuariomenu);
       cperf = usuariomenu[0].cod_perfil;
       usr = usuariomenu[0].usrid;
@@ -75,7 +76,8 @@ function AbmMenu() {
             nivel.push(e.nivel);
          });
       }
-   }
+   } 
+
 
    const handleSubmit = (e) => {
       e.preventDefault();
@@ -85,12 +87,12 @@ function AbmMenu() {
          if (usuariomenu[i].accion !=='') {
             console.log("true a", usuariomenu[i]);
             if (usuariomenu[i].accion !==''){
-               xSql3 +=`('${usuariomenu[i].usrid}',${usuariomenu[i].nivel},'${usuariomenu[i].accion}');`
+               xSql3 +=`('${state.idacceso}',${usuariomenu[i].nivel},'${usuariomenu[i].accion}');`
             }
          }
       }
       //xSql3 = xSql2 + xSql3.substring(0,xSql3.length-1)
-      var sql=`delete from usuariomenus where usrid = '${usuariomenu[0].usrid}'` 
+      var sql=`delete from usuariomenus where usrid = '${state.idacceso}'` 
       setData(data.sql1=sql)
       dispatch(RunSqlDel(data))
       setData(data.sql1=xSql2)

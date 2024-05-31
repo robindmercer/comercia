@@ -102,7 +102,7 @@ router.get("/perfil/:perfil", function (req, res, next) {
 
 
 router.post("/", async function (req, res, next) {
-  console.log('req.body: ', req.body);
+  console.log('Post usuarios: ', req.body);
   const newpass='nada'
   const { id, usr_id, name, email, password,cod_perfil,cod_status } = req.body;
 
