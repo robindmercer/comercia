@@ -616,7 +616,7 @@ const Formcotizacion = () => {
              agregar_prod(lista)
          }
          if (parseInt(e.target.value) === 25) {
-            lista = [38,27,26,21,4,17,19,23,7,8,29,28]
+            lista = [38,27,26,21,4,17,19,23,7,8,29,28,12,13]
             console.log('factdet: ', factdet);
             //lista.push('9','7','8')
              agregar_prod(lista)
@@ -998,7 +998,7 @@ const Formcotizacion = () => {
                               <tbody>
                                  {condiciones &&
                                     condiciones.map((cond, i) => {
-                                       if (cond.sel === "S") {
+                                       if (cond.sel === "S" && cond.id === 3) {
                                           var xTotal2 = total - saleDHL;
                                           var xDescuento = 0
                                              // (total * cond.descuento) / 100;
