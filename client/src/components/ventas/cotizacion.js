@@ -115,6 +115,7 @@ const Cotizacion = () => {
       if (data.cod_status === 2) {
         btnAsignarCli = false;
         btnAddDatabase = false;
+        btnDiploma2=false;
       }
       if (data.cod_status === 3) {
         btnAsignarCli = true;
