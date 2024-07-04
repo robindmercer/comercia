@@ -69,13 +69,17 @@ export function getClienteATC(perfil){
 
  export function AddCliente(cliente) {
     return async function (dispatch) {
-      await axios.post(`cliente`, cliente)
+      try {       
+        await axios.post(`cliente`, cliente)
         .then(response => {
           return response
         })
         .catch(err => {
           console.log(err)
         })
+      } catch (error) {
+        alert(`Error creacion Cliente ${error}`)
+      }
     }
   }
   
