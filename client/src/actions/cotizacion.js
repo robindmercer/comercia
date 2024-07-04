@@ -112,6 +112,7 @@ export function UpdateCotizacion(cotizCab, cotizaciondet, inputDet,condicion) {
             inputDet.prod_id = fact.prod_id
             inputDet.precio = fact.precio
             inputDet.cantidad = fact.cantidad
+            inputDet.descto = fact.descto
             inputDet.total = fact.total
             dispatch(AddCotizacionDet(inputDet))
           })

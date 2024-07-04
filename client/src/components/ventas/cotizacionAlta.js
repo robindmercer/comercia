@@ -616,7 +616,7 @@ const Formcotizacion = () => {
              agregar_prod(lista)
          }
          if (parseInt(e.target.value) === 25) {
-            lista = [38,27,26,21,4,17,19,23,7,8,29,28,12,13]
+            lista = [38,27,26,21,4,17,19,23,12,13,7,8,29,28]
             console.log('factdet: ', factdet);
             //lista.push('9','7','8')
              agregar_prod(lista)
@@ -1333,9 +1333,9 @@ const Formcotizacion = () => {
                   <OkForm ruta={rutaOk} />
                </Modal.Body>
                <Modal.Footer>
-                  <Button variant="secondary" onClick={handleClose}>
+                  {/* <Button variant="secondary" onClick={handleClose}>
                      Cerrar
-                  </Button>
+                  </Button> */}
                </Modal.Footer>
             </Modal>
          </>

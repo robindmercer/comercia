@@ -482,7 +482,7 @@ const Cotizacion = () => {
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
             <Modal.Title>
-                Agregar Condicion
+                Asignar a Cliente
             </Modal.Title>
         </Modal.Header>
         <Modal.Body>

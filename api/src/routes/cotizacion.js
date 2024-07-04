@@ -209,7 +209,7 @@ router.put('/', async function (req, res, next) {
       sqlfac= sqlfac + ` telefono='${telefono}',`
       sqlfac= sqlfac + ` direccion='${direccion}',`
       sqlfac= sqlfac + ` email='${email}',`
-      sqlfac= sqlfac + ` vendedor='${vendedor}'`
+      sqlfac= sqlfac + ` vendedor='${vendedor}',`
       sqlfac= sqlfac + ` vencimiento='${vencimiento}'`
       sqlfac= sqlfac + ` where id = ${id}`
     } else {

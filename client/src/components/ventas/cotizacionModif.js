@@ -1179,9 +1179,9 @@ function Formcotizacion() {
                   <OkForm ruta={rutaOk} />
                </Modal.Body>
                <Modal.Footer>
-                  <Button variant="secondary" onClick={handleClose}>
+                  {/* <Button variant="secondary" onClick={handleClose}>
                      Cerrar
-                  </Button>
+                  </Button> */}
                </Modal.Footer>
             </Modal>
          </>
