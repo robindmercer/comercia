@@ -124,6 +124,9 @@ const Cotizacion = () => {
       verStatus.push(1, 2, 3, 4, 5, 6, 7, 8, 9, 15);
     }
 
+
+
+
     if (acceso.substring(0, 1) === "C") {
       btnCancel = false;
       btnAsignarCli = false;      
@@ -139,6 +142,11 @@ const Cotizacion = () => {
     } else {
       btnLog = false 
     }
+    
+    if (data.cod_status === 2) {
+      btnDiploma2=false;
+    }
+
     // console.log("verStatus: ", verStatus, acceso.substring(0, 1));
     // console.log("Muestro", data.id, data.cod_status, muestroRegistro);
   };
