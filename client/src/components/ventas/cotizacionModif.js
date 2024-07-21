@@ -43,7 +43,7 @@ function Formcotizacion() {
    const { cotizaciondet } = useSelector((state) => state);
    const { cotizacioncond } = useSelector((state) => state);
 
-   const tabla = useSelector((state) => state.tabla);
+   // const tabla = useSelector((state) => state.tabla);
    const { producto } = useSelector((state) => state);
    const dispatch = useDispatch();
    const location = useLocation();
