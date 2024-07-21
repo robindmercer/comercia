@@ -239,7 +239,7 @@ xhor += 8;
             doc.setFont("Times", "normal");
          }
          // if (xHorid_interno > xhorNew) {
-         //    xhorNew=xHorid_interno;
+         //  xhorNew=xHorid_interno;
          // }
          xhor = xhorNew + 5;
          if (xProdName.length >50){
