@@ -142,8 +142,6 @@ function Formcotizacion() {
       interes: 0,
    };
 
-   // var cantidad = []
-
    useEffect(() => {
       //dispatch(getDetail(1));
       dispatch(getProducto());
