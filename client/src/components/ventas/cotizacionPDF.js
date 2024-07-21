@@ -242,6 +242,9 @@ xhor += 8;
          //    xhorNew=xHorid_interno;
          // }
          xhor = xhorNew + 5;
+         if (xProdName.length >50){
+            xhor = xhor + 5;
+         }
          if (xhor>maxhor){
             doc.addPage()
             header(doc, leftInput, leftMargin);
