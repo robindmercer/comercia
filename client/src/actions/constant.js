@@ -60,3 +60,5 @@ export const GET_ADMIN='GET_ADMIN'
 export const GET_COMENTARIO='GET_COMENTARIO'
 // Ticket 
 export const GET_TICKET='GET_TICKET'
+export const GET_TICKETUNO='GET_TICKETUNO'
+export const GET_TICKETDET='GET_TICKETDET'
