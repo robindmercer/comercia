@@ -45,6 +45,8 @@ import {
   GET_COTCAB,
   GET_COTCOND,
   GET_TICKET,
+  GET_TICKETUNO,
+  GET_TICKETDET,
 } from "../actions/constant.js";
 const initialState = {
   lang: "",
@@ -81,7 +83,9 @@ const initialState = {
   contrato:[],
   admin:[],// Cualquier SQL 
   comentario:[],
-  ticket:[]
+  ticket:[],
+  ticketuno:[],
+  ticketDet:[]
 };
 
 // Reducer to get foods ordered by alphabet
@@ -371,7 +375,18 @@ const rootReducer = (state = initialState, action) => {
       ticket: action.payload,
     };
   }
-
+  if (action.type === GET_TICKETUNO) {
+    return {
+      ...state,
+      ticketuno: action.payload,
+    };
+  }
+  if (action.type === GET_TICKETDET) {
+  return {
+    ...state,
+      ticketDet: action.payload,
+    };
+  }
   if (action.type === GET_GRAF) {
     return {
       ...state,

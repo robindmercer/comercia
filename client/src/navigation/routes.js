@@ -5,7 +5,6 @@ import Layout from '../components/Layout'
 import AbmMenu from '../components/admin/abmmenu.js'
 import Cliente from '../components/admin/cliente/ClienteMain.jsx'
 import Direccion from '../components/admin/cliente/direccion'
-import FormCliente from '../components/admin/cliente/formCliente'
 import FormDireccion from '../components/admin/cliente/formdireccion'
 import FormProdmp from '../components/admin/producto/prodMp'
 import FormProducto from '../components/admin/producto/formProducto'
@@ -123,12 +122,6 @@ function HandleRoutes() {
         {
             path: "/direccion",
             element: <Direccion />,
-            exact: true,
-            private: true,
-        },
-        {
-            path: "/formCliente",
-            element: <FormCliente />,
             exact: true,
             private: true,
         },

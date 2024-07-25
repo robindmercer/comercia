@@ -44,6 +44,7 @@ const Direccion = () => {
                                         pais: "",
                                         cod_tipo: 1,
                                         cod_status: 1,
+                                        nombre:direccion[0].nombre
                                     }
                                 }
                                 > 🖋️
@@ -95,7 +96,8 @@ const Direccion = () => {
                                                     ciudad: data.ciudad,
                                                     pais: data.pais,
                                                     cod_tipo: data.cod_tipo,
-                                                    cod_status: data.cod_status
+                                                    cod_status: data.cod_status,
+                                                    nombre:data.nombre
                                                 }
                                             }
                                         >

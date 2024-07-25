@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useLocation } from "react-router-dom";
 import { AddDireccion, getDireccion } from "../../../actions/direccion";
 import Header from '../../Header';
-import '../../../css/formdireccion.css'
+import style from '../../../css/formdireccion.module.css'
 
 import { getStatus } from '../../../actions/status';
 import { getDetail } from '../../../actions/tabla';
@@ -58,7 +58,7 @@ function ABMDireccion() {
     cp: state ? state.cp : 0,
     cod_status: state ? state.cod_status : "1",
     cod_tipo: state ? state.cod_tipo : "1",
-
+    nombre: state ? state.nombre : "",
   });
 
   // console.log('input: ', input);
@@ -145,108 +145,83 @@ function ABMDireccion() {
   return (
     <>
       <Header />
-      <div >
-        <div className='divForm'>
-          <form className='formDir'
+      <div className={style.container}>
+        <div className={style.divForm}>
+          <form 
             onSubmit={(e) => handleSubmit(e)}
           >
-            <br></br>
-            <h5>
-              COMPLETE LOS SIGUIENTES CAMPOS:
-            </h5>
-            <br />
-            <table>
-              <tr >
-                <td className='td1'
-                  htmlFor="id"
-                >
-                 Cliente Id:&nbsp;&nbsp;
-                </td>
-                <td>
-                  {input.cli_id}
-                </td>
-              </tr>
+              <div className={style.inputGroup}>
+              <span className={style.inputGroupTextAdd}>
+                 Cliente: {input.cli_id} {input.nombre}
+                </span>
+              </div>
 
-              <tr >
-                <td className='td1'>
-                  Calle:&nbsp;&nbsp;
-                </td>
-                <td className='td2'>
+              <div className={style.inputGroup}>
+                <span className={style.inputGroupText}>Calle:</span>                
+                <label htmlFor="calle"></label>
                   <input
+                    className={style.inputText}
                     type="text"
                     id="calle"
                     name="calle"
                     value={input.calle}
                     onChange={handleChange}
-                  /></td>
-              </tr>
-
-              <tr >
-                <td className='td1'>
-                  Localidad:&nbsp;&nbsp;
-                </td>
-                <td className='td2'>
+                  />
+              </div>
+              <div className={style.inputGroup}>
+                <span className={style.inputGroupText}>Localidad:</span>
+                <label htmlFor="localidad"></label>
                   <input
+                    className={style.inputText}
                     type="text"
                     id="localidad"
                     name="localidad"
                     value={input.localidad}
                     onChange={handleChange}
                   />
-                </td>
-              </tr>
-              <tr  >
-                <td className='td1' htmlFor="cp" >
-                  Codigo Postal:&nbsp;&nbsp;
-                </td>
-                <td className='td2Short'>
+              </div>
+              <div className={style.inputGroup}>
+              <span className={style.inputGroupText}>Codigo Postal:</span>
+                <label htmlFor="cp" />
                   <input
+                    className={style.inputText2}
                     type="text"
                     id="cp"
                     name="cp"
                     value={input.cp}
                     onChange={handleChange}
-                  />
-                </td>
-              </tr>
-              <tr className='lbl-w-50'>
-                <td className='td1' htmlFor="ciudad" >
-                  Ciudad:&nbsp;&nbsp;
-                </td>
-                <td className='td2'>
+                  />               
+              </div>
+              <div className={style.inputGroup}>
+              <span className={style.inputGroupText}>Ciudad:</span>   
+                <label htmlFor="ciudad" />
                   <input
+                    className={style.inputText}
                     type="text"
                     id="ciudad"
                     name="ciudad"
                     value={input.ciudad}
                     onChange={handleChange}
                   />
-                </td>
-              </tr>
-              <tr className='lbl-w-50'>
-                <td className='td1' htmlFor="pais" >
-                  Pais:&nbsp;&nbsp;
-                </td>
-                <td className='td2'>
-
+                
+              </div>
+              <div className={style.inputGroup}>
+              <span className={style.inputGroupText}>Pais:</span>                
+                <label htmlFor="pais"></label>
                   <input
+                    className={style.inputText}
                     type="text"
                     id="pais"
                     name="pais"
                     value={input.pais}
                     onChange={handleChange}
                   />
-                </td>
-              </tr>
+                
+              </div>
 
-              <tr className='lbl-w-50'>
-                <td className='td1'
-                  htmlFor="tipoDom"
-                >
-                  Tipo Domicilio:&nbsp;&nbsp;
-                </td>
-                <td className='td2'>
-
+              <div className={style.inputGroup}>
+              <span className={style.inputGroupText}>Tipo Domicilio:</span>
+                  <label htmlFor="tipoDom"/>
                   <select
                     name="cod"
                     id="tipoDom"
@@ -268,16 +243,10 @@ function ABMDireccion() {
                         }
                     })}                
                     </select>
-                </td>
-              </tr>
-              <tr className='lbl-w-50'>
-                <td className='td1'
-                  htmlFor="status"
-                >
-                  Status:&nbsp;&nbsp;
-                </td>
-                <td className='td2'>
-
+              </div>
+              <div className={style.inputGroup}>
+              <span className={style.inputGroupText}>Status:</span>
+                  <label htmlFor="status"/>
                   <select
                     calle="status"
                     id="status"
@@ -294,25 +263,22 @@ function ABMDireccion() {
                             >{`${sts.description}`}</option>
                           );
                     })}
-                    </select>
-                </td>
-              </tr>
-            </table>
-            <br />
-            <table>
-              <tr>
+                    </select>                
+              </div>
+                <hr/>
+              <div>
                 <button
                   className="nibbotBtn"
                   type="submit"
-                >
+                  >
                   {state ? "GRABAR" : "AGREGAR"}
-                </button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </button>
+                &nbsp;&nbsp;&nbsp;
                 <button className="nibbotBtn" onClick={() => { navigate("/cliente"); }}
                 >
                   VOLVER
                 </button>
-              </tr>
-            </table>
+              </div>
           </form>
         </div>
       </div>
