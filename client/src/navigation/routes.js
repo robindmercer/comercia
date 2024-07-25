@@ -3,7 +3,7 @@ import Logs from '../components/logs/logs'
 import Layout from '../components/Layout'
 // Admin Menu
 import AbmMenu from '../components/admin/abmmenu.js'
-import Cliente from '../components/admin/cliente/cliente'
+import Cliente from '../components/admin/cliente/ClienteMain.jsx'
 import Direccion from '../components/admin/cliente/direccion'
 import FormCliente from '../components/admin/cliente/formCliente'
 import FormDireccion from '../components/admin/cliente/formdireccion'
@@ -43,8 +43,12 @@ import PlaneacionPdf from '../components/planeacion/planeacionPdf'
 import Comentario from '../components/comentario/ComentarioMain'
 //Atencion al cliente
 import Ticket from '../components/admin/atc/ticket'
+import RepTicket from '../components/admin/atc/repticket'
 import TicketVer from '../components/admin/atc/TicketVer'
 import TicketForm from '../components/admin/atc/ticketForm'
+import TicketFormAlta from '../components/admin/atc/ticketFormAlta'
+import TicketDet from '../components/admin/atc/ticketDet'
+import TicketRepDet from '../components/admin/atc/repticketdet.js'
 import Grafico from '../components/ventas/grafico'
 
 function HandleRoutes() {
@@ -265,6 +269,12 @@ function HandleRoutes() {
             element: <Ticket/>,
             exact: true,
             private: true,
+        },  
+        {
+            path: "/RepTicket",
+            element: <RepTicket/>,
+            exact: true,
+            private: true,
         },        
         {
             path: "/TicketVer",
@@ -279,6 +289,12 @@ function HandleRoutes() {
             private: true,
         },        
         {
+            path: "/TicketFormAlta",
+            element: <TicketFormAlta/>,
+            exact: true,
+            private: true,
+        },           
+        {
             path: "/UpdateMp",
             element: <UpdateMp/>,
             exact: true,
@@ -287,6 +303,18 @@ function HandleRoutes() {
         {
             path: "/Grafico",
             element: <Grafico/>,
+            exact: true,
+            private: true,
+        },        
+        {
+            path: "/ticketDet",
+            element: <TicketDet/>,
+            exact: true,
+            private: true,
+        },        
+        {
+            path: "/repticketdet",
+            element: <TicketRepDet/>,
             exact: true,
             private: true,
         },        

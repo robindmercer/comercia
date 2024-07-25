@@ -15,11 +15,6 @@ export const menuItems = [
         url: '/cliente',
       }, 
       {
-        title: 'Atención Clientes',
-        nivel: 24,
-        url: '/ticket',
-      },       
-      {
         title: 'Productos',
         nivel: 3,
         url: '/producto',
@@ -95,5 +90,23 @@ export const menuItems = [
         url: '/factura',
       },
     ]
-  }    
+  },    
+  {
+    title: 'Atención Clientes',
+    nivel: 24,
+    submenu: [
+      {
+        title: 'Tickets',
+        nivel: 25,
+        url: '/ticket',
+      },
+      {
+        title: 'Reporte',
+        nivel: 26,
+        url: '/repticket',
+      },
+
+    ]
+  },       
+
 ];
