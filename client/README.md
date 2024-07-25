@@ -2,6 +2,10 @@
      alt="Size Limit logo by Anton Lovchikov" width="220" height="178">
 ## NIBBOT Administracion APP
 
+
+
+
+
 ## Table Of Content
 - [Access Definition](#access-definition)
 - [Status](#status)
