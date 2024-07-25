@@ -260,6 +260,14 @@ const Factura = () => {
         }
         paramMail = 4; // Planeacion
       }
+      if (found.cod_status === 6) {
+        // control = "N";
+        newStatus = 7; // Almacen
+        if (parseInt(found.sts) === 3){ // Venta de productos tercerizados 
+          newStatus = 14; // Producto Despachado
+        }
+      }
+
       // Gerencia no se controla
       if (acceso === "A1" && found.cod_status < 4) {
         // control = "N";
