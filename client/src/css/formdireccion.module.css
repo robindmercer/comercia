@@ -1,0 +1,136 @@
+hr {
+    border-bottom: 1px solid grey;
+}
+
+.container {
+    background-color: white;
+    max-width       : 800px;
+    padding         : 15px;
+    border          : solid 1px;
+    border-radius   : 5px;
+}
+
+.trDir {
+    height: 45px;
+}
+
+.divForm {
+    position        : relative;
+    display         : flex;
+    flex-direction  : column;
+    width           : 100%;
+    color           : white;
+    pointer-events  : auto;
+    background-color: white;
+    background-clip : padding-box;
+    outline         : 0;
+    max-width       : 800px;
+    padding-top     : 25px;
+}
+
+.header {
+    display                : flex;
+    flex-shrink            : 0;
+    align-items            : center;
+    justify-content        : space-between;
+    padding                : var(--bs-modal-header-padding);
+    border-bottom          : var(--bs-modal-header-border-width) solid var(--bs-modal-header-border-color);
+    border-top-left-radius : var(--bs-modal-inner-border-radius);
+    border-top-right-radius: var(--bs-modal-inner-border-radius);
+}
+
+.inputGroup {
+    position     : relative;
+    display      : flex;
+    flex-wrap    : wrap;
+    align-items  : stretch;
+    width        : 100%;
+    margin       : 0;
+    padding      : 0;
+    box-sizing   : border-box;
+    margin-bottom: 1rem !important;
+}
+
+.inputGroupText {
+    display                   : flex;
+    align-items               : center;
+    padding                   : .375rem .75rem;
+    font-size                 : 1rem;
+    font-weight               : 400;
+    line-height               : 1.5;
+    color                     : #212529;
+    text-align                : center;
+    white-space               : nowrap;
+    background-color          : #e9ecef;
+    border                    : 1px solid #ced4da;
+    border-radius             : .375rem;
+    border-top-right-radius   : 0;
+    border-bottom-right-radius: 0;
+}
+
+.inputGroupTextAdd {
+    width                     : 100%;
+    justify-content           : center;
+    display                   : flex;
+    align-items               : center;
+    padding                   : .375rem .75rem;
+    font-size                 : 1rem;
+    font-weight               : 400;
+    line-height               : 1.5;
+    color                     : #212529;
+    text-align                : center;
+    white-space               : nowrap;
+    background-color          : #e9ecef;
+    border                    : 1px solid #ced4da;
+    border-radius             : .375rem;
+    border-top-right-radius   : 0;
+    border-bottom-right-radius: 0;
+    font-weight               : bold;
+}
+
+.inputText {
+    /* display: block; */
+    width             : 600px;
+    padding           : .375rem .75rem;
+    font-size         : 1rem;
+    font-weight       : 400;
+    line-height       : 1.5;
+    color             : #212529;
+    background-color  : #fff;
+    background-clip   : padding-box;
+    border            : 1px solid #ced4da;
+    -webkit-appearance: none;
+    -moz-appearance   : none;
+    appearance        : none;
+    border-radius     : .375rem;
+    transition        : border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.inputText2 {
+    width             : 100px;
+    padding           : .375rem .75rem;
+    font-size         : 1rem;
+    font-weight       : 400;
+    line-height       : 1.5;
+    color             : #212529;
+    background-color  : #fff;
+    background-clip   : padding-box;
+    border            : 1px solid #ced4da;
+    -webkit-appearance: none;
+    -moz-appearance   : none;
+    appearance        : none;
+    border-radius     : .375rem;
+    transition        : border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.td1 {
+    text-align: right;
+}
+
+.td2 {
+    width: 450px;
+}
+
+.td2Short {
+    width: 100px;
+}

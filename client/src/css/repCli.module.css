@@ -1,0 +1,103 @@
+body {
+    /* text-align-last: center; */
+    text-align     : -webkit-center;
+}
+
+.divTitle {
+    font-size     : 20px;
+    font-weight   : bold;
+    text-align    : center;
+    padding       : 5px;
+    padding-bottom: 15px;
+}
+
+
+.divTitle80 {
+    font-size     : 20px;
+    font-weight   : bold;
+    text-align    : center;
+    padding       : 5px;
+    padding-bottom: 15px;
+    width: 280px;
+}
+
+.divTitle100 {
+    font-size     : 20px;
+    font-weight   : bold;
+    text-align    : center;
+    padding       : 5px;
+    padding-bottom: 15px;
+    width: 800px;
+}
+
+
+.divTitle300 {
+    font-size     : 20px;
+    font-weight   : bold;
+    text-align    : center;
+    padding       : 5px;
+    padding-bottom: 15px;
+    width: 400px;
+}
+
+
+.header {
+    width: fit-content;
+    background-color: aliceblue;
+}
+
+.headerCli {
+    /* display: flex;  */
+    padding        : 5px;
+    border         : 1px solid grey;
+    justify-content: center;
+}
+
+.tr300 {
+    width: 400px;
+}
+
+.tr80 {
+    width: 280px;
+}
+
+.tr100 {
+    width: 800px;
+}
+
+.divmid80 {
+    text-align: center;
+    width: 280px;
+}
+
+.divmid100 {
+    text-align: center;
+    width: 800px;
+}
+
+.divDatos {
+    margin: auto;
+    width : 1200px;
+    border: 1px solid grey;
+}
+
+.divReporte {
+    display: flex
+}
+
+.divDetail {
+    display: flex;
+}
+
+.divHeader {
+    display         : flex;
+    background-color: #009879;
+}
+
+@media (max-width: 768px) {
+    .divReporte {
+        text-align: -webkit-center;
+        display   : block;
+        width     : 80%;
+    }
+}

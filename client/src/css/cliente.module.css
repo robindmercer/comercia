@@ -1,0 +1,182 @@
+.form-style-Prod{
+	max-width:800px;
+	margin:50px auto;
+	background:#fff;
+	border-radius:5px;
+	padding:20px;
+}
+.form-style-Prod h1{
+	display: block;
+	text-align: center;
+	padding: 0;
+	margin: 0px 0px 20px 0px;
+	color: #5C5C5C;
+	font-size:x-large;
+}
+.form-style-Prod ul{
+	list-style:none;
+	padding:0;
+	margin:0;	
+}
+.form-style-Prod li{
+	display: block;
+	padding: 9px;
+	border:1px solid #bbacac;
+	margin-bottom: 30px;
+	border-radius: 3px;
+}
+.form-style-Prod li:last-child{
+	border:none;
+	margin-bottom: 0px;
+	text-align: center;
+}
+.form-style-Prod li > label{
+	display: block;
+	float: left;
+	margin-top: -22px;
+	background: #FFFFFF;
+	height: 20px;
+	padding: 2px 5px 2px 5px;
+	color: #6c6c6c;
+	font-size: 14px;
+	overflow: hidden;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+.form-style-Prod input[type="number"]{
+	text-align-last: end;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 100%;
+	display: block;
+	outline: none;
+	border: none;
+	height: 25px;
+	line-height: 25px;
+	font-size: 16px;
+	padding: 0;
+	font-family: Arial, Helvetica, sans-serif;
+} 
+
+.form-style-Prod input[type="text"],
+.form-style-Prod input[type="date"],
+.form-style-Prod input[type="datetime"],
+.form-style-Prod input[type="email"],
+.form-style-Prod input[type="search"],
+.form-style-Prod input[type="time"],
+.form-style-Prod input[type="url"],
+.form-style-Prod input[type="password"],
+.form-style-Prod textarea,
+.form-style-Prod select 
+{
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 100%;
+	display: block;
+	outline: none;
+	border: none;
+	height: 25px;
+	line-height: 25px;
+	font-size: 16px;
+	padding: 0;
+	font-family: Georgia, "Times New Roman", Times, serif;
+}
+.form-style-Prod input[type="text"]:focus,
+.form-style-Prod input[type="date"]:focus,
+.form-style-Prod input[type="datetime"]:focus,
+.form-style-Prod input[type="email"]:focus,
+.form-style-Prod input[type="number"]:focus,
+.form-style-Prod input[type="search"]:focus,
+.form-style-Prod input[type="time"]:focus,
+.form-style-Prod input[type="url"]:focus,
+.form-style-Prod input[type="password"]:focus,
+.form-style-Prod textarea:focus,
+.form-style-Prod select:focus 
+{
+    display: block;
+}
+.form-style-Prod li > span{
+	background: #F3F3F3;
+	display: block;
+	padding: 3px;
+	margin: 0 -9px -9px -9px;
+	text-align: center;
+	color: #C0C0C0;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+}
+.form-style-Prod textarea{
+	resize:none;
+	height:auto;
+}
+.form-style-Prod input[type="submit"],
+.form-style-Prod input[type="button"]{
+	background: #2471FF;
+	border: none;
+	padding: 10px 20px 10px 20px;
+	border-bottom: 3px solid #5994FF;
+	border-radius: 3px;
+	color: #D2E2FF;
+}
+.form-style-Prod input[type="submit"]:hover,
+.form-style-Prod input[type="button"]:hover{
+	background: #6B9FFF;
+	color:#fff;
+}
+
+.text-red-500{
+    margin:10px 0 0 0; 
+    color:red;
+}
+
+.lbl-w-50{
+	width: 45%;
+}
+.lblId{
+	width: 25%;
+}
+
+
+.td1{
+    padding: 5px;
+    font-weight: bold;
+}
+
+input{
+    border-radius: 3px;
+}
+
+.thCli{
+    align-content: center;
+}
+.trCli{
+    height: 25px;
+}
+.tdCli{
+    padding: 0.6rem 0.2rem;
+}
+.trBuscar{
+    background-color: cornflowerblue;
+}
+.td2Des{
+    width: 400px;
+}
+.td2Dato{
+    width: 60px;
+    TEXT-ALIGN: RIGHT;
+}
+.cabecera{
+    width: 700px;
+}
+.selWidth{
+    width: 360px;
+}
+
+
+.dbButton{
+	padding: 0px;
+	vertical-align: middle;
+	border: var(--bs-btn-border-width) solid var(--bs-btn-border-color);
+}
