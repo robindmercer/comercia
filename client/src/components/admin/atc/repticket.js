@@ -11,7 +11,7 @@ import TicketVer from "./TicketVer";
 
 // import Modal from "../../components/modal"
 const RepTicket = () => {
-    const cookies = new Cookies();
+    const cookies = new Cookies(); 
     const { ticket } = useSelector((state) => state);
     const dispatch = useDispatch();
     const estilo = { fontSize: "200%", transition: 'font-size 0.5s' };
