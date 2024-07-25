@@ -10,7 +10,7 @@ import { getPerfil } from "../../../actions/perfil";
 
 import { getCliente } from "../../../actions/cliente";
 // import style from '../../../css/ticket.module.css'
-import "/comercia/client/src/components/admin/atc/tickets.css";
+// import "/comercia/client/src/components/admin/atc/tickets.css";
 import { AddTicket, UpdateTicket, getinput } from "../../../actions/ticket";
 import Header from "../../Header";
 // Acciones
