@@ -49,7 +49,7 @@ const AddForm = () => {
           <td className="td1">Usr_id&nbsp;</td>
           <td>
             <input
-              className="td2Dato"
+              className="td2Des"
               type="text"
               placeholder="Usr_id *"
               name="usr_id"
@@ -62,8 +62,8 @@ const AddForm = () => {
         <tr>
           <td className="td1">Email&nbsp;</td>
           <td>
-            <input
-              className="td2Dato"
+            <input              
+              className="td2Des"
               type="text"
               placeholder="Email"
               name="email"
@@ -76,7 +76,7 @@ const AddForm = () => {
           <td className="td1">Password&nbsp;</td>
           <td>
             <input
-              className="td2Dato"
+              className="td2Des"
               type="text"
               placeholder="Password"
               name="password"
@@ -89,7 +89,7 @@ const AddForm = () => {
           <td className="td1">Perfil </td>
           <td>
             <input
-              className="td2Dato"
+              className="td2Des"
               type="text"
               placeholder="Perfil"
               name="cod_perfil"
