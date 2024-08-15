@@ -42,7 +42,7 @@ router.get("/", async function (req, res, next) {
       sql = sql + " order by f.id";
 
       const records = await seq.query(sql, {
-         logging: console.log,
+         //logging: console.log,
          type: QueryTypes.SELECT,
       });
       res.send(records);
@@ -55,7 +55,7 @@ router.get("/bckp", async function (req, res, next) {
    try {
       sql = "select * from facturas";
       const records = await seq.query(sql, {
-         logging: console.log,
+         //logging: console.log,
          type: QueryTypes.SELECT,
       });
       res.send(records);
@@ -79,7 +79,7 @@ router.get("/cab", async function (req, res, next) {
          sql = sql + "  where f.id =  " + id;
 
          const records = await seq.query(sql, {
-            logging: console.log,
+            //logging: console.log,
             type: QueryTypes.SELECT,
          });
          //console.log('records: ', records);
@@ -105,7 +105,7 @@ router.get("/mail", async function (req, res, next) {
          sql = sql + " where fd.fac_id = " + id;
 
          const records = await seq.query(sql, {
-            logging: console.log,
+            //logging: console.log,
             type: QueryTypes.SELECT,
          });
          //console.log('records: ', records);
@@ -132,7 +132,7 @@ router.get("/graf", async function (req, res, next) {
       sql = sql + " order by moneda,Periodo";
 
       const records = await seq.query(sql, {
-         logging: console.log,
+         //logging: console.log,
          type: QueryTypes.SELECT,
       });
       //console.log('records: ', records);
@@ -214,7 +214,7 @@ router.post("/", async function (req, res, next) {
       }
       const records = await seq
          .query(sql, {
-            logging: console.log,
+            //logging: console.log,
             type: QueryTypes.INSERT,
          })
          .then(function (facIdCreated) {
@@ -245,7 +245,7 @@ router.post("/cotifac", async function (req, res, next) {
 
       const records = await seq
          .query(sql, {
-            logging: console.log,
+            //logging: console.log,
             type: QueryTypes.INSERT,
          })
          .then(async function (facIdCreated) {
@@ -266,24 +266,24 @@ router.post("/cotifac", async function (req, res, next) {
 
             const records2 = await seq
                .query(sql2, {
-                  logging: console.log,
+                  //logging: console.log,
                   type: QueryTypes.INSERT,
                })
                .then(async function () {
                   const records3 = await seq
                      .query(sql3, {
-                        logging: console.log,
+                        //logging: console.log,
                         type: QueryTypes.INSERT,
                      })
                      .then(async function () {
                         const records4 = await seq
                            .query(sql4, {
-                              logging: console.log,
+                              //logging: console.log,
                               type: QueryTypes.UPDATE,
                            })
                            .then(async function () {
                               const records5 = await seq.query(sql5, {
-                                 logging: console.log,
+                                 //logging: console.log,
                                  type: QueryTypes.UPDATE,
                               });
                            })
@@ -330,12 +330,12 @@ router.put("/", async function (req, res, next) {
          );
       }
       const records = await seq.query(sqlDel, {
-         logging: console.log,
+         //logging: console.log,
          type: QueryTypes.DELETE,
       });
 
       const records2 = await seq.query(sqlfac, {
-         logging: console.log,
+         //logging: console.log,
          type: QueryTypes.UPDATE,
       });
       console.log("sqlDel: ", sqlDel);
