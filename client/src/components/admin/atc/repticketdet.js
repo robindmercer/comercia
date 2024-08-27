@@ -145,8 +145,9 @@ const RepTicketDet = () => {
                      <div className={style.divTitle80}>Numero de Ticket</div>
                      <div className={style.divTitle80}>Fecha Alta</div>
                      <div className={style.divTitle80}>Fecha Cierre</div>
-                     <div className={style.divTitle80}>Estado del Ticket</div>
                      <div className={style.divTitle100}>Descripcion</div>
+                     <div className={style.divTitle100}>Conclusion</div>
+                     <div className={style.divTitle80}>Prioridad</div>
                      <div className={style.divTitle100}>Area responsable</div>
                   </div>
                   {ticket &&
@@ -161,8 +162,9 @@ const RepTicketDet = () => {
                                     <div className={style.divmid80}>{data.tck_id}-{data.tck_linea}</div>
                                     <div className={style.divmid80}>{data.alta}</div>
                                     <div className={style.divmid80}>{fechaCierre}</div>
-                                    <div className={style.divmid80}>{data.tickdes}</div>
                                     <div className={style.divmid100}>{data.description}</div>
+                                    <div className={style.divmid100}>{data.conclusion}</div>
+                                    <div className={style.divmid80}>{data.tickdes}</div>
                                     <div className={style.divmid100}>{data.pdes}</div>
                                  </div>
                               </>

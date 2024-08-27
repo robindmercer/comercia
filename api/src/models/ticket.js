@@ -21,13 +21,14 @@ module.exports = (sequelize) => {
         fact:        {type: DataTypes.DATE,    allowNull: false,}, // Fecha ctividad
         evi_act:     {type: DataTypes.TEXT,    allowNull: false,}, // Evidencia Actividad
         conclusion:  {type: DataTypes.TEXT,    allowNull: false,}, // Punto 7
-// Datos propios         
+        // Datos propios         
         usr:         {type: DataTypes.STRING,  allowNull: false,},
         perfil:      {type: DataTypes.INTEGER,  allowNull: false,}, // a que departamento 
         prioridad:   {type: DataTypes.INTEGER, allowNull: false,}, // Alta media baja      
         cod_status:  {type: DataTypes.INTEGER, allowNull: false,}, // Abierto Cerrado 
         alta:        {type: DataTypes.DATE,    allowNull: false,defaultValue: DataTypes.NOW},        
         cierre:      {type: DataTypes.DATE,    allowNull: false,defaultValue: DataTypes.NOW},
+        nuevotck:    {type: DataTypes.TEXT,    allowNull: false,}, // Cabecera Nuevo 
     },
     { timestamps: false ,
         freezeTableName: true

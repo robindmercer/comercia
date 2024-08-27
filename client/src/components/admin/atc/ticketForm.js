@@ -11,10 +11,15 @@ import { getPerfil } from "../../../actions/perfil";
 import { getCliente } from "../../../actions/cliente";
 // import style from '../../../css/ticket.module.css'
 import "./tickets.css";
-import { AddTicket, UpdateTicket, getinput } from "../../../actions/ticket";
+import {
+   AddTicket,
+   CloseTicket,
+   UpdateTicket,
+   getinput,
+} from "../../../actions/ticket";
 import Header from "../../Header";
 // Acciones
-import "../../../css/usuario.css";
+// import "../../../css/usuario.css";
 
 // export function validate(input) {
 //    let errors = {};
@@ -47,6 +52,9 @@ function ABMTicket() {
    const [cliid, setCliid] = useState(0);
    const vuelvoA = "/ticket";
    var dateInput = new Date();
+   var updatable = "";
+   var updatableNewTck = "";
+   var newTckTitle = ""
    var formattedDate = dateInput.toISOString().slice(0, 10);
 
    var [chkA, setchkA] = useState(" ");
@@ -67,34 +75,37 @@ function ABMTicket() {
 
    const [input, setInput] = useState({
       id: state ? state.id : 0,
+      actividad: state ? state.actividad : "",
+      alta: hoy.toISOString().split("T")[0],
+      apellido: state ? state.apellido : "",
+      analisis: state ? state.analisis : "",
+      chkbox: state ? state.chkbox : "",
+      cierre: state ? state.cierre : "19000101",
       cli_id: state ? state.cli_id : "",
+      cod_status: state ? state.cod_status : 0,
+      conclusion: state ? state.conclusion : "",
       detecta: state ? state.detecta : "",
-      tck_id: state ? state.tck_id : 1,
-      tck_linea: state ? state.tck_linea : 1,
-      serie: state ? state.serie : "",
       description: state ? state.description : "",
+      evi_act: state ? state.evi_act : "",
+      evidencia: state ? state.evidencia : "",
+      fact: hoy.toISOString().split("T")[0],
+      nombre: state ? state.nombre : "",
+      nextlinea: state ? state.nextlinea : 1,
+      nuevotck: state ? state.nuevotck : "",
+      perfil: state ? state.perfil : 0,
       porque1: state ? state.porque1 : "",
       porque2: state ? state.porque2 : "",
       porque3: state ? state.porque3 : "",
       porque4: state ? state.porque4 : "",
       porque5: state ? state.porque5 : "",
-      analisis: state ? state.analisis : "",
-      chkbox: state ? state.chkbox : "",
-      evidencia: state ? state.evidencia : "",
-      evi_act: state ? state.evi_act : "",
-      actividad: state ? state.actividad : "",
-      fact: hoy.toISOString().split("T")[0],
-      conclusion: state ? state.conclusion : "",
-      usr: id_usuario,
-      perfil: state ? state.perfil : 0,
-      alta: hoy.toISOString().split("T")[0],
-      cierre: "19000101",
-      cod_status: state ? state.cod_status : 0,
       prioridad: state ? state.prioridad : 0,
-      responsable: state ? state.responsable : "",
-      nombre: state ? state.nombre : "",
-      apellido: state ? state.apellido : "",
       razsoc: state ? state.razsoc : "",
+      responsable: state ? state.responsable : "",
+      serie: state ? state.serie : "",
+      tck_id: state ? state.tck_id : 1,
+      tck_linea: state ? state.tck_linea : 1,
+      tot_lineas: state ? state.tot_lineas : 0,
+      usr: id_usuario,
    });
 
    console.log("state: ", state);
@@ -173,21 +184,23 @@ function ABMTicket() {
          grabo = false;
          alert("Debe grabar la Prioridad");
       }
-      if (input.evidencia ===undefined) input.evidencia ='';
-      if (input.evi_act ===undefined) input.evi_act ='';
-      if (input.apellido ===undefined) input.apellido ='';
-      if (input.nombre ===undefined) input.nombre ='';
-      if (input.cliente ===undefined) input.cliente ='';
-      if (input.razsoc ===undefined) input.razsoc ='';
-      if (input.porque1 ===undefined) input.porque1 ='';
-      if (input.porque2 ===undefined) input.porque2 ='';
-      if (input.porque3 ===undefined) input.porque3 ='';
-      if (input.porque4 ===undefined) input.porque4 ='';
-      if (input.porque5 ===undefined) input.porque5 ='';
-      if (input.analisis ===undefined) input.analisis ='';
-      if (input.actividad ===undefined) input.actividad ='';
-      if (input.conclusion ===undefined) input.conclusion ='';
-      
+      if (input.evidencia === undefined) input.evidencia = "";
+      if (input.evi_act === undefined) input.evi_act = "";
+      if (input.apellido === undefined) input.apellido = "";
+      if (input.nombre === undefined) input.nombre = "";
+      if (input.cliente === undefined) input.cliente = "";
+      if (input.razsoc === undefined) input.razsoc = "";
+      if (input.porque1 === undefined) input.porque1 = "";
+      if (input.porque2 === undefined) input.porque2 = "";
+      if (input.porque3 === undefined) input.porque3 = "";
+      if (input.porque4 === undefined) input.porque4 = "";
+      if (input.porque5 === undefined) input.porque5 = "";
+      if (input.analisis === undefined) input.analisis = "";
+      if (input.actividad === undefined) input.actividad = "";
+      if (input.conclusion === undefined) input.conclusion = "";
+
+      console.log("input: ", input, grabo);
+
       if (grabo) {
          if (input.id === 0) {
             dispatch(AddTicket(input));
@@ -195,7 +208,12 @@ function ABMTicket() {
             dispatch(UpdateTicket(input));
          }
       }
-      window.location.href = "/ticket";
+      // Solo se cierran en forma automatica los tickets hijos.
+      if (input.conclusion !== "" && input.tck_linea !== 1) {
+         dispatch(CloseTicket(input.id));
+      }
+
+      // window.location.href = "/ticket";
    };
 
    btnGrabar = true;
@@ -208,9 +226,17 @@ function ABMTicket() {
    }
    if (state.cli_id !== 0) {
       btnOcultoCli = true;
+      updatable = "readonly";
       cabecera = `Modificacion Ticket : ${state.tck_id} - ${state.tck_linea}`;
    }
 
+   if (input.tot_lineas > 1 || input.cierre !== "01/01/1900") {
+      btnGrabar = false;
+   }
+   if (input.nextlinea - 1 > input.tck_linea) {
+      updatableNewTck = "readonly";
+      newTckTitle="No actualizable por no ser el ultimo ticket de la lista"
+   }
    function handleChange(e) {
       e.preventDefault();
       if (e.target.name === "serie") input.serie = e.target.value;
@@ -238,6 +264,7 @@ function ABMTicket() {
       if (e.target.name === "apellido") input.apellido = e.target.value;
       if (e.target.name === "razsoc") input.razsoc = e.target.value;
       if (e.target.name === "fact") input.fact = e.target.value;
+      if (e.target.name === "nvotck") input.nuevotck = e.target.value;
       if (onChange) {
          setOnChange(false);
       } else {
@@ -274,7 +301,7 @@ function ABMTicket() {
       // setchkH(input.chkbox.substring(7,8));
       // setchkI(input.chkbox.substring(8,9));
 
-      console.log("input: ", input);
+      console.log("input form: ", input);
       // console.log('input: ', input);
       return (
          <>
@@ -313,6 +340,7 @@ function ABMTicket() {
                               value={input.serie}
                               onChange={handleChange}
                               placeholder="Numero de Serie del producto"
+                              readOnly={updatable}
                            />
                            <p className="c23 c13">
                               <span className="c12"></span>
@@ -331,12 +359,6 @@ function ABMTicket() {
                            <p className="c23 c13">
                               <span className="c12"></span>
                            </p>
-                           {/* <input id="descripcion"
-                     className="inputAncho"
-                     name="descripcion"
-                  type="text"
-                  placeholder="Descripición"
-               ></input> */}
                            <textarea
                               type="text"
                               id="description"
@@ -347,6 +369,7 @@ function ABMTicket() {
                               defaultValue={input.description}
                               onChange={handleChange}
                               placeholder="Ingrese una descripcion"
+                              readOnly={updatable}
                            />
                            <p className="c23 c13">
                               <span className="c12"></span>
@@ -380,6 +403,7 @@ function ABMTicket() {
                               defaultValue={input.detecta}
                               onChange={handleChange}
                               placeholder="Donde se detecta"
+                              readOnly={updatable}
                            />
                            <p className="c23 c13">
                               <span className="c12"></span>
@@ -523,6 +547,7 @@ function ABMTicket() {
                               rows="2"
                               onChange={handleChange}
                               placeholder="Porque"
+                              readOnly={updatable}
                            ></textarea>
                            <p className="c23 c13">
                               <span className="c12"></span>
@@ -555,6 +580,7 @@ function ABMTicket() {
                               rows="2"
                               onChange={handleChange}
                               placeholder="Porque"
+                              readOnly={updatable}
                            ></textarea>
                            <p className="c23 c13">
                               <span className="c12"></span>
@@ -587,6 +613,7 @@ function ABMTicket() {
                               rows="2"
                               onChange={handleChange}
                               placeholder="Porque"
+                              readOnly={updatable}
                            ></textarea>
                            <p className="c23 c13">
                               <span className="c12"></span>
@@ -619,6 +646,7 @@ function ABMTicket() {
                               rows="2"
                               onChange={handleChange}
                               placeholder="Porque"
+                              readOnly={updatable}
                            ></textarea>
                            <p className="c23 c13">
                               <span className="c12"></span>
@@ -651,6 +679,7 @@ function ABMTicket() {
                               rows="2"
                               onChange={handleChange}
                               placeholder="Porque"
+                              readOnly={updatable}
                            ></textarea>
                            <p className="c23 c13">
                               <span className="c12"></span>
@@ -683,6 +712,7 @@ function ABMTicket() {
                               defaultValue={input.analisis}
                               onChange={handleChange}
                               placeholder="Ingrese la conclusion del analisis"
+                              readOnly={updatable}
                            ></textarea>
                            <p className="c23 c13">
                               <span className="c12"></span>
@@ -704,15 +734,6 @@ function ABMTicket() {
                      <span className="c12">
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Procedimiento&nbsp;&nbsp;
                      </span>
-                     {/* <input 
-               id="chkA"
-               name="chkA"
-               className="chkBox"
-               // onClick={() =>marcar("A")}
-               onChange={handleChange}
-               type="checkbox"
-               checked={input.chkA}
-            /> */}
                      <input
                         onClick={() => marcar("A")}
                         className={
@@ -829,6 +850,7 @@ function ABMTicket() {
                         defaultValue={input.responsable}
                         onChange={handleChange}
                         placeholder="Ingrese nombre del Responsable"
+                        readOnly={updatable}
                      />
                      <p className="c23 c13">
                         <span className="c12"></span>
@@ -928,6 +950,7 @@ function ABMTicket() {
                               defaultValue={input.actividad}
                               onChange={handleChange}
                               placeholder="Numero de actividad"
+                              readOnly={updatable}
                            ></input>
                            <p className="c7 c13">
                               <span className="c12"></span>
@@ -943,6 +966,7 @@ function ABMTicket() {
                               type="date"
                               onChange={handleChange}
                               value={input.fact}
+                              readOnly={updatable}
                            ></input>
                         </td>
                      </tr>
@@ -986,6 +1010,108 @@ function ABMTicket() {
                         </td>
                      </tr>
                   </table>
+
+                  <p className="c23 c1">
+                     <span className="c12"></span>
+                  </p>
+                  <br />
+                  <table className="c65">
+                     <tr className="c52">
+                        <td className="c8">&nbsp;&nbsp;&nbsp;Prioridad:</td>
+                        <td>
+                           <select
+                              name="prioridad"
+                              id="prioridad"
+                              value={input.prioridad}
+                              onChange={handleChange}
+                              placeholder="Seleccione Prioridad"
+                              readOnly={updatable}
+                           >
+                              <option value="0">Seleccionar</option>
+                              {tabla &&
+                                 tabla.map((tabla) => {
+                                    if (tabla.id === 17 && tabla.cod !== 0) {
+                                       return (
+                                          <option
+                                             value={tabla.cod}
+                                             key={tabla.cod}
+                                          >{`${tabla.description}`}</option>
+                                       );
+                                    } else {
+                                       return null;
+                                    }
+                                 })}
+                           </select>
+                        </td>
+                        <td className="c8">Perfil:</td>
+                        <td>
+                           <select
+                              id="perfil"
+                              name="perfil"
+                              onChange={handleChange}
+                              value={input.perfil}
+                              readOnly={updatable}
+                           >
+                              <option value="0">Seleccionar</option>
+                              {perfil.map((perf) => {
+                                 return (
+                                    <option
+                                       value={perf.id_perfil}
+                                       key={perf.id_perfil}
+                                    >{`${perf.description}`}</option>
+                                 );
+                              })}
+                           </select>
+                        </td>
+                     </tr>
+                  </table>
+                  {input.nuevotck !== "" ? (
+                     <>
+                        <p className="c23 c13">
+                           <span className="c12"></span>
+                        </p>
+                        <ol className="c36 lst-kix_list_1-0" start="7">
+                           <li className="c10 li-bullet-0">
+                              <span className="c8">Datos Ticket Hijo</span>
+                           </li>
+                        </ol>
+
+                        <table className="c51">
+                           <tr className="c52">
+                              <td className="c65 c59" colSpan="1" rowSpan="1">
+                                 <p className="c23 c13">
+                                    <span className="c12"></span>
+                                 </p>
+                                 <p className="c39">
+                                    <span className="c8">
+                                       Descripci&oacute;n
+                                    </span>
+                                 </p>
+                              </td>
+                           </tr>
+                           <tr className="c74">
+                              <td className="c65" colSpan="1" rowSpan="1">
+                                 <p className="c23 c13">
+                                    <span className="c12"></span>
+                                 </p>
+                                 <textarea
+                                    type="text"
+                                    id="nvotck"
+                                    name="nvotck"
+                                    cols="120"
+                                    rows="5"
+                                    className="txtarea"
+                                    onChange={handleChange}
+                                    defaultValue={input.nuevotck}
+                                    readOnly={updatableNewTck}                                                                        
+                                    title={newTckTitle}
+                                 />
+                              </td>
+                           </tr>
+                        </table>
+                     </>
+                  ) : null}
+
                   <p className="c23 c13">
                      <span className="c12"></span>
                   </p>
@@ -1022,57 +1148,6 @@ function ABMTicket() {
                               onChange={handleChange}
                               defaultValue={input.conclusion}
                            />
-                        </td>
-                     </tr>
-                  </table>
-                  <p className="c23 c1">
-                     <span className="c12"></span>
-                  </p>
-                  <table className="c65">
-                     <tr className="c52">
-                        <td className="c8">&nbsp;&nbsp;&nbsp;Prioridad:</td>
-                        <td>
-                           <select
-                              name="prioridad"
-                              id="prioridad"
-                              value={input.prioridad}
-                              onChange={handleChange}
-                              placeholder="Seleccione Prioridad"
-                           >
-                              <option value="0">Seleccionar</option>
-                              {tabla &&
-                                 tabla.map((tabla) => {
-                                    if (tabla.id === 17 && tabla.cod !== 0) {
-                                       return (
-                                          <option
-                                             value={tabla.cod}
-                                             key={tabla.cod}
-                                          >{`${tabla.description}`}</option>
-                                       );
-                                    } else {
-                                       return null;
-                                    }
-                                 })}
-                           </select>
-                        </td>
-                        <td className="c8">Perfil:</td>
-                        <td>
-                           <select
-                              id="perfil"
-                              name="perfil"
-                              onChange={handleChange}
-                              value={input.perfil}
-                           >
-                              <option value="0">Seleccionar</option>
-                              {perfil.map((perf) => {
-                                 return (
-                                    <option
-                                       value={perf.id_perfil}
-                                       key={perf.id_perfil}
-                                    >{`${perf.description}`}</option>
-                                 );
-                              })}
-                           </select>
                         </td>
                      </tr>
                   </table>

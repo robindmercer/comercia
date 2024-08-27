@@ -85,7 +85,26 @@ const Cliente = () => {
                                 nombre: ticketDet[0].nombre,
                                 apellido: ticketDet[0].apellido,
                                 razsoc: ticketDet[0].razsoc,
-                                serie: ticketDet[0].serie
+                                serie: ticketDet[0].serie,
+                                detecta: ticketDet[0].detecta,
+                                description: ticketDet[0].description,
+                                porque1: ticketDet[0].porque1,
+                                porque2: ticketDet[0].porque2,
+                                porque3: ticketDet[0].porque3,
+                                porque4: ticketDet[0].porque4,
+                                porque5: ticketDet[0].porque5,
+                                analisis: ticketDet[0].analisis,
+                                chkbox: ticketDet[0].chkbox,
+                                evidencia: ticketDet[0].evidencia,
+                                // actividad: ticketDet[0].actividad,
+                                // evi_act: ticketDet[0].evi_act,
+                                // conclusion: ticketDet[0].conclusion,
+                                usr: id_usuario,
+                                // perfil: ticketDet[0].perfil : 0,
+                                // alta: hoy.toISOString().split("T")[0],
+                                cierre: "19000101",
+                                prioridad: ticketDet[0].prioridad,
+                                responsable: ticketDet[0].responsable,                          
                                 }
                             }>
                             <FcAddDatabase style={estilo}
@@ -125,7 +144,7 @@ const Cliente = () => {
                                     {/* <td>{data.cli_id}</td>
                                     <td>{data.razsoc}</td> */}
                                     <td>{data.tck_linea}</td>
-                                    <td>{data.description.substring(0,70)}</td>
+                                    <td>{data.nuevotck.substring(0,100)}</td>
                                     <td>{data.estado}</td>
                                     <td>{data.alta}</td>
                                     <td>{fechaCierre}</td>
@@ -139,31 +158,34 @@ const Cliente = () => {
                                             state={
                                                 {
                                                     id          : data.id,
-                                                    tck_id      : data.tck_id,
-                                                    tck_linea   : data.tck_linea,
-                                                    nombre      : data.nombre,
-                                                    apellido    : data.apellido,
-                                                    razsoc      : data.razsoc,
-                                                    serie       : data.serie,
+                                                    actividad   : data.actividad,
                                                     analisis    : data.analisis,
+                                                    apellido    : data.apellido,
+                                                    chkbox      : data.chkbox,
+                                                    cierre      : data.cierre,
+                                                    cli_id      : data.cli_id,
+                                                    cod_status  : data.cod_status,
+                                                    conclusion  : data.conclusion,
                                                     description : data.description,
-                                                    evidencia   : data.evidencia,
-                                                    evi_act     : data.evi_act,
                                                     detecta     : data.detecta,
+                                                    evi_act     : data.evi_act,
+                                                    evidencia   : data.evidencia,
+                                                    fact        : data.fact,
+                                                    nombre      : data.nombre,
+                                                    nextlinea   : data.nextlinea,
+                                                    nuevotck    : data.nuevotck,
+                                                    perfil      : data.perfil,
                                                     porque1     : data.porque1,
                                                     porque2     : data.porque2,
                                                     porque3     : data.porque3,
                                                     porque4     : data.porque4,
                                                     porque5     : data.porque5,
-                                                    conclusion  : data.conclusion,
-                                                    chkbox      : data.chkbox,
-                                                    responsable : data.responsable,
-                                                    cli_id      : data.cli_id,
-                                                    perfil      : data.perfil,
                                                     prioridad   : data.prioridad,
-                                                    cod_status  : data.cod_status,
-                                                    actividad   : data.actividad,
-                                                    fact        : data.fact
+                                                    razsoc      : data.razsoc,
+                                                    responsable : data.responsable,
+                                                    serie       : data.serie,
+                                                    tck_id      : data.tck_id,
+                                                    tck_linea   : data.tck_linea,
                                                 }
                                             }
 
@@ -179,12 +201,12 @@ const Cliente = () => {
                                             // onClick={() => handleRemove(data.id)}
                                          />&nbsp;&nbsp;
                                     
-                                         <FcInternal style={estilo}
+                                         {/* <FcInternal style={estilo}
                                             title="Cerrar Ticket"
                                             onMouseEnter={({ target }) => target.style.fontSize = "280%"}
                                             onMouseLeave={({ target }) => target.style.fontSize = "200%"}
                                             onClick={() => handleClose(data.id)}
-                                         /> &nbsp;&nbsp; 
+                                         /> &nbsp;&nbsp;  */}
                                     
                                         {/* <Link
                                             title="Datos"

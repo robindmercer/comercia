@@ -40,7 +40,9 @@ router.get("/", async function (req, res, next) {
     sql= sql + " coalesce(t.description,'')  PerfilDes,"
     sql= sql + " coalesce(t2.description,'') PrioridadDes,"
     sql= sql + " coalesce(t1.description,'') Estado,"
-    sql= sql + " (select max(tck_linea) from ticket where id = l.id or tck_id = l.id) totlineas,now() as Hoy"
+    sql= sql + " (select max(tck_linea) from ticket   where id = l.id or tck_id = l.id) tot_lineas,"
+    sql= sql + " (select count(cierre)  from ticket t where t.tck_id = l.tck_id and t.cierre > '19000101') cerradas,"
+    sql= sql + " nuevotck,now() as Hoy"
     sql= sql + " from ticket l"
     sql= sql + " left join perfils t on id_perfil = l.perfil"
     sql= sql + " left join clientes c on c.id = cli_id"
@@ -49,7 +51,7 @@ router.get("/", async function (req, res, next) {
     sql= sql + " where tck_linea = 1"
     sql= sql + " order by l.id"
     const records = await seq.query(sql, {
-      //logging: console.log,
+      logging: console.log,
       type: QueryTypes.SELECT,
     });
     res.send(records);
@@ -85,8 +87,8 @@ router.get("/repcli/:id", async function (req, res, next) {
     sql = sql  + ` c.razsoc,c.nombre,c.apellido,c.email,c.movil,c.fijo,`
     sql = sql  + ` d.calle,d.localidad,d.cp,d.pais,`
     sql = sql  + ` coalesce(f.id,0) fac,f.cod_status,`
-    sql = sql  + ` to_char(f.fecha,'dd/mm/yyyy') as fecha,f.total,`
-    sql = sql  + ` t1.description facdes,t2.description tickdes,t.description,p.description pdes`
+    sql = sql  + ` to_char(f.fecha,'dd/mm/yyyy') as fecha,f.total,t.conclusion,`
+    sql = sql  + ` t1.description facdes,t2.description tickdes,t.description,p.description pdes,nuevotck`
     sql = sql  + ` from `
     sql = sql  + ` ticket t`
     sql = sql  + ` join clientes c on c.id = t.cli_id`
@@ -95,7 +97,7 @@ router.get("/repcli/:id", async function (req, res, next) {
     sql = sql  + ` left join tabla t1 on t1.id =6  and t1.cod = f.cod_status`
     sql = sql  + ` join tabla t2 on t2.id =17 and t2.cod = t.cod_status`
     sql = sql  + ` join perfils p on p.id_perfil = t.perfil`
-    sql = sql  + ` where t.cli_id = ${id.id } and tck_linea = 1`
+    sql = sql  + ` where t.cli_id = ${id.id }`
     sql = sql  + ` order by tck_id,tck_linea`
     
     const records = await seq.query(sql, {
@@ -129,7 +131,7 @@ router.get("/cli/:id",async function (req, res, next) {
       sql = sql + "to_char(l.cierre,'dd/mm/yyyy') as cierre,"          
       sql= sql + " coalesce(t.description,'')  PerfilDes,"
       sql= sql + " coalesce(t2.description,'') PrioridadDes,"
-      sql= sql + " coalesce(t1.description,'') Estado,now() as Hoy"
+      sql= sql + " coalesce(t1.description,'') Estado,now() as Hoy,nuevotck"
       sql= sql + " from ticket l"
       sql= sql + " left join perfils t on id_perfil = l.perfil"
       sql= sql + " left join clientes c on c.id = cli_id"
@@ -169,7 +171,7 @@ router.get("/cli/:id",async function (req, res, next) {
         sql= sql + " coalesce(t.description,'')  PerfilDes,"
         sql= sql + " coalesce(t2.description,'') PrioridadDes,"
         sql= sql + " coalesce(t1.description,'') Estado,"
-        sql= sql + " (select max(tck_linea)+1 from ticket where tck_id = l.tck_id) as nextLinea,now() as Hoy "
+        sql= sql + " (select max(tck_linea)+1 from ticket where tck_id = l.tck_id) as nextLinea,now() as Hoy,nuevotck "
         sql= sql + " from ticket l"
         sql= sql + " left join perfils t on id_perfil = l.perfil"
         sql= sql + " left join clientes c on c.id = cli_id"
@@ -209,7 +211,8 @@ router.get("/cli/:id",async function (req, res, next) {
           sql= sql + " coalesce(t.description,'')  PerfilDes,"
           sql= sql + " coalesce(t2.description,'') PrioridadDes,"
           sql= sql + " coalesce(t1.description,'') Estado,"
-          sql= sql + " (select max(tck_linea)+1 from ticket where id = l.id or tck_id = l.id) nextLinea,now() as Hoy"
+          sql= sql + " (select max(tck_linea)+1 from ticket where tck_id = " + id.id + ") nextLinea,"
+          sql= sql + " now() as Hoy,nuevotck"
           sql= sql + " from ticket l"
           sql= sql + " left join perfils t on id_perfil = l.perfil"
           sql= sql + " left join clientes c on c.id = cli_id"
@@ -218,7 +221,7 @@ router.get("/cli/:id",async function (req, res, next) {
           sql = sql +" where l.id = " + id.id + " or l.tck_id = "  + id.id
           sql = sql +" order by l.tck_linea"
           const records = await seq.query(sql, {
-            //logging: console.log,
+            logging: console.log,
             type: QueryTypes.SELECT,
           });
           res.send(records);
@@ -234,7 +237,7 @@ router.post("/", async function (req, res, next) {
   const { actividad,alta,analisis,chkbox,cierre,cli_id,cod_status,conclusion,  
     description,detecta,evi_act,evidencia,fact,perfil, 
     porque1,porque2,porque3,porque4,porque5,
-    responsable,serie,tck_id,tck_linea,prioridad,usr,
+    responsable,serie,tck_id,tck_linea,prioridad,usr,nuevotck,
   } = req.body;
 
   if (!tck_id || !description) {
@@ -247,17 +250,18 @@ router.post("/", async function (req, res, next) {
     sql = sql + `serie,description,detecta,cli_id,evidencia,  `
     sql = sql + `porque1,porque2,porque3,porque4,porque5,`
     sql = sql + `analisis,chkbox,responsable,actividad,fact,evi_act,`
-    sql = sql + `conclusion,usr,perfil,prioridad,cod_status,alta,cierre`
+    sql = sql + `conclusion,usr,perfil,prioridad,cod_status,alta,cierre,nuevotck`
     sql = sql + `) values `
     sql = sql + `(`
     sql = sql + `${tck_id},${tck_linea},`
     sql = sql + `'${serie}','${description}','${detecta}','${cli_id}','${evidencia}',`
     sql = sql + `'${porque1}','${porque2}','${porque3}','${porque4}','${porque5}',`
     sql = sql + `'${analisis}','${chkbox}','${responsable}','${actividad}','${fact}','${evi_act}',`
-    sql = sql + `'${conclusion}','${usr}','${perfil}','${prioridad}','${cod_status}','${alta}','${cierre}')  RETURNING id`
+    sql = sql + `'${conclusion}','${usr}','${perfil}','${prioridad}','${cod_status}','${alta}',`
+    sql = sql + `'${cierre}','${nuevotck}')  RETURNING id`
 
     const records = await seq.query(sql, {
-      //logging: console.log,
+      logging: console.log,
       type: QueryTypes.INSERT,
     })
     .then(async function (tckCreated) {
@@ -314,12 +318,12 @@ router.put("/", async function (req, res, next) {
   const { id,actividad,alta,analisis,chkbox,cierre,cli_id,cod_status,conclusion,  
     description,detecta,evi_act,evidencia,fact,perfil, 
     porque1,porque2,porque3,porque4,porque5,
-    responsable,serie,tck_id,tck_linea,prioridad,usr,
+    responsable,serie,tck_id,tck_linea,prioridad,usr,nuevotck,
   } = req.body;  
   
   
   if (!serie || !description || !cod_status) {
-    return res.send("Falta información para poder darte de alta el Log");
+    return res.send("Falta información para poder darte de alta el Ticket");
   }
   try {
 
@@ -333,7 +337,8 @@ router.put("/", async function (req, res, next) {
     sql = sql + ` fact='${fact}',evi_act='${evi_act}',`
     sql = sql + ` conclusion='${conclusion}',usr='${usr}',perfil='${perfil}',`
     sql = sql + ` prioridad='${prioridad}',cod_status='${cod_status}',`
-    sql = sql + ` alta='${alta}',cierre='${cierre}'`  
+    sql = sql + ` cierre='${cierre}',`  
+    sql = sql + ` nuevotck='${nuevotck}'`
     sql = sql + ` where id = ${id}`
 
     const records = await seq.query(sql, {

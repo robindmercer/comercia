@@ -15,8 +15,9 @@ import Cookies from "universal-cookie";
 import "../../../css/all.css";
 import TicketVer from "./TicketVer";
 
+
 // import Modal from "../../components/modal"
-const Cliente = () => {
+const Tickets = () => {
    const cookies = new Cookies();
    const { ticket } = useSelector((state) => state);
    const dispatch = useDispatch();
@@ -24,11 +25,10 @@ const Cliente = () => {
    const [acceso, setAcceso] = useState("A");
    const id_usuario = cookies.get("usuario");
    const perfil = cookies.get("perfil");
+
    var fechaCierre = "";
-   // const usuariomenu = useSelector((state) => state.usuariomenu);
-   // const { porciva } = useSelector((state) => state);
-   // const idProg = 6; // es el nivel
-   // const [openModal, SetOpenModal]=useState(false);
+   var bajaBtn = false 
+   var detalle =""
 
    useEffect(() => {
       dispatch(getTicket());
@@ -40,19 +40,20 @@ const Cliente = () => {
 
    // cookies.remove('tckfac')
    // cookies.remove('tckraz')
-
+   
    function handleInputChange(e) {
       if (e.key === "Enter") {
          dispatch(nombre);
          setName("");
       }
    }
-
+   
    const handleClose = (id) => {
       dispatch(CloseTicket(id));
       window.location.href = "/TicketVer";
    };
-
+   console.log('ticket: ', ticket);
+   
    return (
       <>
          <Header />
@@ -74,6 +75,8 @@ const Cliente = () => {
                            tck_linea: 1,
                            cli_id: 0,
                            cod_status: 1,
+                           chkbox: "         ",
+                           nuevotck: ''
                         }}
                      >
                         <FcAddDatabase
@@ -96,7 +99,7 @@ const Cliente = () => {
                      {/* <th>Id</th> */}
                      <th>Numero Cliente</th>
                      <th>Razon Social</th>
-                     <th>Numero Ticket</th>
+                     <th>Tickets</th>
                      <th>Descripcion</th>
                      <th>Estado</th>
                      <th>Alta</th>
@@ -110,119 +113,142 @@ const Cliente = () => {
                   {ticket &&
                      ticket.map((data) => {
                         fechaCierre = data.cierre;
+                        if (data.tck_linea === 1 && 
+                            parseInt(data.cerradas) + 1  === data.tot_lineas && 
+                            data.conclusion !==''  ){
+                           bajaBtn = true;
+                        } else {
+                           bajaBtn = false;
+                        }
+
                         if (fechaCierre === "01/01/1900") {
                            fechaCierre = "- - - - -";
                         }
+                        detalle = ""
+                        if (data.cod_status === 2){
+                           detalle = data.conclusion.substring(0, 40)
+                        }
 
-                        return (
-                           <tr key={data.id}>
-                              <td>{data.cli_id}</td>
-                              <td>{data.razsoc}</td>
-                              <td>
-                                 {data.id} / {data.totlineas}
-                              </td>
-                              <td>{data.description.substring(0, 40)}</td>
-                              <td>{data.estado}</td>
-                              <td>{data.alta}</td>
-                              <td>{fechaCierre}</td>
-                              <td>{data.perfildes}</td>
-                              <td>{data.prioridaddes}</td>
-                              <td>
-                                 <Link
-                                    title="Datos"
-                                    to={"/ticketForm"}
-                                    className="dLink"
-                                    state={{
-                                       id: data.id,
-                                       tck_id: data.tck_id,
-                                       tck_linea: data.tck_linea,
-                                       nombre: data.nombre,
-                                       apellido: data.apellido,
-                                       razsoc: data.razsoc,
-                                       serie: data.serie,
-                                       analisis: data.analisis,
-                                       description: data.description,
-                                       evidencia: data.evidencia,
-                                       evi_act: data.evi_act,
-                                       detecta: data.detecta,
-                                       porque1: data.porque1,
-                                       porque2: data.porque2,
-                                       porque3: data.porque3,
-                                       porque4: data.porque4,
-                                       porque5: data.porque5,
-                                       conclusion: data.conclusion,
-                                       chkbox: data.chkbox,
-                                       responsable: data.responsable,
-                                       cli_id: data.cli_id,
-                                       perfil: data.perfil,
-                                       prioridad: data.prioridad,
-                                       cod_status: data.cod_status,
-                                       actividad: data.actividad,
-                                       fact: data.fact,
-                                    }}
-                                 >
-                                    {" "}
-                                    <FcAddDatabase
-                                       style={estilo}
-                                       onMouseEnter={({ target }) =>
-                                          (target.style.fontSize = "280%")
-                                       }
-                                       onMouseLeave={({ target }) =>
-                                          (target.style.fontSize = "200%")
-                                       }
-                                    />
-                                 </Link>
-                                 &nbsp;&nbsp;
-                                 {fechaCierre === "- - - - -" ? (
-                                    <>
-                                       <FcDeleteRow
+                        if (parseInt(perfil) === 1 || data.perfil===parseInt(perfil) || data.usr === id_usuario  ){
+                           return (
+                              <tr key={data.id}>
+                                 <td>{data.cli_id}</td>
+                                 <td>{data.razsoc}</td>
+                                 <td>
+                                    {data.id} / {data.tot_lineas}  - {data.cerradas}
+                                 </td>
+                                 <td title={detalle}>{ data.description.substring(0, 40)} </td>
+                                 <td>{data.estado}</td>
+                                 <td>{data.alta}</td>
+                                 <td>{fechaCierre}</td>
+                                 <td>{data.perfildes}</td>
+                                 <td>{data.prioridaddes}</td>
+                                 <td>
+                                    <Link
+                                       title="Datos"
+                                       to={"/ticketForm"}
+                                       className="dLink"
+                                       state={{
+                                          id: data.id,
+                                          actividad: data.actividad,
+                                          analisis: data.analisis,
+                                          apellido: data.apellido,
+                                          chkbox: data.chkbox,
+                                          cierre: data.cierre,
+                                          cli_id: data.cli_id,
+                                          conclusion: data.conclusion,
+                                          cod_status: data.cod_status,
+                                          description: data.description,
+                                          detecta: data.detecta,
+                                          evi_act: data.evi_act,
+                                          evidencia: data.evidencia,
+                                          fact: data.fact,
+                                          nombre: data.nombre,
+                                          nuevotck: data.nuevotck,
+                                          perfil: data.perfil,
+                                          porque1: data.porque1,
+                                          porque2: data.porque2,
+                                          porque3: data.porque3,
+                                          porque4: data.porque4,
+                                          porque5: data.porque5,
+                                          prioridad: data.prioridad,
+                                          razsoc: data.razsoc,
+                                          responsable: data.responsable,
+                                          serie: data.serie,
+                                          tck_id: data.tck_id,
+                                          tck_linea: data.tck_linea,
+                                          tot_lineas: data.tot_lineas,
+                                       }}
+                                    >
+                                       {" "}
+                                       <FcAddDatabase
                                           style={estilo}
-                                          title="Eliminar Ticket"
                                           onMouseEnter={({ target }) =>
                                              (target.style.fontSize = "280%")
                                           }
                                           onMouseLeave={({ target }) =>
                                              (target.style.fontSize = "200%")
                                           }
-                                          // onClick={() => handleRemove(data.id)}
                                        />
-                                       &nbsp;&nbsp;
-                                       <FcInternal
+                                    </Link>
+                                    &nbsp;&nbsp;
+                                    {fechaCierre === "- - - - -" ? (
+                                       <>
+                                          <FcDeleteRow
+                                             style={estilo}
+                                             title="Eliminar Ticket"
+                                             onMouseEnter={({ target }) =>
+                                                (target.style.fontSize = "280%")
+                                             }
+                                             onMouseLeave={({ target }) =>
+                                                (target.style.fontSize = "200%")
+                                             }
+                                             // onClick={() => handleRemove(data.id)}
+                                          />
+                                          &nbsp;&nbsp;
+                                          &nbsp;&nbsp;
+                                          { bajaBtn ? (
+                                          <FcInternal
+                                             style={estilo}
+                                             title="Cerrar Ticket"
+                                             onMouseEnter={({ target }) =>
+                                                (target.style.fontSize = "280%")
+                                             }
+                                             onMouseLeave={({ target }) =>
+                                                (target.style.fontSize = "200%")
+                                             }
+                                             onClick={() => handleClose(data.id)}
+                                             />
+                                          ): null
+                                       }
+                                       </>
+                                    ) : null}
+                                    <Link
+                                       title="Datos"
+                                       to={"/ticketDet"}
+                                       className="dLink"
+                                       state={{
+                                          id: data.id,
+                                       }}
+                                    >
+                                       <FcMultipleSmartphones
                                           style={estilo}
-                                          title="Cerrar Ticket"
+                                          title="Ver Cadena"
                                           onMouseEnter={({ target }) =>
                                              (target.style.fontSize = "280%")
                                           }
                                           onMouseLeave={({ target }) =>
                                              (target.style.fontSize = "200%")
                                           }
-                                          onClick={() => handleClose(data.id)}
-                                       />{" "}
-                                       &nbsp;&nbsp;
-                                    </>
-                                 ) : null}
-                                 <Link
-                                    title="Datos"
-                                    to={"/ticketDet"}
-                                    className="dLink"
-                                    state={{
-                                       id: data.id,
-                                    }}
-                                 >
-                                    <FcMultipleSmartphones
-                                       style={estilo}
-                                       title="Ver Cadena"
-                                       onMouseEnter={({ target }) =>
-                                          (target.style.fontSize = "280%")
-                                       }
-                                       onMouseLeave={({ target }) =>
-                                          (target.style.fontSize = "200%")
-                                       }
-                                    />
-                                 </Link>
-                              </td>
-                           </tr>
-                        );
+                                       />
+                                    </Link>
+                                 </td>
+                              </tr>
+                           );
+                        } else {
+                           return (null)
+                        }
+
                      })}
                </tbody>
             </table>
@@ -231,4 +257,4 @@ const Cliente = () => {
    );
 };
 
-export default Cliente;
+export default Tickets;
