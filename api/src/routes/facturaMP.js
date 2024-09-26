@@ -29,7 +29,7 @@ router.get('/', async function (req, res, next) {
       sql = sql + " where facturas.cod_status > 5" // Liberados Para arriba 
       const records = await seq.query(sql,
         {
-          logging: console.log,
+          //logging: console.log,
           type: QueryTypes.SELECT
         });      
       res.send(records)    
@@ -68,7 +68,7 @@ router.get("/fac", async function (req, res, next) {
       sql = sql + " materiaprima.description,materiaprima.udm,materiaprima.stock"
       sql = sql + " order by orden,prod_id"
       const records = await seq.query(sql, {
-        logging: console.log,
+        //logging: console.log,
         type: QueryTypes.SELECT,
       });
       //console.log('records: ', records);
@@ -101,7 +101,7 @@ router.put("/fac", async function (req, res, next) {
         sql = sql + " and t1.name= materiaprima.name;"
 
         const records = await seq.query(sql, {
-          logging: console.log,
+          //logging: console.log,
           type: QueryTypes.SELECT,
         });
         //console.log('records: ', records);
