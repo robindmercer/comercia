@@ -313,39 +313,39 @@ const Factura = () => {
       sql = `update facturas set cod_status = ${newLog.cod_status} where id =  ${newLog.doc_id} `;
       setDatos((datos.sql1 = sql));
 
-        // window.location.href = '/factura';
       // Actualizo Stock
       if (actStock) {
-         sql = `update materiaprima set stock = stock - prodmp.cantidad `;
-         sql = sql + ` from prodmp, factdet `;
-         sql = sql + ` where factdet.fac_id = ${found.id} `;
-         sql = sql + `  and prodmp.prod_id = factdet.prod_id`;
-         sql = sql + `  and materiaprima.name  = prodmp.mp_name`;
-         setDatos((datos.sql2 = sql));
-         sql = `insert into logs (doc_id, tipo_id, usr_id, cod_status,observ,fecha) values `;
-         sql = sql + `(${newLog.doc_id}, 'FAC', '${newLog.usr_id}', ${newLog.cod_status},'${newLog.observ}',now())`;
-         setDatos((datos.sql3 = sql));
-         sql = `update productos set stock = stock - cantidad `;
-         sql = sql & ` from factdet `;
-         sql = sql & ` where fac_id =  ${found.id} `;
-         sql = sql & ` and prod_id = id`;
-         setDatos((datos.sql4 = sql));
-         console.log("RunsqlPost 1: ", datos);
-         dispatch(RunSqlPost(datos));
-        } else {
-          //dispatch(UpdateFacturaSts2(newLog)); // Espera Aprobacion
-          console.log("RunsqlPost 2: ", datos);
-          dispatch(RunSqlPost(datos));
-         console.log("newLog: ", newLog);
+        sql = `update materiaprima set stock = stock - prodmp.cantidad `;
+        sql = sql + ` from prodmp, factdet `;
+        sql = sql + ` where factdet.fac_id = ${found.id} `;
+        sql = sql + `  and prodmp.prod_id = factdet.prod_id`;
+        sql = sql + `  and materiaprima.name  = prodmp.mp_name`;
+        setDatos((datos.sql2 = sql));
+        sql = `insert into logs (doc_id, tipo_id, usr_id, cod_status,observ,fecha) values `;
+        sql = sql + `(${newLog.doc_id}, 'FAC', '${newLog.usr_id}', ${newLog.cod_status},'${newLog.observ}',now())`;
+        setDatos((datos.sql3 = sql));
+        sql = `update productos set stock = stock - cantidad `;
+        sql = sql & ` from factdet `;
+        sql = sql & ` where fac_id =  ${found.id} `;
+        sql = sql & ` and prod_id = id`;
+        setDatos((datos.sql4 = sql));
+        console.log("RunsqlPost 1: ", datos);
+        dispatch(RunSqlPost(datos));
+      } else {
+        //dispatch(UpdateFacturaSts2(newLog)); // Espera Aprobacion
+        console.log("RunsqlPost 2: ", datos);
+        dispatch(RunSqlPost(datos));
+        console.log("newLog: ", newLog);
       }
+      window.location.href = '/factura';
       // dispatch(GetMails(paramMail));
       // console.log("mails: ", mails);
       // for (var index = 0; index < mails.length; index++) {
-      //    console.log("enviar mail: ", mails[index].email, newLog.observ);
-      //    //   dispatch(mailEnviar(crearMail(newStatus, mails[index].email, found,newLog.observ)));
-      // }
-      //handleShow();
-   };
+        //    console.log("enviar mail: ", mails[index].email, newLog.observ);
+        //    //   dispatch(mailEnviar(crearMail(newStatus, mails[index].email, found,newLog.observ)));
+        // }
+        //handleShow();
+      };
    // console.log('factura: ', factura);
    function handleChange(e) {
       e.preventDefault();
