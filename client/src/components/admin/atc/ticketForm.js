@@ -1065,7 +1065,7 @@ function ABMTicket() {
                         </td>
                      </tr>
                   </table>
-                  {input.nuevotck !== "" ? (
+                  {input.tck_linea !== 1 ? (
                      <>
                         <p className="c23 c13">
                            <span className="c12"></span>
