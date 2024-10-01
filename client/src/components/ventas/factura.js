@@ -333,11 +333,11 @@ const Factura = () => {
         dispatch(RunSqlPost(datos));
       } else {
         //dispatch(UpdateFacturaSts2(newLog)); // Espera Aprobacion
-        console.log("RunsqlPost 2: ", datos);
+      //   console.log("RunsqlPost 2: ", datos);
         dispatch(RunSqlPost(datos));
-        console.log("newLog: ", newLog);
+      //   console.log("newLog: ", newLog);
       }
-      //window.location.href = '/factura';
+      window.location.href = '/factura';
       // dispatch(GetMails(paramMail));
       // console.log("mails: ", mails);
       // for (var index = 0; index < mails.length; index++) {
@@ -430,7 +430,7 @@ const Factura = () => {
                         // console.log('filtro: ', typeof(filtro));
                         if (filtro === "" || filtro === "0") {
                            if (parseInt(data.cod_status) === 14) {
-                              console.log("saque 14");
+                              // console.log("saque 14");
                               muestroRegistro = false;
                            }
                         }
