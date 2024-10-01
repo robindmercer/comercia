@@ -30,13 +30,14 @@ export function InsertData(data) {
 }
 
   export function RunSqlPost(data) {
+    console.log('RunSqlPost: ', data);
     return async function (dispatch) {
       await axios.post(`admin/update`, data)
         .then(response => {
           return response
         })
         .catch(err => {
-          console.log(err)
+          console.log('Error',err)
         })
     }
   }

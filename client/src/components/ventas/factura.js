@@ -337,7 +337,7 @@ const Factura = () => {
         dispatch(RunSqlPost(datos));
         console.log("newLog: ", newLog);
       }
-      window.location.href = '/factura';
+      //window.location.href = '/factura';
       // dispatch(GetMails(paramMail));
       // console.log("mails: ", mails);
       // for (var index = 0; index < mails.length; index++) {
