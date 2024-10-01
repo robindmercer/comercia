@@ -23,7 +23,7 @@ router.delete('/', async function (req, res, next) {
      console.log(sql)
     const [records] = await seq.query(sql,
       {
-        logging: console.log,
+        //logging: console.log,
         type: QueryTypes.SELECT
       });
     res.send(records)
@@ -39,7 +39,7 @@ router.get('/', async function (req, res, next) {
     // console.log(sql)
     const [records] = await seq.query(sql,
       {
-        logging: console.log,
+        //logging: console.log,
         type: QueryTypes.SELECT
       });
     res.send(records)
@@ -56,7 +56,7 @@ router.get('/sql', async function (req, res, next) {
       // console.log('/sql nada',nada)
       const records = await seq.query(sql,
         {
-          logging: console.log,
+          //logging: console.log,
           type: QueryTypes.SELECT
         });
         res.send(records)
@@ -84,7 +84,7 @@ router.post('/insert', async function (req, res, next) {
     try {
       const [records] = await seq.query(element,
         {
-          logging: console.log,
+          //logging: console.log,
           type: QueryTypes.INSERT
         });
       } catch (error) {
@@ -101,7 +101,7 @@ router.post('/insert', async function (req, res, next) {
     try {
       const [records] = await seq.query(sql1,
         {
-          logging: console.log,
+          //logging: console.log,
           type: QueryTypes.INSERT
         });
         res.send("OK")
@@ -146,7 +146,7 @@ router.post('/update', async function (req, res, next) {
             });    
             // return res.send("OK")
         }        
-        res.send("OK")
+        res.send(records)
       } catch (error) {
         console.log(error)
       }
@@ -161,7 +161,7 @@ router.post('/delete', async function (req, res, next) {
     try {
       const [records] = await seq.query(sql1,
         {
-          logging: console.log,
+          //logging: console.log,
           type: QueryTypes.DELETE
         });
         res.send("OK")
@@ -183,7 +183,7 @@ router.get("/count", async function (req, res, next) {
       sql = sql + " select   '2' tipo,count(*)  from ticket where cierre < '19010101' and cod_status in(" + xid[2] + ")"
 
       const records = await seq.query(sql, {
-        logging: console.log,
+        //logging: console.log,
         type: QueryTypes.SELECT,
       });
       //console.log('records: ', records);
