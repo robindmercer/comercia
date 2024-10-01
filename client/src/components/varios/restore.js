@@ -28,9 +28,9 @@ function Restore() {
          setData(parsedData);
         };
     };
-    var insertar = "";
+   //  var insertar = "";
     var coma = ""
-    insertar = "";
+   //  insertar = "";
     console.log('file: ', file);
 
    if (data.length > 0 && file !== '') {

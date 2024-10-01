@@ -30,7 +30,7 @@ const Cotizacion = () => {
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
   // end Modal 
-  const idProg = 12;
+  // const idProg = 12;
   const id_usuario = cookies.get("usuario");
   const { cotizacion } = useSelector((state) => state);
   const { mails } = useSelector((state) => state);
