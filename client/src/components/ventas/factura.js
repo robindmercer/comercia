@@ -1,7 +1,7 @@
 //react-hooks/exhaustive-deps
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getFactura, UpdateFacturaSts2 } from "../../actions/factura";
+import { getFactura,UpdateFacturaSts2 } from "../../actions/factura";
 import { AccessCtrl } from "../../actions/index";
 import { getTablaAll } from "../../actions/tabla";
 import { Link } from "react-router-dom";
@@ -29,7 +29,7 @@ import style from "../../css/factura.module.css";
 import DeleteConfirmation from "../DeleteConfirmation";
 import Cookies from "universal-cookie";
 import { RunSqlPost } from "../../actions/admin";
-import { GetMails } from "../../actions/usuario";
+// import { GetMails } from "../../actions/usuario";
 
 const Factura = () => {
    const cookies = new Cookies();
@@ -58,7 +58,7 @@ const Factura = () => {
    // Handle the displaying of the modal based on type and id
    const id_usuario = cookies.get("usuario");
    const { factura } = useSelector((state) => state);
-   const { mails } = useSelector((state) => state);
+   // const { mails } = useSelector((state) => state);
 
    const [onChange, setOnChange] = useState(false);
    // const actlogin = useSelector((state) => state.actlogin)
@@ -198,13 +198,25 @@ const Factura = () => {
    }, [dispatch, id_usuario, onChange]);
 
    const handleSubmit = (id, signo) => {
-      console.log('handleSubmit: ',id,signo);
+      var dat = [
+         {
+         doc_id:0, 
+         tipo_id:0, 
+         usr_id:"", 
+         cod_status:0, 
+         observ:""}
+      ]
+
+
+      console.log("handleSubmit: ", id, signo);
       var actStock = false;
       // var control = "x";
       var newStatus = 0;
       var paramMail = 1;
       setOnChange(false);
       const found = factura.find((element) => element.id === id);
+      dat.doc_id = id 
+      dat.usr_id = 
       console.log("found: ", found);
       if (signo === "-" && found.cod_status > 1) {
          newStatus = found.cod_status - 1;
@@ -218,7 +230,7 @@ const Factura = () => {
 
          // control = "N";
          // Devuelvo materia prima al Stock
-         if (newStatus === 5) {
+         if (newStatus === 55) {
             sql = `update materiaprima set stock = stock + prodmp.cantidad `;
             sql = sql + ` from prodmp, factdet `;
             sql = sql + ` where factdet.fac_id = ${found.id} `;
@@ -233,8 +245,9 @@ const Factura = () => {
             setDatos((datos.sql3 = sql));
 
             console.log("RunsqlPost: ", sql, found.id);
+            dispatch(RunSqlPost(datos));
+            window.location.href = "/factura";
          }
-         dispatch(RunSqlPost(datos));
       }
       if (signo === "+") {
          if (found.cod_status === 1) {
@@ -301,7 +314,7 @@ const Factura = () => {
       }
       console.log("newStatus: ", newStatus);
       console.log("paramMail: ", paramMail);
-      
+
       var newLog = {
          doc_id: found.id,
          tipo_id: "FAC",
@@ -309,43 +322,42 @@ const Factura = () => {
          cod_status: newStatus,
          observ: lang,
       };
-// corre siempre       
+      // corre siempre
       sql = `update facturas set cod_status = ${newLog.cod_status} where id =  ${newLog.doc_id} `;
       setDatos((datos.sql1 = sql));
 
       // Actualizo Stock
-      if (actStock) {
-        sql = `update materiaprima set stock = stock - prodmp.cantidad `;
-        sql = sql + ` from prodmp, factdet `;
-        sql = sql + ` where factdet.fac_id = ${found.id} `;
-        sql = sql + `  and prodmp.prod_id = factdet.prod_id`;
-        sql = sql + `  and materiaprima.name  = prodmp.mp_name`;
-        setDatos((datos.sql2 = sql));
-        sql = `insert into logs (doc_id, tipo_id, usr_id, cod_status,observ,fecha) values `;
-        sql = sql + `(${newLog.doc_id}, 'FAC', '${newLog.usr_id}', ${newLog.cod_status},'${newLog.observ}',now())`;
-        setDatos((datos.sql3 = sql));
-        sql = `update productos set stock = stock - cantidad `;
-        sql = sql & ` from factdet `;
-        sql = sql & ` where fac_id =  ${found.id} `;
-        sql = sql & ` and prod_id = id`;
-        setDatos((datos.sql4 = sql));
-        console.log("RunsqlPost 1: ", datos);
-        dispatch(RunSqlPost(datos));
-      } else {
-        //dispatch(UpdateFacturaSts2(newLog)); // Espera Aprobacion
-      //   console.log("RunsqlPost 2: ", datos);
-        dispatch(RunSqlPost(datos));
-      //   console.log("newLog: ", newLog);
-      }
-      window.location.href = '/factura';
+      // if (actStock) {
+      //    sql = `update materiaprima set stock = stock - prodmp.cantidad `;
+      //    sql = sql + ` from prodmp, factdet `;
+      //    sql = sql + ` where factdet.fac_id = ${found.id} `;
+      //    sql = sql + `  and prodmp.prod_id = factdet.prod_id`;
+      //    sql = sql + `  and materiaprima.name  = prodmp.mp_name`;
+      //    setDatos((datos.sql2 = sql));
+      //    sql = `insert into logs (doc_id, tipo_id, usr_id, cod_status,observ,fecha) values `;
+      //    sql = sql + `(${newLog.doc_id}, 'FAC', '${newLog.usr_id}', ${newLog.cod_status},'${newLog.observ}',now())`;
+      //    setDatos((datos.sql3 = sql));
+      //    sql = `update productos set stock = stock - cantidad `;
+      //    sql = sql & ` from factdet `;
+      //    sql = sql & ` where fac_id =  ${found.id} `;
+      //    sql = sql & ` and prod_id = id`;
+      //    setDatos((datos.sql4 = sql));
+      //    console.log("RunsqlPost 1: ", datos);
+      //    // dispatch(RunSqlPost(datos));
+      // }
+      // dispatch(RunSqlPost(datos));
+
+      dispatch(UpdateFacturaSts2(newLog))
+
+      window.location.href = "/factura";
       // dispatch(GetMails(paramMail));
       // console.log("mails: ", mails);
       // for (var index = 0; index < mails.length; index++) {
-        //    console.log("enviar mail: ", mails[index].email, newLog.observ);
-        //    //   dispatch(mailEnviar(crearMail(newStatus, mails[index].email, found,newLog.observ)));
-        // }
-        //handleShow();
-      };
+      //    console.log("enviar mail: ", mails[index].email, newLog.observ);
+      //    //   dispatch(mailEnviar(crearMail(newStatus, mails[index].email, found,newLog.observ)));
+      // }
+      //handleShow();
+   };
    // console.log('factura: ', factura);
    function handleChange(e) {
       e.preventDefault();

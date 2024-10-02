@@ -157,7 +157,7 @@ router.put("/stat", async function (req, res, next) {
                logging: console.log,
                type: QueryTypes.UPDATE,
             })
-            .then(async function (facIdCreated) {
+            .then(async function () {
                const records2 = await seq
                .query(sql2, {
                   logging: console.log,
@@ -169,7 +169,7 @@ router.put("/stat", async function (req, res, next) {
             })
          } catch (error) {
             console.log("Error",error);
-            res.status(400).json({ message: `Error doc_id ${error}` });
+            res.status(400).json({ message: `Error ${error}` });
          }
       } else {
          console.log("Error Stat Doc_id");
