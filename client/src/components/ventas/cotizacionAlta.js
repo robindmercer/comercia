@@ -42,6 +42,21 @@ const Formcotizacion = () => {
    const [show, setShow] = useState(false);
    const handleShow = () => setShow(true);
    const handleClose = () => setShow(false);
+   // const [windowSize, setWindowSize] = useState({});
+
+   // useEffect(() => {
+   //    window.addEventListener("resize", () => {
+   //      setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+   //    });
+   //  }, [])
+  
+   //  if (windowSize) {
+   //     console.log('windowSize.width: ', window.innerWidth);
+      if (window.innerWidth < 1000) {
+        window.location.href = "cotizacionAltaPh"
+    }
+   //  }
+
 
    const handleShowAlert = () => {
       setShowAlert(true);
