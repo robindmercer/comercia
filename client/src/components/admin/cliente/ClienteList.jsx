@@ -8,6 +8,7 @@ import style from "../../../css/cliente.module.css";
 import Header from '../../Header';
 
 const ClienteList = () => {
+   //console.log('window.innerWidth: ', window.innerWidth,pantalla);
    const { sortedClientes } = useContext(ClienteContext);
 
    const [showAlert, setShowAlert] = useState(false);
@@ -19,10 +20,16 @@ const ClienteList = () => {
    //const handleShowAlert = () =>setShowAlert(true);
    
    const [currentPage, setCurrentPage] = useState(1);
-   const [clientesPerPage] = useState(10);
+   var clientesPerPage = 10;
    const [ordenar, setOrdenar] = useState(false);
    
    const [records, setRecords] = useState(sortedClientes);
+
+   var pantalla = "PC"
+   if (window.innerWidth < 1000) {
+      pantalla = "Phone"
+      clientesPerPage = 20
+   }
 
    const [data, setData] = useState({
       id: 0, 
@@ -143,16 +150,30 @@ const ClienteList = () => {
             <thead>
                <tr className={style.trBuscar}>
                   <th>Buscar</th>
+                  {pantalla==="PC" ? (
+                     <>
                   <th className={style.thCli}><input type="text" onChange={handleChangeRS} /></th>
                   <th className={style.thCli}><input type="text" onChange={handleChange} /></th>
                   <th className={style.thCli}><input type="text" onChange={handleChangeAp} /></th>
+                     </>
+               ):(
+                  <th className={style.thCli}><input type="text" onChange={handleChangeRS} /></th>
+               )
+               }
                   <th>&nbsp;</th>
                </tr>
                <tr>
-                  <th>id</th>
-                  <th  onClick={() =>ordenar_RazSoc()} >Razon social</th>
-                  <th className="onlyScreen">Nombre</th>
-                  <th className="onlyScreen">Apellido</th>
+                  {pantalla==="PC" ? (
+                     <>
+                     <th>id</th>
+                     <th  onClick={() =>ordenar_RazSoc()} >Razon social</th>
+                     <th className="onlyScreen">Nombre</th>
+                     <th className="onlyScreen">Apellido</th>
+                     </>
+                  ):(
+                     <th  onClick={() =>ordenar_RazSoc()} >Razon social</th>
+                  )
+                  }
                   <th>Actions</th>
                </tr>
             </thead>

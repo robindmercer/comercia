@@ -7,7 +7,11 @@ import { FcAcceptDatabase, FcHome } from "react-icons/fc";
 import style from "../../../css/cliente.module.css";
 
 const Cliente = ({ data }) => {
-   const { deleteCliente } = useContext(ClienteContext);
+   var pantalla = "PC"
+   if (window.innerWidth < 1000) {
+       pantalla = "Phone"
+   }
+      const { deleteCliente } = useContext(ClienteContext);
 
    const [show, setShow] = useState(false);
 
@@ -19,14 +23,20 @@ const Cliente = ({ data }) => {
    useEffect(() => {
       handleClose();
    }, [data]);
-   console.log("data: ", data);
+   //console.log("data: ", data);
 
    return (
       <>
-         <td className={style.tdCli}>{data.id}</td>
-         <td className={style.tdCli}>{data.razsoc}</td>
-         <td className={style.tdCli}>{data.nombre}</td>
-         <td className={style.tdCli}>{data.apellido}</td>
+         {pantalla==="PC" ? (
+            <>
+            <td className={style.tdCli}>{data.id}</td>
+            <td className={style.tdCli}>{data.razsoc}</td>
+            <td className={style.tdCli}>{data.nombre}</td>
+            <td className={style.tdCli}>{data.apellido}</td>
+            </>
+         ):(
+            <td className={style.tdCli}>{data.razsoc}</td>
+         )}
          <td>
             <OverlayTrigger
                overlay={<Tooltip id={`tooltip-top`}>Editar</Tooltip>}
