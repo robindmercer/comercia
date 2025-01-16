@@ -216,7 +216,7 @@ function AbmMenu() {
                                                    onClick={() =>marcar("C", data.nivel)}
                                                    className={"xinput " + (chkC ==='X' ? 'textok':'textnormal')}
                                                    type="text"
-                                                   id={`chk_CS_${data.nivel}`}
+                                                   id={`chk_C_${data.nivel}`}
                                                    value={chkC}
                                                 />
                                              </td>
