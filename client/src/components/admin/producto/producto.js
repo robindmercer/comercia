@@ -141,13 +141,13 @@ const Producto = () => {
                <table className="styled-table">
                   <thead>
                      <tr className="table-success">
-                        <th className="ordenado" onClick={() =>ordenar_Id()}>Id</th>
-                        <th className="ordenado" onClick={() =>ordenar_Nombre()}>Nombre</th>
-                        <th >Descripcion</th>
-                        <th >Precio</th>
-                        <th >Dolar</th>
-                        <th  className="ordenado"   onClick={() =>ordenar_Orden()}>Orden</th>
-                        <th >Estado</th>
+                        <th className="d-none d-lg-table-cell ordenado" onClick={() =>ordenar_Id()}  title="Ordenar">Id</th>
+                        <th className="ordenado" onClick={() =>ordenar_Nombre()}  title="Ordenar">Nombre</th>
+                        <th className="d-none d-lg-table-cell">Descripcion</th>
+                        <th className="d-none d-lg-table-cell">Precio</th>
+                        <th className="d-none d-lg-table-cell">Dolar</th>
+                        <th  className="d-none d-lg-table-cell ordenado"   onClick={() =>ordenar_Orden()}  title="Ordenar">Orden</th>
+                        <th className="d-none d-lg-table-cell" >Estado</th>
                         <th>Acciones</th>
                      </tr>
                   </thead>
