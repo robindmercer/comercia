@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getCompras } from "../../actions/Compra.js";
 import { Link } from "react-router-dom";
@@ -7,7 +7,7 @@ import Header from "../Header.js";
 import edit from "../../images/edit.png";
 
 const Compras = () => {
-   const [nombre, setName] = useState("");
+   // const [nombre, setName] = useState("");
    const { compra } = useSelector((state) => state);
    const dispatch = useDispatch();
 
@@ -21,7 +21,7 @@ const Compras = () => {
       return newdate2;
    };
 
-   console.log("compras: ", compra);
+   // console.log("compras: ", compra);
    return (
       <>
          <Header />
