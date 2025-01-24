@@ -17,7 +17,7 @@ const materiaprima = require("./materiaprima")
 const factura =require("./factura")
 const factcond =require("./factcond")
 const factdet =require("./factdet")
-const email = require('./send_mail')
+// const email = require('./send_mail')
 const facturaMP =require("./facturaMP") // Materias primas utilizadas en una factura 
 const condiciones = require("./condiciones") // condiciones generales de fecturacion 
 const cotizacion =require("./cotizacion")
@@ -28,10 +28,11 @@ const comentario = require("./comentario")
 const log = require ("./log")
 const upload = require("./upload")
 const ticket = require("./ticket")
+const compra = require("./compra")
 
 const router = Router();
 // Send Email
-//router.use('/email', email)
+// router.use('/email', email)
 // perfil
 router.use('/perfil', perfil);
 // perfilmenu
@@ -74,4 +75,5 @@ router.use('/contrato',contrato)
 router.use('/comentario',comentario)
 router.use('/factcond',factcond)
 router.use('/ticket',ticket)
+router.use('/compra',compra)
 module.exports = router;
