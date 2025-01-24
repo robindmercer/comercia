@@ -21,7 +21,7 @@ const Compras = () => {
       return newdate2;
    };
 
-   console.log("compras: ", compra);
+   // con1sole.log("compras: ", compra);
    return (
       <>
          <Header />
