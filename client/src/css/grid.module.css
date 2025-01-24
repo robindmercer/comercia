@@ -1,0 +1,217 @@
+.header{
+    width:1000px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.divBuscar{
+    padding: 3px;
+}
+.inputBuscar{
+    height: 25px;
+}
+.trBuscar{
+    background-color: aqua;
+    height: 30px;
+}
+.trTitle{
+    height: 30px;
+}
+.gridTable{
+    border-collapse: collapse;
+    width: 1000px;
+    /* box-shadow      : 0 0 20px rgba(0, 0, 0, 0.15); */
+    box-shadow: 10px 9px 15px 0px #000000;
+}
+.trdatos{
+    border-bottom: 0.5px solid lightgray;
+}
+.trdatosRed{
+    border-bottom: 0.5px solid lightgray;
+    color:red;
+}
+.gridTitle{
+    width:70%;
+    
+}
+.row {
+    height   : 25px;
+    font-size: 16px;
+}
+
+.dLink {
+  
+    text-align: center;
+}
+
+.newTable {
+    background-color: white;
+}
+
+.xinput {
+    width: 17px;
+}
+
+.textok {
+    background-color: lightgreen;
+}
+
+.textnormal {
+    background-color: white;
+}
+
+thead {
+    background-color: #009879;
+}
+
+h2 {
+    background-color: lightgrey;
+    border-radius: 10px;
+}
+.input_group{
+    padding: 10px;
+}
+.titledate{
+    font-size: 22px;  
+}
+.inputdate{
+  font-size: 20px;
+}
+.precio{
+    width: 100px;
+    text-align: right;
+}
+.title{
+    text-align: left;
+    padding-left: 2px;
+}
+.title2{
+    text-align: left;
+    padding-left: 2px;
+}
+.thCli{
+    align-content: center;
+}
+.trBuscar{
+    background-color: cornflowerblue;
+}
+
+.tableCli{
+    background: white;
+}
+
+.antsig{
+    display: flex;
+    border-radius: 5px;
+    justify-content: space-around;
+    color: blue;
+    padding: 11px;
+    border: 1px solid blue;
+    background-color: lightblue;
+    width:90%;
+    /* box-shadow      : 0 0 20px rgba(0, 0, 0, 0.15); */
+    box-shadow: 10px 9px 15px 0px #000000;
+}
+
+.inputBtnNew {
+    font-size       : 20px;
+    border          : 1px solid red;
+    background-color: white;
+    color           : red;
+    padding         : 5px;
+    border-radius   : 5px 0px 5px 0px;
+}
+
+.inputBtnNew:hover {
+    background-color: red;
+    color           : white;
+
+}
+
+.inputBtnServ{
+    font-size       : 15px;
+    border          : 1px solid red;
+    background-color: white;
+    color           : blue;
+    padding         : 5px;
+    border-radius   : 5px 0px 5px 0px;
+    vertical-align: super;
+}
+
+.inputBtnServ:hover {
+    background-color: blue;
+    color           : white;
+
+}
+.tdaccions{
+    text-align: center;
+}
+
+.divflex{
+    display:flex
+}
+.gridTable tr:nth-child(even){
+    background: #bdbcbc;
+  }
+
+.style_precio {
+    text-align: right;
+    padding-right: 10px;
+    height:25px;
+}
+@media (max-width: 1000px) {
+
+    .onlyScreen {
+        display: none;
+    }
+
+    .title2{
+        display:none;
+    }
+    .style_email{
+        display:none;
+    }
+
+    .style_code{
+        display:none;
+    }
+
+    .styled_table {
+        border-collapse : collapse;
+        margin          : 25px 0;
+        font-size       : 0.9em;
+        font-family     : sans-serif;
+        min-width       : 350px;
+        box-shadow      : 0 0 20px rgba(0, 0, 0, 0.15);
+        background-color: aquamarine;
+    }
+
+    .style_td {
+        font-size: 15px;
+        width:34%;
+    }
+    
+    .style_precio {
+        display: none;
+    }
+    .style_titulos{
+        display: none;
+    }
+
+    .header{
+        width:100px;
+        display: block;
+        justify-content: space-between;
+    }
+    .gridTable{
+        width: 95%;
+    }
+    h2 {
+        background-color: white;
+    }
+    .tdaccions{
+        text-align: right;
+    }
+}
+
+

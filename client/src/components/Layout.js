@@ -57,7 +57,7 @@ const Layout = () => {
     if (xAcceso ==="A1") sts = `2|2|${usuariomenu[0].cod_perfil}`      // Gerencia
     if (xAcceso ==="A2") sts = `99|3,4,5|${usuariomenu[0].cod_perfil}` // Adminsitracion 
     if (xAcceso ==="A3") sts = `1,3|1|${usuariomenu[0].cod_perfil}`        // Ventas
-    if (xAcceso ==="A6") sts = `99|6,7,8,13|${usuariomenu[0].cod_perfil}` // Almacen
+    if (xAcceso ==="A6") sts = `99|7,9,13,14|${usuariomenu[0].cod_perfil}` // Almacen
     if (xAcceso ==="A5") sts = `99|8,10,12|${usuariomenu[0].cod_perfil}`   // Manufactura
     if (xAcceso ==="A8") sts = `99|11,13|${usuariomenu[0].cod_perfil}`     // Calidad
      

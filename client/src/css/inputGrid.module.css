@@ -1,0 +1,108 @@
+
+.divflex{
+    display:flex;
+    background-color:white;
+    padding: 5px
+}
+.divright{
+    width:45%;
+}
+.divIzq{
+    width:60%;
+}
+.divHide{
+    display: none;
+}
+.gridTable{
+    border-collapse: collapse;
+    width: 90%;
+    box-shadow: 10px 9px 15px 0px #000000;
+}
+.gridTable tr:nth-child(even){
+    background: #bdbcbc;
+}
+.precio{
+    width: 100px;
+    text-align: right;
+}
+/* bottones */
+.inputBtnNew {
+    font-size       : 20px;
+    border          : 1px solid red;
+    background-color: white;
+    color           : red;
+    padding         : 5px;
+    border-radius   : 5px 0px 5px 0px;
+}
+/* manejo de errores */
+.inputBtnNew:hover {
+    background-color: red;
+    color           : white;
+}
+
+.style_input{
+    width: 80px;
+    text-align: right;
+    height: 25px;
+    color: blue;
+}
+@media (max-width: 1000px) {
+
+    .onlyScreen {
+        display: none;
+    }
+
+    .title2{
+        display:none;
+    }
+    .style_email{
+        display:none;
+    }
+
+    .style_code{
+        display:none;
+    }
+
+    .styled_table {
+        border-collapse : collapse;
+        margin          : 25px 0;
+        font-size       : 0.9em;
+        font-family     : sans-serif;
+        min-width       : 350px;
+        box-shadow      : 0 0 20px rgba(0, 0, 0, 0.15);
+        background-color: aquamarine;
+    }
+
+    .style_td {
+        font-size: 15px;
+        width:34%;
+    }
+    
+    .style_precio {
+        display: none;
+    }
+    .style_titulos{
+        display: none;
+    }
+
+    .header{
+        width:100px;
+        display: block;
+        justify-content: space-between;
+    }
+  
+    .tdleft{
+        font-size: 15px;
+    }
+    .precio{
+        font-size: 15px;
+    }
+    .divright{
+        display: none;
+    }
+    .divIzq{
+        width: 95%;
+    }
+}
+
+

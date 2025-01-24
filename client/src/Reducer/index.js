@@ -47,6 +47,7 @@ import {
   GET_TICKET,
   GET_TICKETUNO,
   GET_TICKETDET,
+  GET_COMPRA,
 } from "../actions/constant.js";
 const initialState = {
   lang: "",
@@ -85,7 +86,8 @@ const initialState = {
   comentario:[],
   ticket:[],
   ticketuno:[],
-  ticketDet:[]
+  ticketDet:[],
+  compra:[]
 };
 
 // Reducer to get foods ordered by alphabet
@@ -148,6 +150,12 @@ const rootReducer = (state = initialState, action) => {
     return {
       ...state,
       tabla: action.payload,
+    };
+  }
+  if (action.type === GET_COMPRA) {
+    return {
+      ...state,
+      compra: action.payload,
     };
   }
 

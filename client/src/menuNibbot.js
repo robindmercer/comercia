@@ -30,6 +30,11 @@ export const menuItems = [
         url: '/materiaprima',
       },
       {
+        title: 'Compras',
+        nivel: 27,
+        url: '/compra',
+      },
+      {
         title: 'Usuarios',
         nivel: 2,
         url: '/usuarios',
@@ -58,17 +63,17 @@ export const menuItems = [
       },
     ],
   },
-  {
-    title: 'Planeación',
-    nivel: 18,
-    submenu: [
-      {
-        title: 'Pendientes',
-        nivel: 19,
-        url: '/facturaMP',
-      },
-    ]
-  },  
+  // {
+  //   title: 'Planeación',
+  //   nivel: 18,
+  //   submenu: [
+  //     {
+  //       title: 'Pendientes',
+  //       nivel: 19,
+  //       url: '/facturaMP',
+  //     },
+  //   ]
+  // },  
   {
     title: 'Manufactura',
     nivel: 20,

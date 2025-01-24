@@ -20,6 +20,7 @@ import FormProductoLang from '../components/admin/producto/formProductoLang' // 
 import Tablas from '../components/admin/tabla/tablas'
 import Usuarios from '../components/admin/usuario/UsuarioMain';
 import Factura from '../components/ventas/factura'
+import FacturaDetMP from '../components/ventas/facturaDetMP'
 import Formfactura from '../components/ventas/formfactura'
 import FormfacturaAlta from '../components/ventas/formfacturaAlta'
 import FacturaCompleta from '../components/ventas/facturaCompleta';
@@ -50,7 +51,9 @@ import TicketFormAlta from '../components/admin/atc/ticketFormAlta'
 import TicketDet from '../components/admin/atc/ticketDet'
 import TicketRepDet from '../components/admin/atc/repticketdet.js'
 import Grafico from '../components/ventas/grafico'
-
+// Compras
+import Compra from '../components/compra/compra.js'
+import FormCompra from '../components/compra/formCompra.js'
 function HandleRoutes() {
 
     const routes = [
@@ -153,6 +156,12 @@ function HandleRoutes() {
         {
             path: "/factura",
             element: <Factura />,
+            exact: true,
+            private: true,
+        },
+        {
+            path: "/facturaDetMP",
+            element: <FacturaDetMP />,
             exact: true,
             private: true,
         },
@@ -297,6 +306,18 @@ function HandleRoutes() {
         {
             path: "/UpdateMp",
             element: <UpdateMp/>,
+            exact: true,
+            private: true,
+        },        
+        {
+            path: "/compra",
+            element: <Compra/>,
+            exact: true,
+            private: true,
+        },        
+        {
+            path: "/formCompra",
+            element: <FormCompra/>,
             exact: true,
             private: true,
         },        
