@@ -57,8 +57,6 @@ router.use('/cliente', cliente);
 router.use('/direccion', direccion);
 // materiaprima
 router.use('/materiaprima', materiaprima);
-// Send Email
-router.use('/email', email);
 // factura
 router.use('/factura', factura);
 // factdet
