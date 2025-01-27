@@ -16,6 +16,7 @@ import {
    FcAbout,
    FcCopyright,
    FcNews,
+   FcEngineering,
 } from "react-icons/fc";
 import style from "../../css/factura.module.css";
 // import { mailEnviar } from "../../actions/index";
@@ -76,6 +77,7 @@ const Factura = () => {
    var sql = "";
    var toLink = "/formfactura";
    var btnAddDatabase = false;
+   var btnverMp = false;
    var btnApproval = false;
    var btnDiploma2 = false;
    var btnContrato = false;
@@ -141,16 +143,18 @@ const Factura = () => {
          verStatus.push(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14);
       }
 
-      if (data.cod_status > 5) {
-         btnApproval = false;
-         btnAddDatabase = true;
-         btnDiploma2 = true;
-         verStatus.push(1, 2, 3, 4, 5, 6);
-      }
+      // if (data.cod_status > 5) {
+      //    btnApproval = false;
+      //    btnAddDatabase = true;
+      //    btnDiploma2 = true;
+      //    verStatus.push(1, 2, 3, 4, 5, 6);
+      // }
       // Almacen
       if (acceso === "A6") {
          btnApproval = true;
-         verStatus.push(13);
+         btnverMp=true;
+         btnCancel=true;
+         verStatus.push(7,9,13,14);
       }
       //Calidad
       if (acceso === "A8") {
@@ -505,6 +509,18 @@ const Factura = () => {
                                           />
                                        </>
                                     ) : null}
+                                    {btnverMp ? ( //
+                                          <Link
+                                          to={"/facturaDetMP"}
+                                          title="Ver Materias Primas"
+                                          state={{
+                                             id: data.id,
+                                          }}
+                                          >
+                                             <FcEngineering style={estilo} />
+                                          </Link>
+                                          ) : null}
+                                    
                                     {btnDiploma2 ? (
                                        <>
                                           <Link

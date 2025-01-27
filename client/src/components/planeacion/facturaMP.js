@@ -9,21 +9,21 @@ import { AccessCtrl } from "../../actions/index";
 import { getUsuariomenId } from "../../actions/usuariomenu";
 import DeleteConfirmation from "../DeleteConfirmation";
 import { UpdateFacturaSts2 } from "../../actions/factura";
-import { AddLogs } from "../../actions/logs";
-import { GetMails } from "../../actions/usuario";
-import crearMail from "../CrearMails";
-import { mailEnviar } from "../../actions/index";
+// import { AddLogs } from "../../actions/logs";
+// import { GetMails } from "../../actions/usuario";
+// import crearMail from "../CrearMails";
+// import { mailEnviar } from "../../actions/index";
 import Cookies from 'universal-cookie'
 // import { getDetail } from "../../actions/tabla";
 
 const Factura = () => {
   const cookies = new Cookies();
-  const idProg = 20;
+  // const idProg = 20;
   const id_usuario = cookies.get("usuario");
   const { facturaMP } = useSelector((state) => state);
-  const [idFact,setIdFact]=useState(0)
+  // const [idFact,setIdFact]=useState(0)
   const [newStatus, setNewStatus] = useState(0);
-  const [idMail, setIdMail] = useState(0);
+  // const [idMail, setIdMail] = useState(0);
   //const { mails } = useSelector((state) => state);
   // const actlogin = useSelector((state) => state.actlogin)
   // const usuariomenu = useSelector((state) => state.usuariomenu);
@@ -39,7 +39,7 @@ const Factura = () => {
   const [deleteMessage, setDeleteMessage] = useState(null);
   const [id, setId] = useState(null);
   const { lang } = useSelector((state) => state);
-  const { mails } = useSelector((state) => state);
+  // const { mails } = useSelector((state) => state);
   const btnDiploma2 = true;
   
   const hideConfirmationModal = () => {setDisplayConfirmationModal(false);};
@@ -63,7 +63,7 @@ const Factura = () => {
   }
   // Almacen
   if (acceso === "A6") {
-    verStatus.push(6,7,9,13);
+    verStatus.push(7,9,13);
   }
   // Manufactura
   if (acceso === "A5") {
@@ -102,9 +102,9 @@ const Factura = () => {
     if (found.cod_status === 11) newStatus = 12;//Rechazado Calidad
     if (found.cod_status === 12) newStatus = 9;//Rechazado Manuf.
 
-    setIdFact(id);
+    // setIdFact(id);
     setNewStatus(newStatus);
-    setIdMail(paramMail);
+    // setIdMail(paramMail);
 
 
     // setLog((log.cod_status = newStatus));

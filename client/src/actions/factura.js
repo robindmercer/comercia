@@ -37,6 +37,18 @@ export function getFacturaCab(id) {
   }
 }
 
+export function getFacturaDetMP(id) {
+  // console.log('Action getFacturaCab: ', id);
+  return async function (dispatch) {
+    var factura = await axios.get(`factura/mp?id=${id}`);
+    return dispatch({
+      type: GET_FACTURA,
+      payload: factura.data
+    })
+  }
+}
+
+
 export function postFacturaNew(factcab) {
   // console.log('Action putFacturaNew: ', factcab);
   return async function (dispatch) {
