@@ -15,3 +15,13 @@
     margin-left: 20px;
     text-align: right;
 }
+
+
+@media (max-width: 768px) {
+    .usuarioHead{
+        display: none;
+    }
+    .logos{
+        display: none;
+    }
+}
