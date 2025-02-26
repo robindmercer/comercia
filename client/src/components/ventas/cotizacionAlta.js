@@ -631,7 +631,7 @@ const Formcotizacion = () => {
              agregar_prod(lista)
          }
          if (parseInt(e.target.value) === 25) {
-            lista = [38,27,26,21,4,17,19,23,12,13,7,8,29,28]
+            lista = [38,27,26,55,4,17,19,23,12,13,7,8,29,28]
             console.log('factdet: ', factdet);
             //lista.push('9','7','8')
              agregar_prod(lista)
