@@ -141,7 +141,7 @@ router.get("/graf", async function (req, res, next) {
       console.log(error);
    }
 });
-
+ 
 router.put("/stat", async function (req, res, next) {
    const { doc_id, tipo_id, usr_id, cod_status, observ } = req.body;
    console.log("*** factura/stat req.query: ", req.body);
