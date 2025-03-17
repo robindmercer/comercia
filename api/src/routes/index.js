@@ -29,7 +29,7 @@ const log = require ("./log")
 const upload = require("./upload")
 const ticket = require("./ticket")
 const compra = require("./compra")
-
+const compania = require("./compania")
 const router = Router();
 // Send Email
 // router.use('/email', email)
@@ -62,6 +62,7 @@ router.use('/factura', factura);
 // factdet
 router.use('/factdet', factdet);
 
+
 router.use('/facturaMP',facturaMP);             //facturaMP
 router.use('/condiciones',condiciones);         //condiciones
 router.use('/cotizacion',cotizacion)            // Cotizaciones 
@@ -74,4 +75,5 @@ router.use('/comentario',comentario)
 router.use('/factcond',factcond)
 router.use('/ticket',ticket)
 router.use('/compra',compra)
+router.use('/compania',compania)
 module.exports = router;

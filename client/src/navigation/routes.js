@@ -54,6 +54,9 @@ import Grafico from '../components/ventas/grafico'
 // Compras
 import Compra from '../components/compra/compra.js'
 import FormCompra from '../components/compra/formCompra.js'
+import Compania from '../components/admin/compania/compania.js'
+import FormCompania from '../components/admin/compania/formCompania.js'
+
 function HandleRoutes() {
 
     const routes = [
@@ -63,6 +66,19 @@ function HandleRoutes() {
             exact: true,
             private: true,
         },
+        {
+            path: "/compania",
+            element: <Compania />,
+            exact: true,
+            private: true,
+        },
+        {
+            path: "/formCompania",
+            element: <FormCompania />,
+            exact: true,
+            private: true,
+        },
+        
         {
             path: "/layout",
             element: <Layout />,

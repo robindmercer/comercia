@@ -1,4 +1,5 @@
 import {
+  GET_COMPANIA,
   LOG_CONTROL,
   GET_MENU,
   GET_MENUID,
@@ -87,7 +88,8 @@ const initialState = {
   ticket:[],
   ticketuno:[],
   ticketDet:[],
-  compra:[]
+  compra:[],
+  compania:[],
 };
 
 // Reducer to get foods ordered by alphabet
@@ -95,6 +97,13 @@ const rootReducer = (state = initialState, action) => {
   ///////////////////////////////////////////
   // ****        Control                  ***
   ///////////////////////////////////////////
+  if (action.type === GET_COMPANIA) {
+    return {
+      ...state,
+      compania: action.payload,
+    };
+  }
+
   if (action.type === LOG_CONTROL) {
     return {
       ...state,

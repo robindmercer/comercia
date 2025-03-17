@@ -10,6 +10,11 @@ export const menuItems = [
     url: '/layout',
     submenu: [
       {
+        title: 'Compania',
+        nivel: 28,
+        url: '/compania',
+      }, 
+      {
         title: 'Clientes',
         nivel: 6,
         url: '/cliente',
