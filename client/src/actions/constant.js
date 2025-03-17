@@ -1,3 +1,6 @@
+export const GET_COMPANIA = 'GET_COMPANIA' 
+export const GET_COMPANIAID = 'GET_COMPANIAID' 
+
 // LOGING
 export const LOG_CONTROL = 'LOG_CONTROL' 
 export const LOG_DELETE = 'LOG_DELETE'
