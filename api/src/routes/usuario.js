@@ -15,7 +15,7 @@ router.get("/", function (req, res, next) {
       .then((resp) => {
         resp.length
           ? res.send(resp)
-          : res.send({ message: "No pude acceder a Usuarios" });
+          : res.send({ message: "No pude acceder a  Usuarios" });
       });
     } else {
       Usuario.findAll(
