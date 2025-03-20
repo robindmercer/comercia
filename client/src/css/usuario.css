@@ -8,7 +8,7 @@
     background-color: aquamarine;
 }
 
-.styled-table thead tr {
+.styled-table tr {
     border-radius: 25px; 
     background-color: #009879;
     color: #ffffff;
@@ -24,9 +24,9 @@
     border-bottom: 1px solid #dddddd;
 }
 
-.styled-table tbody tr:nth-of-type(even) {
+/* .styled-table tbody tr:nth-of-type(even) {
     background-color: #f3f3f3;
-}
+} */
 
 .styled-table tbody tr:last-of-type {
     border-bottom: 2px solid #009879;
@@ -38,7 +38,7 @@
 }
 
 .row{
-    height: 25px;
+    height: 20px;
     font-size: 16px;
 }
 .dLink{
@@ -57,14 +57,17 @@
 .textnormal{
     background-color: white;
 }
-thead{
-    background-color: #009879;
-}
+
 
 .errmsg{
     color:red
 }
-
+/* .tdNormal{
+    color:black;
+}
+.tdOtraCia{
+    color:darkblue
+} */
 @media (max-width: 600px) {
 
     .onlyScreen{

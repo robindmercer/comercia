@@ -104,7 +104,7 @@ router.get("/perfil/:perfil", function (req, res, next) {
 router.post("/", async function (req, res, next) {
   console.log('Post usuarios: ', req.body);
   const newpass='nada'
-  const { id, usr_id, name, email, password,cod_perfil,cod_status } = req.body;
+  const { id, usr_id, name, email, password,cod_perfil,cod_status,cia_id } = req.body;
 
   if (!usr_id || !name || !email || !cod_perfil || !cod_status || !password) {
     return res.send("Falta información para poder darte de alta el Usuario");
@@ -122,11 +122,12 @@ router.post("/", async function (req, res, next) {
         email,
         cod_perfil,
         cod_status,
-        password
+        password,cia_id
       });
       res.status(200).send("Usuario Creado");
     } catch (error) {
-      res.status(200).send("Usario ya creado");
+      console.log('error: ', error);
+      res.status(400).send("Error Usario");
       //      next(error)
     }
   }
@@ -144,8 +145,8 @@ router.post("/", async function (req, res, next) {
 
 
 router.put("/", async (req, res) => {
-  console.log('status id: ', req.body);
-  const { id, usr_id, name, email, password,cod_perfil,cod_status } = req.body;
+  console.log('Put uusario: ', req.body);
+  const { id, usr_id, name, email, password,cod_perfil,cia_id,cod_status } = req.body;
   try {
     const usuario = await Usuario.findOne({
       where: { id : id },
@@ -156,6 +157,7 @@ router.put("/", async (req, res) => {
     usuario.password =password
     usuario.cod_perfil =cod_perfil
     usuario.cod_status =cod_status
+    usuario.cia_id = cia_id
     await usuario.save();
     res.status(200).send.json(usuario);
   } catch (error) {

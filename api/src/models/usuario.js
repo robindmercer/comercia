@@ -32,6 +32,10 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING,
             allowNull: false,
         },
+        cia_id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },        
     },
         { timestamps: false }
     );

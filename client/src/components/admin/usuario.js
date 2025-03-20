@@ -85,6 +85,7 @@ const Usuario = () => {
                                                         name: user.name,
                                                         email: user.email,
                                                         password: user.password,
+                                                        cia_id:user.cia_id,
                                                         cod_perfil: user.cod_perfil,
                                                         cod_status: user.cod_status
                                                     }

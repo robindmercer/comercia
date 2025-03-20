@@ -45,7 +45,7 @@ const UsuarioList = () => {
     return (
     <>
 <br/>
-    <div className="table-title">
+    <div >
         <div className="row">
             <div className="col-sm-6">
                 <h2>Usuarios</h2>

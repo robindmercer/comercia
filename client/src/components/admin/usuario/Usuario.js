@@ -24,7 +24,7 @@ const Usuario = ({ data }) => {
   return (
     <>
       <td>{data.usr_id}</td>
-      <td>{data.name}</td>
+      <td className={parseInt(data.cia_id) === 1 ? "tdNormal" : "tdOtraCia"}>{data.name}</td>
       <td className="onlyScreen">{data.email}</td>
       <td className="onlyScreen">{data.perfil.description}</td>
       <td className="onlyScreen">{data.status.description}</td>

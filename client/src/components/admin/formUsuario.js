@@ -11,6 +11,7 @@ import '../../css/formUsuario.css'
 import { AccessCtrl } from '../../actions/index'
 import { getPerfil } from '../../actions/perfil';
 import { getStatus } from '../../actions/status';
+import { getCompania } from '../../actions/compania';
 
 export function validate(input) {
   let errors = {};
@@ -38,9 +39,11 @@ function ABMUsuario() {
   const dispatch = useDispatch();
  // const actlogin = useSelector((state) => state.actlogin)
   const perfil = useSelector((state) => state.perfil)
+  const compania = useSelector((state) => state.compania)
   const status = useSelector((state) => state.status)
 
   useEffect(() => {
+    dispatch(getCompania());
     dispatch(getPerfil());
     dispatch(getStatus());
     dispatch(AccessCtrl(state.id));
@@ -54,7 +57,7 @@ function ABMUsuario() {
     password: state ? state.password :"",
     cod_perfil: state ? state.cod_perfil : "1",
     cod_status: state ? state.cod_status : "1",
-
+    cia_id: state ? state.cia_id : "1",
   });
 
   const [errors, setErrors] = useState({});
@@ -196,6 +199,38 @@ function ABMUsuario() {
                 <span>Ingrese clave de acceso</span>
                 {errors.pass && <p className="text-red-500">{errors.pass}</p>}
               </li>              
+
+              <li>
+                <label
+                  htmlFor="compania"
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                >
+                  Compania:
+                </label>
+                <select
+                  name="compania"
+                  id="compania"
+                  onChange={(e) => handlePerfil(e)}
+                  value={input.cia_id}
+                >
+                  <option value="0">Seleccionar</option>
+                  {compania.map((comp) => {
+                    return (
+                          <option
+                            value={comp.id}
+                            key={comp.id}
+                          >{`${comp.razsoc}`}</option>                   
+                          )
+                  })}
+                </select>
+                <span>Seleccione un perfil</span>
+                {errors.perfil && (
+                  <p className="text-red-500">{errors.perfil}</p>
+                )}
+              </li>
+
+
+
               <li>
                 <label
                   htmlFor="perfil"
