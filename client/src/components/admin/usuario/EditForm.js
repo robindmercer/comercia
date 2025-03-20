@@ -6,6 +6,7 @@ import { UsuarioContext } from "./UsuarioContext";
 import { useContext } from "react";
 import { getPerfil } from "../../../actions/perfil";
 import { getStatus } from "../../../actions/status";
+import { getCompania } from '../../../actions/compania';
 
 import "./add.css"
 
@@ -18,19 +19,22 @@ const EditForm = ({ theUsuario }) => {
   const [password, setPassword] = useState(theUsuario.password);
   const [cod_perfil, setPerfil] = useState(theUsuario.cod_perfil);
   const [cod_status, setStatus] = useState(theUsuario.cod_status);
+  const [cia_id, setCompania] = useState(theUsuario.cia_id);
 
   const location = useLocation();
   const { state } = location;
   const dispatch = useDispatch();
   const perfil = useSelector((state) => state.perfil)
   const status = useSelector((state) => state.status)
+  const compania = useSelector((state) => state.compania)
 
 
   const { updateUsuario } = useContext(UsuarioContext);
   
-  const updatedUsuario = { id, name, usr_id, email, password, cod_perfil,cod_status};
+  const updatedUsuario = { id, name, usr_id, email, password,cia_id, cod_perfil,cod_status};
 
   useEffect(() => {
+    dispatch(getCompania());
     dispatch(getPerfil());
     dispatch(getStatus());
   }, [dispatch]);
@@ -113,6 +117,25 @@ const EditForm = ({ theUsuario }) => {
               />
           </td>
         </tr>
+        <tr>
+          <td className="td1">Compania </td>
+          <select
+                  name="compania"
+                  id="compania"
+                  onChange={(e) => setCompania(e.target.value)}
+                  value={cia_id}
+                >
+                  <option value="0">Seleccionar</option>
+                  {compania.map((comp) => {
+                    return (
+                          <option
+                            value={comp.id}
+                            key={comp.id}
+                          >{`${comp.razsoc}`}</option>                   
+                          )
+                  })}
+                </select>
+        </tr>        
         <tr>
           <td className="td1">Perfil </td>
           <select
