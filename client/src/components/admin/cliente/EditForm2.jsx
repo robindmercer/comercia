@@ -105,7 +105,7 @@ const EditForm2 = ({ theCliente }) => {
       // } else {
       //   dispatch(UpdateClientes(input));
       // }
-      // window.location.href = "/Cliente";
+      window.location.href = "/Cliente";
    };
    
    if (tabla) {

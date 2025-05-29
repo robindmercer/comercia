@@ -96,7 +96,7 @@ const AddForm = () => {
           <td>
             <input
               className="td2Des"
-              type="text"
+              type="password"
               placeholder="Password"
               name="password"
               value={password}
