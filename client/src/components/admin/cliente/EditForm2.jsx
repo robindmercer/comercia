@@ -7,8 +7,13 @@ import Cookies from "universal-cookie";
 // Acciones
 //import { AccessCtrl } from '../../../actions/index'
 import { getTablaAll } from "../../../actions/tabla";
-
+import { getCompania } from '../../../actions/compania'
+import { AccessCtrl } from "../../../actions";
 const EditForm2 = ({ theCliente }) => {
+   console.log('theCliente: ', theCliente);
+   const cookies = new Cookies();
+   const compania = useSelector((state) => state.compania)
+  const id_usuario = cookies.get("usuario");
 
    function validate(input) {
       let errors = {};
@@ -22,15 +27,15 @@ const EditForm2 = ({ theCliente }) => {
       return errors;
    }
 
-   const cookies = new Cookies();
    var btnGrabar = true;
    const location = useLocation();
    const { state } = location;
    const dispatch = useDispatch();
    const tabla = useSelector((state) => state.tabla);
+   const { actlogin } = useSelector((state) => state);
    // const location = useLocation();
    // const { state } = location;
-
+   
    //const clientes = useSelector((state) => state.clientes)
 
    // Accesos
@@ -39,11 +44,13 @@ const EditForm2 = ({ theCliente }) => {
    // Fin control Accesos
    useEffect(() => {
       dispatch(getTablaAll());
+      dispatch(getCompania());
+      dispatch(AccessCtrl(id_usuario));
    }, [dispatch]);
 
    const [input, setInput] = useState({
       id: theCliente ? theCliente.id: 0,
-      cia_id: theCliente ?  theCliente.cia_id: 0,
+      cia_id: theCliente ?  theCliente.cia_id: 1,
       razsoc: theCliente ?  theCliente.razsoc: '',
       nombre: theCliente ?  theCliente.nombre: '',
       apellido: theCliente ?  theCliente.apellido: '',
@@ -56,9 +63,9 @@ const EditForm2 = ({ theCliente }) => {
       cod_cliente: theCliente ?  theCliente.cod_cliente: 1,
       cod_status: theCliente ?  theCliente.cod_status: 1,
    });
-
+   
    const [errors, setErrors] = useState({});
-
+   
    function handleChange(e) {
       e.preventDefault();
       setInput({
@@ -72,7 +79,7 @@ const EditForm2 = ({ theCliente }) => {
          })
       );
    }
-
+   
    function handleStatus(e) {
       e.preventDefault();
       setInput({
@@ -89,15 +96,18 @@ const EditForm2 = ({ theCliente }) => {
 
    const handleSubmit = (e) => {
       e.preventDefault();
+      if (actlogin[0].cia_id !== 1 ){
+         input.cia_id = actlogin[0].cia_id
+      }
       console.log("input: ", input);
-      // if (input.id === 0) {
       dispatch(AddCliente(input));
+      // if (input.id === 0) {
       // } else {
       //   dispatch(UpdateClientes(input));
       // }
-      window.location.href = "/Cliente";
+      // window.location.href = "/Cliente";
    };
-
+   
    if (tabla) {
       if (tabla.length > 0 ) {
          input.idioma = 1
@@ -107,7 +117,8 @@ const EditForm2 = ({ theCliente }) => {
          console.log('entre');
       }
    }
-
+   
+   console.log('actlogin: ', actlogin);
    return (
       <>
          <div className="container">
@@ -115,7 +126,7 @@ const EditForm2 = ({ theCliente }) => {
                <form
                   onSubmit={(e) => handleSubmit(e)}
                   // className="form-style-Prod"
-               >
+                  >
                   {/* <h1 className="justify-self-center">Datos del clientes</h1>
                   <br /> */}
                   <div>
@@ -299,6 +310,37 @@ const EditForm2 = ({ theCliente }) => {
                         />
                      </div>
                   </div>
+                  { actlogin[0]?.cia_id === 1 ? (
+
+                     <div className="input-group w-50 p-2">
+                     <span className="input-group-text">Compania:</span>
+                     <select
+                        name="cia_id"
+                        id="cia_id"
+                        onChange={(e) => handleChange(e)}
+                        value={input.cia_id}
+                        className="form-control"
+                     >
+                        <option value="0">Seleccionar</option>
+                        {compania &&
+                           compania.map((cia) => {
+                              // if (tabla.id === 13 && tabla.cod !== 0) {
+                                 return (
+                                    <option
+                                       value={cia.id}
+                                       key={cia.id}
+                                       >{`${cia.razsoc}`}</option>
+                                    );
+                                    // } else {
+                              //    return null;
+                              // }
+                           })}{" "}
+                     </select>
+                  </div>
+                  ) : 
+                     (null)
+                  }
+
                   <div className="input-group w-50 p-2">
                      <span className="input-group-text">Status:</span>
                      <select

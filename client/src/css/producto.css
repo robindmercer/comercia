@@ -1,50 +1,59 @@
 .cabprod {
-    width: 90%;
+    width        : 90%;
+    border-radius: 10px;
 }
-.styled-table {
+
+.styled-table-prod {
     border-collapse: collapse;
-    margin: 25px 0;
-    font-size: 0.9em;
-    font-family: sans-serif;
-    min-width: 1000px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);   
+    margin         : 25px 0;
+    font-size      : 0.9em;
+    font-family    : sans-serif;
+    min-width      : 1000px;
+    box-shadow     : 15px 15px 20px rgba(0, 0, 0, 0.15);
 }
 
-.styled-table thead tr {
-    border-radius: 25px; 
+.styled-table-prod thead tr {
+    border-radius   : 25px;
     background-color: #009879;
-    color: #ffffff;
-    text-align: left;
+    color           : #ffffff;
+    text-align      : left;
 }
 
-.styled-table th,
-.styled-table td {
+.styled-table-prod th,
+.styled-table-prod td {
     padding: 12px 15px;
 }
 
-.styled-table tbody tr {
+.styled-table-prod tbody tr {
     border-bottom: 1px solid #dddddd;
 }
 
-.styled-table tbody tr:nth-of-type(even) {
+.styled-table-prod tbody tr:nth-of-type(even) {
     background-color: #f3f3f3;
 }
 
-.styled-table tbody tr:last-of-type {
+.styled-table-prod tbody tr:last-of-type {
     border-bottom: 2px solid #009879;
 }
 
-.styled-table tbody tr.active-row {
+.styled-table-prod tbody tr.active-row {
     font-weight: bold;
-    color: #009879;
+    color      : #009879;
 }
 
-.row{
-    height: 25px;
+.row {
+    height   : 25px;
     font-size: 16px;
 }
 
-.ordenado{
+.ordenado {
     cursor: pointer;
-    color:blue
+    color : blue
+}
+
+
+@media (max-width: 768px) {
+    .styled-table-prod {
+        min-width: 100%;
+    }
 }

@@ -146,7 +146,7 @@ const ClienteList = () => {
             Clientes Actualizadas!
          </Alert>
 
-         <table className="table table-striped table-hover">
+         <table className={style.clitab}>
             <thead>
                <tr className={style.trBuscar}>
                   <th>Buscar</th>

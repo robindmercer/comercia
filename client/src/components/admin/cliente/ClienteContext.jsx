@@ -11,13 +11,14 @@ import Cookies from "universal-cookie";
 export const ClienteContext = createContext();
 
 const ClienteContextProvider = (props) => {
+  
   const { cliente } = useSelector((state) => state);
   const dispatch = useDispatch();
   const cookies = new Cookies();
   const usr = cookies.get("usuario");
 
   useEffect(() => {
-    dispatch(getCliente());
+    dispatch(getCliente(usr));
   }, [dispatch]);
 
   console.log("cliente context: ", cliente);

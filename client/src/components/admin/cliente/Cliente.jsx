@@ -23,14 +23,19 @@ const Cliente = ({ data }) => {
    useEffect(() => {
       handleClose();
    }, [data]);
-   //console.log("data: ", data);
+   console.log("data: ", data);
 
    return (
       <>
          {pantalla==="PC" ? (
             <>
             <td className={style.tdCli}>{data.id}</td>
-            <td className={style.tdCli}>{data.razsoc}</td>
+            {parseInt(data.cia_id) === 1 || parseInt(data.userciaid) > 1 ? (
+               <td className={style.tdCli}>{data.razsoc}</td>
+            )  : (
+               <td className={style.tdCliRed}>{data.cia_id} {data.razsoc}</td>
+            )
+            }
             <td className={style.tdCli}>{data.nombre}</td>
             <td className={style.tdCli}>{data.apellido}</td>
             </>

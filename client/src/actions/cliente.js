@@ -1,10 +1,10 @@
 import axios from "axios";
 import { GET_CLIENTE } from './constant'
 
-export function getCliente(){
+export function getCliente(iduser){
     // console.log('Action getCliente: All');
      return async function (dispatch) {
-         var cliente = await axios.get(`cliente`);
+         var cliente = await axios.get(`cliente/${iduser}`);
          return dispatch({
              type: GET_CLIENTE,
              payload: cliente.data
@@ -12,10 +12,10 @@ export function getCliente(){
      }
  }
  
- export function getClienteDir(){
+ export function getClienteDir(iduser){
   // console.log('Action getCliente: All');
    return async function (dispatch) {
-       var cliente = await axios.get(`cliente/cliDir`);
+       var cliente = await axios.get(`cliente/cliDir/${iduser}`);
        return dispatch({
            type: GET_CLIENTE,
            payload: cliente.data
@@ -37,7 +37,7 @@ export function getCliente(){
  export function getClienteId(id){
   // console.log('Action getClienteId:',id);
    return async function (dispatch) {
-       var cliente = await axios.get(`cliente/${id}`);
+       var cliente = await axios.get(`cliente/id/${id}`);
        return dispatch({
            type: GET_CLIENTE,
            payload: cliente.data

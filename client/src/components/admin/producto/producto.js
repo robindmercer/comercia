@@ -86,7 +86,7 @@ const Producto = () => {
 
             <div className="divHeader">
                <div>
-                  <h2>Productos</h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <h2>&nbsp;&nbsp;Productos&nbsp;&nbsp;</h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                </div>
                <div>
                   <label htmlFor="filtro">Filtrar:&nbsp;</label>
@@ -138,7 +138,7 @@ const Producto = () => {
                </div>
             </div>
             <div>
-               <table className="styled-table">
+               <table className="styled-table-prod">
                   <thead>
                      <tr className="table-success">
                         <th className="d-none d-lg-table-cell ordenado" onClick={() =>ordenar_Id()}  title="Ordenar">Id</th>
