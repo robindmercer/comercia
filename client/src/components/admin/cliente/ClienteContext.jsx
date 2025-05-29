@@ -21,7 +21,7 @@ const ClienteContextProvider = (props) => {
     dispatch(getCliente(usr));
   }, [dispatch]);
 
-  console.log("cliente context: ", cliente);
+  console.log("cliente  context: ", cliente);
 
   const sortedClientes = cliente.sort((a, b) => (a.name < b.name ? -1 : 1));
 
