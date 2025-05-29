@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getTabla, getDetail } from "../../../actions/tabla";
 import { Link } from "react-router-dom";
-import "../../../css/all.css";
+
 import Header from "../../Header";
+import style from "../../../css/tabla.module.css";
+
 const Tabla = () => {
   const { tabla } = useSelector((state) => state);
   const [detail, Setdetail] = useState(false);
@@ -26,12 +28,12 @@ const Tabla = () => {
   return (
     <>
       <Header />
-      <div className="adminHeader bg-white">
+      <div  className={style.container}>
         <br />
         <div>
           <div className="divHeader">
             <div>
-              <h2>Tabla</h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <h2>&nbsp;&nbsp;Tabla&nbsp;&nbsp;</h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </div>
             <div>
               <Link
@@ -51,9 +53,9 @@ const Tabla = () => {
             </div>
           </div>
         </div>
-          <table className="styled-table">
+          <table  className={style.clitab}>
             <thead>
-              <tr className="table-success">
+              <tr className={style.trHeader}>
                 <th>Id</th>
                 <th>Codigo</th>
                 <th>Descripcion</th>
