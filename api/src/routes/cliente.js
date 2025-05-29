@@ -169,7 +169,7 @@ router.post('/', async function (req, res, next) {
       sql= sql + ` cod_cliente=${cod_cliente},`
       sql= sql + ` cod_status=${cod_status},`
       sql= sql + ` idioma=${idioma},`
-      sql= sql + ` moneda=${moneda}`
+      sql= sql + ` moneda=${moneda},`
       sql= sql + ` cia_id=${cia_id}`
       sql= sql + ` where id = ${id}`
     } else {
