@@ -4,10 +4,10 @@ import { GET_FACTURA, GET_FACTCAB, RESET_FAC,GET_FACTSTS } from './constant'
 import { AddFacturaDet } from "./factdet";
 import { PostCondicionesFac } from "./condiciones";
 
-export function getFactura() {
+export function getFactura(id) {
   console.log('Action getFactura: All');
   return async function (dispatch) {
-    var factura = await axios.get(`factura`);
+    var factura = await axios.get(`factura/${id}`);
     return dispatch({
       type: GET_FACTURA,
       payload: factura.data

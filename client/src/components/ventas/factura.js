@@ -197,7 +197,7 @@ const Factura = () => {
       dispatch(getTablaAll());
       dispatch(AccessCtrl(id_usuario));
       //setAcceso(cookies.get("acceso"))
-      dispatch(getFactura());
+      dispatch(getFactura(id_usuario));
       //  dispatch(getUsuariomenId(id_usuario));
    }, [dispatch, id_usuario, onChange]);
 
@@ -374,6 +374,8 @@ const Factura = () => {
 
       console.log("Filtro: ", filtro, "e", e.target.value);
    }
+   
+   
    return (
       <>
          <Header />
@@ -381,7 +383,7 @@ const Factura = () => {
             <br />
             <div className="divHeader">
                <div>
-                  <h2>Ordenes de Compra</h2>
+                  <h2>&nbsp;&nbsp;Ordenes de Compra&nbsp;&nbsp;</h2>
                </div>
                <div>
                   <label htmlFor="filtro">Filtrar:&nbsp;</label>
@@ -416,14 +418,12 @@ const Factura = () => {
             </button>
           </div> */}
             </div>
-            <table className={style.styledTable}>
+            <table className={style.clitab}>
                <thead>
-                  <tr>
-                     <th>Id</th>
+                  <tr className={style.trHeader}>
+                     <th>&nbsp;Id</th>
                      <th>Fecha</th>
                      <th>Nombre</th>
-                     {/* <th>Subtotal</th>
-              <th>IVA</th> */}
                      <th>Total</th>
                      <th>Estado</th>
                      <th>Acciones</th>
@@ -454,12 +454,12 @@ const Factura = () => {
                         if (muestroRegistro) {
                            return (
                               <tr key={data.id}>
-                                 <td>{data.id}</td>
+                                 <td>&nbsp;{data.id}</td>
                                  <td>{data.fecha}</td>
-                                 <td>{data.nombre}</td>
+                                 <td className={parseInt(data.cia_id) === 1 ? "tdNormal" : "tdOtraCia"}>{data.nombre}</td>
                                  {/* <td>{dollarUSLocale.format(data.subtotal)}</td>
                       <td>{dollarUSLocale.format(data.iva)}</td> */}
-                                 <td>{dollarUSLocale.format(data.total)}</td>
+                                 <td className={style.solopcImp}>{dollarUSLocale.format(data.total)}&nbsp;&nbsp;&nbsp;&nbsp;</td>
                                  {data.cod_status === 2 && acceso === "A1" ? (
                                     <td className={style.row_green}>
                                        {data.stsdes}

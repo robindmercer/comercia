@@ -93,3 +93,21 @@
     color    : red;
     margin   : 10px;
   }
+
+
+  @media (max-width: 768px) {
+    .landing {
+      display            : flex;
+      align-items        : flex-start;
+     }
+     .usuario {
+       top:500px;
+     }
+
+     .title {
+      padding    : 1px;
+      font-size: 0px;
+    }
+    
+
+}

@@ -5,8 +5,11 @@ import { getClienteDir } from "../../actions/cliente";
 import { cotiToFact } from "../../actions/factura";
 
 import "../admin/condiciones/add.css";
+import Cookies from "universal-cookie";
 
 const AsignCli = (cotid) => {
+   const cookies = new Cookies();
+   const id_usuario = cookies.get("usuario");
    // const { addCondicion } = useContext(CondicionContext);
    const [cliid, setCliid] = useState(0);
    const [onChange, setOnChange] = useState(false);
@@ -22,7 +25,7 @@ const AsignCli = (cotid) => {
    });
 
    useEffect(() => {
-      dispatch(getClienteDir());
+      dispatch(getClienteDir(id_usuario));
    }, [dispatch]);
 
    function handlePerfil(e) {

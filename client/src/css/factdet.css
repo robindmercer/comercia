@@ -106,7 +106,7 @@
     min-width      : 1000px;
 }
 
-.styledtable thead tr {
+.styledtable tr {
     border-radius   : 25px;
     background-color: #009879;
     color           : #ffffff;
