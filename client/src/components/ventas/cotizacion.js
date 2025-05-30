@@ -33,6 +33,7 @@ const Cotizacion = () => {
   // const idProg = 12;
   const id_usuario = cookies.get("usuario");
   const { cotizacion } = useSelector((state) => state);
+  const { usuario } = useSelector((state) => state);
   const { mails } = useSelector((state) => state);
   const { tabla } = useSelector((state) => state);
 
@@ -155,7 +156,7 @@ const Cotizacion = () => {
     console.log("Use Efect 1");
     dispatch(getTablaAll());
     dispatch(AccessCtrl(id_usuario));
-    dispatch(getCotizacion());
+    dispatch(getCotizacion(id_usuario));
     setAcceso(cookies.get("acceso"))
     //  dispatch(getUsuariomenId(id_usuario));
   }, [dispatch, id_usuario, onChange]);
@@ -232,6 +233,9 @@ const Cotizacion = () => {
         cod_status: newStatus,
         observ: lang,
       };
+    } else {
+      alert("No se encontró la cotización seleccionada. ID:" + id);
+      return; 
     }
     setIdCotiz(id);
     setNewStatus(newStatus);
@@ -255,15 +259,15 @@ const Cotizacion = () => {
   }
 
   
-  console.log("cotizacionss: ", cotizacion);
+  console.log("cotizacion: ", cotizacion);
   return (
     <>
       <Header />
-      <div className={style.adminHeader}>
+      <div className={style.container}>
         <br />
         <div className="divHeader">
           <div>
-            <h2>Cotizaciones</h2>
+            <h2>&nbsp;&nbsp;Cotizaciones&nbsp;&nbsp;</h2>
           </div>
             <div>
               <label htmlFor="filtro">Filtrar:&nbsp;</label>
@@ -305,11 +309,11 @@ const Cotizacion = () => {
             ) : null}
           </div>
         </div>
-
-        <table className={style.styledTable}>
+<br/>
+        <table className={style.clitab}>
           <thead>
-            <tr>
-              <th className={style.solopc}>Id</th>
+            <tr className={style.trHeader}>
+              <th className={style.solopc}>&nbsp;Id</th>
               <th className={style.solopc}>Fecha</th>
               <th>Nombre</th>
               {/* <th>Subtotal</th>
@@ -333,13 +337,18 @@ const Cotizacion = () => {
                 // console.log('data.cod_status: ', data.cod_status,muestroRegistro,filtro);
                 if (muestroRegistro) {
                   return (
-                    <tr key={data.id}>
-                      <td className={style.solopc}>{data.id}</td>
+                    <tr key={data.id}
+                    className={
+                      data.cia_id !== 1
+                        ? `${style.row_green}` // Add your green style here
+                        : ""
+                    }>
+                      <td className={style.solopc}>&nbsp;{data.id}</td>
                       <td className={style.solopc}>{data.fecha}</td>
                       <td className={style.soloph}>{data.nombre}</td>
                       {/* <td>{dollarUSLocale.format(data.subtotal)}</td>
                       <td>{dollarUSLocale.format(data.iva)}</td> */}
-                      <td className={style.solopc}>{dollarUSLocale.format(data.total)}</td>
+                      <td className={style.solopcImp}>{dollarUSLocale.format(data.total)}&nbsp;&nbsp;&nbsp;</td>
                       {data.cod_status === 2 && acceso === "A1" ? (
                         <td className={style.row_green}>{data.stsdes}</td>
                       ) : (
@@ -366,6 +375,7 @@ const Cotizacion = () => {
                             />
                           </Link>
                         ) : null}
+                        &nbsp;&nbsp;
                         {btnDiploma2 ? (
                           <>
                             <Link
@@ -429,6 +439,7 @@ const Cotizacion = () => {
                           </>
                         ) : null}
                         {/* // si sos administrador o de ventas con status = 1 */}
+                        &nbsp;&nbsp;
                         {btnApproval  ? ( //
                           <>
                             <FcApproval
@@ -444,7 +455,8 @@ const Cotizacion = () => {
                               }
                             />
                           </>
-                        ) : null}                        
+                        ) : null}   
+                        &nbsp;&nbsp;                     
                         {btnLog ? (
                           <Link
                             to="/logs"

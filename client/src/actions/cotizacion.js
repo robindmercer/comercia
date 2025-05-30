@@ -5,10 +5,10 @@ import { AddCotizacionDet } from "./cotizaciondet";
 import { PostCondicionesCot } from "./condiciones";
 
 
-export function getCotizacion() {
+export function getCotizacion(id) {
   console.log('Action getCotizacion: All');
   return async function (dispatch) {
-    var cotizacion = await axios.get(`cotizacion`);
+    var cotizacion = await axios.get(`cotizacion/${id}`);
     return dispatch({
       type: GET_COTIZACION,
       payload: cotizacion.data

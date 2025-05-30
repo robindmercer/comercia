@@ -2,6 +2,7 @@
 // Cotizacion 
 //****************/
 const { Router, response } = require('express');
+const cookieParser = require('cookie-parser');
 //const { Cotizacion } = require('../db')
 const router = Router();
 
@@ -17,40 +18,46 @@ const seq = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_
 });
 
 router.get('/all', async function (req, res, next) {
-      try {
-      sql="select * "
-      sql = sql + ", now() as Hoy"
-      sql = sql + " from cotizacion "  
-      const records = await seq.query(sql,
-        {
-          logging: console.log,
-          type: QueryTypes.SELECT
-        });
-        //console.log('records: ', records);
+  try {
+    console.log('cookieParser: ', cookieParser);
+    sql="select * "
+    sql += ", now() as Hoy"
+    sql += " from cotizacion "  
+    sql += " join usuarios on usr_id = '" + id_usuario + "'"
+    sql += " where (usuarios.cia_id = 1  or usuarios.cia_id =cotizacion.cia_id)"
+    const records = await seq.query(sql,
+      {
+        //logging: console.log,
+        type: QueryTypes.SELECT
+      });
+      //console.log('records: ', records);
       res.send(records)
     } catch (error) {
       console.log(error)
     }
-}) 
-
-router.get('/', async function (req, res, next) {
-  try {
-    sql="select f.id,to_char(f.fecha,'dd/mm/yyyy') as fecha,f.subtotal,f.iva,f.total,f.cli_id,t.description as stsdes,"
-    sql = sql + " f.cod_status,f.observ, f.moneda,f.idioma,f.nombre,"
-      sql = sql + " f.telefono,f.direccion,f.email,f.vendedor,f.vencimiento,"
-      sql = sql + " coalesce(fc.descuento,0)  fde,coalesce(fc.enganche,0) fen,coalesce(fc.meses,0) fme,coalesce(fc.interes,0) finter,"
-      sql = sql + " coalesce(con.descuento,0) de, coalesce(con.enganche,0) en,coalesce(con.meses,0) me,coalesce(con.interes,0) inter,"
-      sql = sql + " coalesce(l.cod_status,0) logsts, now() as Hoy "
-      sql = sql + " from cotizacion f" 
-      sql = sql + " join tabla                t  on t.id = 6 and t.cod= f.cod_status" 
-      sql = sql + " left join cotizacioncond  fc on fc.cot_id = f.id" 
-      sql = sql + " left join condiciones    con on con.id = fc.cond_id"       
-      sql = sql + " left join logs             l on l.doc_id = f.id and l.tipo_id = 'COT'"   
-      sql = sql + "                             and l.id in ("
-      sql = sql + "                               select  max(id) "
-      sql = sql + "                                 from logs "
-      sql = sql + "                                where doc_id = f.id and l.tipo_id = 'COT')" 
-      sql = sql + " order by f.id"
+  }) 
+  
+  router.get('/:iduser', async function (req, res, next) {
+    const { iduser } = req.params;
+        try {
+      sql="select f.id,to_char(f.fecha,'dd/mm/yyyy') as fecha,f.subtotal,f.iva,f.total,f.cli_id,t.description as stsdes,"
+      sql += " f.cod_status,f.observ, f.moneda,f.idioma,f.nombre,"
+      sql += " f.telefono,f.direccion,f.email,f.vendedor,f.vencimiento,"
+      sql += " coalesce(fc.descuento,0)  fde,coalesce(fc.enganche,0) fen,coalesce(fc.meses,0) fme,coalesce(fc.interes,0) finter,"
+      sql += " coalesce(con.descuento,0) de, coalesce(con.enganche,0) en,coalesce(con.meses,0) me,coalesce(con.interes,0) inter,"
+      sql += " coalesce(l.cod_status,0) logsts,u.cia_id as userCiaId,f.cia_id, now() as Hoy "
+      sql += " from cotizacion f" 
+      sql += " join tabla                t  on t.id = 6 and t.cod= f.cod_status" 
+      sql += " left join cotizacioncond  fc on fc.cot_id = f.id" 
+      sql += " left join condiciones    con on con.id = fc.cond_id"       
+      sql += " left join logs             l on l.doc_id = f.id and l.tipo_id = 'COT'"   
+      sql += "                             and l.id in ("
+      sql += "                               select  max(id) "
+      sql += "                                 from logs "
+      sql += "                                where doc_id = f.id and l.tipo_id = 'COT')" 
+      sql += " join usuarios u on u.usr_id = '" + iduser + "'"
+      sql += " where (u.cia_id = 1  or u.cia_id =f.cia_id)"
+      sql += " order by f.id"
       const records = await seq.query(sql,
         {
           // logging: console.log,
@@ -68,15 +75,17 @@ router.get('/cab', async function (req, res, next) {
   if(id) {
       try {
       sql="select f.id,to_char(f.fecha,'dd/mm/yyyy') as fecha,f.subtotal,f.iva,f.total,f.dhl,f.cli_id,"
-      sql = sql + " f.cli_id,t.description as Status,f.observ, f.moneda,f.idioma,f.nombre,"
-      sql = sql + " f.telefono,f.direccion,f.email,f.vendedor,f.vencimiento"
-      sql = sql + " from cotizacion f"
-      sql = sql + " join tabla   t            on t.id = 6 and t.cod= f.cod_status" 
-      sql = sql + "  where f.id =  " + id
+      sql += " f.cli_id,t.description as Status,f.observ, f.moneda,f.idioma,f.nombre,"
+      sql += " f.telefono,f.direccion,f.email,f.vendedor,f.vencimiento,u.cia_id as userCiaId,f.cia_id"
+      sql += " from cotizacion f"
+      sql += " join tabla   t            on t.id = 6 and t.cod= f.cod_status" 
+      sql += " join usuarios on usr_id = '" + id_usuario + "'"
+      sql += " where (usuarios.cia_id = 1  or usuarios.cia_id =cotizacion.cia_id)"
+      sql += "  and f.id =  " + id
   
       const records = await seq.query(sql,
         {
-          logging: console.log,
+          //logging: console.log,
           type: QueryTypes.SELECT
         });
         //console.log('records: ', records);
@@ -95,19 +104,21 @@ router.get('/mail', async function (req, res, next) {
   if(id) {
       try {
         sql="select fd.cot_id,fd.prod_id,fd.cantidad,pr.name,to_char(f.fecha,'dd/mm/yyyy') as fecha, "
-        sql = sql + " mp.name Id, "
-        sql = sql + " mp.description,fd.cantidad*pm.cantidad total_Mp, " 
-        sql = sql + " f.telefono,f.direccion,f.email,f.vendedor,f.vencimiento"
-        sql = sql + " from cotizacion f "
-        sql = sql + " join cotizaciondet fd on fd.cot_id = f.id "
-        sql = sql + " join productos pr on pr.id = fd.prod_id "
-        sql = sql + " join prodmp    pm on pm.prod_id  = fd.prod_id " 
-        sql = sql + " join materiaprima mp on mp.name = pm.mp_name "
-        sql = sql + " where fd.cot_id = " + id
-        sql = sql + " order by pr.orden"   
+        sql += " mp.name Id, "
+        sql += " mp.description,fd.cantidad*pm.cantidad total_Mp, " 
+        sql += " f.telefono,f.direccion,f.email,f.vendedor,f.vencimiento,u.cia_id as userCiaId,f.cia_id"
+        sql += " from cotizacion f "
+        sql += " join cotizaciondet fd on fd.cot_id = f.id "
+        sql += " join productos pr on pr.id = fd.prod_id "
+        sql += " join prodmp    pm on pm.prod_id  = fd.prod_id " 
+        sql += " join materiaprima mp on mp.name = pm.mp_name "
+        sql += " join usuarios on usr_id = '" + id_usuario + "'"
+        sql += " where (usuarios.cia_id = 1  or usuarios.cia_id =cotizacion.cia_id)"
+        sql += " and fd.cot_id = " + id
+        sql += " order by pr.orden"   
       const records = await seq.query(sql,
         {
-          logging: console.log,
+          //logging: console.log,
           type: QueryTypes.SELECT
         });
         //console.log('records: ', records);
@@ -127,7 +138,7 @@ router.put('/stat', async function (req, res, next) {
  
       const records = await seq.query(sql,
         {
-          logging: console.log,
+          //logging: console.log,
           type: QueryTypes.UPDATE
         });
         //console.log('records: ', records);
@@ -141,7 +152,7 @@ router.put('/stat', async function (req, res, next) {
 
 router.post('/', async function (req, res, next) {
   try {
-    const { cli_id, dir_id, cot_id, subtotal, iva,total,cod_status,observ,fecha,dhl,idioma,moneda,nombre,telefono,direccion,email,vendedor,vencimiento } = req.body;
+    const { cli_id, dir_id, cot_id, subtotal, iva,total,cod_status,observ,fecha,dhl,idioma,moneda,nombre,telefono,direccion,email,vendedor,vencimiento,cia_id } = req.body;
     console.log('Post Cotizacion: ', req.body);   
 //    console.log('vencimiento: ', vencimiento.replace('-',''));
     if (!cod_status  ) {
@@ -163,13 +174,13 @@ router.post('/', async function (req, res, next) {
     if (cot_id !== 0){
       res.status(400).json({message:"Error en la información recibida"})
     } else {
-      sql=`insert into cotizacion (cli_id,dhl,subtotal,iva,total,cod_status,observ,fecha,idioma,moneda,nombre,telefono,direccion,email,vendedor,vencimiento ) `
+      sql=`insert into cotizacion (cli_id,dhl,subtotal,iva,total,cod_status,observ,fecha,idioma,moneda,nombre,telefono,direccion,email,vendedor,vencimiento,cia_id ) `
       sql= sql + `values (${0},${dhl},${subtotal},${xIva},${xTot},${cod_status},'${observ}','${fecha}','${idioma}','${moneda}','${nombre}',`
-      sql= sql + `'${telefono}','${direccion}','${email}','${vendedor}','${vencimiento}' ) RETURNING id`
+      sql= sql + `'${telefono}','${direccion}','${email}','${vendedor}','${vencimiento}',${cia_id} ) RETURNING id`
     }
     const records = await seq.query(sql,
       {
-        logging: console.log,
+        //logging: console.log,
         type: QueryTypes.INSERT }
         ).then( function (cotIdCreated){
           console.log('Cot Created: ', cotIdCreated);
@@ -217,13 +228,13 @@ router.put('/', async function (req, res, next) {
     }
       const records = await seq.query(sqlDel,
         {
-          logging: console.log,
+          //logging: console.log,
           type: QueryTypes.DELETE
         })
         
         const records2 = await seq.query(sqlfac,
           {
-            logging: console.log,
+            //logging: console.log,
             type: QueryTypes.UPDATE
           });        
         console.log('sqlDel: ', sqlDel);

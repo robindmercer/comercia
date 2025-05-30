@@ -42,6 +42,7 @@ const Formcotizacion = () => {
    const [show, setShow] = useState(false);
    const handleShow = () => setShow(true);
    const handleClose = () => setShow(false);
+   const { actlogin } = useSelector((state) => state);
    // const [windowSize, setWindowSize] = useState({});
 
    // useEffect(() => {
@@ -86,7 +87,7 @@ const Formcotizacion = () => {
    const { factdet } = useSelector((state) => state);
 
    const { producto } = useSelector((state) => state);
-   // const { tabla } = useSelector((state) => state);
+   const { tabla } = useSelector((state) => state);
    // const { idfact } = useSelector((state) => state)
 
    const dispatch = useDispatch();
@@ -132,6 +133,7 @@ const Formcotizacion = () => {
       vendedor: cookies.get("usuario"),
       fecha: new Date().toLocaleDateString("en-GB"),
       vencimiento: formattedDate,
+      cia_id:1,
    });
    
    const [inputDet, setInputDet] = useState({
@@ -220,7 +222,7 @@ const Formcotizacion = () => {
       // dispatch(getClienteId(state.idCli));
       // dispatch(getDetailIva(1));
       //    dispatch(getUsuariomenId(id_usuario));
-      dispatch(getDetail(8));
+      dispatch(getDetail(18));
       setMostrar(true);
       setAcceso(cookies.get("acceso"));
       // return (
@@ -378,6 +380,7 @@ const Formcotizacion = () => {
       setInput((input.fecha = newdate));
       setInput((input.idioma = factcab[0].idioma));
       setInput((input.moneda = xMoneda));
+      setInput((input.cia_id = actlogin[0]?.cia_id));
 
       const found = condiciones.find((element) => element.sel === "S");
       console.log("found: ", found);
@@ -630,11 +633,13 @@ const Formcotizacion = () => {
             //lista.push('9','7','8')
              agregar_prod(lista)
          }
-         if (parseInt(e.target.value) === 25) {
-            lista = [38,27,26,55,4,17,19,23,12,13,7,8,29,28]
-            console.log('factdet: ', factdet);
-            //lista.push('9','7','8')
-             agregar_prod(lista)
+
+         for (let indx = 0; indx < tabla.length; indx++) {
+            if (parseInt(e.target.value) === tabla[indx].cod) {
+               lista = "[" + tabla[indx].description + "]"
+               lista = lista.replace(/\[|\]/g,'').split(',')
+               agregar_prod(lista)
+            }
          }
 
          if (onChange) {
