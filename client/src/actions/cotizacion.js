@@ -4,6 +4,16 @@ import { GET_COTIZACION, GET_COTCAB } from './constant'
 import { AddCotizacionDet } from "./cotizaciondet";
 import { PostCondicionesCot } from "./condiciones";
 
+export function getCotizacionCab(id) {
+  // console.log('Action getCotizacionCab: ', id);
+  return async function (dispatch) {
+    var cotizacion = await axios.get(`cotizacion/cabecera/${id}`);
+    return dispatch({
+      type: GET_COTCAB,
+      payload: cotizacion.data
+    })
+  }
+}
 
 export function getCotizacion(id) {
   console.log('Action getCotizacion: All');
@@ -27,16 +37,7 @@ export function getCotizacionAll() {
   }
 }
 
-export function getCotizacionCab(id) {
-  // console.log('Action getCotizacionCab: ', id);
-  return async function (dispatch) {
-    var cotizacion = await axios.get(`cotizacion/Cab?id=${id}`);
-    return dispatch({
-      type: GET_COTCAB,
-      payload: cotizacion.data
-    })
-  }
-}
+
 
 export function postCotizacionNew(cotizCab) {
   // console.log('Action putCotizacionNew: ', cotizCab);

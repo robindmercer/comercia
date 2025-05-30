@@ -24,7 +24,7 @@ router.get('/all', async function (req, res, next) {
     sql += ", now() as Hoy"
     sql += " from cotizacion "  
     sql += " join usuarios on usr_id = '" + id_usuario + "'"
-    sql += " where (usuarios.cia_id = 1  or usuarios.cia_id =cotizacion.cia_id)"
+    sql += " where (u.cia_id = 1  or u.cia_id =cotizacion.cia_id)"
     const records = await seq.query(sql,
       {
         //logging: console.log,
@@ -36,9 +36,40 @@ router.get('/all', async function (req, res, next) {
       console.log(error)
     }
   }) 
+
   
-  router.get('/:iduser', async function (req, res, next) {
+router.get('/cabecera/:registro', async function (req, res, next) {
+  console.log('cab: ', req.query);
+  const {registro} = req.params;
+  if(registro) {
+      try {
+      sql="select f.id,to_char(f.fecha,'dd/mm/yyyy') as fecha,f.subtotal,f.iva,f.total,f.dhl,f.cli_id,"
+      sql += " f.cli_id,t.description as Status,f.observ, f.moneda,f.idioma,f.nombre,"
+      sql += " f.telefono,f.direccion,f.email,f.vendedor,f.vencimiento,u.cia_id as userCiaId,f.cia_id"
+      sql += " from cotizacion f"
+      sql += " join tabla   t            on t.id = 6 and t.cod= f.cod_status" 
+      sql += " join usuarios u on usr_id = 'RM'"
+      sql += " where (u.cia_id = 1  or u.cia_id = f.cia_id)"
+      sql += "  and f.id =  " + registro
+      console.log('sql: ', sql);
+  
+      const records = await seq.query(sql,
+        {
+          logging: console.log,
+          type: QueryTypes.SELECT
+        });
+        //console.log('records: ', records);
+      res.send(records)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+}) 
+
+
+router.get('/:iduser', async function (req, res, next) {
     const { iduser } = req.params;
+    console.log('iduser: ', iduser);
         try {
       sql="select f.id,to_char(f.fecha,'dd/mm/yyyy') as fecha,f.subtotal,f.iva,f.total,f.cli_id,t.description as stsdes,"
       sql += " f.cod_status,f.observ, f.moneda,f.idioma,f.nombre,"
@@ -58,9 +89,10 @@ router.get('/all', async function (req, res, next) {
       sql += " join usuarios u on u.usr_id = '" + iduser + "'"
       sql += " where (u.cia_id = 1  or u.cia_id =f.cia_id)"
       sql += " order by f.id"
+      
       const records = await seq.query(sql,
         {
-          // logging: console.log,
+           logging: console.log,
           type: QueryTypes.SELECT
         });      
       res.send(records)    
@@ -69,33 +101,6 @@ router.get('/all', async function (req, res, next) {
   }
 
 })
-
-router.get('/cab', async function (req, res, next) {
-  const {id} = req.query;
-  if(id) {
-      try {
-      sql="select f.id,to_char(f.fecha,'dd/mm/yyyy') as fecha,f.subtotal,f.iva,f.total,f.dhl,f.cli_id,"
-      sql += " f.cli_id,t.description as Status,f.observ, f.moneda,f.idioma,f.nombre,"
-      sql += " f.telefono,f.direccion,f.email,f.vendedor,f.vencimiento,u.cia_id as userCiaId,f.cia_id"
-      sql += " from cotizacion f"
-      sql += " join tabla   t            on t.id = 6 and t.cod= f.cod_status" 
-      sql += " join usuarios on usr_id = '" + id_usuario + "'"
-      sql += " where (usuarios.cia_id = 1  or usuarios.cia_id =cotizacion.cia_id)"
-      sql += "  and f.id =  " + id
-  
-      const records = await seq.query(sql,
-        {
-          //logging: console.log,
-          type: QueryTypes.SELECT
-        });
-        //console.log('records: ', records);
-      res.send(records)
-    } catch (error) {
-      console.log(error)
-    }
-  }
-}) 
-
 
 
 // Listado de materias primas a solicitar 
@@ -113,7 +118,7 @@ router.get('/mail', async function (req, res, next) {
         sql += " join prodmp    pm on pm.prod_id  = fd.prod_id " 
         sql += " join materiaprima mp on mp.name = pm.mp_name "
         sql += " join usuarios on usr_id = '" + id_usuario + "'"
-        sql += " where (usuarios.cia_id = 1  or usuarios.cia_id =cotizacion.cia_id)"
+        sql += " where (u.cia_id = 1  or u.cia_id =f.cia_id)"
         sql += " and fd.cot_id = " + id
         sql += " order by pr.orden"   
       const records = await seq.query(sql,
