@@ -319,6 +319,7 @@ const Cotizacion = () => {
               {/* <th>Subtotal</th>
               <th>IVA</th> */}
               <th className={style.solopc}>Total</th>
+              <th>Compania</th>
               <th>Estado</th>
               <th className={style.soloph_acciones}>Acciones</th>
             </tr>
@@ -338,17 +339,19 @@ const Cotizacion = () => {
                 if (muestroRegistro) {
                   return (
                     <tr key={data.id}
-                    className={
-                      data.cia_id !== 1
-                        ? `${style.row_green}` // Add your green style here
-                        : ""
-                    }>
+                    // className={
+                    //   data.cia_id !== 1
+                    //     ? `${style.row_green}` // Add your green style here
+                    //     : ""
+                    // }
+                    >
                       <td className={style.solopc}>&nbsp;{data.id}</td>
                       <td className={style.solopc}>{data.fecha}</td>
                       <td className={style.soloph}>{data.nombre}</td>
                       {/* <td>{dollarUSLocale.format(data.subtotal)}</td>
                       <td>{dollarUSLocale.format(data.iva)}</td> */}
                       <td className={style.solopcImp}>{dollarUSLocale.format(data.total)}&nbsp;&nbsp;&nbsp;</td>
+                      <td className={style.soloph}>{data.razsoc}</td>
                       {data.cod_status === 2 && acceso === "A1" ? (
                         <td className={style.row_green}>{data.stsdes}</td>
                       ) : (

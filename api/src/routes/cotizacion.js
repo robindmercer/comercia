@@ -76,7 +76,7 @@ router.get('/:iduser', async function (req, res, next) {
       sql += " f.telefono,f.direccion,f.email,f.vendedor,f.vencimiento,"
       sql += " coalesce(fc.descuento,0)  fde,coalesce(fc.enganche,0) fen,coalesce(fc.meses,0) fme,coalesce(fc.interes,0) finter,"
       sql += " coalesce(con.descuento,0) de, coalesce(con.enganche,0) en,coalesce(con.meses,0) me,coalesce(con.interes,0) inter,"
-      sql += " coalesce(l.cod_status,0) logsts,u.cia_id as userCiaId,f.cia_id, now() as Hoy "
+      sql += " coalesce(l.cod_status,0) logsts,u.cia_id as userCiaId,f.cia_id, now() as Hoy,co.razsoc"
       sql += " from cotizacion f" 
       sql += " join tabla                t  on t.id = 6 and t.cod= f.cod_status" 
       sql += " left join cotizacioncond  fc on fc.cot_id = f.id" 
@@ -87,6 +87,7 @@ router.get('/:iduser', async function (req, res, next) {
       sql += "                                 from logs "
       sql += "                                where doc_id = f.id and l.tipo_id = 'COT')" 
       sql += " join usuarios u on u.usr_id = '" + iduser + "'"
+      sql += " join compania co on co.id = f.cia_id"
       sql += " where (u.cia_id = 1  or u.cia_id =f.cia_id)"
       sql += " order by f.id"
       
