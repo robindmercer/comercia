@@ -375,7 +375,6 @@ const Factura = () => {
       console.log("Filtro: ", filtro, "e", e.target.value);
    }
    
-   
    return (
       <>
          <Header />
@@ -456,7 +455,7 @@ const Factura = () => {
                               <tr key={data.id}>
                                  <td>&nbsp;{data.id}</td>
                                  <td>{data.fecha}</td>
-                                 <td className={parseInt(data.cia_id) === 1 ? "tdNormal" : "tdOtraCia"}>{data.nombre}</td>
+                                 <td>{data.nombre}</td>
                                  {/* <td>{dollarUSLocale.format(data.subtotal)}</td>
                       <td>{dollarUSLocale.format(data.iva)}</td> */}
                                  <td className={style.solopcImp}>{dollarUSLocale.format(data.total)}&nbsp;&nbsp;&nbsp;&nbsp;</td>
