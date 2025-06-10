@@ -629,11 +629,16 @@ const Formcotizacion = () => {
          var lista =[]
          if (parseInt(e.target.value) === 1) {
             lista = [2,3,4,13,12,17,19,23,9,7,8]
-            console.log('factdet: ', factdet);
+            // console.log('factdet: ', factdet);
             //lista.push('9','7','8')
              agregar_prod(lista)
          }
-
+         if (parseInt(e.target.value) === 25) {
+            lista = [38,27,26,55,4,17,19,23,12,13,7,8,29,28]
+            // console.log('factdet: ', factdet);
+            //lista.push('9','7','8')
+             agregar_prod(lista)
+         }
          for (let indx = 0; indx < tabla.length; indx++) {
             if (parseInt(e.target.value) === tabla[indx].cod) {
                lista = "[" + tabla[indx].description + "]"
