@@ -7,7 +7,7 @@ import { PostCondicionesFac } from "./condiciones";
 export function getFactura(id) {
   console.log('Action getFactura: All');
   return async function (dispatch) {
-    var factura = await axios.get(`factura/${id}`);
+    var factura = await axios.get(`factura`);
     return dispatch({
       type: GET_FACTURA,
       payload: factura.data
