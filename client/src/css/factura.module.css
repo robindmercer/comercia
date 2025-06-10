@@ -1,26 +1,45 @@
-.adminHeader{
-    height:100vh;
-}
-.divHeader{
-    display:flex
+.clitab {
+    caption-side    : bottom;
+    border-collapse : collapse;
+    width           : 85%;
+    background-color: white;
+    border: 1px solid grey;
 }
 
-.styledTable{
-    border-collapse: collapse;
-    margin: 25px 0;
-    font-size: 0.9em;
-    font-family: sans-serif;
-    min-width: 1000px;
-    box-shadow: 0 0 20px rgb(0 0 0 / 15%);
+.trHeader {
+    border-bottom: 1px solid grey;
+}
+
+.solopcImp {
+    text-align: right;
+}
+
+.adminHeader {
+    height          : 100vh;
+    background-color: #f3f1f1;
+}
+
+.divHeader {
+    display: flex
+}
+
+.styledTable {
+    border-collapse : collapse;
+    margin          : 25px 0;
+    font-size       : 0.9em;
+    font-family     : sans-serif;
+    min-width       : 1200px;
+    box-shadow      : 0 0 20px rgb(0 0 0 / 15%);
     background-color: aquamarine;
 }
 
-.styledTable thead tr {
-    border-radius: 25px; 
+.styledTable tr {
+    border-radius   : 25px;
     background-color: #009879;
-    color: #ffffff;
-    text-align: left;
+    color           : #ffffff;
+    text-align      : left;
 }
+
 .styledTable th,
 .styledTable td {
     padding: 12px 15px;
@@ -40,42 +59,54 @@
 
 .styledTable tbody tr.active-row {
     font-weight: bold;
-    color: #009879;
+    color      : #009879;
 }
 
-.dLink{
-	text-decoration: unset;
+.dLink {
+    text-decoration: unset;
 }
-.row_green{
-    color:darkgreen;
-    font-weight: bold;    
+
+.row_green {
+    color      : darkgreen;
+    font-weight: bold;
 }
-.redRow{
-    background-color:red;
+
+.redRow {
+    background-color: var(--main-otra-cia-color);
 }
-.blackRow{
-    background-color:white;
+
+.blackRow {
+    background-color: white;
 }
-.styledTable2{
-    margin: 25px 0;
-    font-size: 0.9em;
-    font-family: sans-serif;
-    min-width: 1000px;
-    box-shadow: 0 0 20px rgb(0 0 0 / 15%);
-   background-color: #009879;
+
+.styledTable2 {
+    margin          : 25px 0;
+    font-size       : 0.9em;
+    font-family     : sans-serif;
+    min-width       : 1000px;
+    box-shadow      : 0 0 20px rgb(0 0 0 / 15%);
+    background-color: #009879;
 }
+
 .styledTable2 td {
     padding: 2px 8px;
 }
 
-.styledTable3{
-    margin: 25px 0;
-    font-size: 0.9em;
-    font-family: sans-serif;
-    min-width: 1000px;
-    box-shadow: 0 0 20px rgb(0 0 0 / 15%);
-   background-color: rgb(171, 163, 163);
-   color:white;
-   font-weight: bold;
-   font-size: larger;
+.styledTable3 {
+    margin          : 25px 0;
+    font-size       : 0.9em;
+    font-family     : sans-serif;
+    min-width       : 1000px;
+    box-shadow      : 0 0 20px rgb(0 0 0 / 15%);
+    background-color: rgb(171, 163, 163);
+    color           : white;
+    font-weight     : bold;
+    font-size       : larger;
 }
+
+/* .tdNormal{
+    color:black;
+}
+.tdOtraCia{
+    color:darkblue;
+} */
