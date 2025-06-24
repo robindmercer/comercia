@@ -161,18 +161,18 @@ const Cotizacion = () => {
     //  dispatch(getUsuariomenId(id_usuario));
   }, [dispatch, id_usuario, onChange]);
 
-  useEffect(() => {
-    console.log("Use Efect 2", onChange);
-    if (idCotiz > 0) {
-      dispatch(UpdateCotizacionSts(idCotiz, newStatus)); // Espera Aprobacion
-      dispatch(GetMails(idMail));
-      if (onChange) {
-        setOnChange(false);
-      } else {
-        setOnChange(true);
-      }
-    }
-  }, [idCotiz, idMail, newStatus]);
+  // useEffect(() => {
+  //   console.log("Use Efect 2", onChange);
+  //   if (idCotiz > 0) {
+  //     dispatch(UpdateCotizacionSts(idCotiz, newStatus)); // Espera Aprobacion
+  //     dispatch(GetMails(idMail));
+  //     if (onChange) {
+  //       setOnChange(false);
+  //     } else {
+  //       setOnChange(true);
+  //     }
+  //   }
+  // }, [idCotiz, idMail, newStatus]);
 
   const handleSubmit = (id, accion) => {
     var control = "x";
@@ -240,8 +240,12 @@ const Cotizacion = () => {
     setIdCotiz(id);
     setNewStatus(newStatus);
     setIdMail(paramMail);
+    dispatch(UpdateCotizacionSts(found.id, newStatus));
     dispatch(AddLogs(newLog));    
-    console.log("mails: ", mails);
+    // console.log('id: ', id);
+    // console.log('newStatus: ', newStatus);
+    // console.log('paramMail: ', paramMail);
+    // console.log("mails: ", mails);
     window.location.href = '/cotizacion';
   };
 
