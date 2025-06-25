@@ -51,34 +51,41 @@ export function postCotizacionNew(cotizCab) {
   }
 }
 
-export function AddCotizacion(cotizCab, cotizaciondet, inputDet,initialCondGral) {
+export function AddCotizacion(cotizCab, cotizaciondet, inputDet, initialCondGral) {
   return async function (dispatch) {
-  await  axios.post(`cotizacion`, cotizCab)
-      .then(response => {
-        var xOrden = 0;
-        cotizaciondet.forEach((fact) => {
-          console.log('AddCotizacion: ', fact);
-          xOrden += 1
-          inputDet.cot_id = response.data[0][0].id
-          inputDet.orden = xOrden
-          inputDet.prod_id = fact.prod_id
-          inputDet.precio = fact.precio
-          inputDet.cantidad = fact.cantidad
-          inputDet.total = fact.total
-          inputDet.descto = fact.descto
-          console.log('Graba Productos ', inputDet);
-          dispatch(AddCotizacionDet(inputDet))
-          console.log('Detalle de Cotizacion ');
-        })
-        console.log('AddCotizacion initialCondGral: ', initialCondGral);
-        initialCondGral.cot_id=inputDet.cot_id;
-        dispatch(PostCondicionesCot(initialCondGral))
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  }
+    try {
+      const response = await axios.post(`cotizacion`, cotizCab);
+      const cot_id = response.data[0][0].id;
+      let xOrden = 0;
+
+      for (const fact of cotizaciondet) {
+        xOrden += 1;
+        const det = {
+          ...inputDet,
+          cot_id,
+          orden: xOrden,
+          prod_id: fact.prod_id,
+          precio: fact.precio,
+          cantidad: fact.cantidad,
+          total: fact.total,
+          descto: fact.descto,
+        };
+        await dispatch(AddCotizacionDet(det));
+      }
+
+      const condGral = {
+        ...initialCondGral,
+        cot_id,
+      };
+      await dispatch(PostCondicionesCot(condGral));
+      return response;
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  };
 }
+
 export function AddCotizacion2(cotizCab) {
   return async function (dispatch) {
     await axios.post(`cotizacion`, cotizCab)
