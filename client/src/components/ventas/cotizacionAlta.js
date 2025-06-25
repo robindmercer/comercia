@@ -43,6 +43,7 @@ const Formcotizacion = () => {
    const handleShow = () => setShow(true);
    const handleClose = () => setShow(false);
    const { actlogin } = useSelector((state) => state);
+   console.log('actlogin: ', actlogin);
    // const [windowSize, setWindowSize] = useState({});
 
    // useEffect(() => {
@@ -363,7 +364,7 @@ const Formcotizacion = () => {
          setOnChange(true);
       }
    };
-   const handleSubmit = () => {
+   const handleSubmit = async () => {
       var newDate1 = fecha.split("/");
       const newdate = newDate1[2] + newDate1[1] + newDate1[0];
       //console.log('saleTax: ', saleTax);
@@ -421,7 +422,13 @@ const Formcotizacion = () => {
       // }
       //console.log('i f d',input, factdet, inputDet);
       dispatch(AddCotizacion(input, factdet, inputDet, condGral));
-      handleShow();
+   //   handleShow();
+      const result = await dispatch(AddCotizacion(input, factdet, inputDet, condGral));
+      if (result) {
+         handleShow();
+      }
+
+
       // setMostrar(false);
       //window.location.href = "/cotizacion";
       // console.log('resultado: ', resultado);
