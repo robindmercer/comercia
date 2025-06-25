@@ -448,7 +448,14 @@ const Cotizacion = () => {
                         {/* // si sos administrador o de ventas con status = 1 */}
                         &nbsp;&nbsp;
                         {btnApproval  ? ( //
-                          <>
+                          <><Link
+                            to="/CambioEstadoCot"
+                            className="dLink"
+                            state={{
+                              usr_id: id_usuario,
+                              found: data,
+                            }}
+                          >
                             <FcApproval
                               style={estilo}
                               title="Aprobar"
@@ -461,6 +468,7 @@ const Cotizacion = () => {
                                 (target.style.fontSize = "200%")
                               }
                             />
+                            </Link>
                           </>
                         ) : null}   
                         &nbsp;&nbsp;                     
