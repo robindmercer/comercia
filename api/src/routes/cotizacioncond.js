@@ -78,7 +78,7 @@ router.put('/stat', async function (req, res, next) {
 router.post('/', async function (req, res, next) {
   try {
     const { cli_id, cot_id, subtotal, iva, total,cod_status,observ,fecha } = req.body;
-    console.log('Post Cotizacion: ', req.body);
+    console.log('Post CotizacionCond: ', req.body);
   
    if (!cli_id || !subtotal || !iva || !total || !cod_status  ) {
     console.log('cod_status: ', cod_status);

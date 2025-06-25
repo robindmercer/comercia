@@ -81,6 +81,7 @@ export function AddCotizacion(cotizCab, cotizaciondet, inputDet, initialCondGral
       return response;
     } catch (err) {
       console.log(err);
+      alert(err)
       throw err;
     }
   };
