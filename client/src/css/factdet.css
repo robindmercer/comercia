@@ -1,13 +1,26 @@
-.Post{
+.grabando {
+    position        : fixed;
+    top             : 0;
+    left            : 0;
+    width           : 100%;
+    height          : 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    align-content   : center;
+    justify-items   : center;
+    z-index         : 9999;
+}
+
+.Post {
     max-width: 800px;
-    width: 100%;
-    display: table;
-    margin: 0 auto;
-    padding: 20px 50px;
-  }
-  .cabecera {
+    width    : 100%;
+    display  : table;
+    margin   : 0 auto;
+    padding  : 20px 50px;
+}
+
+.cabecera {
     width           : 90%;
-    padding: 10PX;
+    padding         : 10PX;
     margin-top      : 10px;
     height          : 174px;
     background-color: #d1e7dd;
@@ -20,7 +33,7 @@
 
 .cabeceraAlta {
     width           : 90%;
-    padding: 10PX;
+    padding         : 10PX;
     margin-top      : 10px;
     height          : 132px;
     background-color: #d1e7dd;
@@ -30,43 +43,50 @@
     justify-content : space-around;
     box-shadow      : 13px 14px 15px 5px rgba(0, 0, 0, 0.34);
 }
-.footer{
+
+.footer {
     background-color: white;
-    width: 90%;
-    border: 1px solid lightgrey;
-    box-shadow: 13px 14px 15px 5px rgba(0, 0, 0, 0.34);
-    height: 46px;
+    width           : 90%;
+    border          : 1px solid lightgrey;
+    box-shadow      : 13px 14px 15px 5px rgba(0, 0, 0, 0.34);
+    height          : 46px;
 }
 
 .addprod2 {
-    margin: 6px;
+    margin : 6px;
     padding: 5px;
 }
+
 .addprod {
     width           : 90%;
     height          : auto;
-    background-color: #d1e7dd;;
-    font-family     : Arial, Helvetica, sans-serif;
-    font-size       : 16px;
-    display         : flex;
-    justify-content : left;
-    align-items: center;
+    background-color: #d1e7dd;
+    ;
+    font-family    : Arial, Helvetica, sans-serif;
+    font-size      : 16px;
+    display        : flex;
+    justify-content: left;
+    align-items    : center;
 }
-.costoEnvio{
-    width: 200px;
+
+.costoEnvio {
+    width        : 200px;
     padding-right: 15px;
-    font-weight: bold
+    font-weight  : bold
 }
+
 .detalleCab {
     width           : 90%;
     background-color: white;
     box-shadow      : 13px 14px 15px 5px rgba(0, 0, 0, 0.34);
 }
-.detalle{
+
+.detalle {
     margin : 7px;
     width  : 69%;
     display: inline-block;
 }
+
 .total {
     background-color: white;
     width           : 90%;
@@ -75,14 +95,14 @@
     font-size       : 16px;
     display         : flex;
     justify-content : left;
-    align-items: center;
-    
+    align-items     : center;
+
 }
 
 .totaltr {
     height         : 30px;
     text-align-last: right;
-    margin-right: 10px;
+    margin-right   : 10px;
 }
 
 .totaltd1 {
@@ -90,7 +110,7 @@
 }
 
 .totaltd2 {
-    width: 200px;
+    width        : 200px;
     padding-right: 15px;
 }
 
@@ -226,30 +246,35 @@ button:focus {
     text-align-last: right;
     border-color   : 0.5px solid lightgray;
 }
+
 .input_text {
-    width          : 250px;
-    border-color   : 0.5px solid lightgray;
+    width       : 250px;
+    border-color: 0.5px solid lightgray;
 }
+
 .input_text_mail {
-    width          : 450px;
-    border-color   : 0.5px solid lightgray;
+    width       : 450px;
+    border-color: 0.5px solid lightgray;
 }
-.incluido{
-    text-align: center;
+
+.incluido {
+    text-align : center;
     font-weight: bold;
 }
+
 .input_fact:hover {
     border-color: lightgreen;
 
 }
+
 .collapsible {
-    width: 90%;
-    border-radius: 3px;
+    width           : 90%;
+    border-radius   : 3px;
     background-color: lightgreen;
     box-shadow      : 13px 14px 15px 5px rgba(0, 0, 0, 0.34);
 
 }
 
-.divProd{
-    display:flex;
+.divProd {
+    display: flex;
 }

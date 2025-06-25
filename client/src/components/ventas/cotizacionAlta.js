@@ -35,6 +35,7 @@ var btnGrabar = false;
 var btnEliminarReg = false;
 
 const Formcotizacion = () => {
+   const [loading, setLoading] = useState(false);
    const cookies = new Cookies();
    let fecha = new Date().toLocaleDateString("en-GB");
    const { condiciones } = useSelector((state) => state);
@@ -365,6 +366,7 @@ const Formcotizacion = () => {
       }
    };
    const handleSubmit = async () => {
+      setLoading(true); // Mostrar mensaje
       var newDate1 = fecha.split("/");
       const newdate = newDate1[2] + newDate1[1] + newDate1[0];
       //console.log('saleTax: ', saleTax);
@@ -421,10 +423,13 @@ const Formcotizacion = () => {
       //    return alert("O/C no puede quedar en 0 (Cero)");
       // }
       //console.log('i f d',input, factdet, inputDet);
-      dispatch(AddCotizacion(input, factdet, inputDet, condGral));
+      // dispatch(AddCotizacion(input, factdet, inputDet, condGral));
    //   handleShow();
       const result = await dispatch(AddCotizacion(input, factdet, inputDet, condGral));
+      setLoading(false); // Mostrar mensaje
+      console.log('result: ', result);
       if (result) {
+         console.log('result: ', result);
          handleShow();
       }
 
@@ -716,6 +721,17 @@ const Formcotizacion = () => {
          </>
       );
    }
+
+
+   if (loading) {
+      return (
+         <div className="grabando">
+            <h2>Grabando Cotizacion...</h2>
+         </div>
+      );
+   }
+
+
    if (mostrar && factcab.length > 0) {
       control();
       return (
