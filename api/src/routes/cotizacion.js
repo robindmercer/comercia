@@ -17,6 +17,26 @@ const seq = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_
   native: false, // lets Sequelize know we can use pg-native for ~30% more speed
 });
 
+router.get('/all-data', async function (req, res, next) {
+  try {
+    const cotizaciones = await seq.query('SELECT * FROM cotizacion where id=28', { type: QueryTypes.SELECT });
+    const cotizaciondets = await seq.query('SELECT * FROM cotizaciondet where cot_id=28', { type: QueryTypes.SELECT });
+    const cotizacionconds = await seq.query('SELECT * FROM cotizacioncond where cot_id=28', { type: QueryTypes.SELECT });
+
+    res.send({
+      cotizaciones,
+      cotizaciondets,
+      cotizacionconds
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Error fetching cotizacion data', error });
+  }
+});
+
+
+
+
 router.get('/all', async function (req, res, next) {
   try {
     console.log('cookieParser: ', cookieParser);
@@ -89,7 +109,7 @@ router.get('/:iduser', async function (req, res, next) {
       sql += " join usuarios u on u.usr_id = '" + iduser + "'"
       sql += " join compania co on co.id = f.cia_id"
       sql += " where (u.cia_id = 1  or u.cia_id =f.cia_id)"
-      sql += " order by f.id"
+      sql += " order by f.id desc"
       
       const records = await seq.query(sql,
         {
@@ -137,6 +157,7 @@ router.get('/mail', async function (req, res, next) {
 
 
 router.put('/stat', async function (req, res, next) {
+  console.log('put stat: ', req.query);
   const {id,sts} = req.query;
   if(id) {
       try {

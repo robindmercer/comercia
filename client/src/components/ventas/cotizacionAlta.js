@@ -638,15 +638,18 @@ const Formcotizacion = () => {
             // console.log('factdet: ', factdet);
             //lista.push('9','7','8')
              agregar_prod(lista)
-         }
-         for (let indx = 0; indx < tabla.length; indx++) {
-            if (parseInt(e.target.value) === tabla[indx].cod) {
-               lista = "[" + tabla[indx].description + "]"
-               lista = lista.replace(/\[|\]/g,'').split(',')
-               agregar_prod(lista)
-            }
-         }
+             lista = []
+         } else {
 
+            for (let indx = 0; indx < tabla.length; indx++) {
+               if (parseInt(e.target.value) === tabla[indx].cod) {
+                  lista = "[" + tabla[indx].description + "]"
+                  lista = lista.replace(/\[|\]/g,'').split(',')
+                  agregar_prod(lista)
+               }
+            }
+            
+         }
          if (onChange) {
             setOnChange(false);
          } else {
