@@ -1,7 +1,7 @@
 import axios from "axios";
 import { GET_ADMIN } from "./constant";
 
-// Ejemplo de Uso 
+// Ejemplo de Uso  
 // { "sql":"insert into condiciones (nombre,descuento,enganche,meses,interes) values ",
 //   "sql1":"('nom1',1,2,3,4);('nom2',1,2,3,4)"
 //  }
