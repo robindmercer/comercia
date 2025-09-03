@@ -3,6 +3,8 @@ import axios from "axios";
 import { GET_COTIZACION, GET_COTCAB } from './constant'
 import { AddCotizacionDet } from "./cotizaciondet";
 import { PostCondicionesCot } from "./condiciones";
+import { BulkData } from "./admin";
+
 
 export function getCotizacionCab(id) {
   // console.log('Action getCotizacionCab: ', id);
@@ -57,21 +59,30 @@ export function AddCotizacion(cotizCab, cotizaciondet, inputDet, initialCondGral
       const response = await axios.post(`cotizacion`, cotizCab);
       const cot_id = response.data[0][0].id;
       let xOrden = 0;
-
+      let sql="insert into cotizaciondet values"
       for (const fact of cotizaciondet) {
         xOrden += 1;
-        const det = {
-          ...inputDet,
-          cot_id,
-          orden: xOrden,
-          prod_id: fact.prod_id,
-          precio: fact.precio,
-          cantidad: fact.cantidad,
-          total: fact.total,
-          descto: fact.descto,
-        };
-        await dispatch(AddCotizacionDet(det));
+        // const det = {
+        //   ...inputDet,
+        //   cot_id,
+        //   orden: xOrden,
+        //   prod_id: fact.prod_id,
+        //   precio: fact.precio,
+        //   cantidad: fact.cantidad,
+        //   total: fact.total,
+        //   descto: fact.descto,
+        // };
+        sql+="("+cot_id+","+xOrden+","+fact.prod_id+","+fact.precio+","+fact.cantidad+","+fact.total+","+fact.descto+"),"
+        
+        // await dispatch(AddCotizacionDet(det));
       }
+      const bulkData = {
+        sql1: sql.slice(0,-1),
+      };  
+      await dispatch(BulkData(bulkData));
+
+          
+      // console.log(sql.slice(0,-1));
 
       const condGral = {
         ...initialCondGral,
