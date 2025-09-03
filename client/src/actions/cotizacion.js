@@ -1,4 +1,4 @@
-// Reemplar COTIZACION Cotizacion cotizacion por la tabla a crear 
+// Agregue BULK
 import axios from "axios";
 import { GET_COTIZACION, GET_COTCAB } from './constant'
 import { AddCotizacionDet } from "./cotizaciondet";
