@@ -5,6 +5,7 @@
 
 import { jsPDF } from "jspdf";
 import Imagen from "../../images/logos.png";
+import Imagen2 from "../../images/medicql_group.png"
 import ImagenWait from "../../images/Spinner-5.gif";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,6 +25,7 @@ import Cookies from 'universal-cookie'
 
 //const ref = React.createRef();
 // var campos del PDF
+var xTablaIdPie = 12
 var xTNA = "TNA"
 var maxhor = 253
 var xCliente = "Cliente";
@@ -72,6 +74,7 @@ const FormcotizPDF = () => {
    // const estilo2 = { fontSize: "200%" };
    const tabla = useSelector((state) => state.tabla);
    const actlogin = useSelector((state) => state.actlogin);
+   console.log('actlogin: ', actlogin);
    const dispatch = useDispatch();
    
    // const [subTotal, setSubTotal] = useState(0);
@@ -369,6 +372,7 @@ xhor += 8;
       doc.text(`${xTerminos}`, leftMargin, xhor);
       doc.setFont("Times", "normal");
       xhor += 8;
+
       for (var i = 0; i < tabla.length; i++) {
         if (tabla[i].id === xTablaId && tabla[i].cod !== 0) {
             doc.text(`${tabla[i].description}`, leftMargin, xhor);
@@ -395,6 +399,12 @@ xhor += 8;
       }         
       linea(doc,xhor)
       xhor +=5
+      if (actlogin.length>0 && actlogin[0].cia_id===2){
+         xTablaPago = 20
+      } else {
+         xTablaPago = 14
+      }
+
       for (var ii = 0; ii < tabla.length; ii++) {
          if (tabla[ii].id === xTablaPago && tabla[ii].cod !== 0) {
             if (parseInt(tabla[ii].valor)>=10){ doc.setFontSize(parseInt(tabla[ii].valor)); }
@@ -422,8 +432,13 @@ xhor += 8;
       doc.setLineWidth(0.5);
       doc.line(3, xhor, 200, xhor);
       xhor += 8;
+      if (actlogin.length>0 && actlogin[0].cia_id===2){
+         xTablaIdPie = 19
+      } else {
+         xTablaIdPie = 12
+      }
       for (var ii2 = 0; ii2 < tabla.length; ii2++) {
-         if (tabla[ii2].id === 12 && tabla[ii2].cod !== 0) {
+         if (tabla[ii2].id === xTablaIdPie && tabla[ii2].cod !== 0) {
              doc.text(`${tabla[ii2].description}`, leftMargin, xhor);
              xhor += 5;
           }
@@ -481,7 +496,11 @@ xhor += 8;
       doc.setDrawColor(0, 0, 193);
       doc.setLineWidth(1);
       doc.line(5, 3, 200, 3);
-      doc.addImage(Imagen, "PNG", 5, 2, 40, 15);
+      if (actlogin.length>0 && actlogin[0].cia_id===2){
+         doc.addImage(Imagen2, "PNG", 5, 2, 50, 28);         
+      } else {
+         doc.addImage(Imagen, "PNG", 5, 2, 40, 15);
+      }
       doc.setFont("Times", "bold");
       doc.setFontSize(15);
       doc.text(`${xCotizacion} N°: ${cotizacioncab[0].id}`, 100, 15);
