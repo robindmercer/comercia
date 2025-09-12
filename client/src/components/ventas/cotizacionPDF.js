@@ -497,7 +497,7 @@ xhor += 8;
       doc.setLineWidth(1);
       doc.line(5, 3, 200, 3);
       if (actlogin.length>0 && actlogin[0].cia_id===2){
-         doc.addImage(Imagen2, "PNG", 5, 2, 50, 28);         
+         doc.addImage(Imagen2, "PNG", 5, 2, 45, 28);         
       } else {
          doc.addImage(Imagen, "PNG", 5, 2, 40, 15);
       }
