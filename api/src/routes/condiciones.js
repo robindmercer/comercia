@@ -99,10 +99,10 @@ router.put("/", async function (req, res, next) {
   }
 });
 
-router.delete("/", async function (req, res, next) {
+router.delete("/:id", async function (req, res, next) {
   try {
-    const { id} = req.body;
-    console.log('delete: ', req.body);
+    const { id } = req.params;
+    console.log('delete: ', req.params);
     sql = `delete from condiciones `;
     sql = sql + ` where id = ${id}`;
     const records = await seq.query(sql, {
