@@ -153,6 +153,32 @@ router.get('/:iduser', async function (req, res, next) {
 })
 
 
+router.delete('/:id', async function (req, res, next) {
+  try {
+    const { id } = req.params;
+      const sql = `select * from cotizacion WHERE id = ${id}`;
+      const coti = await seq.query(sql,
+        {
+          logging: console.log,
+          type: QueryTypes.SELECT
+        });
+      //console.log('records: ', records);
+      if (coti.length > 0) {
+        return res.status(404).json({message:"No se puede eliminar el cliente porque tiene cotizaciones asociadas"})
+      }
+       
+      const sql2 = `DELETE FROM clientes WHERE id = ${id}`;
+      const records = await seq.query(sql,
+        {
+            type: QueryTypes.DELETE
+          });
+        res.send(records)
+      } catch (error) {
+        res.status(404).json({message:"Error en eliminar la información"})
+       console.log(error)
+  }
+})
+
 router.post('/', async function (req, res, next) {
   try {
     const {id,razsoc,nombre,apellido,email,movil,fijo,rfc_cod,idioma,moneda,cod_cliente,cod_status,cia_id} = req.body
