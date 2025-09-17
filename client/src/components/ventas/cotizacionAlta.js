@@ -639,20 +639,36 @@ const Formcotizacion = () => {
             }
          }
          var lista =[]
-         if (parseInt(e.target.value) === 1) {
-            lista = [2,3,4,13,12,17,19,23,9,7,8]
-            // console.log('factdet: ', factdet);
-            //lista.push('9','7','8')
-             agregar_prod(lista)
+         var listaok = false
+         console.log('tabla: ', tabla,lista);
+         for (let indx = 0; indx < tabla.length; indx++) {
+            console.log('tabla', tabla[indx].id, tabla[indx].cod);
+            if (tabla[indx].id===18) {
+               console.log("entre 1");
+               if (tabla[indx].cod===parseInt(e.target.value)) {
+                  console.log("entre 2");
+                  // lista.push(tabla[indx].description)
+                  lista = tabla[indx].description.split(",").map(Number); 
+                  listaok =true
+                  agregar_prod(lista)
+                  console.log('lista ok: ', lista);
+            }          
          }
-         if (parseInt(e.target.value) === 25) {
-            lista = [38,27,26,55,4,17,19,23,12,13,7,8,29,28]
-            // console.log('factdet: ', factdet);
-            //lista.push('9','7','8')
-             agregar_prod(lista)
-             lista = []
-         } else {
-
+         }
+         // if (parseInt(e.target.value) === 1) {
+         //    lista = [2,3,4,13,12,17,19,23,9,7,8]
+         //    // console.log('factdet: ', factdet);
+         //    //lista.push('9','7','8')
+         //     agregar_prod(lista)
+         // }
+         // if (parseInt(e.target.value) === 25) {
+         //    lista = [38,27,26,55,4,17,19,23,12,13,7,8,29,28]
+         //    // console.log('factdet: ', factdet);
+         //    //lista.push('9','7','8')
+         //     agregar_prod(lista)
+         //     lista = []
+         // } else {
+         if (!listaok) { 
             for (let indx = 0; indx < tabla.length; indx++) {
                if (parseInt(e.target.value) === tabla[indx].cod) {
                   lista = "[" + tabla[indx].description + "]"
@@ -731,6 +747,7 @@ const Formcotizacion = () => {
       );
    }
 
+console.log('tabla: ', tabla);
 
    if (mostrar && factcab.length > 0) {
       control();
