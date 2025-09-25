@@ -13,27 +13,29 @@ const router = Router();
 // console.log('SMTP_PASS exists:', !!process.env.SMTP_PASS);
 // console.log('=====================================');
 
-
 router.post("/", async (req, res) => {
-   const { desde,recibe,email,asunto, texto } = req.body;
-   const { SMTP_HOST, SMTP_USER, SMTP_PORT, SMTP_SECURE, SMTP_PASS } = process.env;
-   console.log(' SMTP_HOST: ',  SMTP_HOST);
-if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS) {
-   console.error('Faltan variables SMTP requeridas');
-   return res.status(500).json({ 
-      message: "Configuración de email incompleta" 
-   });
-}
+   const { desde, recibe, email, asunto, texto } = req.body;
+   const { SMTP_HOST, SMTP_USER, SMTP_PORT, SMTP_SECURE, SMTP_PASS } =
+      process.env;
+   console.log(" SMTP_HOST: ", SMTP_HOST);
+   if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS) {
+      console.error("Faltan variables SMTP requeridas");
+      return res.status(500).json({
+         message: "Configuración de email incompleta",
+      });
+   }
 
    // Configura tu transporte SMTP
    const transporter = nodemailer.createTransport({
-      host: SMTP_HOST, 
-      port: SMTP_PORT ,
+      host: SMTP_HOST,
+      port: SMTP_PORT,
       secure: SMTP_SECURE,
       auth: {
-          user: SMTP_USER,
-          pass: SMTP_PASS,
+         user: SMTP_USER,
+         pass: SMTP_PASS,
       },
+      logger: true,
+      debug: true,
       tls: {
          rejectUnauthorized: false, // <--- Agrega esta línea
       },
@@ -41,18 +43,20 @@ if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS) {
 
    const newmail = {
       from: desde,
-      to: recibe,//"robindmercer@yahoo.com.ar",
-      subject: asunto,//"prueba",
+      to: recibe, //"robindmercer@yahoo.com.ar",
+      subject: asunto, //"prueba",
       html: texto,
       replyTo: email, // El correo del usuario
    };
-   console.log('newmail: ', newmail);
+   console.log("newmail: ", newmail);
 
    try {
       await transporter.sendMail(newmail);
       // await transporter.sendMail(mailOptions);
       // await transporter.sendMail(autoReply);
-      res.status(200).json({ message: "Email enviado y respuesta automática enviada" });
+      res.status(200).json({
+         message: "Email enviado y respuesta automática enviada",
+      });
    } catch (error) {
       console.log("Error occured:", error);
       res.status(500).json({ message: "Error al enviar el email" });
