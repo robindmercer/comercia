@@ -30,9 +30,10 @@ const upload = require("./upload")
 const ticket = require("./ticket")
 const compra = require("./compra")
 const compania = require("./compania")
+const mailer = require("./mailer")
 const router = Router();
 // Send Email
-// router.use('/email', email)
+router.use('/mailer', mailer)
 // perfil
 router.use('/perfil', perfil);
 // perfilmenu
