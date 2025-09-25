@@ -7,15 +7,17 @@ const nodemailer = require("nodemailer");
 
 router.post("/", async (req, res) => {
    const { desde,recibe,email,asunto, texto } = req.body;
+   console.log('process.env.SMTP_HOST: ', process.env.SMTP_HOST);
+   console.log('process.env.SMTP_USER: ', process.env.SMTP_USER);
 
    // Configura tu transporte SMTP
    const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST || "smtp.gmail.com", // O usa tu propio SMTP
-      port: process.env.SMTP_PORT || 465,
-      secure: process.env.SMTP_SECURE || true,
+      host: process.env.SMTP_HOST, 
+      port: process.env.SMTP_PORT ,
+      secure: process.env.SMTP_SECURE,
       auth: {
-          user: process.env.SMTP_USER || "robnahdev@gmail.com",
-          pass: process.env.SMTP_PASS || "nhbv zacj fatw ewxt",
+          user: process.env.SMTP_USER,
+          pass: process.env.SMTP_PASS,
       },
       tls: {
          rejectUnauthorized: false, // <--- Agrega esta línea
