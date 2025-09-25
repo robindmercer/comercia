@@ -4,14 +4,14 @@ const { Router } = require("express");
 const nodemailer = require("nodemailer");
 const router = Router();
 
-console.log('=== DEBUG VARIABLES DE ENTORNO ===');
-console.log('NODE_ENV:', process.env.NODE_ENV);
-console.log('SMTP_HOST:', process.env.SMTP_HOST);
-console.log('SMTP_USER:', process.env.SMTP_USER);
-console.log('SMTP_PORT:', process.env.SMTP_PORT);
-console.log('SMTP_SECURE:', process.env.SMTP_SECURE);
-console.log('SMTP_PASS exists:', !!process.env.SMTP_PASS);
-console.log('=====================================');
+// console.log('=== DEBUG VARIABLES DE ENTORNO ===');
+// console.log('NODE_ENV:', process.env);
+// console.log('SMTP_HOST:', process.env.SMTP_HOST);
+// console.log('SMTP_USER:', process.env.SMTP_USER);
+// console.log('SMTP_PORT:', process.env.SMTP_PORT);
+// console.log('SMTP_SECURE:', process.env.SMTP_SECURE);
+// console.log('SMTP_PASS exists:', !!process.env.SMTP_PASS);
+// console.log('=====================================');
 
 
 router.post("/", async (req, res) => {
