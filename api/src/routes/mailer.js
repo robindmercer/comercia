@@ -1,10 +1,11 @@
+require('dotenv').config();
 const express = require("express");
 const cors = require("cors");
 const { Router } = require("express");
 const router = Router();
 
 const nodemailer = require("nodemailer");
-
+const { SMTP_HOST, SMTP_USER, SMTP_PORT, SMTP_SECURE, SMTP_PASS } = process.env;
 router.post("/", async (req, res) => {
    const { desde,recibe,email,asunto, texto } = req.body;
    console.log('process.env.SMTP_HOST: ', process.env.SMTP_HOST);
