@@ -4,11 +4,26 @@ const { Router } = require("express");
 const nodemailer = require("nodemailer");
 const router = Router();
 
-const { SMTP_HOST, SMTP_USER, SMTP_PORT, SMTP_SECURE, SMTP_PASS } = process.env;
+console.log('=== DEBUG VARIABLES DE ENTORNO ===');
+console.log('NODE_ENV:', process.env.NODE_ENV);
+console.log('SMTP_HOST:', process.env.SMTP_HOST);
+console.log('SMTP_USER:', process.env.SMTP_USER);
+console.log('SMTP_PORT:', process.env.SMTP_PORT);
+console.log('SMTP_SECURE:', process.env.SMTP_SECURE);
+console.log('SMTP_PASS exists:', !!process.env.SMTP_PASS);
+console.log('=====================================');
+
+
 router.post("/", async (req, res) => {
    const { desde,recibe,email,asunto, texto } = req.body;
-   console.log('SMTP_HOST: ', SMTP_HOST);
-   console.log('SMTP_USER: ', SMTP_USER);
+   const { SMTP_HOST, SMTP_USER, SMTP_PORT, SMTP_SECURE, SMTP_PASS } = process.env;
+   console.log(' SMTP_HOST: ',  SMTP_HOST);
+if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS) {
+   console.error('Faltan variables SMTP requeridas');
+   return res.status(500).json({ 
+      message: "Configuración de email incompleta" 
+   });
+}
 
    // Configura tu transporte SMTP
    const transporter = nodemailer.createTransport({
