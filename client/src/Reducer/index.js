@@ -42,6 +42,7 @@ import {
 } from "../actions/constant.js";
 import {
   GET_COTIZACION,
+  GET_COTIZACIONPDF,
   GET_COTIZACIONDET,
   GET_COTCAB,
   GET_COTCOND,
@@ -271,6 +272,7 @@ const rootReducer = (state = initialState, action) => {
     return {
       ...state,
       factura: action.payload,
+      factdet: [],
     };
   }
   ///////////////////////////////////////////
@@ -347,6 +349,14 @@ const rootReducer = (state = initialState, action) => {
       cotizacioncab: action.payload,
     };
   }
+
+  if (action.type === GET_COTIZACIONPDF) {
+    return {
+      ...state,
+      cotizacion_pdf: action.payload,
+    };
+  }
+
 
   if (action.type === GET_COTIZACIONDET) {
     return {

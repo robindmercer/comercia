@@ -9,6 +9,7 @@ import Swal from 'sweetalert2'
 // import { getClienteId } from "../../actions/cliente";
 // import { getDireccion } from "../../actions/direccion";
 import { AddCotizacion } from "../../actions/cotizacion";
+import { resetFact } from "../../actions/factura";
 import { getProducto } from "../../actions/producto";
 // import { getDetailIva, getTabla } from "../../actions/tabla";
 // import { getUsuariomenId } from "../../actions/usuariomenu";
@@ -227,9 +228,9 @@ const Formcotizacion = () => {
       dispatch(getDetail(18));
       setMostrar(true);
       setAcceso(cookies.get("acceso"));
-      // return (
-      //   dispatch(resetFact())
-      //   )
+      return () => {
+         dispatch(resetFact());
+      };
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [dispatch]);
 
@@ -425,7 +426,12 @@ const Formcotizacion = () => {
       //console.log('i f d',input, factdet, inputDet);
       // dispatch(AddCotizacion(input, factdet, inputDet, condGral));
    //   handleShow();
+
+
+
+
       const result = await dispatch(AddCotizacion(input, factdet, inputDet, condGral));
+      
       setLoading(false); // Mostrar mensaje
       console.log('result: ', result);
       if (result) {
