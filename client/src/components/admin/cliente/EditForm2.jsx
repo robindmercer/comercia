@@ -24,6 +24,29 @@ const EditForm2 = ({ theCliente }) => {
       if (input.razsoc === "") {
          errors.razsoc = "Debe Ingresar una razsoc";
       }
+
+      if (!String(input.rfc_cod ?? "").trim() || String(input.rfc_cod) === "0") {
+         errors.rfc_cod = "Debe Ingresar un RFC";
+      }
+
+      if (!String(input.cia_id ?? "").trim() || String(input.cia_id) === "0") {
+         errors.cia_id = "Debe Ingresar una compania";
+      }
+      if (input.nombre === undefined || input.nombre === "" ) {
+         input.nombre = '';
+      }
+      if (input.apellido === undefined || input.apellido === "" ) {
+         input.apellido = ''; 
+      }
+      if (input.email === undefined || input.email === "" ) {
+         input.email = ''; 
+      }
+      if (input.movil === undefined || input.movil === "" ) {
+         input.movil = 0
+      }
+      if (input.fijo === undefined || input.fijo === "" ) {
+         input.fijo = 0
+      }
       return errors;
    }
 
@@ -72,12 +95,6 @@ const EditForm2 = ({ theCliente }) => {
          ...input,
          [e.target.name]: e.target.value,
       });
-      setErrors(
-         validate({
-            ...input,
-            [e.target.name]: e.target.value,
-         })
-      );
    }
    
    function handleStatus(e) {
@@ -86,12 +103,6 @@ const EditForm2 = ({ theCliente }) => {
          ...input,
          cod_status: e.target.value,
       });
-      setErrors(
-         validate({
-            ...input,
-            [e.target.name]: e.target.value,
-         })
-      );
    }
 
    const handleSubmit = (e) => {
@@ -100,6 +111,10 @@ const EditForm2 = ({ theCliente }) => {
          input.cia_id = actlogin[0].cia_id
       }
       console.log("input: ", input);
+      var err = validate(input);
+      setErrors(err);
+      console.log('err: ', err);
+      if (Object.keys(err).length > 0) return;
       dispatch(AddCliente(input));
       // if (input.id === 0) {
       // } else {
@@ -153,6 +168,7 @@ const EditForm2 = ({ theCliente }) => {
                         className="form-control"
                         required
                      />
+                     <p style={{ color: "red" }}> {errors.razsoc}</p>
                   </div>
                   <div className="input-group pt-2">
                      <span className="input-group-text">Nombre:</span>
@@ -308,6 +324,7 @@ const EditForm2 = ({ theCliente }) => {
                            onChange={handleChange}
                            className="form-control"
                         />
+                        <p style={{ color: "red" }}> {errors.rfc_cod}</p>
                      </div>
                   </div>
                   { actlogin[0]?.cia_id === 1 ? (
@@ -336,6 +353,7 @@ const EditForm2 = ({ theCliente }) => {
                               // }
                            })}{" "}
                      </select>
+                           <p style={{ color: "red" }}> {errors.cia_id}</p>
                   </div>
                   ) : 
                      (null)
