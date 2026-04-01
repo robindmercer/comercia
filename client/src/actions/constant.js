@@ -52,6 +52,7 @@ export const GET_COTIZACION = 'GET_COTIZACION'
 export const GET_COTCAB = 'GET_COTCAB'
 export const GET_COTIZACIONDET = 'GET_COTIZACIONDET'
 export const GET_COTCOND = 'GET_COTCOND'
+export const GET_COTIZACIONPDF = 'GET_COTIZACIONPDF'
 // Logs
 export const GET_LOGSID = 'GET_LOGSID'
 export const GET_LANG = 'GET_LANG'

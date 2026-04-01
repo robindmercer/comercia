@@ -77,4 +77,5 @@ router.use('/factcond',factcond)
 router.use('/ticket',ticket)
 router.use('/compra',compra)
 router.use('/compania',compania)
+router.use('/statusworkflow', require('./statusworkflow')) // Status Workflow
 module.exports = router;
