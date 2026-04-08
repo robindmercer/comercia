@@ -22,7 +22,9 @@ router.get("/", function (req, res, next) {
         { include: [
           {model: Perfil},
           {model: Status},
-        ],}
+        ],
+          order: [["name", "ASC"]],
+        }
       ).then((resp) => {
         resp.length
           ? res.send(resp)
@@ -61,6 +63,7 @@ router.get("/usr/:clave", function (req, res, next) {
           {model: Perfil},
           {model: Status},
         ],
+        order: [["name", "ASC"]],
       }).then((resp) => {
     // console.log('resp1: ', resp);
         resp.length
@@ -88,6 +91,7 @@ router.get("/perfil/:perfil", function (req, res, next) {
           {model: Perfil},
           {model: Status},
         ],
+        order: [["name", "ASC"]],
       }).then((resp) => {
         resp.length
           ? res.send(resp)
