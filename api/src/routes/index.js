@@ -11,6 +11,7 @@ const perfil = require("./perfil");
 const Status = require("./status");
 const perfilMenu = require("./perfilMenu");
 const menu  = require("./usuariomenu");
+const usuariostatus  = require("./usuariostatus");
 //const menu  = require("./menu");
 const tabla =require("./tablas")
 const materiaprima = require("./materiaprima")
@@ -48,6 +49,8 @@ router.use('/producto', producto);
 router.use('/productolang', productolang);
 // menu
 router.use('/menu', menu);
+// usuariostatus
+router.use('/usuariostatus', usuariostatus);
 // status
 router.use('/status', Status);
 // tablas
