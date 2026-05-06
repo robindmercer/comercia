@@ -131,7 +131,7 @@ router.post('/', async (req, res, next) => {
       type: QueryTypes.INSERT,
     });
 
-    logger.info(`Status workflow created: ${status_actual}`);
+    // logger.info(`Status workflow created: ${status_actual}`);
 
     res.status(201).json({
       success: true,
@@ -176,7 +176,7 @@ router.put('/:id', async (req, res, next) => {
       return next(new AppError('Status workflow not found', 404));
     }
 
-    logger.info(`Status workflow updated: ${id}`);
+    // logger.info(`Status workflow updated: ${id}`);
 
     res.status(200).json({
       success: true,
@@ -206,7 +206,7 @@ router.delete('/:id', async (req, res, next) => {
       type: QueryTypes.DELETE,
     });
 
-    logger.info(`Status workflow deleted: ${id}`);
+    // logger.info(`Status workflow deleted: ${id}`);
 
     res.status(200).json({
       success: true,
