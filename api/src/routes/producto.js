@@ -25,8 +25,13 @@ const seq = new Sequelize(
 router.get("/", async function (req, res, next) {
    try {
       const { name } = req.query;
-      sql = "select p.*,t.description EstProd from productos p";
-      sql = sql + " join tabla t on t.id = 13 and t.cod = p.cod_status";
+      
+      sql = "select p.*,t.description EstProd,"
+      sql += " COALESCE(l.name, 'n/a') as nameENG, COALESCE(l.description, 'n/a') as descriptionENG"
+      sql += " from productos p";
+      sql += " join tabla t on t.id = 13 and t.cod = p.cod_status";
+      sql += " left join productolang l on l.id = p.id";
+
       if (name) {
          sql = sql + ` where p.name like '%${name}%' and p.cod_status <> 0`;
         } else {
@@ -62,7 +67,8 @@ router.get("/", async function (req, res, next) {
 
 router.put("/", async function (req, res, next) {
    console.log(" req.body: ", req.body);
-   const { name, description, price, dolar, cod_status,id_interno,stock } = req.body;
+   const { name, description, price, dolar, cod_status, id_interno, stock,
+           image_url, image_key, image_mime, image_size } = req.body;
    if (!name || !description || !price || !dolar || !cod_status) {
       return res.send(
          "Falta información para poder darte de alta el Productoo"
@@ -77,16 +83,21 @@ router.put("/", async function (req, res, next) {
          cod_status: 1,
          id_interno,
          stock,
+         image_url,
+         image_key,
+         image_mime,
+         image_size,
       });
       res.status(200).send(`Producto Creado : ${newProducto.id}`);
    } catch (error) {
-      console.log("Error", req.body);
+      console.log("Error", error);
       next(error);
    }
 });
 
 router.post("/", async function (req, res, next) {
-   const { id, name, description, price, dolar, cod_status, orden,id_interno,stock } = req.body;
+   const { id, name, description, price, dolar, cod_status, orden, id_interno, stock,
+           image_url, image_key, image_mime, image_size } = req.body;
    console.log("Post Producto req.body: ", req.body);
    if (!name || !description || !cod_status) {
       return res.send(
@@ -109,6 +120,10 @@ router.post("/", async function (req, res, next) {
             orden, 
             id_interno,
             stock,
+            image_url,
+            image_key,
+            image_mime,
+            image_size,
          });
          res.status(200).send("Producto Creado");
       } catch (error) {
@@ -116,7 +131,7 @@ router.post("/", async function (req, res, next) {
          //      next(error)
       }
    } else {
-      producto.name = name;
+      producto.name        = name;
       producto.description = description;
       producto.cod_status  = cod_status;
       producto.price       = price;
@@ -124,6 +139,10 @@ router.post("/", async function (req, res, next) {
       producto.orden       = orden;
       producto.id_interno  = id_interno;
       producto.stock       = stock;
+      if (image_url  !== undefined) producto.image_url  = image_url;
+      if (image_key  !== undefined) producto.image_key  = image_key;
+      if (image_mime !== undefined) producto.image_mime = image_mime;
+      if (image_size !== undefined) producto.image_size = image_size;
       if (producto.id) await producto.save();
       res.json(producto);
    }

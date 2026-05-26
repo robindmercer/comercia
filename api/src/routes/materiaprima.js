@@ -18,14 +18,18 @@ const seq = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_
 router.get('/', async function (req, res, next) {
   try {
     const {nombre} = req.query;
-    console.log('get: ');
+    // console.log('get: ');
 
-    sql = "select * from materiaprima order by name"
+    sql = "select m.*,t.description as udm_desc from materiaprima m "
+    sql += " join tabla t on t.id = 22 and t.cod = m.udm "
+    sql += " order by m.name"
 
     if(nombre) {
-      sql = `select * from materiaprima  where upper(description) like upper('%${nombre}%') order by name`
+      sql = `select m.*,t.description as udm_desc from materiaprima m `
+      sql += ` join tabla t on t.id = 22 and t.cod = m.udm `
+      sql += ` where upper(m.description) like upper('%${nombre}%') order by m.name`
     }
-    console.log('sql: ', sql);
+    // console.log('sql: ', sql);
     const records = await seq.query(sql,
       {
         logging: console.log,
@@ -41,7 +45,7 @@ router.get('/', async function (req, res, next) {
 router.get('/prodmp', async function (req, res, next) {
   try {
     const {nombre} = req.query;
-    console.log('get: ');
+    // console.log('get: ');
 
     sql = "select * from prodmp order by id"
     const records = await seq.query(sql,

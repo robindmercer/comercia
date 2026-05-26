@@ -21,7 +21,7 @@ const seq = new Sequelize(
 router.get("/", async function (req, res, next) {
   try {
     const { id, cot_id,fac_id } = req.query;
-    console.log("get Todos: ", req.query);
+    // console.log("get Todos: ", req.query);
     sql = "";
     if (id) {
       sql = `select * from contrato`;

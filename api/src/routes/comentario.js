@@ -21,7 +21,7 @@ const seq = new Sequelize(
 router.get("/", async function (req, res, next) {
   try {
     const { facid } = req.query;
-    console.log("get Todos: ", req.query);
+    // console.log("get Todos: ", req.query);
     sql = "";
     if (facid ) {
       sql = `select * from comentario`;

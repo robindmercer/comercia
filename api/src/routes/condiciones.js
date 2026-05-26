@@ -21,7 +21,7 @@ const seq = new Sequelize(
 router.get("/", async function (req, res, next) {
   try {
     const { id, cot_id,fac_id } = req.query;
-    console.log("get Todos: ", req.query);
+    // console.log("get Todos: ", req.query);
     sql = "";
     if (id) {
       sql = `select *,'' as sel,`;
@@ -51,7 +51,7 @@ router.get("/", async function (req, res, next) {
       sql = sql + ` descuento des,enganche eng, meses mes, interes inte `;
       sql = sql + ` from condiciones`;
     }
-    console.log("SQL Todos: ", sql);
+    // console.log("SQL Todos: ", sql);
     const records = await seq.query(sql, {
       logging: console.log,
       type: QueryTypes.SELECT,
@@ -164,10 +164,10 @@ router.post("/cot", async function (req, res, next) {
       sql = sql + ` where cot_id = ${cot_id}`;
     } else {
       console.log("Insert Cotizacioncond/cot: ", req.body);
-      sql = `insert into cotizacioncond (cot_id,cond_id,descuento, enganche,meses,interes) `;
+      sql = `insert into cotizacioncond (cot_id,cond_id,descuento, enganche,meses,interes,seleccionado) `;
       sql =
         sql +
-        `values ('${cot_id}','${cond_id}','${descuento}','${enganche}','${meses}','${interes}')`;
+        `values ('${cot_id}','${cond_id}','${descuento}','${enganche}','${meses}','${interes}','N')`;
     }
     const records = await seq.query(sql, {
       logging: console.log,

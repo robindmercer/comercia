@@ -19,6 +19,26 @@ const seq = new Sequelize(
    }
 );
 
+router.get("/resumen/:name", async function (req, res, next) {
+   try {
+      const { name } = req.params;
+      sql = "select *,to_char(fecha,'dd/mm/yyyy') ff from compra order by id";
+      sql = "select to_char(fecha,'dd/mm/yyyy') fecha,c.titulo,cd.nuevo,cd.precio "
+      sql+=" from compradet cd"
+      sql+=" join compra c on c.id = cd.compraid"
+      sql+=" where cd.name = :name"
+      const records = await seq.query(sql, {
+         //logging: console.log,
+         type: QueryTypes.SELECT,
+         replacements: { name: req.params.name }
+      });
+      res.send(records);
+   } catch (error) {
+      console.log(error);
+   }
+});
+
+
 router.get("/", async function (req, res, next) {
    try {
       const { nombre } = req.query;
@@ -29,6 +49,43 @@ router.get("/", async function (req, res, next) {
       if (nombre) {
          sql = `select * from compra  where upper(titulo) like upper('%${nombre}%') order by id`;
       }
+      console.log("sql: ", sql);
+      const records = await seq.query(sql, {
+         //logging: console.log,
+         type: QueryTypes.SELECT,
+      });
+      res.send(records);
+   } catch (error) {
+      console.log(error);
+   }
+});
+
+router.get("/:id", async function (req, res, next) {
+   try {
+      const { id } = req.params;
+
+      sql = `select json_build_object(
+               'id', c.id,
+               'titulo', c.titulo,
+               'fecha', to_char(c.fecha,'dd/mm/yyyy'),
+               'tipo', c.tipo,
+               'cod_status', c.cod_status,             
+            'compradet', (
+               select json_agg(
+                  json_build_object(
+                     'name', cd.name,
+                     'description', mp.description,
+                     'precio', cd.precio,
+                     'nuevo', cd.nuevo
+                     )
+                     )
+                  from compradet cd
+                  join materiaprima mp on mp.name = cd.name
+                  where cd.compraid = c.id
+                  )
+            ) as compra
+            from compra c
+            where c.id = ${id}`;
       console.log("sql: ", sql);
       const records = await seq.query(sql, {
          //logging: console.log,
@@ -66,16 +123,13 @@ router.post("/", async function (req, res, next) {
       sqlUpd+= `  where materiaprima.name=compradet.name`
       sqlUpd+= `    and compradet.compraid = ${compraIdCreated[0][0].id}`
       // console.log("compraIdCreated: ", compraIdCreated);
-      sqlDet = `insert into compradet (compraid,name,anterior,nuevo,cod_status) values `;
+      sqlDet = `insert into compradet (compraid,name,anterior,nuevo,cod_status,precio) values `;
       
       compra.map((serv, indx) => {
-            sqlDet += `(${compraIdCreated[0][0].id},'${serv.name}',${serv.stock},${serv.cantidad},1),`;
-            // console.log('serv.name: ', serv.name);
+            sqlDet += `(${compraIdCreated[0][0].id},'${serv.name}',${serv.stock},${serv.cantidad},${serv.cod_status},${serv.precio}),`;
          });
-         // console.log('sqlDet: ', sqlDet);
       });
     const records2 = await seq.query(sqlDet.slice(0,-1), {
-      //logging: console.log,
       type: QueryTypes.INSERT,
    });
    const records3 = await seq.query(sqlUpd, {

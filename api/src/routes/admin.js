@@ -70,6 +70,24 @@ router.get('/sql', async function (req, res, next) {
 //   "sql2":"('nom1',1,2,3,4);('nom2',1,2,3,4)"
 //  }
 
+router.post('/menuusuarios', async function (req, res, next) {
+  const { sql1 } = req.body;
+   console.log('sql1: ', sql1);
+    try {
+      const [records] = await sql1.query(element,
+        {
+          //logging: console.log,
+          type: QueryTypes.INSERT
+        });
+      } catch (error) {
+        console.log(error)
+      }
+      res.send("OK")
+    
+  })
+
+
+
 router.post('/insert', async function (req, res, next) {
   const { sql1,sql2 } = req.body;
   //  console.log('sql1: ', sql1);
@@ -94,7 +112,6 @@ router.post('/insert', async function (req, res, next) {
     res.send("OK")
     
   })
-
 
   router.post('/bulk', async function (req, res, next) {
     const { sql1 } = req.body;

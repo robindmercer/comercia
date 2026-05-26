@@ -19,7 +19,6 @@ const seq = new Sequelize(
   }
 );
 
-
 router.get("/", async function (req, res, next) {
   try {
     sql ="select * from logs ";
@@ -33,19 +32,20 @@ router.get("/", async function (req, res, next) {
   }
 });
 
-router.get("/fac/:id",async function (req, res, next) {
+router.get("/fac",async function (req, res, next) {
   try {
-    const id = req.params;
-    console.log("Log req.params: ", req.params,id.id);
+    const {doc_id,tipo_id} = req.query;
+    console.log("Log req.params: ", req.query);
       sql ="select l.*,t.description as Status, u.name,p.description" 
       sql = sql +" from logs l"
       sql = sql +" join tabla t on t.id = 6 and t.cod = l.cod_status"
       sql = sql +" join usuarios u on u.usr_id = l.usr_id"
       sql = sql +" join perfils  p on p.id_perfil = u.cod_perfil"
-      sql = sql +" where doc_id =" + id.id ;
+      sql = sql +" where doc_id =:doc_id" ;
+      sql = sql +"   and tipo_id =:tipo_id" ;
       sql = sql +" order by fecha desc "
       const records = await seq.query(sql, {
-        logging: console.log,
+        replacements: { doc_id, tipo_id },
         type: QueryTypes.SELECT,
       });
       res.send(records);

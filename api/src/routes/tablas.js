@@ -80,7 +80,7 @@ router.get("/all", function (req, res, next) {
 router.get("/cod/:id", function (req, res, next) {
   try {
     const { id } = req.params;
-    console.log('Tablas id: ', id);
+    // console.log('Tablas id: ', id);
 
     Tabla.findAll({
       where: {

@@ -3,6 +3,8 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
+const path = require('path');
+const fileUpload = require('express-fileupload');
 const routes = require('./routes/index.js');
 const axios = require('axios')
 
@@ -23,6 +25,9 @@ server.use((req, res, next) => {
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
   next();
 });
+
+server.use(fileUpload({ limits: { fileSize: 5 * 1024 * 1024 }, abortOnLimit: true }));
+server.use('/uploads', express.static(path.join(__dirname, '../public/uploads')));
 
 server.use('/', routes); 
 
