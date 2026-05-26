@@ -36,8 +36,23 @@ module.exports = (sequelize) => {
         stock: {
             type: DataTypes.INTEGER,
             allowNull: false,
-        },           
-       
+        },
+        image_url: {
+            type: DataTypes.STRING(500),
+            allowNull: true,
+        },
+        image_key: {
+            type: DataTypes.STRING(200),
+            allowNull: true,
+        },
+        image_mime: {
+            type: DataTypes.STRING(50),
+            allowNull: true,
+        },
+        image_size: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
+        },
     },
         { timestamps: false }
     );

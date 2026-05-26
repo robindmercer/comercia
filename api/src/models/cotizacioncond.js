@@ -31,6 +31,11 @@ module.exports = (sequelize) => {
         interes: {
             type: DataTypes.DECIMAL,
             allowNull: false,
+        },
+        seleccionado: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            defaultValue: 'N',
         }
     },
         { freezeTableName: true, timestamps: false }
