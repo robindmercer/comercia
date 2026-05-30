@@ -317,6 +317,18 @@ router.get("/pdf/:cotid", async function (req, res, next) {
                 where t3.id = 1
                   and t3.cod = 1
             ),
+            'formaspago',(
+                select json_agg(
+                    json_build_object(                        
+                        'nacional', t5.nacional,
+                        'extranjero', t5.extranjero,
+                        'nacionaling', t5.nacionaling,
+                        'extranjeroing', t5.extranjeroing
+                    )
+                )
+                from compania_cuentas t5
+                where t5.cia_id = c.cia_id
+            ),
             'monedas', (
                 select json_agg(
                     json_build_object(

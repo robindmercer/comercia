@@ -31,6 +31,7 @@ const upload = require("./upload")
 const ticket = require("./ticket")
 const compra = require("./compra")
 const compania = require("./compania")
+const companiacuenta = require("./companiacuenta")
 const mailer = require("./mailer")
 const imagen = require("./imagen")
 const router = Router();
@@ -83,4 +84,7 @@ router.use('/compra',compra)
 router.use('/compania',compania)
 router.use('/imagen',imagen)
 router.use('/statusworkflow', require('./statusworkflow')) // Status Workflow
+router.use('/companiacuenta', companiacuenta) // Compañia Cuenta
+// router.use('/contacto', require('./contacto')) // Contacto
+
 module.exports = router;
