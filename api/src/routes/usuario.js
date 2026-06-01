@@ -146,8 +146,6 @@ router.post("/", async function (req, res, next) {
   }
 });
 
-
-
 router.put("/", async (req, res) => {
   console.log('Put uusario: ', req.body);
   const { id, usr_id, name, email, password,cod_perfil,cia_id,cod_status } = req.body;
