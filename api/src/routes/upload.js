@@ -1,7 +1,6 @@
 const { Router } = require("express");
-const path = require("path");
-const fs = require("fs");
 const crypto = require("crypto");
+const { S3Client, PutObjectCommand, DeleteObjectCommand } = require("@aws-sdk/client-s3");
 
 const router = Router();
 
@@ -15,13 +14,55 @@ const MIME_EXT = {
   "image/gif":  ".gif",
 };
 
-const UPLOADS_BASE = path.resolve(path.join(__dirname, "../../public/uploads"));
+function getStorageConfig() {
+  const endpoint = process.env.S3_ENDPOINT;
+  const bucket = process.env.S3_BUCKET;
+  const accessKeyId = process.env.S3_ACCESS_KEY;
+  const secretAccessKey = process.env.S3_SECRET_KEY;
+  const region = process.env.S3_REGION || "auto";
+  const publicBaseUrl = process.env.S3_PUBLIC_URL || "";
+
+  if (!endpoint || !bucket || !accessKeyId || !secretAccessKey) {
+    return null;
+  }
+
+  return {
+    endpoint,
+    bucket,
+    region,
+    publicBaseUrl,
+    client: new S3Client({
+      region,
+      endpoint,
+      forcePathStyle: true,
+      credentials: {
+        accessKeyId,
+        secretAccessKey,
+      },
+    }),
+  };
+}
+
+function buildImageUrl(storage, imageKey) {
+  const normalizedKey = imageKey.split("/").map(encodeURIComponent).join("/");
+
+  if (storage.publicBaseUrl) {
+    return `${storage.publicBaseUrl.replace(/\/$/, "")}/${normalizedKey}`;
+  }
+
+  return `${storage.endpoint.replace(/\/$/, "")}/${storage.bucket}/${normalizedKey}`;
+}
 
 // POST /upload?folder=productos
 // multipart field name: "imagen"; optional body field: "old_key"
-router.post("/", (req, res) => {
+router.post("/", async (req, res) => {
   const folder = req.query.folder || "general";
   console.log('req: ', req.files);
+  const storage = getStorageConfig();
+
+  if (!storage) {
+    return res.status(500).json({ error: "S3 bucket is not configured" });
+  }
 
   if (!/^[a-zA-Z0-9_-]+$/.test(folder)) {
     return res.status(400).json({ error: "Invalid folder name" });
@@ -43,50 +84,57 @@ router.post("/", (req, res) => {
 
   const ext = MIME_EXT[file.mimetype];
   const filename = crypto.randomUUID() + ext;
-  const uploadDir = path.join(UPLOADS_BASE, folder);
-  const uploadPath = path.join(uploadDir, filename);
+  const image_key = `${folder}/${filename}`;
 
-  fs.mkdirSync(uploadDir, { recursive: true });
+  try {
+    await storage.client.send(new PutObjectCommand({
+      Bucket: storage.bucket,
+      Key: image_key,
+      Body: file.data,
+      ContentType: file.mimetype,
+      ContentLength: file.size,
+    }));
 
-  // Delete old file if provided (prevents orphaned files)
-  const old_key = req.body && req.body.old_key;
-  if (old_key) {
-    const resolvedOld = path.resolve(path.join(UPLOADS_BASE, old_key));
-    if (resolvedOld.startsWith(UPLOADS_BASE + path.sep) || resolvedOld === UPLOADS_BASE) {
-      fs.unlink(resolvedOld, () => {});
+    const old_key = req.body && req.body.old_key;
+    if (old_key && typeof old_key === "string") {
+      await storage.client.send(new DeleteObjectCommand({
+        Bucket: storage.bucket,
+        Key: old_key,
+      })).catch(() => {});
     }
-  }
 
-  file.mv(uploadPath, (err) => {
-    if (err) {
-      console.error("Upload error:", err);
-      return res.status(500).json({ error: "Failed to save file" });
-    }
-    const image_key = `${folder}/${filename}`;
     return res.json({
-      image_url:  `/uploads/${image_key}`,
+      image_url: buildImageUrl(storage, image_key),
       image_key,
       image_mime: file.mimetype,
       image_size: file.size,
     });
-  });
+  } catch (error) {
+    console.error("Upload error:", error);
+    return res.status(500).json({ error: "Failed to upload file" });
+  }
 });
 
 // DELETE /upload?key=productos/uuid.jpg
-router.delete("/", (req, res) => {
+router.delete("/", async (req, res) => {
   const { key } = req.query;
   if (!key) return res.status(400).json({ error: "key is required" });
+  const storage = getStorageConfig();
 
-  const filePath = path.resolve(path.join(UPLOADS_BASE, key));
-
-  if (!filePath.startsWith(UPLOADS_BASE + path.sep)) {
-    return res.status(400).json({ error: "Invalid key" });
+  if (!storage) {
+    return res.status(500).json({ error: "S3 bucket is not configured" });
   }
 
-  fs.unlink(filePath, (err) => {
-    if (err) return res.status(404).json({ error: "File not found" });
+  try {
+    await storage.client.send(new DeleteObjectCommand({
+      Bucket: storage.bucket,
+      Key: key,
+    }));
     return res.json({ message: "File deleted" });
-  });
+  } catch (error) {
+    console.error("Delete error:", error);
+    return res.status(404).json({ error: "File not found" });
+  }
 });
 
 module.exports = router;
