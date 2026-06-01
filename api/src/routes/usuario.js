@@ -165,7 +165,7 @@ router.put("/", async (req, res) => {
     usuario.cod_status =cod_status
     usuario.cia_id = cia_id
     await usuario.save();
-    res.status(200).send.json(usuario);
+    res.status(200).json(usuario);
   } catch (error) {
     res.send('error'+error);
   }
