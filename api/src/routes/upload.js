@@ -14,29 +14,24 @@ const MIME_EXT = {
   "image/gif":  ".gif",
 };
 
-// Initialize S3 client with proper error handling
+// Initialize S3 client
 let s3Client;
 function getS3Client() {
   if (!s3Client) {
-    const region = process.env.BUCKET_REGION || "us-east-1";
     const endpoint = process.env.BUCKET_ENDPOINT;
     const accessKeyId = process.env.BUCKET_ACCESS_KEY;
     const secretAccessKey = process.env.BUCKET_SECRET_KEY;
 
-    console.log("Initializing S3 client with:", {
-      region,
-      endpoint,
-      accessKeyId: accessKeyId ? "***" : "undefined",
-      secretAccessKey: secretAccessKey ? "***" : "undefined",
-    });
+    console.log("Initializing S3 client with endpoint:", endpoint);
 
     s3Client = new S3Client({
-      region,
+      region: "us-east-1", // Railway uses us-east-1 for S3-compatible storage
       endpoint,
       credentials: {
         accessKeyId,
         secretAccessKey,
       },
+      forcePathStyle: true, // Use path-style URLs
     });
   }
   return s3Client;
@@ -69,6 +64,7 @@ router.post("/", async (req, res) => {
   }
 
   if (!BUCKET_NAME) {
+    console.error("BUCKET_NAME not configured");
     return res.status(500).json({ error: "Bucket name not configured" });
   }
 
@@ -126,6 +122,7 @@ router.delete("/", async (req, res) => {
   if (!key) return res.status(400).json({ error: "key is required" });
 
   if (!BUCKET_NAME) {
+    console.error("BUCKET_NAME not configured");
     return res.status(500).json({ error: "Bucket name not configured" });
   }
 
