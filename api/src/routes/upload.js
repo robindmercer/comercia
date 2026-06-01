@@ -15,11 +15,11 @@ const MIME_EXT = {
 };
 
 function getStorageConfig() {
-  const endpoint = process.env.S3_ENDPOINT;
-  const bucket = process.env.S3_BUCKET;
-  const accessKeyId = process.env.S3_ACCESS_KEY;
-  const secretAccessKey = process.env.S3_SECRET_KEY;
-  const region = process.env.S3_REGION || "auto";
+  const endpoint = process.env.S3_ENDPOINT || process.env.BUCKET_ENDPOINT;
+  const bucket = process.env.S3_BUCKET || process.env.BUCKET_NAME;
+  const accessKeyId = process.env.S3_ACCESS_KEY || process.env.BUCKET_ACCESS_KEY;
+  const secretAccessKey = process.env.S3_SECRET_KEY || process.env.BUCKET_SECRET_KEY;
+  const region = process.env.S3_REGION || process.env.BUCKET_REGION || "auto";
   const publicBaseUrl = process.env.S3_PUBLIC_URL || "";
 
   if (!endpoint || !bucket || !accessKeyId || !secretAccessKey) {
@@ -54,14 +54,14 @@ function buildImageUrl(storage, imageKey) {
 }
 
 // POST /upload?folder=productos
-// multipart field name: "imagen"; optional body field: "old_key"
+// multipart field name: "image"; optional body field: "old_key"
 router.post("/", async (req, res) => {
   const folder = req.query.folder || "general";
-  console.log('req: ', req.files);
+  console.log("Uploading to folder:", folder);
   const storage = getStorageConfig();
 
   if (!storage) {
-    return res.status(500).json({ error: "S3 bucket is not configured" });
+    return res.status(500).json({ error: "S3 bucket is not configured. Set S3_* or BUCKET_* env vars." });
   }
 
   if (!/^[a-zA-Z0-9_-]+$/.test(folder)) {
@@ -69,7 +69,7 @@ router.post("/", async (req, res) => {
   }
 
   if (!req.files || !req.files.image) {
-    return res.status(400).json({ error: "No file uploaded (field: imagen)" });
+    return res.status(400).json({ error: "No file uploaded (field: image)" });
   }
 
   const file = req.files.image;
@@ -122,7 +122,7 @@ router.delete("/", async (req, res) => {
   const storage = getStorageConfig();
 
   if (!storage) {
-    return res.status(500).json({ error: "S3 bucket is not configured" });
+    return res.status(500).json({ error: "S3 bucket is not configured. Set S3_* or BUCKET_* env vars." });
   }
 
   try {
@@ -138,3 +138,4 @@ router.delete("/", async (req, res) => {
 });
 
 module.exports = router;
+
