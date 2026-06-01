@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const crypto = require("crypto");
-const { S3Client, PutObjectCommand, DeleteObjectCommand } = require("@aws-sdk/client-s3");
+const { S3Client, PutObjectCommand, DeleteObjectCommand, GetObjectCommand } = require("@aws-sdk/client-s3");
+const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 
 const router = Router();
 
@@ -53,6 +54,32 @@ function buildImageUrl(storage, imageKey) {
   return `${storage.endpoint.replace(/\/$/, "")}/${storage.bucket}/${normalizedKey}`;
 }
 
+function getSignedUrlTtlSeconds() {
+  const raw = process.env.S3_SIGNED_URL_EXPIRES_SECONDS;
+  const parsed = Number.parseInt(raw || "3600", 10);
+
+  if (Number.isNaN(parsed) || parsed <= 0) {
+    return 3600;
+  }
+
+  return Math.min(parsed, 604800);
+}
+
+async function resolveImageUrl(storage, imageKey) {
+  if (storage.publicBaseUrl) {
+    return buildImageUrl(storage, imageKey);
+  }
+
+  return getSignedUrl(
+    storage.client,
+    new GetObjectCommand({
+      Bucket: storage.bucket,
+      Key: imageKey,
+    }),
+    { expiresIn: getSignedUrlTtlSeconds() }
+  );
+}
+
 // POST /upload?folder=productos
 // multipart field name: "image"; optional body field: "old_key"
 router.post("/", async (req, res) => {
@@ -103,8 +130,10 @@ router.post("/", async (req, res) => {
       })).catch(() => {});
     }
 
+    const image_url = await resolveImageUrl(storage, image_key);
+
     return res.json({
-      image_url: buildImageUrl(storage, image_key),
+      image_url,
       image_key,
       image_mime: file.mimetype,
       image_size: file.size,
@@ -112,6 +141,28 @@ router.post("/", async (req, res) => {
   } catch (error) {
     console.error("Upload error:", error);
     return res.status(500).json({ error: "Failed to upload file" });
+  }
+});
+
+// GET /upload/signed-url?key=productos/uuid.jpg
+router.get("/signed-url", async (req, res) => {
+  const { key } = req.query;
+  const storage = getStorageConfig();
+
+  if (!key || typeof key !== "string") {
+    return res.status(400).json({ error: "key is required" });
+  }
+
+  if (!storage) {
+    return res.status(500).json({ error: "S3 bucket is not configured. Set S3_* or BUCKET_* env vars." });
+  }
+
+  try {
+    const image_url = await resolveImageUrl(storage, key);
+    return res.json({ image_url, image_key: key, expires_in: getSignedUrlTtlSeconds() });
+  } catch (error) {
+    console.error("Signed URL error:", error);
+    return res.status(500).json({ error: "Failed to generate signed URL" });
   }
 });
 
