@@ -158,7 +158,9 @@ router.put("/", async (req, res) => {
     usuario.usr_id = usr_id
     usuario.name =name
     usuario.email =email
-    usuario.password =password
+    if (typeof password === "string" && password.trim() !== "") {
+      usuario.password = password
+    }
     usuario.cod_perfil =cod_perfil
     usuario.cod_status =cod_status
     usuario.cia_id = cia_id
