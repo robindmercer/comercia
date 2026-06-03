@@ -5,6 +5,7 @@ const {
   PutObjectCommand,
   DeleteObjectCommand,
   GetObjectCommand,
+  ListObjectsV2Command,
 } = require("@aws-sdk/client-s3");
 const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 
@@ -19,6 +20,16 @@ const MIME_EXT = {
   "image/webp": ".webp",
   "image/gif": ".gif",
 };
+
+const IMAGE_EXTENSIONS = new Set([".jpg", ".jpeg", ".png", ".webp", ".gif", ".bmp", ".svg", ".avif"]);
+
+function isImageKey(key) {
+  if (!key || typeof key !== "string") return false;
+  const lastDot = key.lastIndexOf(".");
+  if (lastDot === -1) return false;
+  const ext = key.slice(lastDot).toLowerCase();
+  return IMAGE_EXTENSIONS.has(ext);
+}
 
 function getStorageConfig() {
   const endpoint = process.env.S3_ENDPOINT || process.env.BUCKET_ENDPOINT;
@@ -405,6 +416,63 @@ router.delete("/", async (req, res) => {
   } catch (error) {
     console.error("Delete error:", error);
     return res.status(404).json({ error: "File not found" });
+  }
+});
+
+// GET /upload/list?folder=productos&limit=100&continuationToken=...
+router.get("/list", async (req, res) => {
+  const storage = getStorageConfig();
+  if (!storage) {
+    return res.status(500).json({ error: "S3 bucket is not configured. Set S3_* or BUCKET_* env vars." });
+  }
+
+  const folder = String(req.query.folder || "").trim();
+  if (folder && !/^[a-zA-Z0-9_\-/]+$/.test(folder)) {
+    return res.status(400).json({ error: "Invalid folder name" });
+  }
+
+  const parsedLimit = Number.parseInt(String(req.query.limit || "100"), 10);
+  const limit = Number.isNaN(parsedLimit) ? 100 : Math.min(Math.max(parsedLimit, 1), 1000);
+  const continuationToken = String(req.query.continuationToken || "").trim();
+  const prefix = folder ? `${folder.replace(/^\/+|\/+$/g, "")}/` : undefined;
+
+  try {
+    const response = await storage.client.send(
+      new ListObjectsV2Command({
+        Bucket: storage.bucket,
+        Prefix: prefix,
+        MaxKeys: limit,
+        ContinuationToken: continuationToken || undefined,
+      }),
+    );
+
+    const items = (response.Contents || [])
+      .filter((obj) => obj && obj.Key)
+      .filter((obj) => isImageKey(obj.Key))
+      .map((obj) => {
+        const key = obj.Key;
+        return {
+          key,
+          name: key.split("/").pop() || key,
+          image_url: buildProxyUrl(key),
+          external_url: buildImageUrl(storage, key),
+          size: obj.Size || 0,
+          last_modified: obj.LastModified ? obj.LastModified.toISOString() : null,
+          etag: obj.ETag || null,
+        };
+      });
+
+    return res.json({
+      bucket: storage.bucket,
+      folder: folder || null,
+      count: items.length,
+      is_truncated: Boolean(response.IsTruncated),
+      next_continuation_token: response.NextContinuationToken || null,
+      items,
+    });
+  } catch (error) {
+    console.error("List images error:", error);
+    return res.status(500).json({ error: "Failed to list bucket images" });
   }
 });
 

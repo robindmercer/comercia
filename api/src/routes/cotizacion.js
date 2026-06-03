@@ -275,6 +275,7 @@ router.get("/pdf/:cotid", async function (req, res, next) {
                      'nameENG', COALESCE(l.name, 'n/a'),
                      'descriptionENG', COALESCE(l.description, 'n/a')
                      )
+                     order by d.orden
                      )
                   from cotizaciondet d
                   join productos p on p.id = d.prod_id
