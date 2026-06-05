@@ -126,7 +126,8 @@ router.post("/", async function (req, res, next) {
         email,
         cod_perfil,
         cod_status,
-        password,cia_id
+        password,
+        cia_id
       });
       res.status(200).send("Usuario Creado");
     } catch (error) {
@@ -147,7 +148,7 @@ router.post("/", async function (req, res, next) {
 });
 
 router.put("/", async (req, res) => {
-  console.log('Put uusario: ', req.body);
+  console.log('Put usuario: ', req.body);
   const { id, usr_id, name, email, password,cod_perfil,cia_id,cod_status } = req.body;
   try {
     const usuario = await Usuario.findOne({
