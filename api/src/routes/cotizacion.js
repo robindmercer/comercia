@@ -340,6 +340,19 @@ router.get("/pdf/:cotid", async function (req, res, next) {
                 from tabla t2
                 where t2.id = 8
                   and t2.cod = c.moneda
+            ),
+            'facturas', (
+                select json_agg(
+                    json_build_object(                        
+                  'id', f.id,
+                  'fecha', to_char(f.fecha,'dd/mm/yyyy'),
+                  'subtotal', f.subtotal,
+                  'iva', f.iva,
+                  'total', f.total
+                  )
+               )
+               from facturas f
+               where f.cot_id = c.id
             )
         ) as cotizacion 
         from cotizacion c

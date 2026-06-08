@@ -138,7 +138,7 @@ router.get("/:iduser", async function (req, res, next) {
    try {
       sql = "select f.id,to_char(f.fecha,'dd/mm/yyyy') as fecha,f.subtotal,";
       sql +=  " f.iva,f.total,f.cli_id,t.description as stsdes,";
-      sql +=  " c.nombre,f. cod_status,f. observ, f.moneda,f.idioma,";
+      sql +=  " c.nombre,f. cod_status,f. observ, f.moneda,f.idioma,f.cot_id,";
       // sql +=  " coalesce(fc.descuento,0)  fde,coalesce(fc.enganche,0) fen, ";
       // sql +=  " coalesce(fc.meses,0) fme,coalesce(fc.interes,0) finter,";
       // sql +=  " coalesce(con.descuento,0) de, coalesce(con.enganche,0) en, ";
