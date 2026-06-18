@@ -90,28 +90,28 @@ router.post('/menuusuarios', async function (req, res, next) {
 
 router.post('/insert', async function (req, res, next) {
   const { sql1,sql2 } = req.body;
-  //  console.log('sql1: ', sql1);
-  //  console.log('sql2:0 ', sql2);
-   // console.log('sql2.length: ', sql2.length);
-   var sql3= sql2.split(";")
-   //  console.log('sql3: ', sql3);
-
-  for (var i = 0; i < sql3.length-1; i++) {
-    var element = sql1 + sql3[i];
-    //console.log('element: ', element,sql3[i]);
-    try {
-      const [records] = await seq.query(element,
+  try {
+    if (sql1 && sql1.trim()) {
+      await seq.query(sql1,
         {
           //logging: console.log,
           type: QueryTypes.INSERT
         });
-      } catch (error) {
-        console.log(error)
-      }
     }
+
+    if (sql2 && sql2.trim()) {
+      await seq.query(sql2,
+        {
+          //logging: console.log,
+          type: QueryTypes.INSERT
+        });
+    }
+
     res.send("OK")
-    
-  })
+  } catch (error) {
+    console.log(error)
+  }
+})
 
   router.post('/bulk', async function (req, res, next) {
     const { sql1 } = req.body;

@@ -113,10 +113,11 @@ router.get('/prod', async function (req, res, next) {
   if (id) {
     try {
       sql = 'select prodmp.mp_name,productos.name as ProdName , materiaprima.name,'
-      sql = sql + ' materiaprima.description,materiaprima.udm,prodmp.cantidad'
+      sql = sql + ' materiaprima.description,materiaprima.udm,prodmp.cantidad,tabla.description as udm_desc'
       sql = sql + ' from productos '
       sql = sql + ' join prodmp on prodmp.prod_id = productos.id'
       sql = sql + ' join materiaprima on materiaprima.name = prodmp.mp_name'
+      sql = sql + ' join tabla on tabla.id=22 and tabla.cod = materiaprima.udm'
       sql = sql + ' where productos.id = ' + id
 
       const records = await seq.query(sql,
