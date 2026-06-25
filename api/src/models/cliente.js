@@ -53,7 +53,7 @@ module.exports = (sequelize) => {
             allowNull: false,
         },    
         oficial: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
             allowNull: false,
         },    
     },
