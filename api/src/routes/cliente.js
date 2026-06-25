@@ -36,7 +36,7 @@ router.get('/cliDir/:iduser', async function (req, res, next) {
   try {
     sql='select clientes.id,clientes.razsoc,clientes.nombre,clientes.apellido, '
     sql +=  ' d.calle cc,d.localidad dd,d.cp ccpp,d.ciudad cui,d.pais pp,'
-    sql +=  ' t3.description as DirDes, d.id dirId,u.cia_id as userCiaId '
+    sql +=  ' t3.description as DirDes, d.id dirId,u.cia_id as userCiaId,oficial '
     sql +=  ' from clientes'
     sql +=  ' join direccion d on d.cli_id = clientes.id'
     sql +=  '                and d.cod_status = 1'
@@ -65,6 +65,7 @@ router.get('/atc/:perfil', async function (req, res, next) {
      sql = 'select clientes.razsoc,nombre,apellido,tabla.description as Actividad,status.description as StsDesc,'
      sql +=  '  t1.description as IdiomaDes,'
      sql +=  '  t2.description as MonedaDes,'
+     sql +=  '  clientes.oficial,'
      sql +=  ' facturas.id as fac_id, facturas.total'
      sql +=  ` ,(select count(*) as cantidad from ticket tk where tk.fac_id = facturas.id and cierre <='19010101' and cod_status = ${perfil}) cantidad`
      sql +=  '    from clientes'
@@ -156,7 +157,7 @@ router.get('/:iduser', async function (req, res, next) {
 router.delete('/:id', async function (req, res, next) {
   try {
     const { id } = req.params;
-      const sql = `select * from cotizacion WHERE id = ${id}`;
+      const sql = `select * from cotizacion WHERE cli_id = ${id}`;
       const coti = await seq.query(sql,
         {
           logging: console.log,
@@ -168,7 +169,7 @@ router.delete('/:id', async function (req, res, next) {
       }
        
       const sql2 = `DELETE FROM clientes WHERE id = ${id}`;
-      const records = await seq.query(sql,
+      const records = await seq.query(sql2,
         {
             type: QueryTypes.DELETE
           });
@@ -181,7 +182,7 @@ router.delete('/:id', async function (req, res, next) {
 
 router.post('/', async function (req, res, next) {
   try {
-    const {id,razsoc,nombre,apellido,email,movil,fijo,rfc_cod,idioma,moneda,cod_cliente,cod_status,cia_id} = req.body
+    const {id,razsoc,nombre,apellido,email,movil,fijo,rfc_cod,idioma,moneda,cod_cliente,cod_status,cia_id,oficial} = req.body
     console.log('req.body: ', req.body);
     if (id != 0){
       sql=`update clientes set `
@@ -196,11 +197,12 @@ router.post('/', async function (req, res, next) {
       sql= sql + ` cod_status=${cod_status},`
       sql= sql + ` idioma=${idioma},`
       sql= sql + ` moneda=${moneda},`
-      sql= sql + ` cia_id=${cia_id}`
+      sql= sql + ` cia_id=${cia_id},`
+      sql= sql + ` oficial=${oficial}`
       sql= sql + ` where id = ${id}`
     } else {
-      sql=`insert into clientes (razsoc,nombre,apellido,email,movil,fijo,rfc_cod,idioma,moneda,cod_cliente,cod_status,cia_id) `
-      sql= sql + `values ('${razsoc}','${nombre}','${apellido}','${email}','${movil}','${fijo}','${rfc_cod}','${idioma}','${moneda}',${cod_cliente},${cod_status},${cia_id})`
+      sql=`insert into clientes (razsoc,nombre,apellido,email,movil,fijo,rfc_cod,idioma,moneda,cod_cliente,cod_status,cia_id,oficial) `
+      sql= sql + `values ('${razsoc}','${nombre}','${apellido}','${email}','${movil}','${fijo}','${rfc_cod}','${idioma}','${moneda}',${cod_cliente},${cod_status},${cia_id},${oficial})`
     }
     const records = await seq.query(sql,
       {
