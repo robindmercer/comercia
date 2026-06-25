@@ -146,15 +146,16 @@ router.post('/', async (req, res, next) => {
 /**
  * PUT update status workflow
  */
-router.put('/:id', async (req, res, next) => {
+router.put('/', async (req, res, next) => {
   try {
-    const { id } = req.params;
-    const { status_actual, status_aprobado, status_rechazado, requiere_modificacion, descripcion, cod_status } = req.body;
-
+    
+    const { status_actual, status_aprobado, status_rechazado, requiere_modificacion, descripcion, cod_status,id } = req.body;
+    
     if (!id) {
       return next(new AppError('Workflow ID is required', 400));
     }
-
+    
+    console.log('req.body: ', req.body);
     const sql = `
       UPDATE status_workflow
       SET status_actual = COALESCE($1, status_actual),
