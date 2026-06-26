@@ -25,6 +25,8 @@ const cotizacion =require("./cotizacion")
 const cotizaciondet =require("./cotizaciondet")
 const cotizacioncond =require("./cotizacioncond")
 const comentario = require("./comentario")
+const canal = require("./canal")
+// const facturacom = require("./facturacom")
 
 const log = require ("./log")
 const upload = require("./upload")
@@ -85,6 +87,8 @@ router.use('/compania',compania)
 router.use('/imagen',imagen)
 router.use('/statusworkflow', require('./statusworkflow')) // Status Workflow
 router.use('/companiacuenta', companiacuenta) // Compañia Cuenta
+router.use('/canal', canal) // Canal
+// router.use('/facturacom', facturacom) // Factura Comercial
 // router.use('/contacto', require('./contacto')) // Contacto
 
 module.exports = router;
