@@ -154,7 +154,7 @@ router.get('/:iduser', async function (req, res, next) {
 })
 
 
-router.delete('/:id', async function (req, res, next) {
+router.delete('/del/:id', async function (req, res, next) {
   try {
     const { id } = req.params;
       const sql = `select * from cotizacion WHERE cli_id = ${id}`;
@@ -198,11 +198,11 @@ router.post('/', async function (req, res, next) {
       sql= sql + ` idioma=${idioma},`
       sql= sql + ` moneda=${moneda},`
       sql= sql + ` cia_id=${cia_id},`
-      sql= sql + ` oficial=${oficial}`
+      sql= sql + ` oficial='${oficial}'`
       sql= sql + ` where id = ${id}`
     } else {
       sql=`insert into clientes (razsoc,nombre,apellido,email,movil,fijo,rfc_cod,idioma,moneda,cod_cliente,cod_status,cia_id,oficial) `
-      sql= sql + `values ('${razsoc}','${nombre}','${apellido}','${email}','${movil}','${fijo}','${rfc_cod}','${idioma}','${moneda}',${cod_cliente},${cod_status},${cia_id},${oficial})`
+      sql= sql + `values ('${razsoc}','${nombre}','${apellido}','${email}','${movil}','${fijo}','${rfc_cod}','${idioma}','${moneda}',${cod_cliente},${cod_status},${cia_id},'${oficial}')`
     }
     const records = await seq.query(sql,
       {
