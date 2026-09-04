@@ -15,7 +15,7 @@ const usuariostatus  = require("./usuariostatus");
 //const menu  = require("./menu");
 const tabla =require("./tablas")
 const materiaprima = require("./materiaprima")
-const factura =require("./factura")
+// const factura =require("./factura")
 const factcond =require("./factcond")
 const factdet =require("./factdet")
 // const email = require('./send_mail')
@@ -26,6 +26,7 @@ const cotizaciondet =require("./cotizaciondet")
 const cotizacioncond =require("./cotizacioncond")
 const comentario = require("./comentario")
 const canal = require("./canal")
+const contratosPlantillas = require("./contratos_plantillas")
 // const facturacom = require("./facturacom")
 
 const log = require ("./log")
@@ -66,7 +67,7 @@ router.use('/direccion', direccion);
 // materiaprima
 router.use('/materiaprima', materiaprima);
 // factura
-router.use('/factura', factura);
+router.use('/factura', require("./factura"));
 // factdet
 router.use('/factdet', factdet);
 
@@ -88,6 +89,7 @@ router.use('/imagen',imagen)
 router.use('/statusworkflow', require('./statusworkflow')) // Status Workflow
 router.use('/companiacuenta', companiacuenta) // Compañia Cuenta
 router.use('/canal', canal) // Canal
+router.use('/contratos_plantillas', contratosPlantillas) // Contratos Plantillas
 // router.use('/facturacom', facturacom) // Factura Comercial
 // router.use('/contacto', require('./contacto')) // Contacto
 
