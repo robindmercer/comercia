@@ -153,15 +153,15 @@ router.put("/:id", async function (req, res) {
 });
 
 // Desactivar plantilla (borrado logico)
-router.delete("/", async function (req, res) {
+router.delete("/:id", async function (req, res) {
   try {
-    const { id } = req.body;
+    const { id } = req.params;
 
     if (!id) {
       return res.status(400).send("Falta id para desactivar la plantilla");
     }
 
-    const sql = "update contratos_plantillas set cod_status = 0 where id = :id";
+    const sql = "delete from contratos_plantillas where id = :id";
     const records = await seq.query(sql, {
       replacements: { id },
       type: QueryTypes.UPDATE,
