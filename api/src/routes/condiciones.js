@@ -151,7 +151,7 @@ router.post("/fact", async function (req, res, next) {
 // Condicion Generada para una factura
 router.post("/cot", async function (req, res, next) {
   try {
-    const { id, cot_id, cond_id, descuento, enganche, meses, interes, pagos = 0, totalfinanciado = 0 } =
+    const { id, cot_id, cond_id, descuento, enganche, meses, interes, pagos , totalfinanciado } =
       req.body; 
       if (id !== 0) {
       console.log("Update Cotizacioncond/cot: ", req.body);
