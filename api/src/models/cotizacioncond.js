@@ -32,6 +32,14 @@ module.exports = (sequelize) => {
             type: DataTypes.DECIMAL,
             allowNull: false,
         },
+        pagos: {
+            type: DataTypes.DECIMAL,
+            allowNull: false,
+        },
+        totalfinanciado: {
+            type: DataTypes.DECIMAL,
+            allowNull: false,
+        },
         seleccionado: {
             type: DataTypes.STRING,
             allowNull: false,

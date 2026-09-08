@@ -34,21 +34,26 @@ router.get("/cab", async function (req, res, next) {
              'id', f.id,
              'idioma', f.idioma,
              'iva', f.iva,
+             'rfc_cod', cl.rfc_cod,
              'moneda', f.moneda,
              'nombre', c.nombre,
              'observ', c.observ,
              'status', f.cod_status,
-             'telefono', c.telefono,
+             'telefono', cl.movil,
+             'oficial', cl.oficial,
              'subtotal', f.subtotal,
              'total', f.total,
              'vencimiento', c.vencimiento,
              'vendedor', c.vendedor,
              'calle',d.calle,
              'localidad',d.localidad,
-             'cp.',d.cp,
-             'cuidad',d.ciudad,
+             'cp',d.cp,
+             'ciudad',d.ciudad,
              'pais',d.pais,
              'userciaid', 1,
+             'cliname', cl.nombre,
+             'cliapellido', cl.apellido,
+             'clirazsoc', cl.razsoc,
              'productos', (
                  select json_agg(
                      json_build_object(
@@ -74,18 +79,21 @@ router.get("/cab", async function (req, res, next) {
              'financieros', (
                  select json_agg(
                      json_build_object(
-                         'fac_id', fc.fac_id,
-                         'cond_id', fc.cond_id,
-                         'descuento', fc.descuento,
-                         'enganche', fc.enganche,
-                         'interes', fc.interes,
-                         'meses', fc.meses,
-                         'nombre', o.nombre
+                         'cot_id', cc.cot_id,
+                         'cond_id', cc.cond_id,
+                         'descuento', cc.descuento,
+                         'enganche', cc.enganche,
+                         'meses', cc.meses,
+                         'interes', cc.interes,
+                         'nombre', o.nombre,
+                         'pagos', cc.pagos,
+                         'totalfinanciado', cc.totalfinanciado
                      )
                  )
-                 from factcond fc
-                 join condiciones o on o.id = fc.cond_id
-                 where fc.fac_id = f.id
+                 from cotizacioncond cc
+                 join condiciones o on o.id = cc.cond_id
+                 where cc.cot_id = f.cot_id
+                   and cc.seleccionado = 'S'
              ),
              'ivas', (
                  select json_agg(
@@ -112,6 +120,7 @@ router.get("/cab", async function (req, res, next) {
              )
          ) as facturas
          from facturas f
+         join clientes cl on cl.id = f.cli_id
          join direccion d on d.orden = f.dir_id and d.cli_id = f.cli_id
          join cotizacion c on c.id = f.cot_id
          where f.id = ${id};
@@ -132,44 +141,6 @@ router.get("/cab", async function (req, res, next) {
    }
 });
 
-
-router.get("/:iduser", async function (req, res, next) {
-   const { iduser } = req.params;
-   try {
-      sql = "select f.id,to_char(f.fecha,'dd/mm/yyyy') as fecha,f.subtotal,";
-      sql +=  " f.iva,f.total,f.cli_id,t.description as stsdes,";
-      sql +=  " c.nombre,f. cod_status,f. observ, f.moneda,f.idioma,f.cot_id,";
-      // sql +=  " coalesce(fc.descuento,0)  fde,coalesce(fc.enganche,0) fen, ";
-      // sql +=  " coalesce(fc.meses,0) fme,coalesce(fc.interes,0) finter,";
-      // sql +=  " coalesce(con.descuento,0) de, coalesce(con.enganche,0) en, ";
-      // sql +=  " coalesce(con.meses,0) me,coalesce(con.interes,0) inter,stsprod.sts,";
-      sql +=  " now() as Hoy";
-      sql +=  " from facturas f";
-      sql +=  " join clientes c           on c.id = f.cli_id";
-      sql +=  " join tabla   t            on t.id = 6 and t.cod = f.cod_status";
-      // sql +=  " left join factcond fc     on fc.fac_id = f.id";
-      // sql +=  " left join condiciones con on con.id = fc.cond_id";
-      sql +=  " join (select fa.fac_id,avg(p.cod_status) sts";
-      sql +=  "     from factdet fa";
-      sql +=  "     join productos p on p.id = fa.prod_id ";
-      sql +=  "     group by fa.fac_id";
-      sql +=  "  ) stsprod on stsprod.fac_id = f.id";
-      sql += " join usuarios u on u.usr_id = '" + iduser + "'";
-      sql += " join usuariostatus us on us.usrid = '" + iduser + "'";
-      sql += "                      and us.cod_status = f.cod_status"
-      sql += "                      and us.tipo = 'OC'";
-      sql += " where u.cia_id =f.cia_id";
-      sql +=  " order by f.id";
-
-      const records = await seq.query(sql, {
-         //logging: console.log,
-         type: QueryTypes.SELECT,
-      });
-      res.send(records);
-   } catch (error) {
-      console.log(error);
-   }
-});
 
 router.get("/", async function (req, res, next) {
    try {
@@ -202,6 +173,8 @@ router.get("/", async function (req, res, next) {
       console.log(error);
    }
 });
+
+
 
 router.get("/bckp", async function (req, res, next) {
    try {
@@ -243,38 +216,87 @@ router.get("/mail", async function (req, res, next) {
       }
    } 
 });
-
+/*
+sql = sql + " where doc_id = :doc_id and tipo_id = :tipo_id order by fecha desc";
+const records = await seq.query(sql, {
+  replacements: { doc_id, tipo_id },
+  type: QueryTypes.SELECT,
+});
+*/
 router.get("/graf", async function (req, res, next) {
+   console.log("Graf req.body: ", req.query);
    try {
-      console.log("Graf req.body: ", req.query);
-      const { fDesde, fHasta } = req.query;
+      const { fDesde, fHasta, tabla } = req.query;
       sql = "select moneda,(date_part('year', f.fecha::DATE) *100) + date_part('month',f.fecha::DATE) Periodo,";
       sql +=  " COALESCE(sum(f.total) filter (where cod_status <= 5),0) as NoLib,";
       sql +=  " COALESCE(sum(f.total) filter (where cod_status > 5),0) as Lib,";
       sql +=  " COALESCE(count(f.id) filter (where cod_status <= 5),0) as NoLibC,";
       sql +=  " COALESCE(count(f.id) filter (where cod_status > 5),0) as LibC";
-      sql +=  " from facturas f";
-      sql +=  " where  to_char(fecha::DATE, 'YYYY-MM-DD') >= '" + fDesde + "'";
-      sql +=  " and   to_char(fecha::DATE, 'YYYY-MM-DD') <= '" + fHasta + "'";
+      sql +=  " from " + tabla + " f";
+      sql +=  " where  to_char(fecha::DATE, 'YYYY-MM-DD') >= :fDesde";
+      sql +=  " and   to_char(fecha::DATE, 'YYYY-MM-DD') <= :fHasta";
       sql +=  " group by moneda,Periodo";
       sql +=  " order by moneda,Periodo";
 
       const records = await seq.query(sql, {
-         //logging: console.log,
+         replacements: { fDesde, fHasta},
+         logging: console.log,
          type: QueryTypes.SELECT,
       });
-      //console.log('records: ', records);
+      console.log('records: ', records);
       res.send(records);
    } catch (error) {
       console.log(error);
    }
 });
- 
+
+router.get("/:iduser", async function (req, res, next) {
+   const { iduser } = req.params;
+   try {
+      sql = "select f.id,to_char(f.fecha,'dd/mm/yyyy') as fecha,f.subtotal,";
+      sql +=  " f.iva,f.total,f.cli_id,t.description as stsdes,";
+      sql +=  " c.nombre,f. cod_status,f. observ, f.moneda,f.idioma,f.cot_id,";
+      // sql +=  " coalesce(fc.descuento,0)  fde,coalesce(fc.enganche,0) fen, ";
+      // sql +=  " coalesce(fc.meses,0) fme,coalesce(fc.interes,0) finter,";
+      // sql +=  " coalesce(con.descuento,0) de, coalesce(con.enganche,0) en, ";
+      // sql +=  " coalesce(con.meses,0) me,coalesce(con.interes,0) inter,stsprod.sts,";
+      sql +=  " now() as Hoy";
+      sql +=  " from facturas f";
+      sql +=  " join clientes c           on c.id = f.cli_id";
+      sql +=  " join tabla   t            on t.id = 6 and t.cod = f.cod_status";
+      // sql +=  " left join factcond fc     on fc.fac_id = f.id";
+      // sql +=  " left join condiciones con on con.id = fc.cond_id";
+      sql +=  " join (select fa.fac_id,avg(p.cod_status) sts";
+      sql +=  "     from factdet fa";
+      sql +=  "     join productos p on p.id = fa.prod_id ";
+      sql +=  "     group by fa.fac_id";
+      sql +=  "  ) stsprod on stsprod.fac_id = f.id";
+      sql += " join usuarios u on u.usr_id = '" + iduser + "'";
+      sql += " join usuariostatus us on us.usrid = '" + iduser + "'";
+      sql += "                      and us.cod_status = f.cod_status"
+      sql += "                      and us.tipo = 'OC'";
+      sql += " where u.cia_id =f.cia_id";
+      sql +=  " order by f.id";
+
+      const records = await seq.query(sql, {
+         //logging: console.log,
+         type: QueryTypes.SELECT,
+      });
+      res.send(records);
+   } catch (error) {
+      console.log(error);
+   }
+});
+
 router.put("/stat", async function (req, res, next) {
    const { doc_id, tipo_id, usr_id, cod_status, observ } = req.body;
    console.log("*** factura/stat req.query: ", req.body);
    if (doc_id) {
          try {
+            // sql = "Select * from factura"
+            // const factura = await seq.query(sql, {
+            //    type: QueryTypes.SELECT,
+            // });
 
             sql = `update facturas set cod_status = ${cod_status} where id =  ${doc_id}`;
             sql2 = `insert into logs (doc_id, tipo_id, usr_id, cod_status,observ,fecha) values `;
@@ -291,7 +313,15 @@ router.put("/stat", async function (req, res, next) {
                   logging: console.log,
                   type: QueryTypes.INSERT,
                })
-               .then(async function () {            
+               .then(async function () {   
+                  if (cod_status === 6) {
+                     sql3 = `insert into facturacom (fecha,cot_id,canal,cod_status) values (now(), ${doc_id}, 0,1)`;
+                     const records3 = await seq
+                     .query(sql3, {
+                        logging: console.log,
+                        type: QueryTypes.UPDATE,
+                     })
+                  }        
                   res.status(200).json({ message: "OK" });
                })
             })
@@ -386,15 +416,17 @@ router.post("/cotifac", async function (req, res, next) {
          type: QueryTypes.INSERT,
       });
       
+      // 2026-07-01 uso cotizacioncond con seleccionado = 'S'
+      // ---------------------------------------------------
       // Solo paso la cotizacion seleccionada
-      sql3 = `insert into factcond `;
-      sql3 += ` ( fac_id,cond_id,descuento,enganche,meses,interes)`;
-      sql3 += ` select ${fac_id},cond_id,descuento,enganche,meses,interes `;
-      sql3 += ` from cotizacioncond where cot_id = ${cot_id} and seleccionado = 'S';`;
-      await seq.query(sql3, {
-         transaction,
-         type: QueryTypes.INSERT,
-      });
+      // sql3 = `insert into factcond `;
+      // sql3 += ` ( fac_id,cond_id,descuento,enganche,meses,interes)`;
+      // sql3 += ` select ${fac_id},cond_id,descuento,enganche,meses,interes `;
+      // sql3 += ` from cotizacioncond where cot_id = ${cot_id} and seleccionado = 'S';`;
+      // await seq.query(sql3, {
+      //    transaction,
+      //    type: QueryTypes.INSERT,
+      // });
 
       sql4 = `update cotizacion set cli_id = ${cli_id} ,nombre=razsoc,cod_status = 15 `;
       sql4 +=  ` from clientes `;

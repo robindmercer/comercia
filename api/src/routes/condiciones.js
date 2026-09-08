@@ -151,7 +151,7 @@ router.post("/fact", async function (req, res, next) {
 // Condicion Generada para una factura
 router.post("/cot", async function (req, res, next) {
   try {
-    const { id, cot_id, cond_id, descuento, enganche, meses, interes } =
+    const { id, cot_id, cond_id, descuento, enganche, meses, interes, pagos = 0, totalfinanciado = 0 } =
       req.body;
       if (id !== 0) {
       console.log("Update Cotizacioncond/cot: ", req.body);
@@ -160,14 +160,16 @@ router.post("/cot", async function (req, res, next) {
       sql = sql + ` descuento='${descuento}',`;
       sql = sql + ` enganche='${enganche}',`;
       sql = sql + ` meses='${meses}',`;
-      sql = sql + ` interes='${interes}'`;
+      sql = sql + ` interes='${interes}',`;
+      sql = sql + ` pagos='${pagos}',`;
+      sql = sql + ` totalfinanciado='${totalfinanciado}'`;
       sql = sql + ` where cot_id = ${cot_id}`;
     } else {
       console.log("Insert Cotizacioncond/cot: ", req.body);
-      sql = `insert into cotizacioncond (cot_id,cond_id,descuento, enganche,meses,interes,seleccionado) `;
+      sql = `insert into cotizacioncond (cot_id,cond_id,descuento, enganche,meses,interes,pagos,totalfinanciado,seleccionado) `;
       sql =
         sql +
-        `values ('${cot_id}','${cond_id}','${descuento}','${enganche}','${meses}','${interes}','N')`;
+        `values ('${cot_id}','${cond_id}','${descuento}','${enganche}','${meses}','${interes}','${pagos}','${totalfinanciado}','N')`;
     }
     const records = await seq.query(sql, {
       logging: console.log,
