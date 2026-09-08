@@ -275,7 +275,7 @@ router.get("/:iduser", async function (req, res, next) {
       sql += " join usuariostatus us on us.usrid = '" + iduser + "'";
       sql += "                      and us.cod_status = f.cod_status"
       sql += "                      and us.tipo = 'OC'";
-      sql += " where u.cia_id =f.cia_id";
+      // sql += " where u.cia_id =f.cia_id";
       sql +=  " order by f.id";
 
       const records = await seq.query(sql, {
