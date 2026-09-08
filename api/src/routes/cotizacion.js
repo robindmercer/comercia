@@ -50,7 +50,7 @@ async function grabarProductos(cotId, cotizaciondet) {
 }
 
 async function grabarCondiciones(cotId, condiciones) {
-   console.log('grabarCondiciones: ', condiciones);
+   console.log('grabarCondiciones:  ', condiciones);
    try {
       if (!Array.isArray(condiciones) || condiciones.length === 0) {
          return "ok";

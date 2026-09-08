@@ -152,7 +152,7 @@ router.post("/fact", async function (req, res, next) {
 router.post("/cot", async function (req, res, next) {
   try {
     const { id, cot_id, cond_id, descuento, enganche, meses, interes, pagos = 0, totalfinanciado = 0 } =
-      req.body;
+      req.body; 
       if (id !== 0) {
       console.log("Update Cotizacioncond/cot: ", req.body);
       sql = `update cotizacioncond set `;

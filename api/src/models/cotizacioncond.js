@@ -35,7 +35,7 @@ module.exports = (sequelize) => {
         pagos: {
             type: DataTypes.DECIMAL,
             allowNull: false,
-        },
+        }, 
         totalfinanciado: {
             type: DataTypes.DECIMAL,
             allowNull: false,
