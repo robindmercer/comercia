@@ -58,11 +58,11 @@ async function grabarCondiciones(cotId, condiciones) {
 
       var sqlCond = `insert into cotizacioncond (cot_id,cond_id,descuento,enganche,meses,interes,pagos,totalfinanciado,seleccionado) values `;
       condiciones.forEach((condicion, index) => {
-         const pagos = condicion.pagos ?? 0;
-         const totalfinanciado = condicion.totalfinanciado ?? 0;
+         const pagoss = condicion.pagos ?? 0;
+         const totalfinanciados = condicion.totalfinanciado ?? 0;
          sqlCond =
             sqlCond +
-            `(${cotId},${condicion.cond_id},${condicion.descuento},${condicion.enganche},${condicion.meses},${condicion.interes},${pagos},${totalfinanciado},'${condicion.seleccionado === true ? 'S' : 'N'}')`;
+            `(${cotId},${condicion.cond_id},${condicion.descuento},${condicion.enganche},${condicion.meses},${condicion.interes},${pagoss},${totalfinanciados},'${condicion.seleccionado === true ? 'S' : 'N'}')`;
          if (index < condiciones.length - 1) {
             sqlCond = sqlCond + ",";
          }
