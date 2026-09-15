@@ -82,6 +82,16 @@ router.get("/marketing", async function (req, res, next) {
                  from tabla t2
                  where t2.id = 8
                    and t2.cod = f.moneda
+             ),
+             'compania', (
+                 select json_agg(
+                     json_build_object(
+                         'cod', co.id,
+                         'description', co.razsoc
+                     )
+                 )
+                 from compania co
+                  where co.id = f.cia_id
              )
          ) as facturas
          from facturas f
