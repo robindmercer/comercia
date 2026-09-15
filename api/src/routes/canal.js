@@ -85,7 +85,7 @@ router.put('/id/:id', async function (req, res, next) {
 router.delete('/id/:id', async function (req, res, next) {
   try {
     const { id } = req.params;
-    const sql = `UPDATE canal SET cod_status = 0 WHERE id = ${id}`;
+    const sql = `delete from canal WHERE id = ${id}`;
     await seq.query(sql);
     res.send({ message: 'Canal eliminado exitosamente' });
   } catch (error) {
