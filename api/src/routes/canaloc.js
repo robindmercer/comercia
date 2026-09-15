@@ -13,10 +13,10 @@ const seq = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_
   native: false,
 });
 
-// Obtener todos los canales
+// Obtener todos los canaloces
 router.get('/', async function (req, res, next) {
   try {
-    const sql = 'SELECT canal.*,t.description as descrip FROM canal join tabla t on t.id = 26 and t.cod = canal.codcanal WHERE canal.cod_status > 0 ORDER BY fecha DESC';
+    const sql = 'SELECT * FROM canaloc WHERE usr_id > 0 ORDER BY fecha DESC';
     const records = await seq.query(sql, {
       type: QueryTypes.SELECT
     });
@@ -27,11 +27,11 @@ router.get('/', async function (req, res, next) {
   }
 });
 
-// Obtener un canal específico por ID
+// Obtener un canaloc específico por ID
 router.get('/id/:id', async function (req, res, next) {
   try {
     const { id } = req.params;
-    const sql = `SELECT canal.*,t.description as descrip FROM canal join tabla t on t.id = 26 and t.cod = canal.codcanal WHERE canal.id = ${id} AND canal.cod_status > 0`;
+    const sql = `SELECT * FROM canaloc WHERE id = ${id} AND usr_id > 0`;
     const records = await seq.query(sql, {
       type: QueryTypes.SELECT
     });
@@ -42,12 +42,13 @@ router.get('/id/:id', async function (req, res, next) {
   }
 });
 
-// Crear un nuevo canal
+// Crear un nuevo canaloc
 router.post('/', async function (req, res, next) {
   try {
-    const { fecha, codcanal, presupuesto, cod_status } = req.body;
-    const sql = `INSERT INTO canal (fecha, codcanal, presupuesto, cod_status) 
-                 VALUES ('${fecha}', '${codcanal}', ${presupuesto}, ${cod_status}) 
+    const { can_id, fac_id, dias, usr_id } = req.body;
+    var fecha = new Date().toISOString();
+    const sql = `INSERT INTO canaloc (can_id, fecha, fac_id, dias, usr_id) 
+                 VALUES ('${can_id}','${fecha}', '${fac_id}', ${dias}, '${usr_id}') 
                  RETURNING id`;
     const result = await seq.query(sql, {
       type: QueryTypes.INSERT
@@ -59,18 +60,20 @@ router.post('/', async function (req, res, next) {
   }
 });
 
-// Actualizar un canal
+// Actualizar un canaloc
 router.put('/id/:id', async function (req, res, next) {
   try {
     const { id } = req.params;
-    const { fecha, codcanal, presupuesto, cod_status } = req.body;
-    let sql = 'UPDATE canal SET ';
+    const { can_id, fac_id, dias, usr_id } = req.body;
+    let sql = 'UPDATE canaloc SET ';
     const updates = [];
     
-    if (fecha) updates.push(`fecha = '${fecha}'`);
-    if (codcanal) updates.push(`codcanal = '${codcanal}'`);
-    if (presupuesto) updates.push(`presupuesto = ${presupuesto}`);
-    if (cod_status !== undefined) updates.push(`cod_status = ${cod_status}`);
+   fecha = new Date().toISOString();
+   updates.push(`fecha = '${fecha}'`);
+    if (fac_id) updates.push(`fac_id = '${fac_id}'`);
+    if (can_id) updates.push(`can_id = '${can_id}'`);
+    if (dias) updates.push(`dias = ${dias}`);
+    if (usr_id !== undefined) updates.push(`usr_id = '${usr_id}'`);
     
     sql += updates.join(', ') + ` WHERE id = ${id}`;
     await seq.query(sql);
@@ -81,11 +84,11 @@ router.put('/id/:id', async function (req, res, next) {
   }
 });
 
-// Eliminar un canal (cambiar estado)
+// Eliminar un canaloc (cambiar estado)
 router.delete('/id/:id', async function (req, res, next) {
   try {
     const { id } = req.params;
-    const sql = `UPDATE canal SET cod_status = 0 WHERE id = ${id}`;
+    const sql = `DELETE FROM canaloc WHERE id = ${id}`;
     await seq.query(sql);
     res.send({ message: 'Canal eliminado exitosamente' });
   } catch (error) {

@@ -26,6 +26,7 @@ const cotizaciondet =require("./cotizaciondet")
 const cotizacioncond =require("./cotizacioncond")
 const comentario = require("./comentario")
 const canal = require("./canal")
+const canaloc = require("./canaloc")
 const contratosPlantillas = require("./contratos_plantillas")
 // const facturacom = require("./facturacom")
 
@@ -89,6 +90,7 @@ router.use('/imagen',imagen)
 router.use('/statusworkflow', require('./statusworkflow')) // Status Workflow
 router.use('/companiacuenta', companiacuenta) // Compañia Cuenta
 router.use('/canal', canal) // Canal
+router.use('/canaloc', canaloc) // CanalOC  
 router.use('/contratos_plantillas', contratosPlantillas) // Contratos Plantillas
 // router.use('/facturacom', facturacom) // Factura Comercial
 // router.use('/contacto', require('./contacto')) // Contacto

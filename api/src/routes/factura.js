@@ -18,6 +18,91 @@ const seq = new Sequelize(
       native: false, // lets Sequelize know we can use pg-native for ~30% more speed
    }
 );
+router.get("/marketing", async function (req, res, next) {
+      try {
+         sql = `select json_build_object(
+             'cia_id', f.cia_id,
+             'cli_id', f.cli_id,
+             'cod_status', f.cod_status,
+             'fecha', c.fecha,
+             'id', f.id,
+             'moneda', f.moneda,
+             'nombre', c.nombre,
+             'observ', c.observ,
+             'status', f.cod_status,
+             'subtotal', f.subtotal,
+             'total', f.total,
+             'vencimiento', c.vencimiento,
+             'vendedor', c.vendedor,
+             'cliname', cl.nombre,
+             'cliapellido', cl.apellido,
+             'clirazsoc', cl.razsoc,
+             'financieros', (
+                 select json_agg(
+                     json_build_object(
+                         'cot_id', cc.cot_id,
+                         'cond_id', cc.cond_id,
+                         'descuento', cc.descuento,
+                         'enganche', cc.enganche,
+                         'meses', cc.meses,
+                         'interes', cc.interes,
+                         'nombre', o.nombre,
+                         'pagos', cc.pagos,
+                         'totalfinanciado', cc.totalfinanciado
+                     )
+                 )
+                 from cotizacioncond cc
+                 join condiciones o on o.id = cc.cond_id
+                 where cc.cot_id = f.cot_id
+                   and cc.seleccionado = 'S'
+             ),
+             'canaloc', (
+                 select json_agg(
+                     json_build_object(
+                         'can_id', t3.can_id,
+                         'fechacanal', t4.fecha,
+                         'description', ta.description,
+                         'presupuesto', t4.presupuesto,
+                         'dias', t3.dias
+                     )
+                 )
+                   from facturas f_canaloc
+                   left join canaloc t3 on t3.fac_id = f_canaloc.id
+                   left join canal t4 on t4.id = t3.can_id
+                        join tabla ta on ta.id = 26 and ta.cod = t4.codcanal
+                   where f_canaloc.id = f.id
+             ),
+             'monedas', (
+                 select json_agg(
+                     json_build_object(
+                         'cod', t2.cod,
+                         'description', t2.description
+                     )
+                 )
+                 from tabla t2
+                 where t2.id = 8
+                   and t2.cod = f.moneda
+             )
+         ) as facturas
+         from facturas f
+         join clientes cl on cl.id = f.cli_id
+         join direccion d on d.orden = f.dir_id and d.cli_id = f.cli_id
+         join cotizacion c on c.id = f.cot_id
+         where f.cod_status in (6,7,8,10,13,14)
+         `
+         console.log('sql: ', sql);
+
+         const records = await seq.query(sql, {
+            //logging: console.log,
+            type: QueryTypes.SELECT,
+         });
+         //console.log('records: ', records);
+         res.send(records);
+      } catch (error) {
+         console.log(error);
+      }
+      
+});
 
 router.get("/cab", async function (req, res, next) {
    const { id } = req.query;
@@ -313,17 +398,17 @@ router.put("/stat", async function (req, res, next) {
                   logging: console.log,
                   type: QueryTypes.INSERT,
                })
-               .then(async function () {   
-                  if (cod_status === 6) {
-                     sql3 = `insert into facturacom (fecha,cot_id,canal,cod_status) values (now(), ${doc_id}, 0,1)`;
-                     const records3 = await seq
-                     .query(sql3, {
-                        logging: console.log,
-                        type: QueryTypes.UPDATE,
-                     })
-                  }        
-                  res.status(200).json({ message: "OK" });
-               })
+               // .then(async function () {   
+               //    if (cod_status === 6) {
+               //       sql3 = `insert into facturacom (fecha,cot_id,canal,cod_status) values (now(), ${doc_id}, 0,1)`;
+               //       const records3 = await seq
+               //       .query(sql3, {
+               //          logging: console.log,
+               //          type: QueryTypes.UPDATE,
+               //       })
+               //    }        
+                    res.status(200).json({ message: "OK" });
+               // })
             })
          } catch (error) {
             console.log("Error",error);
