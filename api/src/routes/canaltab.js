@@ -45,9 +45,9 @@ router.get('/id/:id', async function (req, res, next) {
 // Crear un nuevo canal
 router.post('/', async function (req, res, next) {
   try {
-    const { fecha, codcanal, presupuesto, cod_status } = req.body;
+    const { descripcion } = req.body;
     const sql = `INSERT INTO canaltab (descripcion, cod_status) 
-                 VALUES ('${fecha}', ${cod_status}) 
+                 VALUES ('${descripcion}', 1) 
                  RETURNING id`;
     const result = await seq.query(sql, {
       type: QueryTypes.INSERT
@@ -63,13 +63,12 @@ router.post('/', async function (req, res, next) {
 router.put('/id/:id', async function (req, res, next) {
   try {
     const { id } = req.params;
-    const { descripcion, cod_status } = req.body;
+    const { descripcion } = req.body;
     let sql = 'UPDATE canaltab SET ';
     const updates = [];
     
     if (descripcion) updates.push(`descripcion = '${descripcion}'`);
-    if (cod_status !== undefined) updates.push(`cod_status = ${cod_status}`);
-    
+        
     sql += updates.join(', ') + ` WHERE id = ${id}`;
     await seq.query(sql);
     res.send({ message: 'Canal actualizado exitosamente' });

@@ -16,6 +16,22 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             allowNull: false,
         },
+        fechacontacto: {
+            type: DataTypes.DATE,
+            allowNull: false,
+        },
+        total: {
+            type: DataTypes.NUMERIC,
+            allowNull: false,
+        },
+        enganche: {
+            type: DataTypes.NUMERIC,
+            allowNull: false,
+        },
+        moneda: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
         dias: {
             type: DataTypes.INTEGER,
             allowNull: false,

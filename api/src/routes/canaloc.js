@@ -45,10 +45,16 @@ router.get('/id/:id', async function (req, res, next) {
 // Crear un nuevo canaloc
 router.post('/', async function (req, res, next) {
   try {
-    const { can_id, fac_id, dias, usr_id } = req.body;
+    const { can_id, fac_id, fechacontacto, total, enganche, moneda, dias, usr_id } = req.body;
+    if (!fechacontacto) {
+      return res.status(400).send({ error: 'El campo fechacontacto es obligatorio' });
+    }
+    if (total === undefined || enganche === undefined) {
+      return res.status(400).send({ error: 'Los campos total y enganche son obligatorios' });
+    }
     var fecha = new Date().toISOString();
-    const sql = `INSERT INTO canaloc (can_id, fecha, fac_id, dias, usr_id) 
-                 VALUES ('${can_id}','${fecha}', '${fac_id}', ${dias}, '${usr_id}') 
+    const sql = `INSERT INTO canaloc (can_id, fecha, fac_id, fechacontacto, total, enganche, moneda, dias, usr_id) 
+           VALUES ('${can_id}','${fecha}', '${fac_id}', '${fechacontacto}', ${total}, ${enganche}, ${moneda}, ${dias}, '${usr_id}') 
                  RETURNING id`;
     const result = await seq.query(sql, {
       type: QueryTypes.INSERT
@@ -64,7 +70,7 @@ router.post('/', async function (req, res, next) {
 router.put('/id/:id', async function (req, res, next) {
   try {
     const { id } = req.params;
-    const { can_id, fac_id, dias, usr_id } = req.body;
+    const { can_id, fac_id, fechacontacto, total, enganche, moneda, dias, usr_id } = req.body;
     let sql = 'UPDATE canaloc SET ';
     const updates = [];
     
@@ -72,7 +78,11 @@ router.put('/id/:id', async function (req, res, next) {
    updates.push(`fecha = '${fecha}'`);
     if (fac_id) updates.push(`fac_id = '${fac_id}'`);
     if (can_id) updates.push(`can_id = '${can_id}'`);
-    if (dias) updates.push(`dias = ${dias}`);
+    if (fechacontacto) updates.push(`fechacontacto = '${fechacontacto}'`);
+    if (total !== undefined) updates.push(`total = ${total}`);
+    if (enganche !== undefined) updates.push(`enganche = ${enganche}`);
+    if (moneda !== undefined) updates.push(`moneda = ${moneda}`);
+    if (dias !== undefined) updates.push(`dias = ${dias}`);
     if (usr_id !== undefined) updates.push(`usr_id = '${usr_id}'`);
     
     sql += updates.join(', ') + ` WHERE id = ${id}`;
