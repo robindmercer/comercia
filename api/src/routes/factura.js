@@ -16,11 +16,70 @@ const seq = new Sequelize(
    {
       logging: false, // set to console.log to see the raw SQL queries
       native: false, // lets Sequelize know we can use pg-native for ~30% more speed
-   }
+   },
 );
+router.get("/marketingROI", async function (req, res, next) {
+   try {
+      sql = `SELECT
+    c.codcanal AS canal,canaltab.descripcion AS canal_descripcion,
+    TO_CHAR(c.fecha AT TIME ZONE 'UTC', 'MM/YYYY') AS mes,
+    c.presupuesto,
+    COALESCE(o.tipo,'') as tipo,
+    COALESCE(o.consumo,0) as consumo,
+    COALESCE(o.moneda,0) as moneda,
+     COALESCE(round(o.dias,0),0) as dias,
+    CASE
+        WHEN c.presupuesto > 0 THEN
+            ROUND(
+                (COALESCE(c.presupuesto / o.consumo, 0 )) * 100,
+                0
+            )
+        ELSE 0
+    END AS porcentaje_consumido
+FROM canal c
+LEFT JOIN (
+    SELECT
+        can_id,
+        TO_CHAR(fechacontacto AT TIME ZONE 'UTC', 'MM/YYYY') AS mes,
+        CASE
+        WHEN enganche > 0 THEN
+            SUM(COALESCE(enganche, 0))
+        else 
+            SUM(COALESCE(total, 0)) 
+        end as consumo,        
+        CASE
+        WHEN enganche > 0 THEN
+            'Enganche'
+        else 
+            'Total'
+        end as tipo,
+        moneda,
+       avg(dias) as dias
+    FROM canaloc
+    GROUP BY
+        can_id,
+        TO_CHAR(fechacontacto AT TIME ZONE 'UTC', 'MM/YYYY'),
+        enganche,
+        total,
+        moneda
+) o
+    ON o.can_id = c.codcanal
+    AND o.mes = TO_CHAR(c.fecha AT TIME ZONE 'UTC', 'MM/YYYY')
+join canaltab on canaltab.id = c.codcanal
+ORDER BY
+    c.fecha,
+    c.codcanal;`;
+      const result = await seq.query(sql, { type: QueryTypes.SELECT });
+      res.json(result);
+   } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: "Internal Server Error" });
+   }
+});
+
 router.get("/marketing", async function (req, res, next) {
-      try {
-         sql = `select json_build_object(
+   try {
+      sql = `select json_build_object(
              'cia_id', f.cia_id,
              'cli_id', f.cli_id,
              'cod_status', f.cod_status,
@@ -62,6 +121,7 @@ router.get("/marketing", async function (req, res, next) {
                          'can_id', t3.can_id,
                          'fechacanal', t4.fecha,
                          'description', ta.description,
+                         'fechacontacto', t3.fechacontacto,
                          'presupuesto', t4.presupuesto,
                          'dias', t3.dias
                      )
@@ -99,19 +159,18 @@ router.get("/marketing", async function (req, res, next) {
          join direccion d on d.orden = f.dir_id and d.cli_id = f.cli_id
          join cotizacion c on c.id = f.cot_id
          where f.cod_status in (6,7,8,10,13,14)
-         `
-         console.log('sql: ', sql);
+         `;
+      console.log("sql: ", sql);
 
-         const records = await seq.query(sql, {
-            //logging: console.log,
-            type: QueryTypes.SELECT,
-         });
-         //console.log('records: ', records);
-         res.send(records);
-      } catch (error) {
-         console.log(error);
-      }
-      
+      const records = await seq.query(sql, {
+         //logging: console.log,
+         type: QueryTypes.SELECT,
+      });
+      //console.log('records: ', records);
+      res.send(records);
+   } catch (error) {
+      console.log(error);
+   }
 });
 
 router.get("/cab", async function (req, res, next) {
@@ -219,8 +278,8 @@ router.get("/cab", async function (req, res, next) {
          join direccion d on d.orden = f.dir_id and d.cli_id = f.cli_id
          join cotizacion c on c.id = f.cot_id
          where f.id = ${id};
-         `
-         console.log('sql: ', sql);
+         `;
+         console.log("sql: ", sql);
 
          const records = await seq.query(sql, {
             //logging: console.log,
@@ -236,28 +295,27 @@ router.get("/cab", async function (req, res, next) {
    }
 });
 
-
 router.get("/", async function (req, res, next) {
    try {
       sql = "select f.id,to_char(f.fecha,'dd/mm/yyyy') as fecha,f.subtotal,";
-      sql +=  " f.iva,f.total,f.cli_id,t.description as stsdes,";
-      sql +=  " c.nombre,f. cod_status,f. observ, f.moneda,f.idioma,";
+      sql += " f.iva,f.total,f.cli_id,t.description as stsdes,";
+      sql += " c.nombre,f. cod_status,f. observ, f.moneda,f.idioma,";
       // sql +=  " coalesce(fc.descuento,0)  fde,coalesce(fc.enganche,0) fen, ";
       // sql +=  " coalesce(fc.meses,0) fme,coalesce(fc.interes,0) finter,";
       // sql +=  " coalesce(con.descuento,0) de, coalesce(con.enganche,0) en, ";
       // sql +=  " coalesce(con.meses,0) me,coalesce(con.interes,0) inter,stsprod.sts,";
-      sql +=  " now() as Hoy";
-      sql +=  " from facturas f";
-      sql +=  " join clientes c           on c.id = f.cli_id";
-      sql +=  " join tabla   t            on t.id = 6 and t.cod = f.cod_status";
+      sql += " now() as Hoy";
+      sql += " from facturas f";
+      sql += " join clientes c           on c.id = f.cli_id";
+      sql += " join tabla   t            on t.id = 6 and t.cod = f.cod_status";
       // sql +=  " left join factcond fc     on fc.fac_id = f.id";
       // sql +=  " left join condiciones con on con.id = fc.cond_id";
-      sql +=  " join (select fa.fac_id,avg(p.cod_status) sts";
-      sql +=  "     from factdet fa";
-      sql +=  "     join productos p on p.id = fa.prod_id ";
-      sql +=  "     group by fa.fac_id";
-      sql +=  "  ) stsprod on stsprod.fac_id = f.id";
-      sql +=  " order by f.id";
+      sql += " join (select fa.fac_id,avg(p.cod_status) sts";
+      sql += "     from factdet fa";
+      sql += "     join productos p on p.id = fa.prod_id ";
+      sql += "     group by fa.fac_id";
+      sql += "  ) stsprod on stsprod.fac_id = f.id";
+      sql += " order by f.id";
 
       const records = await seq.query(sql, {
          //logging: console.log,
@@ -268,8 +326,6 @@ router.get("/", async function (req, res, next) {
       console.log(error);
    }
 });
-
-
 
 router.get("/bckp", async function (req, res, next) {
    try {
@@ -284,21 +340,20 @@ router.get("/bckp", async function (req, res, next) {
    }
 });
 
-
 // Listado de materias primas a solicitar
 router.get("/mail", async function (req, res, next) {
    const { id } = req.query;
    if (id) {
       try {
          sql = "select fd.fac_id,fd.prod_id,fd.cantidad,pr.name, ";
-         sql +=  " mp.name Id, ";
-         sql +=  " mp.description,fd.cantidad*pm.cantidad total_Mp ";
-         sql +=  " from facturas f ";
-         sql +=  " join factdet fd on fd.fac_id = f.id ";
-         sql +=  " join productos pr on pr.id = fd.prod_id ";
-         sql +=  " join prodmp    pm on pm.prod_id  = fd.prod_id ";
-         sql +=  " join materiaprima mp on mp.name = pm.mp_name ";
-         sql +=  " where fd.fac_id = " + id;
+         sql += " mp.name Id, ";
+         sql += " mp.description,fd.cantidad*pm.cantidad total_Mp ";
+         sql += " from facturas f ";
+         sql += " join factdet fd on fd.fac_id = f.id ";
+         sql += " join productos pr on pr.id = fd.prod_id ";
+         sql += " join prodmp    pm on pm.prod_id  = fd.prod_id ";
+         sql += " join materiaprima mp on mp.name = pm.mp_name ";
+         sql += " where fd.fac_id = " + id;
 
          const records = await seq.query(sql, {
             //logging: console.log,
@@ -309,7 +364,7 @@ router.get("/mail", async function (req, res, next) {
       } catch (error) {
          console.log(error);
       }
-   } 
+   }
 });
 /*
 sql = sql + " where doc_id = :doc_id and tipo_id = :tipo_id order by fecha desc";
@@ -322,23 +377,26 @@ router.get("/graf", async function (req, res, next) {
    console.log("Graf req.body: ", req.query);
    try {
       const { fDesde, fHasta, tabla } = req.query;
-      sql = "select moneda,(date_part('year', f.fecha::DATE) *100) + date_part('month',f.fecha::DATE) Periodo,";
-      sql +=  " COALESCE(sum(f.total) filter (where cod_status <= 5),0) as NoLib,";
-      sql +=  " COALESCE(sum(f.total) filter (where cod_status > 5),0) as Lib,";
-      sql +=  " COALESCE(count(f.id) filter (where cod_status <= 5),0) as NoLibC,";
-      sql +=  " COALESCE(count(f.id) filter (where cod_status > 5),0) as LibC";
-      sql +=  " from " + tabla + " f";
-      sql +=  " where  to_char(fecha::DATE, 'YYYY-MM-DD') >= :fDesde";
-      sql +=  " and   to_char(fecha::DATE, 'YYYY-MM-DD') <= :fHasta";
-      sql +=  " group by moneda,Periodo";
-      sql +=  " order by moneda,Periodo";
+      sql =
+         "select moneda,(date_part('year', f.fecha::DATE) *100) + date_part('month',f.fecha::DATE) Periodo,";
+      sql +=
+         " COALESCE(sum(f.total) filter (where cod_status <= 5),0) as NoLib,";
+      sql += " COALESCE(sum(f.total) filter (where cod_status > 5),0) as Lib,";
+      sql +=
+         " COALESCE(count(f.id) filter (where cod_status <= 5),0) as NoLibC,";
+      sql += " COALESCE(count(f.id) filter (where cod_status > 5),0) as LibC";
+      sql += " from " + tabla + " f";
+      sql += " where  to_char(fecha::DATE, 'YYYY-MM-DD') >= :fDesde";
+      sql += " and   to_char(fecha::DATE, 'YYYY-MM-DD') <= :fHasta";
+      sql += " group by moneda,Periodo";
+      sql += " order by moneda,Periodo";
 
       const records = await seq.query(sql, {
-         replacements: { fDesde, fHasta},
+         replacements: { fDesde, fHasta },
          logging: console.log,
          type: QueryTypes.SELECT,
       });
-      console.log('records: ', records);
+      console.log("records: ", records);
       res.send(records);
    } catch (error) {
       console.log(error);
@@ -349,29 +407,29 @@ router.get("/:iduser", async function (req, res, next) {
    const { iduser } = req.params;
    try {
       sql = "select f.id,to_char(f.fecha,'dd/mm/yyyy') as fecha,f.subtotal,";
-      sql +=  " f.iva,f.total,f.cli_id,t.description as stsdes,";
-      sql +=  " c.nombre,f. cod_status,f. observ, f.moneda,f.idioma,f.cot_id,";
+      sql += " f.iva,f.total,f.cli_id,t.description as stsdes,";
+      sql += " c.nombre,f. cod_status,f. observ, f.moneda,f.idioma,f.cot_id,";
       // sql +=  " coalesce(fc.descuento,0)  fde,coalesce(fc.enganche,0) fen, ";
       // sql +=  " coalesce(fc.meses,0) fme,coalesce(fc.interes,0) finter,";
       // sql +=  " coalesce(con.descuento,0) de, coalesce(con.enganche,0) en, ";
       // sql +=  " coalesce(con.meses,0) me,coalesce(con.interes,0) inter,stsprod.sts,";
-      sql +=  " now() as Hoy";
-      sql +=  " from facturas f";
-      sql +=  " join clientes c           on c.id = f.cli_id";
-      sql +=  " join tabla   t            on t.id = 6 and t.cod = f.cod_status";
+      sql += " now() as Hoy";
+      sql += " from facturas f";
+      sql += " join clientes c           on c.id = f.cli_id";
+      sql += " join tabla   t            on t.id = 6 and t.cod = f.cod_status";
       // sql +=  " left join factcond fc     on fc.fac_id = f.id";
       // sql +=  " left join condiciones con on con.id = fc.cond_id";
-      sql +=  " join (select fa.fac_id,avg(p.cod_status) sts";
-      sql +=  "     from factdet fa";
-      sql +=  "     join productos p on p.id = fa.prod_id ";
-      sql +=  "     group by fa.fac_id";
-      sql +=  "  ) stsprod on stsprod.fac_id = f.id";
+      sql += " join (select fa.fac_id,avg(p.cod_status) sts";
+      sql += "     from factdet fa";
+      sql += "     join productos p on p.id = fa.prod_id ";
+      sql += "     group by fa.fac_id";
+      sql += "  ) stsprod on stsprod.fac_id = f.id";
       sql += " join usuarios u on u.usr_id = '" + iduser + "'";
       sql += " join usuariostatus us on us.usrid = '" + iduser + "'";
-      sql += "                      and us.cod_status = f.cod_status"
+      sql += "                      and us.cod_status = f.cod_status";
       sql += "                      and us.tipo = 'OC'";
       // sql += " where u.cia_id =f.cia_id";
-      sql +=  " order by f.id desc";
+      sql += " order by f.id desc";
 
       const records = await seq.query(sql, {
          //logging: console.log,
@@ -387,28 +445,29 @@ router.put("/stat", async function (req, res, next) {
    const { doc_id, tipo_id, usr_id, cod_status, observ } = req.body;
    console.log("*** factura/stat req.query: ", req.body);
    if (doc_id) {
-         try {
-            // sql = "Select * from factura"
-            // const factura = await seq.query(sql, {
-            //    type: QueryTypes.SELECT,
-            // });
+      try {
+         // sql = "Select * from factura"
+         // const factura = await seq.query(sql, {
+         //    type: QueryTypes.SELECT,
+         // });
 
-            sql = `update facturas set cod_status = ${cod_status} where id =  ${doc_id}`;
-            sql2 = `insert into logs (doc_id, tipo_id, usr_id, cod_status,observ,fecha) values `;
-            sql2 = sql2 + `(${doc_id}, '${tipo_id}', '${usr_id}', ${cod_status},'${observ}',now())`;
-            
-            const records = await seq
-               .query(sql, {
+         sql = `update facturas set cod_status = ${cod_status} where id =  ${doc_id}`;
+         sql2 = `insert into logs (doc_id, tipo_id, usr_id, cod_status,observ,fecha) values `;
+         sql2 =
+            sql2 +
+            `(${doc_id}, '${tipo_id}', '${usr_id}', ${cod_status},'${observ}',now())`;
+
+         const records = await seq
+            .query(sql, {
                logging: console.log,
                type: QueryTypes.UPDATE,
             })
             .then(async function () {
-               const records2 = await seq
-               .query(sql2, {
+               const records2 = await seq.query(sql2, {
                   logging: console.log,
                   type: QueryTypes.INSERT,
-               })
-               // .then(async function () {   
+               });
+               // .then(async function () {
                //    if (cod_status === 6) {
                //       sql3 = `insert into facturacom (fecha,cot_id,canal,cod_status) values (now(), ${doc_id}, 0,1)`;
                //       const records3 = await seq
@@ -416,18 +475,18 @@ router.put("/stat", async function (req, res, next) {
                //          logging: console.log,
                //          type: QueryTypes.UPDATE,
                //       })
-               //    }        
-                    res.status(200).json({ message: "OK" });
+               //    }
+               res.status(200).json({ message: "OK" });
                // })
-            })
-         } catch (error) {
-            console.log("Error",error);
-            res.status(400).json({ message: `Error ${error}` });
-         }
-      } else {
-         console.log("Error Stat Doc_id");
-         res.status(400).json({ message: `Error doc_id ${doc_id}` });
+            });
+      } catch (error) {
+         console.log("Error", error);
+         res.status(400).json({ message: `Error ${error}` });
       }
+   } else {
+      console.log("Error Stat Doc_id");
+      res.status(400).json({ message: `Error doc_id ${doc_id}` });
+   }
 });
 
 router.post("/", async function (req, res, next) {
@@ -463,7 +522,7 @@ router.post("/", async function (req, res, next) {
          res.status(400).json({ message: "Error en la información recibida" });
       } else {
          sql = `insert into facturas (cli_id,dir_id,dhl,subtotal,iva,total,cod_status,observ,fecha,idioma,moneda) `;
-         sql +=  `values (${cli_id},${dir_id},${dhl},${subtotal},${iva},${total},${cod_status},'${observ}','${fecha}','${idioma}','${moneda}') RETURNING id`;
+         sql += `values (${cli_id},${dir_id},${dhl},${subtotal},${iva},${total},${cod_status},'${observ}','${fecha}','${idioma}','${moneda}') RETURNING id`;
       }
       const records = await seq
          .query(sql, {
@@ -490,27 +549,28 @@ router.post("/cotifac", async function (req, res, next) {
       if (!cli_id || !cot_id) {
          await transaction.rollback();
          return res.status(400).json({
-            message: "Falta información para poder crear una OC desde una Cotizacion",
+            message:
+               "Falta información para poder crear una OC desde una Cotizacion",
          });
       }
 
       sql = `insert into facturas (id,cli_id,dir_id,dhl,subtotal,iva,total,cod_status,observ,fecha,idioma,moneda,cot_id,cia_id) `;
-      sql +=  `select (select COALESCE(max(id)+1,1)  from facturas ) id, ${cli_id}, 1 , dhl, subtotal, iva, total ,4, observ,fecha, 1, moneda,id,cia_id from cotizacion`;
-      sql +=  ` where id = ${cot_id} RETURNING id`;
+      sql += `select (select COALESCE(max(id)+1,1)  from facturas ) id, ${cli_id}, 1 , dhl, subtotal, iva, total ,4, observ,fecha, 1, moneda,id,cia_id from cotizacion`;
+      sql += ` where id = ${cot_id} RETURNING id`;
 
       const facIdCreated = await seq.query(sql, {
          transaction,
          type: QueryTypes.INSERT,
       });
-      
+
       const fac_id = facIdCreated[0][0].id;
-      
+
       sql2 = `insert into factdet select ${fac_id},orden ,prod_id,precio,cantidad,total from cotizaciondet where cot_id = ${cot_id};`;
       await seq.query(sql2, {
          transaction,
          type: QueryTypes.INSERT,
       });
-      
+
       // 2026-07-01 uso cotizacioncond con seleccionado = 'S'
       // ---------------------------------------------------
       // Solo paso la cotizacion seleccionada
@@ -524,17 +584,18 @@ router.post("/cotifac", async function (req, res, next) {
       // });
 
       sql4 = `update cotizacion set cli_id = ${cli_id} ,nombre=razsoc,cod_status = 15 `;
-      sql4 +=  ` from clientes `;
-      sql4 +=  ` where cotizacion.id = ${cot_id}`;
-      sql4 +=  ` and clientes.id = ${cli_id}`;
+      sql4 += ` from clientes `;
+      sql4 += ` where cotizacion.id = ${cot_id}`;
+      sql4 += ` and clientes.id = ${cli_id}`;
       await seq.query(sql4, {
          transaction,
          type: QueryTypes.UPDATE,
       });
 
-      sql5 = "insert into logs (doc_id, tipo_id, usr_id, cod_status,observ,fecha) ";
-      sql5 +=  `select ${fac_id}, 'FAC', vendedor, 1,'Viene de la OC : ${cot_id}',now()`;
-      sql5 +=  ` from cotizacion where id =${cot_id}`;
+      sql5 =
+         "insert into logs (doc_id, tipo_id, usr_id, cod_status,observ,fecha) ";
+      sql5 += `select ${fac_id}, 'FAC', vendedor, 1,'Viene de la OC : ${cot_id}',now()`;
+      sql5 += ` from cotizacion where id =${cot_id}`;
       await seq.query(sql5, {
          transaction,
          type: QueryTypes.UPDATE,
@@ -559,7 +620,7 @@ router.put("/", async function (req, res, next) {
          console.log("iva: ", iva);
          console.log("subtotal: ", subtotal);
          return res.send(
-            "Aviso: Falta información para poder MODIFICAR de alta el Documento"
+            "Aviso: Falta información para poder MODIFICAR de alta el Documento",
          );
       }
       if (id !== 0) {
@@ -576,7 +637,7 @@ router.put("/", async function (req, res, next) {
          sqlfac = sqlfac + ` where id = ${id}`;
       } else {
          return res.send(
-            "Falta información numero de factura poder darte de alta el Documento"
+            "Falta información numero de factura poder darte de alta el Documento",
          );
       }
       const records = await seq.query(sqlDel, {
