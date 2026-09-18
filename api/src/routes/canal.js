@@ -16,7 +16,7 @@ const seq = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_
 // Obtener todos los canales
 router.get('/', async function (req, res, next) {
   try {
-    const sql = 'SELECT canal.*,t.description as descrip FROM canal join tabla t on t.id = 26 and t.cod = canal.codcanal WHERE canal.cod_status > 0 ORDER BY fecha DESC';
+    const sql = 'SELECT canal.*,t.descripcion as descrip FROM canal join canaltab t on t.id = canal.codcanal WHERE canal.cod_status > 0 ORDER BY fecha DESC';
     const records = await seq.query(sql, {
       type: QueryTypes.SELECT
     });
@@ -31,7 +31,7 @@ router.get('/', async function (req, res, next) {
 router.get('/id/:id', async function (req, res, next) {
   try {
     const { id } = req.params;
-    const sql = `SELECT canal.*,t.description as descrip FROM canal join tabla t on t.id = 26 and t.cod = canal.codcanal WHERE canal.id = ${id} AND canal.cod_status > 0`;
+    const sql = `SELECT canal.*,t.descripcion as descrip FROM canal join canaltab t on t.id = canal.codcanal WHERE canal.id = ${id} AND canal.cod_status > 0`;
     const records = await seq.query(sql, {
       type: QueryTypes.SELECT
     });
