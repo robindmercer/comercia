@@ -32,6 +32,24 @@ router.get('/', async function (req, res, next) {
 
 })
 
+router.get('/cocina', async function (req, res, next) {
+  try {
+      const sql = `select cotizacion.id,subtotal,iva,total,descuento,enganche,meses,interes,pagos,totalfinanciado
+                   from cotizacion 
+                   join cotizacioncond on cot_id = cotizacion.id and cond_id > 2
+                   and pagos = 0`;
+      const records = await seq.query(sql,
+        {
+          logging: console.log,
+          type: QueryTypes.SELECT
+        });      
+      res.send(records)    
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+
 router.get('/cot', async function (req, res, next) {
   console.log('api/cotizacioncond: ', req.query);
   const {cot_id} = req.query;
@@ -54,6 +72,41 @@ router.get('/cot', async function (req, res, next) {
   }
 }) 
 
+router.put('/cocina/bulk', async function (req, res, next) {
+  const items = Array.isArray(req.body) ? req.body : (req.body.items || [req.body]);
+
+  if (!items.length || items.some(({ id, nuevopago, totalfinanciado }) =>
+    !Number.isInteger(Number(id)) ||
+    !Number.isFinite(Number(nuevopago)) ||
+    !Number.isFinite(Number(totalfinanciado)))) {
+    return res.status(400).json({ error: 'Se requiere una lista válida de cotizaciones' });
+  }
+
+  try {
+    const replacements = {};
+    const values = items.map(({ id, nuevopago, totalfinanciado }, index) => {
+      replacements[`id${index}`] = Number(id);
+      replacements[`pago${index}`] = Number(nuevopago);
+      replacements[`financiado${index}`] = Number(totalfinanciado);
+      return `(:id${index}, :pago${index}, :financiado${index})`;
+    }).join(', ');
+
+    const sql = `update cotizacioncond as c
+                 set pagos = v.nuevopago, totalfinanciado = v.totalfinanciado
+                 from (values ${values}) as v(id, nuevopago, totalfinanciado)
+                 where c.cot_id = v.id and c.pagos = 0
+                 returning c.cot_id`;
+    const records = await seq.query(sql, {
+      replacements,
+      logging: console.log,
+      type: QueryTypes.SELECT
+    });
+
+    res.json({ updated: records.length, ids: records.map(({ id }) => id) });
+  } catch (error) {
+    next(error);
+  }
+})
 
 router.put('/stat', async function (req, res, next) {
   const {id,sts} = req.query;
