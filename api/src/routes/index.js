@@ -28,6 +28,8 @@ const comentario = require("./comentario")
 const canal = require("./canal")
 const canaloc = require("./canaloc")
 const canaltab = require("./canaltab")
+const canalgtos = require("./canalgtos")
+const canaltabgtos = require("./canaltabgtos")
 const contratosPlantillas = require("./contratos_plantillas")
 // const facturacom = require("./facturacom")
 
@@ -93,6 +95,8 @@ router.use('/companiacuenta', companiacuenta) // Compañia Cuenta
 router.use('/canal', canal) // Canal
 router.use('/canaloc', canaloc) // CanalOC  
 router.use('/canaltab', canaltab) // CanalTab
+router.use('/canalgtos', canalgtos) // CanalGtos
+router.use('/canaltabgtos', canaltabgtos) // CanalTab
 router.use('/contratos_plantillas', contratosPlantillas) // Contratos Plantillas
 // router.use('/facturacom', facturacom) // Factura Comercial
 // router.use('/contacto', require('./contacto')) // Contacto
