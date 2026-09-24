@@ -46,17 +46,46 @@ router.get('/id/:id', async function (req, res, next) {
 router.post('/', async function (req, res, next) {
   try {
     const { can_id, fac_id, fechacontacto, total, enganche, moneda, dias, usr_id } = req.body;
+    if (!fac_id) {
+      return res.status(400).send({ error: 'El campo fac_id es obligatorio' });
+    }
+    if (Number(can_id) === 0) {
+      await seq.query('DELETE FROM canaloc WHERE fac_id = :fac_id', {
+        replacements: { fac_id }
+      });
+      return res.send({ message: 'Canal eliminado exitosamente' });
+    }
     if (!fechacontacto) {
       return res.status(400).send({ error: 'El campo fechacontacto es obligatorio' });
     }
     if (total === undefined || enganche === undefined) {
       return res.status(400).send({ error: 'Los campos total y enganche son obligatorios' });
     }
-    var fecha = new Date().toISOString();
-    const sql = `INSERT INTO canaloc (can_id, fecha, fac_id, fechacontacto, total, enganche, moneda, dias, usr_id) 
-           VALUES ('${can_id}','${fecha}', '${fac_id}', '${fechacontacto}', ${total}, ${enganche}, ${moneda}, ${dias}, '${usr_id}') 
-                 RETURNING id`;
+    const fecha = new Date().toISOString();
+    const existingRecords = await seq.query(
+      'SELECT id FROM canaloc WHERE fac_id = :fac_id LIMIT 1',
+      { replacements: { fac_id }, type: QueryTypes.SELECT }
+    );
+
+    if (existingRecords.length > 0) {
+      await seq.query(
+        `UPDATE canaloc
+         SET can_id = :can_id, fecha = :fecha, fechacontacto = :fechacontacto,
+             total = :total, enganche = :enganche, moneda = :moneda,
+             dias = :dias, usr_id = :usr_id
+         WHERE fac_id = :fac_id`,
+        {
+          replacements: { can_id, fecha, fac_id, fechacontacto, total, enganche, moneda, dias, usr_id }
+        }
+      );
+      return res.send({ id: existingRecords[0].id, message: 'Canal actualizado exitosamente' });
+    }
+
+    const sql = `INSERT INTO canaloc (can_id, fecha, fac_id, fechacontacto, total, enganche, moneda, dias, usr_id)
+           VALUES (:can_id, :fecha, :fac_id, :fechacontacto, :total, :enganche, :moneda, :dias, :usr_id)
+           RETURNING id`;
     const result = await seq.query(sql, {
+      replacements: { can_id, fecha, fac_id, fechacontacto, total, enganche, moneda, dias, usr_id },
       type: QueryTypes.INSERT
     });
     res.send({ id: result[0][0]?.id || result[0]?.id, message: 'Canal creado exitosamente' });
@@ -85,7 +114,7 @@ router.put('/id/:id', async function (req, res, next) {
     if (dias !== undefined) updates.push(`dias = ${dias}`);
     if (usr_id !== undefined) updates.push(`usr_id = '${usr_id}'`);
     
-    sql += updates.join(', ') + ` WHERE id = ${id}`;
+    sql += updates.join(', ') + ` WHERE fac_id = ${id}`;
     await seq.query(sql);
     res.send({ message: 'Canal actualizado exitosamente' });
   } catch (error) {
