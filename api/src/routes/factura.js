@@ -446,6 +446,7 @@ router.put("/stat", async function (req, res, next) {
    console.log("*** factura/stat req.query: ", req.body);
    if (doc_id) {
       try {
+         
          // sql = "Select * from factura"
          // const factura = await seq.query(sql, {
          //    type: QueryTypes.SELECT,
@@ -467,6 +468,12 @@ router.put("/stat", async function (req, res, next) {
                   logging: console.log,
                   type: QueryTypes.INSERT,
                });
+               if (Number(cod_status) === 1) {
+                  await seq.query(
+                     `update cotizacion set cod_status = 1 where id = (select cot_id from facturas where id = ${doc_id})`,
+                     { type: QueryTypes.UPDATE },
+                  );
+               }
                // .then(async function () {
                //    if (cod_status === 6) {
                //       sql3 = `insert into facturacom (fecha,cot_id,canal,cod_status) values (now(), ${doc_id}, 0,1)`;
