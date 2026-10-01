@@ -61,7 +61,7 @@ router.get('/prodmp', async function (req, res, next) {
 })
 
 router.post("/", async function (req, res, next) {
-  const { name, description, udm,stock,stockmin } = req.body;
+  const { name, description, udm,stock,stockmin,cod_status } = req.body;
   console.log('Post Tabla: ', req.body);
   console.log('name: ', name);
   console.log('udm: ', udm);
@@ -70,11 +70,21 @@ router.post("/", async function (req, res, next) {
     return res.send("Falta información para poder darte de alta la Materia Prima");
   }
 
-  sql = `insert into materiaprima (name,description,udm,stock,stockmin)  values('${name}', '${description}','${udm}',${stock},${stockmin})`
-
   try {
+    const existing = await seq.query(
+      'select 1 from materiaprima where name = :name limit 1',
+      {
+        replacements: { name },
+        type: QueryTypes.SELECT,
+      });
+
+    const sql = existing.length
+    ? 'update materiaprima set description = :description, udm = :udm, stock = :stock, stockmin = :stockmin, cod_status= :cod_status where name = :name'
+    : 'insert into materiaprima (name, description, udm, stock, stockmin, cod_status) values (:name, :description, :udm, :stock, :stockmin, :cod_status)';
+    // console.log('sql: ', sql);
     const records = await seq.query(sql,
       {
+        replacements: { name, description, udm, stock, stockmin, cod_status },
         logging: console.log,
         type: QueryTypes.SELECT
       });
@@ -85,26 +95,26 @@ router.post("/", async function (req, res, next) {
   }
 });
 
-router.put("/", async function (req, res, next) {
-  const { id, name, description, udm,stock,stockmin } = req.body;
+// router.put("/", async function (req, res, next) {
+//   const { id, name, description, udm,stock,stockmin } = req.body;
 
-  if (!name || !description || !udm) {
-    return res.send("Falta información para poder darte de alta la Materia Prima");
-  }
-    sql = `update materiaprima set description='${description}', udm='${udm}', stock=${stock},stockmin=${stockmin} where name= '${name}'`
-    try {
-      const records = await seq.query(sql,
-        {
-          logging: console.log,
-          type: QueryTypes.SELECT
-        });
-        console.log('records: ', records);
-    res.send(records)
-  } catch (error) {
-    console.log('Error:',error)
-  }
+//   if (!name || !description || !udm) {
+//     return res.send("Falta información para poder darte de alta la Materia Prima");
+//   }
+//     sql = `update materiaprima set description='${description}', udm='${udm}', stock=${stock},stockmin=${stockmin} where name= '${name}'`
+//     try {
+//       const records = await seq.query(sql,
+//         {
+//           logging: console.log,
+//           type: QueryTypes.SELECT
+//         });
+//         console.log('records: ', records);
+//     res.send(records)
+//   } catch (error) {
+//     console.log('Error:',error)
+//   }
 
-});
+// });
 
 
 // Manejo Relacion Materia Prima con el producto
