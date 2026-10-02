@@ -102,6 +102,6 @@ router.use('/canaltab', canaltab) // CanalTab
 router.use('/canalgtos', canalgtos) // CanalGtos
 router.use('/canaltabgtos', canaltabgtos) // CanalTab
 router.use('/contratos_plantillas', contratosPlantillas) // Contratos Plantillas
-router.use('/cocina', require('./cocina')) // Cocina
+// router.use('/cocina', require('./cocina')) // Cocina
 
 module.exports = router;
