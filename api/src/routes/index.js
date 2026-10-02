@@ -3,6 +3,8 @@ const usuario  = require("./usuario");
 const producto = require("./producto")
 const productolang = require("./productoLang")
 const cliente = require("./cliente")
+const inventario = require("./inventario")
+const inventariomov = require("./inventariomov")
 const direccion =  require("./direccion")
 const contrato =  require("./contrato")
 
@@ -66,6 +68,8 @@ router.use('/status', Status);
 router.use('/tabla', tabla);
 // cliente
 router.use('/cliente', cliente);
+router.use('/inventario', inventario);
+router.use('/inventariomov', inventariomov);
 // direccion 
 router.use('/direccion', direccion);
 // materiaprima
@@ -98,7 +102,6 @@ router.use('/canaltab', canaltab) // CanalTab
 router.use('/canalgtos', canalgtos) // CanalGtos
 router.use('/canaltabgtos', canaltabgtos) // CanalTab
 router.use('/contratos_plantillas', contratosPlantillas) // Contratos Plantillas
-// router.use('/facturacom', facturacom) // Factura Comercial
-// router.use('/contacto', require('./contacto')) // Contacto
+router.use('/cocina', require('./cocina')) // Cocina
 
 module.exports = router;
