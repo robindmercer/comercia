@@ -29,7 +29,7 @@ module.exports = (sequelize) => {
             allowNull: false,
         },
         costo_unitario: {
-            type: DataTypes.STRING,
+            type: DataTypes.NUMERIC,
             allowNull: false,
         },
         valor_almacen: {

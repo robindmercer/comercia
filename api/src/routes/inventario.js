@@ -1,18 +1,17 @@
 const { Router } = require('express');
 const router = Router();
 
-const { Inventario, conn } = require('../db');
+const { Inventario, Materiaprima, conn } = require('../db');
 const { QueryTypes } = require('sequelize');
 
 const campos = [
   'codigo',
-  'ubicación',
+  'ubicacion',
   'equipo_donde_se_utiliza',
   'stock_minimo',
   'inventario',
   'costo_unitario',
   'valor_almacen',
-  'solicitar',
   'proveedor',
   'tiempo_de_entrega',
   'notas',
@@ -76,7 +75,33 @@ router.post('/', async function (req, res, next) {
   }
 
   try {
-    const registro = await Inventario.create(obtenerCampos(req.body));
+    const materiaExistente = await Materiaprima.findByPk(req.body.codigo);
+    const description = req.body.description ?? materiaExistente?.description;
+    const udm = req.body.udm ?? materiaExistente?.udm;
+
+    if (!description || !udm) {
+      const faltantesMateria = [
+        !description && 'description',
+        !udm && 'udm',
+      ].filter(Boolean);
+      return res.status(400).json({
+        message: 'Faltan campos requeridos para materia prima',
+        campos: faltantesMateria,
+      });
+    }
+
+    const registro = await conn.transaction(async (transaction) => {
+      const nuevoInventario = await Inventario.create(obtenerCampos(req.body), { transaction });
+      await Materiaprima.upsert({
+        name: req.body.codigo,
+        description,
+        udm,
+        stockmin: req.body.stock_minimo,
+        precio: req.body.costo_unitario,
+        stock: 0,
+      }, { transaction });
+      return nuevoInventario;
+    });
     res.status(201).json(registro);
   } catch (error) {
     next(error);
