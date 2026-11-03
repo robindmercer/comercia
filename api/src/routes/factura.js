@@ -120,7 +120,7 @@ router.get("/marketing", async function (req, res, next) {
                      json_build_object(
                          'can_id', t3.can_id,
                          'fechacanal', t4.fecha,
-                         'description', ta.description,
+                         'description', ta.descripcion,
                          'fechacontacto', t3.fechacontacto,
                          'presupuesto', t4.presupuesto,
                          'dias', t3.dias
