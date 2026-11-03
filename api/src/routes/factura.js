@@ -129,7 +129,7 @@ router.get("/marketing", async function (req, res, next) {
                    from facturas f_canaloc
                    left join canaloc t3 on t3.fac_id = f_canaloc.id
                    left join canal t4 on t4.id = t3.can_id
-                        join canaltab ta on ta.id = t4.codcanal
+                        join canaltab ta on ta.id = t3.can_id
                    where f_canaloc.id = f.id
              ),
              'monedas', (
