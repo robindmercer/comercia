@@ -129,7 +129,7 @@ router.get("/marketing", async function (req, res, next) {
                    from facturas f_canaloc
                    left join canaloc t3 on t3.fac_id = f_canaloc.id
                    left join canal t4 on t4.id = t3.can_id
-                        join tabla ta on ta.id = 26 and ta.cod = t4.codcanal
+                        join canaltab ta on ta.id = t4.codcanal
                    where f_canaloc.id = f.id
              ),
              'monedas', (
@@ -443,56 +443,128 @@ router.get("/:iduser", async function (req, res, next) {
 
 router.put("/stat", async function (req, res, next) {
    const { doc_id, tipo_id, usr_id, cod_status, observ } = req.body;
-   console.log("*** factura/stat req.query: ", req.body);
-   if (doc_id) {
-      try {
-         
-         // sql = "Select * from factura"
-         // const factura = await seq.query(sql, {
-         //    type: QueryTypes.SELECT,
-         // });
+   const facturaId = Number(doc_id);
+   const nuevoStatus = Number(cod_status);
 
-         sql = `update facturas set cod_status = ${cod_status} where id =  ${doc_id}`;
-         sql2 = `insert into logs (doc_id, tipo_id, usr_id, cod_status,observ,fecha) values `;
-         sql2 =
-            sql2 +
-            `(${doc_id}, '${tipo_id}', '${usr_id}', ${cod_status},'${observ}',now())`;
+   if (!Number.isInteger(facturaId) || facturaId <= 0 || !Number.isInteger(nuevoStatus)) {
+      return res.status(400).json({ message: "doc_id y cod_status son obligatorios" });
+   }
 
-         const records = await seq
-            .query(sql, {
-               logging: console.log,
-               type: QueryTypes.UPDATE,
-            })
-            .then(async function () {
-               const records2 = await seq.query(sql2, {
-                  logging: console.log,
-                  type: QueryTypes.INSERT,
-               });
-               if (Number(cod_status) === 1) {
-                  await seq.query(
-                     `update cotizacion set cod_status = 1 where id = (select cot_id from facturas where id = ${doc_id})`,
-                     { type: QueryTypes.UPDATE },
-                  );
-               }
-               // .then(async function () {
-               //    if (cod_status === 6) {
-               //       sql3 = `insert into facturacom (fecha,cot_id,canal,cod_status) values (now(), ${doc_id}, 0,1)`;
-               //       const records3 = await seq
-               //       .query(sql3, {
-               //          logging: console.log,
-               //          type: QueryTypes.UPDATE,
-               //       })
-               //    }
-               res.status(200).json({ message: "OK" });
-               // })
-            });
-      } catch (error) {
-         console.log("Error", error);
-         res.status(400).json({ message: `Error ${error}` });
+   let transaction;
+   try {
+      transaction = await seq.transaction();
+
+      const facturas = await seq.query(
+         "select id, cod_status from facturas where id = :facturaId for update",
+         {
+            replacements: { facturaId },
+            transaction,
+            type: QueryTypes.SELECT,
+         },
+      );
+
+      if (facturas.length === 0) {
+         await transaction.rollback();
+         return res.status(404).json({ message: "No existe la factura" });
       }
-   } else {
-      console.log("Error Stat Doc_id");
-      res.status(400).json({ message: `Error doc_id ${doc_id}` });
+
+      if (nuevoStatus === 9) {
+         if (Number(facturas[0].cod_status) !== 8) {
+            await transaction.rollback();
+            return res.status(409).json({ message: "La factura debe estar en estado 8 para reponer el stock" });
+         }
+
+         const descuentos = await seq.query(
+            `select mp_name, cantidad
+             from factura_mp_stock
+             where fac_id = :facturaId and repuesto = false
+             for update`,
+            {
+               replacements: { facturaId },
+               transaction,
+               type: QueryTypes.SELECT,
+            },
+         );
+
+         if (descuentos.length === 0) {
+            await transaction.rollback();
+            return res.status(409).json({
+               message: "No hay descuentos de pasomanufactura registrados para esta factura",
+            });
+         }
+
+         for (const { mp_name, cantidad } of descuentos) {
+            const materiasPrimas = await seq.query(
+               `update materiaprima
+                set stock = stock + :cantidad
+                where name = :mp_name
+                returning name`,
+               {
+                  replacements: { cantidad, mp_name },
+                  transaction,
+                  type: QueryTypes.SELECT,
+               },
+            );
+
+            if (materiasPrimas.length === 0) {
+               throw new Error(`No existe la materia prima ${mp_name} para reponer`);
+            }
+         }
+
+         await seq.query(
+            "update factura_mp_stock set repuesto = true where fac_id = :facturaId and repuesto = false",
+            {
+               replacements: { facturaId },
+               transaction,
+               type: QueryTypes.UPDATE,
+            },
+         );
+      }
+
+      await seq.query(
+         "update facturas set cod_status = :nuevoStatus where id = :facturaId",
+         {
+            replacements: { nuevoStatus, facturaId },
+            transaction,
+            type: QueryTypes.UPDATE,
+         },
+      );
+
+      await seq.query(
+         `insert into logs (doc_id, tipo_id, usr_id, cod_status, observ, fecha)
+          values (:facturaId, :tipo_id, :usr_id, :nuevoStatus, :observ, now())`,
+         {
+            replacements: {
+               facturaId,
+               tipo_id,
+               usr_id,
+               nuevoStatus,
+               observ: observ || "",
+            },
+            transaction,
+            type: QueryTypes.INSERT,
+         },
+      );
+
+      if (nuevoStatus === 1) {
+         await seq.query(
+            "update cotizacion set cod_status = 1 where id = (select cot_id from facturas where id = :facturaId)",
+            {
+               replacements: { facturaId },
+               transaction,
+               type: QueryTypes.UPDATE,
+            },
+         );
+      }
+
+      await transaction.commit();
+      return res.status(200).json({ message: "OK" });
+   } catch (error) {
+      if (transaction && !transaction.finished) {
+         await transaction.rollback();
+      }
+      console.log("Error", error);
+      return res.status(500).json({ message: "Error al actualizar el estado de la factura" });
    }
 });
 
