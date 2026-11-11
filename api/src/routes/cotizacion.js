@@ -520,6 +520,31 @@ router.post("/111", async function (req, res, next) {
    }
 });
 
+
+router.put("/fecha/:id", async function (req, res, next) {
+   try {
+      const { id } = req.params;
+      const { fecha } = req.body;
+
+      if (!id || !fecha) {
+         return res.status(400).json({ 
+            message: "Falta el ID de la cotización o la fecha" 
+         });
+      }
+
+      const sql = `UPDATE cotizacion SET fecha = '${fecha}' WHERE id = ${id}`;
+      
+      const records = await seq.query(sql, {
+         type: QueryTypes.UPDATE,
+      });
+
+      res.status(200).json({ message: "Fecha actualizada correctamente" });
+   } catch (error) {
+      res.status(400).json({ message: "Error actualizando fecha: " + error });
+   }
+});
+
+
 router.put("/", async function (req, res, next) {
    try {
       console.log("PUT Cotizacion: ", req.body);
@@ -604,5 +629,6 @@ router.put("/", async function (req, res, next) {
       res.status(400).json({ message: "Error put Cotizacion " + error });
    }
 });
+
 
 module.exports = router;
